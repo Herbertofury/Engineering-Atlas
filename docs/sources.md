@@ -302,3 +302,15 @@ Diagnostic plan interpretation and unstable text format. Evidence: primary docum
 [SQLite ANALYZE guidance](https://sqlite.org/lang_analyze.html) · Current official documentation
 
 Planner statistics, optimize guidance and potential regressions. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## CODE01
+
+[orjson Codeberg repository](https://codeberg.org/ijl/orjson) · Head bd00937c5c46ab20eb5d7fe1cfc034b906c4578f; 3.13.0
+
+Direct browser repository/README inspection; head matches GitHub observation. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## CODE02
+
+[Zig canonical Codeberg repository](https://codeberg.org/ziglang/zig) · Master cb6f0c25f176dbebf0c6801170c360c2c1198524 observed 2026-10-26
+
+Direct browser metadata/README inspection; no build or full source audit. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.

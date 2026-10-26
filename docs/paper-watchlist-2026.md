@@ -26,11 +26,11 @@ Evaluate only after profiling repeated joins with small updates. Compare against
 
 Zig's official site identifies Codeberg as its canonical repository and lists 0.17.0, released October 1, 2026. Its release notes describe separating build configuration from execution, explicit configuration dependencies and improved incremental compilation for x86_64 Linux. They also document breaking APIs and a ZLS compatibility gap. Rank it **conditional/experimental for an existing toolchain migration**, not “always replace Rust/C++.” [TOOL01](https://ziglang.org/news/migrating-from-github-to-codeberg/), [TOOL02](https://ziglang.org/download/0.17.0/release-notes.html)
 
-The transferable hypothesis is explicit dependency tracking and explaining invalidation, not changing language for its own sake. Test delete/rename/configuration/environment changes and side effects before accepting skipped work as correct. The Codeberg repository itself returned a fetch failure in this pass; official release notes were reviewed, but repository contents were not independently audited.
+The transferable hypothesis is explicit dependency tracking and explaining invalidation, not changing language for its own sake. Test delete/rename/configuration/environment changes and side effects before accepting skipped work as correct. An initial fetch failed, but later direct browser inspection verified the canonical Codeberg repository, README and current master head `cb6f0c25f176dbebf0c6801170c360c2c1198524` on October 26. This is a development revision, not proof that a master build is preferable to the pinned stable release. No full code audit or Zig build was performed.
 
 ### orjson's alternative Codeberg repository
 
-The upstream README confirms [codeberg.org/ijl/orjson](https://codeberg.org/ijl/orjson) as an alternative repository. The [local parser lab](../experiments/json-lab/README.md) tested PyPI wheels, not a Codeberg build. Keep host provenance, tested distribution and source revision distinct. The direct Codeberg fetch was unavailable; no mirror equality claim is made.
+The upstream README confirms [codeberg.org/ijl/orjson](https://codeberg.org/ijl/orjson) as an alternative repository. The [local parser lab](../experiments/json-lab/README.md) tested PyPI wheels, not a Codeberg build. Keep host provenance, tested distribution and source revision distinct. After the initial fetch failure, direct browser inspection verified the repository/README and head `bd00937c5c46ab20eb5d7fe1cfc034b906c4578f`, matching GitHub master at that observation. This establishes matching observed head identifiers, not independent wheel reproducibility or a complete source audit.
 
 ## What is deliberately not ranked as a winner
 

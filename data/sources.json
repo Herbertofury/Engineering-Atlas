@@ -548,5 +548,27 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "CODE01",
+    "title": "orjson Codeberg repository",
+    "url": "https://codeberg.org/ijl/orjson",
+    "observed_version": "Head bd00937c5c46ab20eb5d7fe1cfc034b906c4578f; 3.13.0",
+    "topic": "repository-provenance",
+    "note": "Direct browser repository/README inspection; head matches GitHub observation",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "CODE02",
+    "title": "Zig canonical Codeberg repository",
+    "url": "https://codeberg.org/ziglang/zig",
+    "observed_version": "Master cb6f0c25f176dbebf0c6801170c360c2c1198524 observed 2026-10-26",
+    "topic": "repository-provenance",
+    "note": "Direct browser metadata/README inspection; no build or full source audit",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]
