@@ -76,6 +76,10 @@ Release metadata checked through the official repository APIs: simdjson 5.0.5 (O
 
 [Worker transport guidance](worker-transport-and-ownership.md) and its measured Node roundtrip lab distinguish sender-preserving copies from exclusive ownership transfer and cross-process API limitations.
 
+## Query-shaped indexes, measured costs
+
+[SQLite index decisions](sqlite-index-decisions.md) and the local paired-query lab retain complete results while measuring read gains, write regressions, build cost and allocated database pages.
+
 ## Promotion rule
 
 **Candidate → locally measured → target-validated → recommended default for that target.** A result can move backward when a counterexample appears. These recommendations are a current shortlist, not a blanket migration command. Contributions should attach a falsifying case as readily as a speed win.

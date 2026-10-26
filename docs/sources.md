@@ -290,3 +290,15 @@ Trusted builder, signature, digest and expected parameters. Evidence: primary do
 [Node 24 worker transfer semantics](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html) · 24.22.1, matching local runtime
 
 ArrayBuffer ownership, structured cloning and shared-memory distinction. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## DB03
+
+[SQLite EXPLAIN QUERY PLAN](https://sqlite.org/eqp.html) · Current official documentation; local SQLite 3.53.1
+
+Diagnostic plan interpretation and unstable text format. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## DB04
+
+[SQLite ANALYZE guidance](https://sqlite.org/lang_analyze.html) · Current official documentation
+
+Planner statistics, optimize guidance and potential regressions. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.

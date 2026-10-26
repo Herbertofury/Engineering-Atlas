@@ -526,5 +526,27 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "DB03",
+    "title": "SQLite EXPLAIN QUERY PLAN",
+    "url": "https://sqlite.org/eqp.html",
+    "observed_version": "Current official documentation; local SQLite 3.53.1",
+    "topic": "storage",
+    "note": "Diagnostic plan interpretation and unstable text format",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "DB04",
+    "title": "SQLite ANALYZE guidance",
+    "url": "https://sqlite.org/lang_analyze.html",
+    "observed_version": "Current official documentation",
+    "topic": "storage",
+    "note": "Planner statistics, optimize guidance and potential regressions",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]
