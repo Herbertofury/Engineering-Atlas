@@ -64,6 +64,10 @@ Release metadata checked through the official repository APIs: simdjson 5.0.5 (O
 - Claiming a paper was reproduced after only reading its abstract or running a toy analogue.
 - Treating unavailable Codeberg content as evidence against a project, or claiming it was reviewed.
 
+## Simulation and spatial workloads
+
+[Simulation and spatial methods](simulation-and-spatial-methods.md) adds current Bevy/Jolt constraints and an original measured grid-versus-exhaustive experiment, including cases where the grid loses.
+
 ## Promotion rule
 
 **Candidate → locally measured → target-validated → recommended default for that target.** A result can move backward when a counterexample appears. These recommendations are a current shortlist, not a blanket migration command. Contributions should attach a falsifying case as readily as a speed win.

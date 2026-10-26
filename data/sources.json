@@ -438,5 +438,38 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "SIM01",
+    "title": "Bevy 0.20 release",
+    "url": "https://bevy.org/news/bevy-0-20/",
+    "observed_version": "0.20.0; released 2026-10-08",
+    "topic": "simulation",
+    "note": "Change summaries, schedule testing and rendering quality tradeoffs",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SIM02",
+    "title": "Jolt Physics architecture",
+    "url": "https://github.com/jrouwe/JoltPhysics/blob/master/Docs/Architecture.md",
+    "observed_version": "5.6.0 latest release observed; current master documentation",
+    "topic": "simulation",
+    "note": "Determinism conditions and broad-phase query caveats",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SIM03",
+    "title": "NVIDIA broad-phase collision detection chapter",
+    "url": "https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-32-broad-phase-collision-detection-cuda",
+    "observed_version": "GPU Gems 3; historical algorithm background",
+    "topic": "spatial-indexing",
+    "note": "Spatial subdivision and workload-dependent behavior",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]
