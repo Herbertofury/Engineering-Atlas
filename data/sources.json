@@ -570,5 +570,60 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "R05",
+    "title": "Rust official installation",
+    "url": "https://rust-lang.org/tools/install/",
+    "observed_version": "Official installation; local compiler 1.99.1",
+    "topic": "toolchains",
+    "note": "Official Rust distribution and isolated toolchain setup",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "DB05",
+    "title": "rusqlite API",
+    "url": "https://docs.rs/rusqlite/latest/rusqlite/",
+    "observed_version": "0.41.0 observed and pinned",
+    "topic": "storage",
+    "note": "Transactional Rust SQLite binding; selection is provisional",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "NET01",
+    "title": "reqwest blocking client configuration",
+    "url": "https://docs.rs/reqwest/latest/reqwest/blocking/struct.ClientBuilder.html",
+    "observed_version": "0.13.5 observed and pinned",
+    "topic": "collection",
+    "note": "Timeout, HTTPS, redirect and TLS configuration for the bounded CLI adapter",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "COL01",
+    "title": "Modrinth API overview",
+    "url": "https://docs.modrinth.com/api/",
+    "observed_version": "v2.7.0/366f528 documentation observed",
+    "topic": "collection",
+    "note": "Public versus authenticated requests, canonical identifiers, User-Agent and provider rate limits",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "COL02",
+    "title": "Modrinth project operation",
+    "url": "https://docs.modrinth.com/api/operations/getproject/",
+    "observed_version": "Current v2 project operation",
+    "topic": "collection",
+    "note": "Single-project metadata endpoint and response fields",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

@@ -314,3 +314,33 @@ Direct browser repository/README inspection; head matches GitHub observation. Ev
 [Zig canonical Codeberg repository](https://codeberg.org/ziglang/zig) · Master cb6f0c25f176dbebf0c6801170c360c2c1198524 observed 2026-10-26
 
 Direct browser metadata/README inspection; no build or full source audit. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## R05
+
+[Rust official installation](https://rust-lang.org/tools/install/) · Official installation; local compiler 1.99.1
+
+Official Rust distribution and isolated toolchain setup. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## DB05
+
+[rusqlite API](https://docs.rs/rusqlite/latest/rusqlite/) · 0.41.0 observed and pinned
+
+Transactional Rust SQLite binding; selection is provisional. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## NET01
+
+[reqwest blocking client configuration](https://docs.rs/reqwest/latest/reqwest/blocking/struct.ClientBuilder.html) · 0.13.5 observed and pinned
+
+Timeout, HTTPS, redirect and TLS configuration for the bounded CLI adapter. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## COL01
+
+[Modrinth API overview](https://docs.modrinth.com/api/) · v2.7.0/366f528 documentation observed
+
+Public versus authenticated requests, canonical identifiers, User-Agent and provider rate limits. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## COL02
+
+[Modrinth project operation](https://docs.modrinth.com/api/operations/getproject/) · Current v2 project operation
+
+Single-project metadata endpoint and response fields. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.

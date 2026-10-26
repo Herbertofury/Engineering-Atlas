@@ -20,3 +20,24 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Exercise explicitly synthetic benchmark example
         run: python scripts/compare_benchmarks.py tests/fixtures/synthetic-baseline.json tests/fixtures/synthetic-candidate.json
+  rust-lab:
+    name: Rust lab (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/atlas-lab
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned official Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+      - name: Formatting
+        run: cargo fmt --all -- --check
+      - name: Static checks
+        run: cargo clippy --locked --all-targets -- -D warnings
+      - name: Offline unit and differential stress tests
+        run: cargo test --locked
