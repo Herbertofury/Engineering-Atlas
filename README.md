@@ -1,5 +1,7 @@
 # Engineering Atlas
 
+![Engineering Atlas: research, experiments and verified decisions](assets/atlas-banner.svg)
+
 **Build better software. Prove the improvement. Keep the evidence.**
 
 A practical, evolving research library for desktop apps, web services, Minecraft mods, game tooling and asset pipelines. Reviewed starting point: **October 26, 2026**. This is a curated foundation, not a claim that every technology has been exhaustively benchmarked.
