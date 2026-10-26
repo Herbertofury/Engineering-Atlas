@@ -1,8 +1,8 @@
 # Atlas Lab · executable R&D foundation
 
-**Status: early working CLI, not a finished autonomous self-improving application.**
+**Status: early working CLI and local-interface prototype, not a finished autonomous self-improving application.**
 
-This Rust application starts the evidence and collection core. It does not replace the Atlas research library. It cannot yet generate arbitrary code changes, deploy itself, run an unattended experiment queue, or collect every platform. There is no GUI or Windows installer yet.
+This Rust application starts the evidence and collection core. It does not replace the Atlas research library. It cannot yet generate arbitrary code changes, deploy itself, run an unattended code-improvement loop, or collect every platform. A loopback-only interface and durable job queue are implemented; browser visual/input QA remains pending. There is no Windows installer yet.
 
 ## What executes now
 
@@ -19,9 +19,11 @@ Install the official Rust toolchain selected by `rust-toolchain.toml`, then run 
 ```sh
 cargo test --locked
 cargo clippy --locked --all-targets -- -D warnings
+cargo run --locked -- serve local.sqlite
 cargo run --locked -- modrinth-project sodium
 cargo run --locked -- collect-modrinth sodium local.sqlite
 cargo run --locked --release -- dedup-lab experiments.sqlite
+cargo run --locked --release -- storage-lab NEW_OUTPUT_DIRECTORY
 ```
 
 The first two commands make no platform requests. Cargo may download pinned registry dependencies. The Modrinth commands explicitly make public API requests. The lab runs only built-in code on generated identifiers, not downloaded third-party implementations.
@@ -34,16 +36,16 @@ The dedup lab intentionally remains ineligible for review: it does not yet measu
 - The journal is append-only through the application API, not cryptographically tamper-proof against local database edits.
 - A timeout, HTTP failure or schema failure is not an empty successful collection.
 - Cooldowns are per client instance, not yet a cross-process provider scheduler. Do not launch parallel processes to evade provider limits.
-- No crash/power-loss durability certification, process sandbox, concurrent collector orchestration or production promotion/rollback mechanism yet. SQLite transactions are not a substitute for those tests.
+- No crash/power-loss durability certification, process sandbox, parallel collector orchestration or production promotion/rollback mechanism yet. SQLite transactions are not a substitute for those tests.
 - Native dependency builds and platform behavior need separate Linux and Windows CI evidence. A Linux pass is not a Windows release.
 - Rust/SQLite/reqwest are evaluated starting choices, not universal winners. Storage alternatives and UI choices remain an explicit experimental decision.
 
 ## Next implementation milestones
 
-1. Durable bounded jobs, cancellation and restart recovery; preserve failed attempts and last verified snapshots.
+1. Extend the durable leased queue with cancellation, backoff and stronger crash injection; current tests cover separate-connection claims, expired-lease recovery and stale-worker fencing.
 2. Isolated benchmark workers with resource measurements, exact source/workload identities and baseline/candidate replay.
 3. Stabilization cases with reproducible failures, diagnosis, actual code repairs, retained speed and adversarial regression suites.
-4. A responsive local UI for evidence, experiments, collector coverage and repair progress.
+4. Complete real-browser visual, interaction and accessibility acceptance for the local UI; HTTP-only tests do not establish these.
 5. Candidate patches in isolated worktrees, locked checks and rollback verification before any controlled promotion. A model-backed patch generator is not configured; general recursive self-improvement is not claimed.
 6. More official-platform adapters with explicit authentication and content-access capabilities, not an “all websites work” badge.
 
@@ -55,3 +57,11 @@ Source-register IDs: [R05], [DB05], [NET01], [COL01], [COL02].
 - [rusqlite](https://docs.rs/rusqlite/0.41.0/rusqlite/) · pinned 0.41.0 with bundled SQLite.
 - [reqwest client](https://docs.rs/reqwest/0.13.5/reqwest/blocking/struct.ClientBuilder.html) · pinned 0.13.5; blocking CLI client, not a UI-thread architecture recommendation.
 - [Modrinth API overview](https://docs.modrinth.com/api/) and [project operation](https://docs.modrinth.com/api/operations/getproject/) · public metadata, canonical identifiers and provider limits.
+
+## Current local-interface boundary
+
+`serve` binds only `127.0.0.1:41379`. It exposes no CORS permission; write requests require the exact local Origin and a custom same-origin header, and requests with unexpected Host values are rejected. SQL work is moved off async executor threads and bounded to four concurrent database operations. One serial worker executes permitted public metadata jobs. Job output and terminal status commit in one transaction; an expired worker cannot finalize a later attempt. A crash may repeat a public read, so this is not exactly-once network execution. The CLI snapshot store and queued-job result history are currently separate representations.
+
+A prototype dashboard exposes collection and evidence state. It does not enable background experiments or code generation. The local HTTP smoke pass verified real queued public collection, input limits and origin/host guards; cloud-browser access to the isolated loopback preview was unavailable, so visual and browser-interaction acceptance is explicitly pending.
+
+[Card-density browser lab](../../docs/card-lab/index.html) is a separate generated-data measurement harness, not a claim about any project's current UI. [Storage lab evidence](../../experiments/rust-storage-lab/README.md) compares preparation strategies with the same transaction and durability boundaries.

@@ -7,6 +7,20 @@ use std::{hint::black_box, path::Path, time::Instant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
+    if args.len() == 3 && args[1] == "storage-lab" {
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&atlas_lab::storage_lab::run(Path::new(&args[2]))?)?
+        );
+        return Ok(());
+    }
+    if args.len() == 3 && args[1] == "serve" {
+        return tokio::runtime::Builder::new_multi_thread()
+            .worker_threads(2)
+            .enable_all()
+            .build()?
+            .block_on(atlas_lab::server::serve(args[2].clone().into()));
+    }
     if args.len() == 4 && args[1] == "collect-modrinth" {
         atlas_lab::modrinth::project_url(&args[2])?;
         let mut store = atlas_lab::snapshots::SnapshotStore::open(Path::new(&args[3]))?;

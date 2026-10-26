@@ -344,3 +344,39 @@ Public versus authenticated requests, canonical identifiers, User-Agent and prov
 [Modrinth project operation](https://docs.modrinth.com/api/operations/getproject/) · Current v2 project operation
 
 Single-project metadata endpoint and response fields. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## NET02
+
+[Axum routing and state](https://docs.rs/axum/latest/axum/) · 0.8.9 observed
+
+Rust HTTP routing and bounded local API implementation. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## R06
+
+[Tokio runtime](https://docs.rs/tokio/latest/tokio/) · 1.54.1 observed and resolved
+
+Async runtime with blocking work separated from executor threads. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## UI01
+
+[Long Animation Frames working draft](https://www.w3.org/TR/long-animation-frames/) · W3C First Public Working Draft, 2026-04-28
+
+Frame timing diagnostics; draft status and browser support limits. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## UI02
+
+[CSS content visibility](https://web.dev/articles/content-visibility?hl=en) · Published 2020-08-05; Baseline support note 2025-09-15
+
+Containment candidate; offscreen rendering and accessibility constraints. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## DB06
+
+[SQLite synchronization modes](https://www.sqlite.org/pragma.html#pragma_synchronous) · Current official documentation
+
+Read back configured durability and preserve commit boundaries. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## DB07
+
+[SQLite blob/filesystem comparison](https://www.sqlite.org/fasterthanfs.html) · Historical measurements 2017; current caveats
+
+Workload and cache limits; not a universal performance guarantee. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.

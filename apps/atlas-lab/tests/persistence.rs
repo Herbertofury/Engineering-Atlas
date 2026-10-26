@@ -57,3 +57,19 @@ fn snapshots_survive_close_reopen_and_failure() {
         "ok"
     );
 }
+
+#[test]
+fn separate_connections_cannot_claim_the_same_live_job() {
+    use atlas_lab::jobs::{Job, Queue};
+    let scratch = Scratch::new();
+    let mut first = Queue::open(&scratch.0).unwrap();
+    let mut second = Queue::open(&scratch.0).unwrap();
+    first.enqueue(&Job::DedupExperiment, 0).unwrap();
+    let a = first.claim("worker-a", 1, 1000).unwrap().unwrap();
+    assert!(second.claim("worker-b", 2, 1000).unwrap().is_none());
+    drop(first);
+    let b = second.claim("worker-b", 1001, 1000).unwrap().unwrap();
+    assert_eq!(a.id, b.id);
+    assert!(second.finish(&a, true, 1002).is_err());
+    second.finish(&b, true, 1003).unwrap();
+}

@@ -313,3 +313,9 @@ pub mod collection;
 pub mod modrinth;
 
 pub mod snapshots;
+
+pub mod jobs;
+
+pub mod server;
+
+pub mod storage_lab;

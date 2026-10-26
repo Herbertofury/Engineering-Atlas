@@ -29,3 +29,7 @@ The source register records checked_at and review_after_days. The local checker 
 ## Publication hygiene
 
 Keep summaries original and concise. Link sources beside the claim. Publish sanitized evidence only with appropriate authority; exclude user-specific traces, secrets and proprietary assets. A benchmark fixture labeled synthetic must never appear in a performance-success announcement.
+
+## Cross-project adoption gate
+
+Keep unproven methods in the general Atlas. A result is eligible for a target project's recommendation or TODO only after a comparison against **that project's current implementation** demonstrates a meaningful benefit with its correctness, feature, security, durability and UX requirements preserved. A generated microbenchmark, vendor chart or different project's result is a research lead, not sufficient evidence for this gate. Record the actual target baseline revision, workload, environment and complete outputs before making the transfer. This rule is project-independent.

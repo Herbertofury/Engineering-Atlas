@@ -33,3 +33,15 @@ Node workers are appropriate for CPU-heavy JavaScript; its documentation warns t
 ## Stabilize the reference without deleting information
 
 If baseline results change while testing, retain the before/after outputs and identify whether inputs, discovered metadata or actual semantics changed. A richer ownership explanation or newly discovered warning is not timing noise to strip. Re-run against the same recorded discovery generation, or explicitly report the comparison as unresolved. Measure in-application readiness separately from automation waiting, and keep first-use discovery distinct from steady-state results. See the [benchmark contract](benchmark-format.md#mutable-discovery-is-part-of-the-workload).
+
+## Card density and storage workloads
+
+Card performance needs independent measurements of time until the required visible cards are usable, input/scroll latency, layout shifts, image decoding, peak memory and complete data availability. Vary both record count and bytes/fields per record. Measure cold navigation separately from revisits and incremental updates. Keep filtering, keyboard navigation, details, accessibility and full-record search working under every candidate strategy.
+
+Compare keyed incremental DOM updates, containment, windowing and data projections against a measured baseline. A projection is acceptable only when the complete record remains available through an explicit tested path; it must not masquerade as a complete response. Offscreen rendering optimizations do not excuse missing records. Use browser frame/input instrumentation and label proxies such as a double-animation-frame wait honestly: they are not direct proof of physical pixel presentation or an INP score.
+
+For storage, retain the same transaction boundaries and durability configuration across the comparison. Measure committed writes, reopening/readback, full payload equality and integrity, not only in-memory inserts. More data per card can shift bottlenecks from queries to serialization, transport, parsing, image decode, layout or memory. Identify the dominant stage before choosing the intervention.
+
+General lab wins remain research candidates until they outperform a target project's actual current implementation with its requirements intact.
+
+Primary background for these experiments: [UI01], [UI02], [DB06], [DB07]. Documented methods are not measured wins.

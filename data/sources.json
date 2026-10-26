@@ -625,5 +625,71 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "NET02",
+    "title": "Axum routing and state",
+    "url": "https://docs.rs/axum/latest/axum/",
+    "observed_version": "0.8.9 observed",
+    "topic": "local UI",
+    "note": "Rust HTTP routing and bounded local API implementation",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "R06",
+    "title": "Tokio runtime",
+    "url": "https://docs.rs/tokio/latest/tokio/",
+    "observed_version": "1.54.1 observed and resolved",
+    "topic": "runtime",
+    "note": "Async runtime with blocking work separated from executor threads",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "UI01",
+    "title": "Long Animation Frames working draft",
+    "url": "https://www.w3.org/TR/long-animation-frames/",
+    "observed_version": "W3C First Public Working Draft, 2026-04-28",
+    "topic": "measurement",
+    "note": "Frame timing diagnostics; draft status and browser support limits",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "UI02",
+    "title": "CSS content visibility",
+    "url": "https://web.dev/articles/content-visibility?hl=en",
+    "observed_version": "Published 2020-08-05; Baseline support note 2025-09-15",
+    "topic": "rendering",
+    "note": "Containment candidate; offscreen rendering and accessibility constraints",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "DB06",
+    "title": "SQLite synchronization modes",
+    "url": "https://www.sqlite.org/pragma.html#pragma_synchronous",
+    "observed_version": "Current official documentation",
+    "topic": "durability",
+    "note": "Read back configured durability and preserve commit boundaries",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "DB07",
+    "title": "SQLite blob/filesystem comparison",
+    "url": "https://www.sqlite.org/fasterthanfs.html",
+    "observed_version": "Historical measurements 2017; current caveats",
+    "topic": "storage",
+    "note": "Workload and cache limits; not a universal performance guarantee",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]
