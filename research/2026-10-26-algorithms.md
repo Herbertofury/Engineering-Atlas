@@ -13,7 +13,7 @@ The next useful question is often not “how many more workers?” but “why is
 
 ## Concrete deliverable
 
-The new [prefix-index example](../examples/owner_prefix_index.py) has a deliberately narrow contract and a slow reference. Tests preserve exact, delimited, ambiguous and case-sensitive results across 2,000 generated cases. This demonstrates a correctness-first optimization method. It does not establish a speedup for Enderloom or any other real app.
+The new [prefix-index example](../examples/owner_prefix_index.py) has a deliberately narrow contract and a slow reference. Tests preserve exact, delimited, ambiguous and case-sensitive results across 2,000 generated cases. This demonstrates a correctness-first optimization method. It does not establish a speedup for any real application.
 
 ## Source basis
 
