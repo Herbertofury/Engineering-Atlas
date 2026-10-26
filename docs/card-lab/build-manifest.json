@@ -1,9 +1,9 @@
 {
-  "harness": "atlas-card-density-v4-overlap-diagnostics",
+  "harness": "atlas-card-density-v5-grouped-regions",
   "artifacts": {
-    "lab-core.373a472b27551f07.mjs": "373a472b27551f078f43f339a269b1904bba48e4ac3864a2d22784f738a2ea1b",
-    "lab.e11852f338712a06.js": "e11852f338712a06b0b4eda18a2896cffa143139f5b76a1803fdf0609bd15af1",
-    "lab.03b1d9534a99700b.css": "03b1d9534a99700bea8426d3205febef997d8023e1ada33b8af7231c7ecf9975",
-    "index.html": "971250bb43c95c3ce374c73d3784d1aaa781773eaebbc58148df4d4d0190342a"
+    "lab-core.c44fb461024357ba.mjs": "c44fb461024357bacf4a23a7ea7a0ddf31009b29889c04328d4e9b160527ccc4",
+    "lab.8d2386f2cac5c7a4.js": "8d2386f2cac5c7a42b0fdd19c919a1866da466e98125ec35875aada2442d8324",
+    "lab.32f7898d587ec7ed.css": "32f7898d587ec7ed0c4197f7d6fff1b6fbd0f2bd3fe30122f9f775fd1072ec6d",
+    "index.html": "043a974a3c2a08bd20d66cc116891576ec11e732382ded4397323d727e94e478"
   }
 }

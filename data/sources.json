@@ -933,5 +933,38 @@
     "checked_at": "2026-10-26",
     "review_after_days": 7,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "UI03",
+    "title": "CSS Box Sizing Level 4 draft",
+    "url": "https://www.w3.org/TR/2026/WD-css-sizing-4-20260904/",
+    "observed_version": "Working Draft, 2026-09-04",
+    "topic": "ui",
+    "note": "Remembered intrinsic size and overflow semantics; draft, not a performance result",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "UI04",
+    "title": "TanStack Virtual core 3.19.8 source repair",
+    "url": "https://github.com/TanStack/virtual/commit/23430040447e24bcfdd9665bd6b6c67d8fefd0ea",
+    "observed_version": "virtual-core 3.19.8; released 2026-10-26",
+    "topic": "ui",
+    "note": "End-of-scroll calculation includes scrollMargin; source diff and upstream regression inspected, not locally installed or benchmarked",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "UI05",
+    "title": "Chrome guidance on complex layout interactions",
+    "url": "https://github.com/GoogleChrome/modern-web-guidance-src/blob/main/guides/performance/interactions-in-complex-layouts/guide.md",
+    "observed_version": "Official source reviewed 2026-10-26",
+    "topic": "ui",
+    "note": "Self-contained layout-region boundaries; hypothesis basis, not evidence that a particular grouping is faster",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
   }
 ]

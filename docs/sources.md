@@ -512,3 +512,21 @@ No published advisories shown at review; absence is not a security guarantee. Ev
 [SQLite 3.54.1 release log](https://www.sqlite.org/releaselog/3_54_1.html) · 3.54.1; released 2026-10-16
 
 Matches the storage-lab runtime version; no performance claim from release metadata. Evidence: primary documented. Review after 7 days or before a version-sensitive decision.
+
+## UI03
+
+[CSS Box Sizing Level 4 draft](https://www.w3.org/TR/2026/WD-css-sizing-4-20260904/) · Working Draft, 2026-09-04
+
+Remembered intrinsic size and overflow semantics; draft, not a performance result. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## UI04
+
+[TanStack Virtual core 3.19.8 source repair](https://github.com/TanStack/virtual/commit/23430040447e24bcfdd9665bd6b6c67d8fefd0ea) · virtual-core 3.19.8; released 2026-10-26
+
+End-of-scroll calculation includes scrollMargin; source diff and upstream regression inspected, not locally installed or benchmarked. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## UI05
+
+[Chrome guidance on complex layout interactions](https://github.com/GoogleChrome/modern-web-guidance-src/blob/main/guides/performance/interactions-in-complex-layouts/guide.md) · Official source reviewed 2026-10-26
+
+Self-contained layout-region boundaries; hypothesis basis, not evidence that a particular grouping is faster. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
