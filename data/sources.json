@@ -207,5 +207,82 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "ALG01",
+    "title": "Aho-Corasick match semantics",
+    "url": "https://docs.rs/aho-corasick/latest/aho_corasick/enum.MatchKind.html",
+    "observed_version": "Observed 1.1.5",
+    "topic": "algorithms",
+    "note": "Matching modes and overlapping behavior",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ALG02",
+    "title": "Globset",
+    "url": "https://docs.rs/globset/latest/globset/",
+    "observed_version": "Current crate documentation",
+    "topic": "algorithms",
+    "note": "Compiled multi-glob matching and separator semantics",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "DB01",
+    "title": "SQLite query planner",
+    "url": "https://sqlite.org/queryplanner.html",
+    "observed_version": "Current official documentation",
+    "topic": "storage",
+    "note": "Indexes and query plans",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "DB02",
+    "title": "SQLite WAL",
+    "url": "https://sqlite.org/wal.html",
+    "observed_version": "Official page updated 2026-08-25",
+    "topic": "storage",
+    "note": "Concurrency, durability and fixed WAL-reset race",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "IO01",
+    "title": "Windows IO completion ports",
+    "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports",
+    "observed_version": "Current Win32 documentation",
+    "topic": "files",
+    "note": "Completion queues and runnable-thread concurrency",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "R04",
+    "title": "Rayon ThreadPoolBuilder",
+    "url": "https://docs.rs/rayon/latest/rayon/struct.ThreadPoolBuilder.html",
+    "observed_version": "Observed Rayon 1.12.0",
+    "topic": "runtime",
+    "note": "Explicit pool configuration and lifecycle",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "OBS01",
+    "title": "Perfetto Trace Processor",
+    "url": "https://perfetto.dev/docs/analysis/trace-processor",
+    "observed_version": "Current documentation",
+    "topic": "observability",
+    "note": "Programmatic trace analysis",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

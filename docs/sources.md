@@ -116,3 +116,45 @@ Immutable action dependencies and policy. Evidence: primary documented. Review a
 
 OpenID identity and capability boundaries. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
 
+## ALG01
+
+[Aho-Corasick match semantics](https://docs.rs/aho-corasick/latest/aho_corasick/enum.MatchKind.html) · Observed 1.1.5
+
+Matching modes and overlapping behavior. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## ALG02
+
+[Globset](https://docs.rs/globset/latest/globset/) · Current crate documentation
+
+Compiled multi-glob matching and separator semantics. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## DB01
+
+[SQLite query planner](https://sqlite.org/queryplanner.html) · Current official documentation
+
+Indexes and query plans. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## DB02
+
+[SQLite WAL](https://sqlite.org/wal.html) · Official page updated 2026-08-25
+
+Concurrency, durability and fixed WAL-reset race. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## IO01
+
+[Windows IO completion ports](https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports) · Current Win32 documentation
+
+Completion queues and runnable-thread concurrency. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## R04
+
+[Rayon ThreadPoolBuilder](https://docs.rs/rayon/latest/rayon/struct.ThreadPoolBuilder.html) · Observed Rayon 1.12.0
+
+Explicit pool configuration and lifecycle. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## OBS01
+
+[Perfetto Trace Processor](https://perfetto.dev/docs/analysis/trace-processor) · Current documentation
+
+Programmatic trace analysis. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
