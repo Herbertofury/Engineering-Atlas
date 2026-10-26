@@ -29,3 +29,7 @@ Keep separate results for cold, warm, incremental, cancellation/restart and erro
 ## 5. Current-source caution
 
 Node workers are appropriate for CPU-heavy JavaScript; its documentation warns that asynchronous IO need not benefit from workers. Tokio's filesystem facade uses blocking work internally and recommends batching. Use the right mechanism for the measured hotspot rather than renaming everything async. [N01](sources.md#n01)[R02](sources.md#r02)
+
+## Stabilize the reference without deleting information
+
+If baseline results change while testing, retain the before/after outputs and identify whether inputs, discovered metadata or actual semantics changed. A richer ownership explanation or newly discovered warning is not timing noise to strip. Re-run against the same recorded discovery generation, or explicitly report the comparison as unresolved. Measure in-application readiness separately from automation waiting, and keep first-use discovery distinct from steady-state results. See the [benchmark contract](benchmark-format.md#mutable-discovery-is-part-of-the-workload).

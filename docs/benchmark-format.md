@@ -7,3 +7,9 @@ Each sample requires a unique pair_id, positive finite elapsed_ms, status `compl
 The comparator rejects different workloads, conditions, environments, normalization contracts, result hashes, counts or warning lists. It reports median timing, a sample p95 and paired ratios, including regressions. It does not certify that a supplied hash is truthful, that excluded fields are nonsemantic, or that memory/security/UI budgets passed. Review the actual evidence.
 
 [The baseline fixture](../tests/fixtures/synthetic-baseline.json) and [candidate fixture](../tests/fixtures/synthetic-candidate.json) are synthetic demonstrations only. Their intentional 2× ratio is not a performance claim for any application.
+
+## Mutable discovery is part of the workload
+
+A file hash alone may not identify the complete input state when background discovery, remote metadata or an ownership index can change the result. Record those generations and retain both full outputs when a hash changes. Compare the exact changed fields before attributing the difference to an optimization. Do not normalize away richer evidence, warnings or ownership reasons merely to restore equality.
+
+For a steady-state comparison, establish the same settled discovery snapshot on both sides and label it as such. For first-use behavior, include discovery in both timed operations and compare against the appropriate complete reference. Keep process-cold, disk-cache-cold, discovery-cold and warm reuse distinct. A settled baseline does not establish cold-start performance. Measure readiness inside the application rather than including unrelated automation transport/wait time.
