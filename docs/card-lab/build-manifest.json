@@ -1,0 +1,9 @@
+{
+  "harness": "atlas-card-density-v3-visible-versioned",
+  "artifacts": {
+    "lab-core.42b409af632f32cf.mjs": "42b409af632f32cfb776892c2515cf102271c3e4ec959d3629ee701ad6988593",
+    "lab.9465e1139e4b9fd0.js": "9465e1139e4b9fd0d5ee35c4f29de2689b36ae0c7a4695c4f83752ca2bf339ca",
+    "lab.03b1d9534a99700b.css": "03b1d9534a99700bea8426d3205febef997d8023e1ada33b8af7231c7ecf9975",
+    "index.html": "29da854b746f5adef15ae1f5bb7b2a5bdcdd0a7540b7fdeb4a92e288ca01e4f7"
+  }
+}

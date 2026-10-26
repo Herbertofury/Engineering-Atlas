@@ -18,6 +18,8 @@ jobs:
         run: python scripts/check_research.py
       - name: Test benchmark and research guards
         run: python -m unittest discover -s tests -v
+      - name: Verify content-addressed browser assets
+        run: python scripts/build_card_lab.py --check
       - name: Test card workload and paired-summary invariants
         run: node --test tests/card-lab.test.mjs
       - name: Exercise explicitly synthetic benchmark example
