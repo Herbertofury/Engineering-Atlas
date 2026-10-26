@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {makeData,completePairs,updateOnePercent,workloadIsVisible} from '../docs/card-lab/lab-core.mjs';
+import {makeData,completePairs,updateOnePercent,workloadIsVisible,overlapsWindow} from '../docs/card-lab/lab-core.mjs';
 test('dataset retains exact identities and selected metadata bytes',()=>{for(const size of [512,8192,65536]){const rows=makeData(17,size);assert.equal(rows.length,17);assert.equal(rows.at(-1).id,'card-000016');for(const row of rows){assert.equal(new TextEncoder().encode(row.metadata).length,size);assert.ok(row.metadata.startsWith(row.id+'|'));}}});
 test('dataset is deterministic',()=>assert.deepEqual(makeData(8,512),makeData(8,512)));
 test('invalid or over-budget workloads fail before allocation',()=>{for(const [n,b] of [[0,512],[3001,512],[100,0],[3000,65536],[NaN,512],[1.5,512]])assert.throws(()=>makeData(n,b),RangeError);});
@@ -11,3 +11,5 @@ test('one-percent update preserves every untouched record and exact metadata len
 test('incremental strategies pair separately',()=>assert.equal(completePairs([{round:0,strategy:'full_dom_update'},{round:0,strategy:'keyed_update'}]).length,1));
 
 test('measurement refuses offscreen, clipped or invalid workload geometry',()=>{assert.ok(workloadIsVisible({top:50,bottom:650,height:600},750));for(const b of [{top:800,bottom:1400,height:600},{top:-100,bottom:500,height:600},{top:0,bottom:0,height:0},{top:NaN,bottom:500,height:500}])assert.equal(workloadIsVisible(b,750),false);});
+
+test('diagnostics include frames that began before measured work',()=>{assert.ok(overlapsWindow({start_ms:90,duration_ms:40},100,120));assert.ok(overlapsWindow({start_ms:110,duration_ms:30},100,120));assert.equal(overlapsWindow({start_ms:50,duration_ms:50},100,120),false);assert.equal(overlapsWindow({start_ms:120,duration_ms:10},100,120),false);});

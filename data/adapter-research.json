@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "patreon",
+    "name": "Patreon",
+    "source": "https://docs.patreon.com/",
+    "status": "Documentation reviewed; authenticated extraction and full-media parity not yet tested.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "afdian",
+    "name": "Afdian",
+    "source": "https://guide.afdian.com/creator/developer",
+    "status": "Developer documentation reviewed; no authenticated post-media acceptance.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "youtube",
+    "name": "YouTube",
+    "source": "https://developers.google.com/youtube/iframe_api_reference",
+    "status": "Player documentation reviewed; public metadata/media-card integration under evaluation.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "bilibili",
+    "name": "Bilibili",
+    "source": "https://openhome.bilibili.com/doc",
+    "status": "Research entry created; no live complete-media or authenticated acceptance.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "x",
+    "name": "X",
+    "source": "https://docs.x.com/x-api/introduction",
+    "status": "Documentation reviewed; no account grant, paid request or accepted live adapter.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "facebook",
+    "name": "Facebook",
+    "source": "https://developers.facebook.com/docs/graph-api/overview/",
+    "status": "Current-documentation review incomplete due to rate limiting; no accepted adapter.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "discord",
+    "name": "Discord",
+    "source": "https://docs.discord.com/developers/resources/message",
+    "status": "Message schema reviewed; no bot grant or private-message collection configured.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "steam",
+    "name": "Steam",
+    "source": "https://partner.steamgames.com/doc/webapi_overview",
+    "status": "Official API route reviewed; Atlas has not inherited another app\u2019s credentials.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "steamdb",
+    "name": "SteamDB",
+    "source": "https://steamdb.info/faq/",
+    "status": "Reference-only lane. No SteamDB crawler implemented or run.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "curseforge",
+    "name": "CurseForge",
+    "source": "https://docs.curseforge.com/rest-api/",
+    "status": "API documentation reviewed; no new key configured in Atlas.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "nexus-mods",
+    "name": "Nexus Mods",
+    "source": "https://graphql.nexusmods.com/",
+    "status": "Anonymous game identities and SkyUI metadata verified live; full gallery and authenticated downloads not accepted.",
+    "checked_at": "2026-10-26"
+  },
+  {
+    "slug": "modrinth",
+    "name": "Modrinth",
+    "source": "https://docs.modrinth.com/api/",
+    "status": "Live metadata collection and durable receipt tested. The current projection does not collect every media field.",
+    "checked_at": "2026-10-26"
+  }
+]

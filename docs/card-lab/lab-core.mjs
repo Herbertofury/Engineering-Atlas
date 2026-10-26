@@ -15,3 +15,7 @@ export function updateOnePercent(records) {
 export function workloadIsVisible(bounds,windowHeight) {
   return [bounds.top,bounds.bottom,bounds.height,windowHeight].every(Number.isFinite)&&windowHeight>0&&bounds.height>0&&bounds.top>=-1&&bounds.bottom<=windowHeight+1;
 }
+
+export function overlapsWindow(entry,start,end) {
+  return [entry.start_ms,entry.duration_ms,start,end].every(Number.isFinite)&&entry.duration_ms>=0&&end>=start&&entry.start_ms<end&&entry.start_ms+entry.duration_ms>start;
+}

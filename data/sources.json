@@ -691,5 +691,192 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP01",
+    "title": "Patreon v2 API",
+    "url": "https://docs.patreon.com/",
+    "observed_version": "Current v2 documentation; v1 retirement notice 2026-10-07",
+    "topic": "adapters",
+    "note": "Posts scopes, pagination and access boundaries",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP02",
+    "title": "Afdian developer API",
+    "url": "https://guide.afdian.com/creator/developer",
+    "observed_version": "Current official creator documentation",
+    "topic": "adapters",
+    "note": "Order/supporter API is distinct from post-media access",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP03",
+    "title": "YouTube IFrame player",
+    "url": "https://developers.google.com/youtube/iframe_api_reference",
+    "observed_version": "Current official player documentation",
+    "topic": "adapters",
+    "note": "Playback events, owner restrictions and client identification",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP04",
+    "title": "Bilibili open platform",
+    "url": "https://openhome.bilibili.com/doc",
+    "observed_version": "Official landing page; detailed endpoint review pending",
+    "topic": "adapters",
+    "note": "Authorized account/video capabilities; dynamic documentation limitation",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP05",
+    "title": "X API overview",
+    "url": "https://docs.x.com/x-api/introduction",
+    "observed_version": "Current v2 pay-per-use overview",
+    "topic": "adapters",
+    "note": "API access and billing are separate from browser sessions",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP06",
+    "title": "Discord message resource",
+    "url": "https://docs.discord.com/developers/resources/message",
+    "observed_version": "Current official message schema",
+    "topic": "adapters",
+    "note": "Permissions, attachments, embeds and expiry",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP07",
+    "title": "Steam Web API overview",
+    "url": "https://partner.steamgames.com/doc/webapi_overview",
+    "observed_version": "Current official documentation",
+    "topic": "adapters",
+    "note": "Public data and authorized account capabilities",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP08",
+    "title": "SteamDB FAQ",
+    "url": "https://steamdb.info/faq/",
+    "observed_version": "Current FAQ reviewed 2026-10-26",
+    "topic": "adapters",
+    "note": "Explicit prohibition on automated scraping/crawling",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP09",
+    "title": "CurseForge API",
+    "url": "https://docs.curseforge.com/rest-api/",
+    "observed_version": "Current official API documentation",
+    "topic": "adapters",
+    "note": "API keys, project/file identity and pagination",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ADP10",
+    "title": "Nexus GraphQL API",
+    "url": "https://graphql.nexusmods.com/",
+    "observed_version": "Experimental v2 documentation; live public query checked",
+    "topic": "adapters",
+    "note": "Stable v1 alternative, public versus OAuth operations and typed identities",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT01",
+    "title": "yt-dlp release",
+    "url": "https://github.com/yt-dlp/yt-dlp/releases/tag/2026.10.21",
+    "observed_version": "2026.10.21",
+    "topic": "adapters",
+    "note": "Maintained video extractor candidate; not locally accepted",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT02",
+    "title": "gallery-dl release",
+    "url": "https://github.com/mikf/gallery-dl/releases/tag/v1.32.18",
+    "observed_version": "1.32.18; released 2026-10-25",
+    "topic": "adapters",
+    "note": "Canonical development moved to Codeberg; gallery candidate",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT03",
+    "title": "Crawlee release",
+    "url": "https://github.com/apify/crawlee/releases/tag/v3.18.2",
+    "observed_version": "3.18.2; released 2026-09-29",
+    "topic": "adapters",
+    "note": "Established orchestration candidate; recovery changes",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT04",
+    "title": "Scrapy release",
+    "url": "https://github.com/scrapy/scrapy/releases/tag/2.19.0",
+    "observed_version": "2.19.0; released 2026-09-10",
+    "topic": "adapters",
+    "note": "Established crawler candidate; remote-control additions not enabled",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT05",
+    "title": "Scrapy AutoThrottle",
+    "url": "https://docs.scrapy.org/en/latest/topics/autothrottle.html",
+    "observed_version": "2.19.0 documentation",
+    "topic": "adapters",
+    "note": "Bounded concurrency and error-aware throttling",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT06",
+    "title": "Crawlee crawler families",
+    "url": "https://crawlee.dev/js/docs/quick-start",
+    "observed_version": "3.18 documentation",
+    "topic": "adapters",
+    "note": "Static parser and browser-rendering lanes",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT07",
+    "title": "Nexus official Node SDK",
+    "url": "https://github.com/Nexus-Mods/node-nexus-api",
+    "observed_version": "Repository inspected; no latest release object",
+    "topic": "adapters",
+    "note": "Official SDK candidate; GPL-3.0 repository metadata",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
   }
 ]

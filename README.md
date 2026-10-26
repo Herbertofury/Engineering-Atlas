@@ -32,6 +32,10 @@ A substantial improvement changes the actual end-to-end experience while retaini
 
 “Best” is conditional on the workload, platform, security boundary, team and deployment constraints. A new version is a candidate, not a performance result. Keep stable production baselines and test experimental methods in isolated comparisons.
 
+## Site adapters and real media
+
+[Adapter laboratory](docs/adapters/README.md) tracks platform-specific access, reuse candidates, complete-media requirements and truthful evidence states. Paid/private fixtures stay private; source identity and playback are tested separately from metadata.
+
 ## Browser card and storage experiments
 
 [Card-density browser harness](docs/card-lab/index.html) tests initial rendering and keyed incremental updates with complete generated records. [Rust storage experiment](experiments/rust-storage-lab/README.md) retains transaction and durability boundaries. These are research workloads, not target-project acceptance.

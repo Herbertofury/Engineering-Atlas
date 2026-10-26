@@ -380,3 +380,105 @@ Read back configured durability and preserve commit boundaries. Evidence: primar
 [SQLite blob/filesystem comparison](https://www.sqlite.org/fasterthanfs.html) · Historical measurements 2017; current caveats
 
 Workload and cache limits; not a universal performance guarantee. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## ADP01
+
+[Patreon v2 API](https://docs.patreon.com/) · Current v2 documentation; v1 retirement notice 2026-10-07
+
+Posts scopes, pagination and access boundaries. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP02
+
+[Afdian developer API](https://guide.afdian.com/creator/developer) · Current official creator documentation
+
+Order/supporter API is distinct from post-media access. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP03
+
+[YouTube IFrame player](https://developers.google.com/youtube/iframe_api_reference) · Current official player documentation
+
+Playback events, owner restrictions and client identification. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP04
+
+[Bilibili open platform](https://openhome.bilibili.com/doc) · Official landing page; detailed endpoint review pending
+
+Authorized account/video capabilities; dynamic documentation limitation. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP05
+
+[X API overview](https://docs.x.com/x-api/introduction) · Current v2 pay-per-use overview
+
+API access and billing are separate from browser sessions. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP06
+
+[Discord message resource](https://docs.discord.com/developers/resources/message) · Current official message schema
+
+Permissions, attachments, embeds and expiry. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP07
+
+[Steam Web API overview](https://partner.steamgames.com/doc/webapi_overview) · Current official documentation
+
+Public data and authorized account capabilities. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP08
+
+[SteamDB FAQ](https://steamdb.info/faq/) · Current FAQ reviewed 2026-10-26
+
+Explicit prohibition on automated scraping/crawling. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP09
+
+[CurseForge API](https://docs.curseforge.com/rest-api/) · Current official API documentation
+
+API keys, project/file identity and pagination. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## ADP10
+
+[Nexus GraphQL API](https://graphql.nexusmods.com/) · Experimental v2 documentation; live public query checked
+
+Stable v1 alternative, public versus OAuth operations and typed identities. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT01
+
+[yt-dlp release](https://github.com/yt-dlp/yt-dlp/releases/tag/2026.10.21) · 2026.10.21
+
+Maintained video extractor candidate; not locally accepted. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT02
+
+[gallery-dl release](https://github.com/mikf/gallery-dl/releases/tag/v1.32.18) · 1.32.18; released 2026-10-25
+
+Canonical development moved to Codeberg; gallery candidate. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT03
+
+[Crawlee release](https://github.com/apify/crawlee/releases/tag/v3.18.2) · 3.18.2; released 2026-09-29
+
+Established orchestration candidate; recovery changes. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT04
+
+[Scrapy release](https://github.com/scrapy/scrapy/releases/tag/2.19.0) · 2.19.0; released 2026-09-10
+
+Established crawler candidate; remote-control additions not enabled. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT05
+
+[Scrapy AutoThrottle](https://docs.scrapy.org/en/latest/topics/autothrottle.html) · 2.19.0 documentation
+
+Bounded concurrency and error-aware throttling. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT06
+
+[Crawlee crawler families](https://crawlee.dev/js/docs/quick-start) · 3.18 documentation
+
+Static parser and browser-rendering lanes. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT07
+
+[Nexus official Node SDK](https://github.com/Nexus-Mods/node-nexus-api) · Repository inspected; no latest release object
+
+Official SDK candidate; GPL-3.0 repository metadata. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
