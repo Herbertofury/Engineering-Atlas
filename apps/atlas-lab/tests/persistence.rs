@@ -36,6 +36,8 @@ fn snapshots_survive_close_reopen_and_failure() {
         description: "not a live result".into(),
         project_type: "mod".into(),
         versions: vec!["abc".into()],
+        icon_url: None,
+        gallery: None,
     };
     {
         let mut s = SnapshotStore::open(&scratch.0).unwrap();

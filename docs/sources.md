@@ -482,3 +482,9 @@ Static parser and browser-rendering lanes. Evidence: primary documented. Review 
 [Nexus official Node SDK](https://github.com/Nexus-Mods/node-nexus-api) · Repository inspected; no latest release object
 
 Official SDK candidate; GPL-3.0 repository metadata. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## EXT08
+
+[HLS.js playback library](https://github.com/video-dev/hls.js/tree/v1.7.3) · 1.7.3; pinned npm bundle integrity verified
+
+Maintained HLS playback candidate with original license and browser integrity check. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.

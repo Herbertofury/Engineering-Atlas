@@ -1,0 +1,12 @@
+{
+  "harness": "atlas-real-media-v1",
+  "artifacts": {
+    "media-core.cee08b579ccc422a.mjs": "cee08b579ccc422a58dfe7e1ed13e56cada03706b59e3b1de39e89511be4deb6",
+    "public-fixtures.09bc53f20b0f552b.json": "09bc53f20b0f552b6beae9c5c87c6662f94299ec4cb665b153d9e05196ef0348",
+    "media.e37d33e6a5a4e161.js": "e37d33e6a5a4e161cc41316c6baa99239031cf16035418ce5d9c1242069acd6f",
+    "media.22d542777e3cf22e.css": "22d542777e3cf22e24394955cb48ed68ea26d9408babc2c00d1d89e471ea3176",
+    "index.html": "ef21c67ebeaa6d8bb12f4754ec250f079488cecdf81d1604b934ec7ae8121e36"
+  },
+  "vendor_sha256": "a12e7ee1cd64a69dcdb314157e45dafcba705bfb0b1440b7935cb265d374423e",
+  "vendor_sri": "sha384-cciJ0zi8d1uMKC2zJd7jvPY4HQt7W4ByUI/FlMkltvBi31aW61rcpVBhpmW8/NwX"
+}

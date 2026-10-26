@@ -73,6 +73,8 @@ mod tests {
             description: "unit fixture only".into(),
             project_type: "mod".into(),
             versions: vec!["version-a".into()],
+            icon_url: None,
+            gallery: None,
         }
     }
     #[test]

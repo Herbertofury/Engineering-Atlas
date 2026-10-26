@@ -878,5 +878,16 @@
     "checked_at": "2026-10-26",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "EXT08",
+    "title": "HLS.js playback library",
+    "url": "https://github.com/video-dev/hls.js/tree/v1.7.3",
+    "observed_version": "1.7.3; pinned npm bundle integrity verified",
+    "topic": "media",
+    "note": "Maintained HLS playback candidate with original license and browser integrity check",
+    "checked_at": "2026-10-26",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
   }
 ]

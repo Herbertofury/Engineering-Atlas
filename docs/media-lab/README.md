@@ -1,0 +1,24 @@
+# Real public-media laboratory
+
+This browser workbench combines real, dated public metadata with source-owned media references. It is not live account sync, a complete-platform crawler or proof of target-project superiority.
+
+## Dataset and completeness
+
+- Sodium: canonical public Modrinth ID, icon and all six API gallery entries, with original/preview distinction. Description-linked media is not yet audited.
+- SkyUI: anonymous Nexus GraphQL metadata for game 1704 / mod 12604, with one public picture/thumbnail pair. Full mod-gallery completeness is explicitly unknown.
+- Portal 2: reused public catalogue snapshot for Steam AppID 620, preserving all 12 screenshots and 17 trailer entries from that snapshot. Current-store completeness is not assumed.
+- YouTube: the official IFrame documentation demo video, public oEmbed metadata and official player. Captions and channel history are not included.
+
+No private posts, account details, credentials, personal notes or favorites are included. Media remains on its source host and is not relicensed. Source attribution and dated provenance are retained in the fixture.
+
+## Reused components
+
+The Steam game record is derived from an existing public catalogue, not recreated by a new scraper. HLS code loads only when a non-native HLS player is explicitly requested, keeping its 619 KB bundle off the metadata/card critical path. HLS playback uses the unmodified official npm hls.js 1.7.3 bundle, with package integrity verified, bundle SHA-256 and browser SRI, and its license retained in vendor/. YouTube playback uses its official IFrame API. Rust collection reuses the existing bounded Modrinth client and extends its projection without an eight-image cap; absent gallery data remains unknown, not an empty complete gallery.
+
+## Verification boundaries
+
+Unit checks validate all selected entry counts, exact original/preview URLs, source/media host allowlists, canonical identity uniqueness and rejection of private fixture state. Browser acceptance must separately establish image decoding, player readiness, actual playing time, selection changes, pause and blocked-media behavior. Do not infer successful playback from a poster or a parsed HLS manifest.
+
+The page measures actual media events and exports a local receipt. Autoplay is disabled. Previews load only on request, using four bounded decode workers; all source entries remain represented. Media-player loading is user-initiated, with stale-generation guards and cleanup on selection changes. No receipt is uploaded automatically.
+
+Content-addressed app/data assets and a pinned player integrity check prevent stale-source confusion. The fixture is a public contract test, not an authorization to copy signed or account-bound media into public research.

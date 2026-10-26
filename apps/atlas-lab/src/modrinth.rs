@@ -14,6 +14,21 @@ pub struct Project {
     pub description: String,
     pub project_type: String,
     pub versions: Vec<String>,
+    #[serde(default)]
+    pub icon_url: Option<String>,
+    #[serde(default)]
+    pub gallery: Option<Vec<GalleryMedia>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GalleryMedia {
+    pub url: String,
+    pub raw_url: Option<String>,
+    pub featured: bool,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub created: String,
+    pub ordering: i64,
 }
 
 pub fn project_url(id: &str) -> Result<String, &'static str> {
@@ -121,6 +136,39 @@ mod tests {
         ] {
             assert!(project_url(id).is_err(), "{id}");
         }
+    }
+    #[test]
+    fn gallery_is_not_silently_capped_at_eight() {
+        let gallery: Vec<serde_json::Value> = (0..12).map(|i|serde_json::json!({"url":format!("https://cdn.modrinth.com/data/AANobbMI/{i}.webp"),"raw_url":format!("https://cdn.modrinth.com/data/AANobbMI/{i}.png"),"featured":false,"title":format!("Image {i}"),"description":null,"created":"2026-10-26T00:00:00Z","ordering":i})).collect();
+        let body=serde_json::to_vec(&serde_json::json!({"id":"AANobbMI","slug":"sodium","title":"Fixture","description":"fixture","project_type":"mod","versions":[],"gallery":gallery})).unwrap();
+        let p = parse_project(&body).unwrap();
+        assert_eq!(p.gallery.as_ref().unwrap().len(), 12);
+        assert_eq!(p.gallery.as_ref().unwrap()[11].ordering, 11);
+        assert!(
+            p.gallery.as_ref().unwrap()[11]
+                .raw_url
+                .as_ref()
+                .unwrap()
+                .ends_with("11.png")
+        );
+    }
+    #[test]
+    fn missing_gallery_is_unknown_not_verified_empty() {
+        let mut value = serde_json::json!({"id":"AANobbMI","slug":"sodium","title":"Fixture","description":"fixture","project_type":"mod","versions":[]});
+        assert!(
+            parse_project(&serde_json::to_vec(&value).unwrap())
+                .unwrap()
+                .gallery
+                .is_none()
+        );
+        value["gallery"] = serde_json::json!([]);
+        assert!(
+            parse_project(&serde_json::to_vec(&value).unwrap())
+                .unwrap()
+                .gallery
+                .unwrap()
+                .is_empty()
+        );
     }
     #[test]
     fn accepts_id_or_slug() {
