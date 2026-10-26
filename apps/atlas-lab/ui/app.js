@@ -1,5 +1,7 @@
 'use strict';
 const $ = id => document.getElementById(id);
+const renderedJobs = new Map();
+let emptyNode = null;
 const panels = new Set(['overview','collectors','experiments']);
 function showPanel(name) {
   if (!panels.has(name)) name='overview';
@@ -12,16 +14,20 @@ function text(tag,value,className) {const e=document.createElement(tag);e.textCo
 function render(data) {
   $('pending').textContent=(data.counts.queued||0)+(data.counts.running||0);$('completed').textContent=data.counts.succeeded||0;$('failed').textContent=data.counts.failed||0;
   const nodes=[];
-  if(!data.jobs.length){const e=text('div','','empty');e.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));nodes.push(e);}
-  for(const job of data.jobs){const e=text('article','','job');const top=text('div','','job-top');
+  if(!data.jobs.length){if(!emptyNode){emptyNode=text('div','','empty');emptyNode.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));}nodes.push(emptyNode);}
+  const present = new Set();
+  for(const job of data.jobs){present.add(job.id);const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(job.id);if(prior&&prior.signature===signature){nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
     const name=job.job.CollectModrinth?'Modrinth · '+job.job.CollectModrinth.project:'Identifier deduplication';
     top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+job.id+' · attempt '+job.attempt));
     if(job.result?.project){const p=job.result.project;e.append(text('p',p.title+' · '+p.id+' · '+p.versions.length+' version IDs'));}
     if(job.result?.error)e.append(text('p',job.result.error,'error'));
     if(job.result){const d=document.createElement('details');d.append(text('summary','Inspect recorded result'),text('pre',JSON.stringify(job.result,null,2)));e.append(d);}
-    nodes.push(e);
+    renderedJobs.set(job.id,{signature,node:e});nodes.push(e);
   }
-  $('jobs').replaceChildren(...nodes);
+  for(const id of renderedJobs.keys())if(!present.has(id))renderedJobs.delete(id);
+  const container=$('jobs');let cursor=container.firstChild;
+  for(const node of nodes){if(node===cursor){cursor=cursor.nextSibling;}else{container.insertBefore(node,cursor);}}
+  while(cursor){const next=cursor.nextSibling;cursor.remove();cursor=next;}
 }
 let fetching=false;
 async function refresh(){if(fetching||document.hidden)return;fetching=true;try{const r=await fetch('/api/overview',{cache:'no-store'});if(!r.ok)throw Error('Local engine unavailable ('+r.status+').');const data=await r.json();render(data);$('connection').textContent='Connected · worker '+data.worker_status+' · refreshed '+new Date().toLocaleTimeString();$('connection').classList.remove('error');}catch(e){$('connection').textContent=e.message+' Previous results remain visible.';$('connection').classList.add('error');}finally{fetching=false;}}

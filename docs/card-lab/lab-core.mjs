@@ -12,3 +12,6 @@ export function updateOnePercent(records) {
   const stride=100;
   return records.map((r,i)=>i%stride===0?{...r,title:r.title+' · updated',metadata:r.metadata.slice(0,-1)+'Z'}:r);
 }
+export function workloadIsVisible(bounds,windowHeight) {
+  return [bounds.top,bounds.bottom,bounds.height,windowHeight].every(Number.isFinite)&&windowHeight>0&&bounds.height>0&&bounds.top>=-1&&bounds.bottom<=windowHeight+1;
+}
