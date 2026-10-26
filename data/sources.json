@@ -1,0 +1,211 @@
+[
+  {
+    "id": "E01",
+    "title": "Electron performance",
+    "url": "https://www.electronjs.org/docs/latest/tutorial/performance",
+    "observed_version": "Current documentation",
+    "topic": "desktop",
+    "note": "Main/renderer blocking and process-work guidance",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "E02",
+    "title": "Electron utilityProcess",
+    "url": "https://www.electronjs.org/docs/latest/api/utility-process",
+    "observed_version": "Current documentation",
+    "topic": "desktop",
+    "note": "Node utility process and message ports",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "E03",
+    "title": "Electron 45 release",
+    "url": "https://www.electronjs.org/blog/electron-45-0",
+    "observed_version": "45.0.0; published 2026-10-21",
+    "topic": "desktop",
+    "note": "Release-specific startup and tracing changes",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "E04",
+    "title": "Electron breaking changes",
+    "url": "https://www.electronjs.org/docs/latest/breaking-changes",
+    "observed_version": "45.0 section",
+    "topic": "desktop",
+    "note": "Version-specific API migration",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "N01",
+    "title": "Node worker threads",
+    "url": "https://nodejs.org/download/release/latest/docs/api/worker_threads.html",
+    "observed_version": "Observed v26.8.2 documentation",
+    "topic": "runtime",
+    "note": "CPU workers, async IO and versioned profiling APIs",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "R01",
+    "title": "Rust DirEntry",
+    "url": "https://doc.rust-lang.org/std/fs/struct.DirEntry.html",
+    "observed_version": "Stable standard-library API",
+    "topic": "files",
+    "note": "Windows metadata/type syscall behavior",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "R02",
+    "title": "Tokio filesystem",
+    "url": "https://docs.rs/tokio/latest/tokio/fs/index.html",
+    "observed_version": "Observed Tokio 1.53.1 documentation",
+    "topic": "files",
+    "note": "Blocking implementation and batching guidance",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "R03",
+    "title": "Tokio spawn_blocking",
+    "url": "https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html",
+    "observed_version": "Observed Tokio 1.53.1 documentation",
+    "topic": "files",
+    "note": "Blocking-pool bounds and scheduling",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "T01",
+    "title": "Tauri process model",
+    "url": "https://v2.tauri.app/concept/process-model/",
+    "observed_version": "Tauri v2 documentation",
+    "topic": "desktop",
+    "note": "Core/webview process boundaries",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "W01",
+    "title": "Windows App SDK",
+    "url": "https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/",
+    "observed_version": "Current platform overview",
+    "topic": "desktop",
+    "note": "Windows-native platform candidate",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "M01",
+    "title": "Fabric development setup",
+    "url": "https://docs.fabricmc.net/develop/getting-started/setting-up",
+    "observed_version": "Page selector 26.2; setup text references 26.1/JDK 25",
+    "topic": "mods",
+    "note": "Version-selector mismatch must be resolved for each target",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "M02",
+    "title": "NeoForge getting started",
+    "url": "https://docs.neoforged.net/docs/gettingstarted/",
+    "observed_version": "26.1 documentation; JDK 25",
+    "topic": "mods",
+    "note": "Modern target setup, not older Forge compatibility",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "M03",
+    "title": "Forge 1.20.1 getting started",
+    "url": "https://docs.minecraftforge.net/en/1.20.1/gettingstarted/",
+    "observed_version": "Pinned 1.20.1 documentation",
+    "topic": "mods",
+    "note": "Historical compatibility lane",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "A01",
+    "title": "Khronos glTF registry",
+    "url": "https://registry.khronos.org/glTF/",
+    "observed_version": "glTF 2.0 registry",
+    "topic": "assets",
+    "note": "Asset-format specification entry point",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "A02",
+    "title": "Godot general optimization",
+    "url": "https://docs.godotengine.org/en/stable/tutorials/performance/general_optimization.html",
+    "observed_version": "Stable documentation",
+    "topic": "games",
+    "note": "Separate load time, stalls and continuous throughput",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SEC01",
+    "title": "OWASP ASVS",
+    "url": "https://asvs.owasp.org/",
+    "observed_version": "5.0.0; published 2025-05-30",
+    "topic": "security",
+    "note": "Versioned security requirements",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "G01",
+    "title": "GitHub Pages overview",
+    "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages",
+    "observed_version": "Current documentation",
+    "topic": "web",
+    "note": "Static hosting boundary",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "G02",
+    "title": "GitHub Actions execution governance",
+    "url": "https://docs.github.com/en/actions/how-tos/administer/control-workflow-execution",
+    "observed_version": "Current documentation",
+    "topic": "release",
+    "note": "Immutable action dependencies and policy",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "S01",
+    "title": "Steam authentication",
+    "url": "https://partner.steamgames.com/doc/features/auth",
+    "observed_version": "Current Steamworks documentation",
+    "topic": "security",
+    "note": "OpenID identity and capability boundaries",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  }
+]
