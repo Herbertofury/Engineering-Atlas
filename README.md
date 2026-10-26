@@ -33,6 +33,7 @@ A substantial improvement changes the actual end-to-end experience while retaini
 - `python3 scripts/check_research.py`: validate the source register, internal links and evidence metadata without network access.
 - `python3 -m unittest discover -s tests -v`: run the checking-tool tests.
 - `python3 scripts/compare_benchmarks.py BASELINE.json CANDIDATE.json`: compare paired complete results; reject mismatched workloads, environments, conditions or output hashes.
+- [Worker-sweep evaluator](docs/worker-sweep-tool.md): compare all five worker limits with explicit resource/UX budgets; no automatic default changes.
 - [Experiment template](templates/experiment.md) · [Decision record](templates/decision.md) · [Benchmark format](docs/benchmark-format.md).
 
 The fixture data is **synthetic test data**, never evidence that a real application is faster. This repository contains no validated universal stack rankings or private project logs.
