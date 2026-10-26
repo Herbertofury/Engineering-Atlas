@@ -17,7 +17,7 @@
     "slug": "youtube",
     "name": "YouTube",
     "source": "https://developers.google.com/youtube/iframe_api_reference",
-    "status": "Player documentation reviewed; public metadata/media-card integration under evaluation.",
+    "status": "Public oEmbed metadata and official player integrated; player-ready and buffering observed, actual playback not verified after timeout. Thumbnail unavailable in the test browser.",
     "checked_at": "2026-10-26"
   },
   {
@@ -52,7 +52,7 @@
     "slug": "steam",
     "name": "Steam",
     "source": "https://partner.steamgames.com/doc/webapi_overview",
-    "status": "Official API route reviewed; Atlas has not inherited another app\u2019s credentials.",
+    "status": "Public snapshot preserves 12 screenshots and 17 trailers. Native HLS and HLS.js playback verified for one selected trailer; no account credentials inherited.",
     "checked_at": "2026-10-26"
   },
   {
@@ -80,7 +80,7 @@
     "slug": "modrinth",
     "name": "Modrinth",
     "source": "https://docs.modrinth.com/api/",
-    "status": "Live metadata collection and durable receipt tested. The current projection does not collect every media field.",
+    "status": "Rust public metadata and all 6 selected project gallery entries collected with durable receipts. Description-linked media completeness remains unaudited.",
     "checked_at": "2026-10-26"
   }
 ]

@@ -1,6 +1,6 @@
 import {validateFixture,mediaCounts,safeMediaUrl} from './media-core.mjs';
 const $=id=>document.getElementById(id);
-const receipt={schema_version:1,harness:'atlas-real-media-v2-playback-states',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
+const receipt={schema_version:1,harness:'atlas-real-media-v3-provider-binding',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
 let dataset=null,loaded=false,decoded=0;
 const pendingImages=[];
 function event(type,details={}){receipt.events.push({type,at_ms:performance.now(),...details});$('events').textContent=JSON.stringify(receipt.events,null,2);$('export').disabled=false;}

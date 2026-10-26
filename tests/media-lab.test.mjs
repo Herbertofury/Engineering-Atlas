@@ -10,3 +10,9 @@ test('unavailable gallery coverage remains explicit',()=>{const x=fixture();asse
 test('source links cannot execute script or leave the provider allowlist',()=>{for(const u of ['javascript:alert(1)','https://evil.example/','https://www.youtube.com:8443/watch?v=x'])assert.equal(safeSourceUrl(u),null);const x=fixture();x.cards[0].source='javascript:alert(1)';assert.throws(()=>validateFixture(x));});
 
 test('media cannot be borrowed from an unrelated provider card',()=>{const x=fixture();x.cards[0].cover=x.cards[1].cover;assert.throws(()=>validateFixture(x));});
+
+test('card source belongs to the declared provider',()=>{const x=fixture();x.cards[0].source=x.cards[2].source;assert.throws(()=>validateFixture(x),/source/i);});
+test('player kind cannot cross the provider boundary',()=>{const x=fixture();x.cards[0].videos=[{kind:'youtube',id:'M7lc1UVf-VE'}];assert.throws(()=>validateFixture(x),/video|player/i);});
+test('unknown player kinds fail closed',()=>{const x=fixture();x.cards[2].videos[0].kind='future-unreviewed';assert.throws(()=>validateFixture(x),/video|player/i);});
+test('optional trailer posters are provider-bound too',()=>{const x=fixture();x.cards[2].videos[0].poster=x.cards[0].cover;assert.throws(()=>validateFixture(x),/poster/i);});
+test('fixture validation is lossless and does not mutate input',()=>{const x=fixture(),before=JSON.stringify(x);assert.equal(validateFixture(x),x);assert.equal(JSON.stringify(x),before);});
