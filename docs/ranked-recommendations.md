@@ -68,6 +68,10 @@ Release metadata checked through the official repository APIs: simdjson 5.0.5 (O
 
 [Simulation and spatial methods](simulation-and-spatial-methods.md) adds current Bevy/Jolt constraints and an original measured grid-versus-exhaustive experiment, including cases where the grid loses.
 
+## Best coding and release evidence
+
+[Code-quality evidence](code-quality-and-evidence.md) ranks verification methods and reviews current modernization, secure-code, reviewer-evaluation and provenance research.
+
 ## Promotion rule
 
 **Candidate → locally measured → target-validated → recommended default for that target.** A result can move backward when a counterexample appears. These recommendations are a current shortlist, not a blanket migration command. Contributions should attach a falsifying case as readily as a speed win.

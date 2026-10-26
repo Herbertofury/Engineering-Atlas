@@ -471,5 +471,49 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "PAPER04",
+    "title": "RepoMod-Bench",
+    "url": "https://arxiv.org/html/2602.22518v1",
+    "observed_version": "v1; submitted 2026-02-26",
+    "topic": "coding-evaluation",
+    "note": "Implementation-agnostic modernization tests; not reproduced locally",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "PAPER05",
+    "title": "Last Secure Code Benchmark",
+    "url": "https://arxiv.org/html/2610.14766v1",
+    "observed_version": "v1; submitted 2026-10-10",
+    "topic": "coding-evaluation",
+    "note": "Separate functional/security evaluation; author results not reproduced",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "REVIEW01",
+    "title": "GitHub ReviewBench announcement",
+    "url": "https://github.blog/ai-and-ml/github-copilot/reviewbench-an-open-benchmark-for-ai-code-review/",
+    "observed_version": "Published 2026-10-05",
+    "topic": "code-review",
+    "note": "Severity, precision/recall and judge-version caveats",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SEC02",
+    "title": "SLSA 1.2 artifact verification",
+    "url": "https://slsa.dev/spec/v1.2/verifying-artifacts",
+    "observed_version": "Approved v1.2 specification",
+    "topic": "supply-chain",
+    "note": "Trusted builder, signature, digest and expected parameters",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

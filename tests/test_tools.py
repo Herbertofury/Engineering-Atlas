@@ -50,6 +50,18 @@ class BenchmarkTests(unittest.TestCase):
  def test_slower_candidate_is_reported_not_hidden(self):
   for sample in self.b['samples']:sample['elapsed_ms']*=4
   self.assertLess(bench.compare(self.a,self.b)['median_ms_saved'],0)
+ def test_rejects_boolean_or_float_schema(self):
+  for schema in [True,1.0,'1']:
+   b=copy.deepcopy(self.b);b['schema']=schema
+   with self.assertRaises(ValueError):bench.compare(self.a,b)
+ def test_rejects_malformed_normalization(self):
+  for key,value in [('name',True),('name',' '),('version',1),('excluded_fields',['x','x']),('excluded_fields',['']),('excluded_fields',[None]),('excluded_fields','x')]:
+   b=copy.deepcopy(self.b);b['normalization'][key]=value
+   with self.subTest(key=key,value=value),self.assertRaises(ValueError):bench.compare(self.a,b)
+ def test_does_not_bless_semantic_exclusions(self):
+  self.a['normalization']['excluded_fields']=['important_field'];self.b['normalization']['excluded_fields']=['important_field']
+  result=bench.compare(self.a,self.b)
+  self.assertIn('Synthetic',result['qualification'])
 class ResearchTests(unittest.TestCase):
  def setUp(self):self.rows=json.loads((R/'data/sources.json').read_text());self.today=dt.date(2026,10,26)
  def test_register_and_links(self):self.assertGreater(research.check(R,self.today)['sources'],10)

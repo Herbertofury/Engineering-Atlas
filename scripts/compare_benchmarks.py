@@ -6,13 +6,16 @@ HASH=re.compile(r'^[0-9a-f]{64}$')
 
 def validate(record):
     if not isinstance(record,dict): raise ValueError('benchmark must be an object')
-    if record.get('schema') != 1: raise ValueError('schema must be 1')
+    if type(record.get('schema')) is not int or record['schema'] != 1: raise ValueError('schema must be integer 1')
     for key in ('label','source_revision','condition','environment_id'):
         if not isinstance(record.get(key),str) or not record[key].strip(): raise ValueError(f'missing {key}')
     if record.get('kind') not in ('synthetic','measured'): raise ValueError('kind must be explicit')
     if not HASH.fullmatch(str(record.get('workload_sha256',''))): raise ValueError('invalid workload hash')
     norm=record.get('normalization')
-    if not isinstance(norm,dict) or not norm.get('name') or not norm.get('version') or not isinstance(norm.get('excluded_fields'),list): raise ValueError('normalization contract required')
+    if not isinstance(norm,dict): raise ValueError('normalization contract required')
+    if any(not isinstance(norm.get(k),str) or not norm[k].strip() for k in ('name','version')): raise ValueError('normalization name/version must be nonempty strings')
+    excluded=norm.get('excluded_fields')
+    if not isinstance(excluded,list) or not all(isinstance(x,str) and x.strip() for x in excluded) or len(set(excluded))!=len(excluded): raise ValueError('excluded_fields must contain unique nonempty field names')
     samples=record.get('samples')
     if not isinstance(samples,list) or len(samples)<5: raise ValueError('at least five paired samples required')
     indexed={}
