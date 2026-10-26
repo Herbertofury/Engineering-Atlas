@@ -46,8 +46,8 @@
   {
     "id": "N01",
     "title": "Node worker threads",
-    "url": "https://nodejs.org/download/release/latest/docs/api/worker_threads.html",
-    "observed_version": "Observed v26.8.2 documentation",
+    "url": "https://nodejs.org/api/worker_threads.html",
+    "observed_version": "Observed v26.12.1 documentation; separate from local v24 runtime",
     "topic": "runtime",
     "note": "CPU workers, async IO and versioned profiling APIs",
     "checked_at": "2026-10-26",
@@ -512,6 +512,17 @@
     "observed_version": "Approved v1.2 specification",
     "topic": "supply-chain",
     "note": "Trusted builder, signature, digest and expected parameters",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "N02",
+    "title": "Node 24 worker transfer semantics",
+    "url": "https://nodejs.org/docs/latest-v24.x/api/worker_threads.html",
+    "observed_version": "24.22.1; matches local runtime",
+    "topic": "worker-transport",
+    "note": "ArrayBuffer ownership, structured cloning and shared-memory distinction",
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"

@@ -28,7 +28,7 @@ Version-specific API migration. Evidence: primary documented. Review after 30 da
 
 ## N01
 
-[Node worker threads](https://nodejs.org/download/release/latest/docs/api/worker_threads.html) · Observed v26.8.2 documentation
+[Node worker threads](https://nodejs.org/api/worker_threads.html) · Observed v26.12.1 documentation; separate from local v24 runtime
 
 CPU workers, async IO and versioned profiling APIs. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
 
@@ -284,3 +284,9 @@ Severity, precision/recall and judge-version caveats. Evidence: primary document
 [SLSA 1.2 artifact verification](https://slsa.dev/spec/v1.2/verifying-artifacts) · Approved v1.2 specification
 
 Trusted builder, signature, digest and expected parameters. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## N02
+
+[Node 24 worker transfer semantics](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html) · 24.22.1, matching local runtime
+
+ArrayBuffer ownership, structured cloning and shared-memory distinction. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.

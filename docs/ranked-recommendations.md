@@ -72,6 +72,10 @@ Release metadata checked through the official repository APIs: simdjson 5.0.5 (O
 
 [Code-quality evidence](code-quality-and-evidence.md) ranks verification methods and reviews current modernization, secure-code, reviewer-evaluation and provenance research.
 
+## Worker transport and ownership
+
+[Worker transport guidance](worker-transport-and-ownership.md) and its measured Node roundtrip lab distinguish sender-preserving copies from exclusive ownership transfer and cross-process API limitations.
+
 ## Promotion rule
 
 **Candidate → locally measured → target-validated → recommended default for that target.** A result can move backward when a counterexample appears. These recommendations are a current shortlist, not a blanket migration command. Contributions should attach a falsifying case as readily as a speed win.
