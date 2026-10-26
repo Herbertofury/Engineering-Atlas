@@ -14,6 +14,7 @@ A practical, evolving research library for desktop apps, web services, Minecraft
 | Reduce repeated algorithm/storage work | [Algorithms, storage and concurrency](docs/algorithms-storage-concurrency.md) |
 | Make an application substantially faster | [Performance engineering](docs/performance.md) |
 | Scan files, configs and archives safely and quickly | [File pipelines and worker tuning](docs/file-pipelines.md) |
+| Index archives and detect changes correctly | [Archives and change tracking](docs/archive-and-change-tracking.md) |
 | Build responsive desktop applications | [Desktop architecture](docs/desktop.md) |
 | Build a web service and account integration | [Web and security](docs/web-security.md) |
 | Build or extend a mod | [Mod development](docs/mods.md) |

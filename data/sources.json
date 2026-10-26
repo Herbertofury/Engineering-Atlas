@@ -284,5 +284,38 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "ARCH01",
+    "title": "Rust zip archive reader",
+    "url": "https://docs.rs/zip/latest/zip/read/struct.ZipArchive.html",
+    "observed_version": "9.1.2",
+    "topic": "archives",
+    "note": "Metadata reuse safety, extraction boundaries and reader APIs",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ARCH02",
+    "title": "libzip reference and thread safety",
+    "url": "https://libzip.org/documentation/libzip/",
+    "observed_version": "1.12.1",
+    "topic": "archives",
+    "note": "Independent archive objects, synchronization and member-name semantics",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "WATCH01",
+    "title": "Windows ReadDirectoryChangesW",
+    "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw",
+    "observed_version": "Current Win32 documentation",
+    "topic": "change-tracking",
+    "note": "Overflow detection, reconciliation and network buffer limits",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

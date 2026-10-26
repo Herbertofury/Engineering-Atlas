@@ -158,3 +158,21 @@ Explicit pool configuration and lifecycle. Evidence: primary documented. Review 
 
 Programmatic trace analysis. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
 
+
+## ARCH01
+
+[Rust zip archive reader](https://docs.rs/zip/latest/zip/read/struct.ZipArchive.html) · 9.1.2
+
+Metadata reuse safety, extraction boundaries and reader APIs. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## ARCH02
+
+[libzip reference and thread safety](https://libzip.org/documentation/libzip/) · 1.12.1
+
+Independent archive objects, synchronization and member-name semantics. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## WATCH01
+
+[Windows ReadDirectoryChangesW](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw) · Current Win32 documentation
+
+Overflow detection, reconciliation and network buffer limits. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
