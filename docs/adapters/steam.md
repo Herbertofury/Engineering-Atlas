@@ -16,6 +16,6 @@ AppID identity; regional metadata; trailers versus screenshots; unknown ownershi
 
 ## Evidence status
 
-Official API route reviewed; Atlas has not inherited another app’s credentials. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
+Public source-snapshot trailer playback verified through native HLS and pinned HLS.js; not all trailers or account operations tested. Atlas has not inherited another app’s credentials. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
 
 [Primary platform reference](https://partner.steamgames.com/doc/webapi_overview) · [Shared collection contract](contract.md)

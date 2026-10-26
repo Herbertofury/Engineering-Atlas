@@ -16,6 +16,6 @@ Exact video/channel ID; thumbnails; playlists; captions; live state; embed error
 
 ## Evidence status
 
-Player documentation reviewed; public metadata/media-card integration under evaluation. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
+Public metadata and official player-ready verified. Playback remained buffering; a 30-second unverified state is tested. Thumbnail response was unavailable in this environment. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
 
 [Primary platform reference](https://developers.google.com/youtube/iframe_api_reference) · [Shared collection contract](contract.md)

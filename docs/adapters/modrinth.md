@@ -16,6 +16,6 @@ Project identity; gallery order; originals/previews; version IDs; malformed/over
 
 ## Evidence status
 
-Live metadata collection and durable receipt tested. The current projection does not collect every media field. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
+Live metadata collection, durable receipt and all six returned gallery entries/original URLs tested. Description-linked media remains outside the projection. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
 
 [Primary platform reference](https://docs.modrinth.com/api/) · [Shared collection contract](contract.md)
