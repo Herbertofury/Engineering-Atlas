@@ -1,0 +1,42 @@
+# 2026 papers and Codeberg-linked methods
+
+**Review date: October 26, 2026.** Ranked by practical adoption readiness for the stated task, not by citation count or a universal quality score. Reading a paper is not reproducing it. No research prototype below was installed or executed in this pass.
+
+## 1. Evaluate first: multidimensional runtime benchmarking
+
+**Wasure**, submitted February 5, 2026. The paper describes configurable runtime/benchmark comparisons, repeated execution, feature checks and peak RSS/VMS collection. Its implementation targets Linux/macOS and notes limited Windows support. Best use here: borrow the experiment dimensions before making a runtime migration decision; verify the artifact and current runtime support before execution. **Evidence: paper-reviewed, not locally reproduced.** [PAPER01](https://arxiv.org/html/2602.05488v1)
+
+Experiment to run next: one identical module corpus with expected outputs, separate compilation/instantiation/steady execution, host-call-heavy cases, memory ceilings and required feature probes. Do not hide compilation in a prebuilt cache when startup is the user-visible bottleneck.
+
+## 2. Specialized diagnostic candidate: isolate compiler regressions
+
+**WarpL**, ICSE 2026. Fine-grained mutation helps isolate inefficient Wasm instruction sequences. The authors report diagnosis in 10 of 12 cases, including six previously unknown issues; they also describe substantial reduction time and remaining human root-cause analysis. The [research repository](https://github.com/BZTesting/WarpL) contains prototype code and experiment data, but its API metadata did not identify a license or latest release. **Evidence: paper/repository reviewed; reproduction and reuse-license clearance pending.** [PAPER02](https://arxiv.org/html/2604.13693v1)
+
+Use when an actual minimized runtime/compiler regression exists, not as a first-line substitute for application profiling. Do not import prototype code without checking applicable licensing. A mutation that runs faster is not automatically a semantics-preserving production fix.
+
+## 3. Research-stage: heavy-light incremental join maintenance
+
+**Maintaining Queries under Updates Using Heavy-Light Partitioning of the Input Relations**, submitted May 8, 2026. The paper generalizes delta queries, materialized-view trees and heavy/light partitioning for join maintenance, with asymptotic update bounds. It is not a desktop benchmark or a ready-made replacement for a local database. **Evidence: theoretical paper reviewed; no implementation/performance reproduction here.** [PAPER03](https://arxiv.org/html/2605.08397v1)
+
+Evaluate only after profiling repeated joins with small updates. Compare against ordinary indexes and simple incremental aggregates first. Include skew, deletions, burst updates, state size and recovery; an amortized bound does not guarantee low latency for each individual update.
+
+## Codeberg-linked engineering: inspect, do not blindly migrate
+
+### Zig 0.17.0: useful design lessons, migration constraints
+
+Zig's official site identifies Codeberg as its canonical repository and lists 0.17.0, released October 1, 2026. Its release notes describe separating build configuration from execution, explicit configuration dependencies and improved incremental compilation for x86_64 Linux. They also document breaking APIs and a ZLS compatibility gap. Rank it **conditional/experimental for an existing toolchain migration**, not “always replace Rust/C++.” [TOOL01](https://ziglang.org/news/migrating-from-github-to-codeberg/), [TOOL02](https://ziglang.org/download/0.17.0/release-notes.html)
+
+The transferable hypothesis is explicit dependency tracking and explaining invalidation, not changing language for its own sake. Test delete/rename/configuration/environment changes and side effects before accepting skipped work as correct. The Codeberg repository itself returned a fetch failure in this pass; official release notes were reviewed, but repository contents were not independently audited.
+
+### orjson's alternative Codeberg repository
+
+The upstream README confirms [codeberg.org/ijl/orjson](https://codeberg.org/ijl/orjson) as an alternative repository. The [local parser lab](../experiments/json-lab/README.md) tested PyPI wheels, not a Codeberg build. Keep host provenance, tested distribution and source revision distinct. The direct Codeberg fetch was unavailable; no mirror equality claim is made.
+
+## What is deliberately not ranked as a winner
+
+- A paper abstract alone, unreproduced benchmark screenshot, or repository marketing sentence.
+- A prototype without a checked license and build/dependency review.
+- A Linux result extrapolated to Windows, a CPU benchmark extrapolated to game frame pacing, or an interpreter result extrapolated to JIT/AOT mode.
+- An unavailable source page. Record the access gap; do not invent its contents.
+
+This watchlist is a first researched set, not an exhaustive survey of all 2026 papers or all hosting platforms. Broader parsing, runtime, incremental-state, graphics and security investigations remain on the [roadmap](roadmap.md).

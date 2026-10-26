@@ -317,5 +317,126 @@
     "checked_at": "2026-10-26",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON01",
+    "title": "orjson official repository",
+    "url": "https://github.com/ijl/orjson",
+    "observed_version": "3.13.0 installed from PyPI",
+    "topic": "serialization",
+    "note": "API constraints, performance claims and official Codeberg alternative",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON02",
+    "title": "UltraJSON project status",
+    "url": "https://github.com/ultrajson/ultrajson",
+    "observed_version": "6.0.0 installed from PyPI",
+    "topic": "serialization",
+    "note": "Maintenance-only policy and migration recommendation",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON03",
+    "title": "Python 3.12 JSON documentation",
+    "url": "https://docs.python.org/3.12/library/json.html",
+    "observed_version": "3.12 docs; local interpreter 3.12.14",
+    "topic": "serialization",
+    "note": "Decode hooks, default extensions and resource caution",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON04",
+    "title": "simdjson official repository",
+    "url": "https://github.com/simdjson/simdjson",
+    "observed_version": "5.0.5; released 2026-10-14",
+    "topic": "serialization",
+    "note": "SIMD parsing candidate and benchmark methodology",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON05",
+    "title": "yyjson official repository",
+    "url": "https://github.com/ibireme/yyjson",
+    "observed_version": "0.13.0; released 2026-09-08",
+    "topic": "serialization",
+    "note": "DOM benchmark scope and limitations",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON06",
+    "title": "Sonic official repository",
+    "url": "https://github.com/bytedance/sonic",
+    "observed_version": "1.15.4; released 2026-09-11",
+    "topic": "serialization",
+    "note": "Configuration, first-hit compilation and memory caveats",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "PAPER01",
+    "title": "Wasure",
+    "url": "https://arxiv.org/html/2602.05488v1",
+    "observed_version": "v1; submitted 2026-02-05",
+    "topic": "runtime-research",
+    "note": "Multidimensional Wasm benchmarking; not reproduced locally",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "PAPER02",
+    "title": "WarpL performance debugging paper",
+    "url": "https://arxiv.org/html/2604.13693v1",
+    "observed_version": "v1; ICSE 2026",
+    "topic": "runtime-research",
+    "note": "Mutation-based diagnosis and bounded case evaluation; not reproduced locally",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "PAPER03",
+    "title": "Heavy-light incremental join maintenance",
+    "url": "https://arxiv.org/html/2605.08397v1",
+    "observed_version": "v1; submitted 2026-05-08",
+    "topic": "incremental-research",
+    "note": "Theoretical join maintenance; no local performance reproduction",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "TOOL01",
+    "title": "Zig canonical Codeberg migration",
+    "url": "https://ziglang.org/news/migrating-from-github-to-codeberg/",
+    "observed_version": "Announcement 2025-11-26",
+    "topic": "toolchains",
+    "note": "Official canonical repository location",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "TOOL02",
+    "title": "Zig 0.17.0 release notes",
+    "url": "https://ziglang.org/download/0.17.0/release-notes.html",
+    "observed_version": "0.17.0; released 2026-10-01",
+    "topic": "toolchains",
+    "note": "Build dependency tracking, incremental compilation and compatibility constraints",
+    "checked_at": "2026-10-26",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

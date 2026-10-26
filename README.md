@@ -6,6 +6,10 @@
 
 A practical, evolving research library for desktop apps, web services, Minecraft mods, game tooling and asset pipelines. Reviewed starting point: **October 26, 2026**. This is a curated foundation, not a claim that every technology has been exhaustively benchmarked.
 
+## Ranked choices and measured experiments
+
+[Best choices and avoid guidance](docs/ranked-recommendations.md) · [2026 paper and Codeberg-linked watchlist](docs/paper-watchlist-2026.md) · [Measured JSON lab](experiments/json-lab/README.md)
+
 ## Start here
 
 | Need | Guide |

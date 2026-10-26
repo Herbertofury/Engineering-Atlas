@@ -29,4 +29,4 @@ A sweep cannot isolate worker count if algorithms change between its candidates.
 
 ## Tests
 
-The tests manufacture synthetic records to exercise ties, near-fastest selection, output mismatch, missing counts, revision drift, resource regressions, tail regressions, invalid measurements and no-improvement cases. Synthetic timings are not Enderloom or any other application's results. The tool only reads its JSON input and prints a review report.
+The tests manufacture synthetic records to exercise ties, near-fastest selection, output mismatch, missing counts, revision drift, resource regressions, tail regressions, invalid measurements and no-improvement cases. Synthetic timings are not application results. The tool only reads its JSON input and prints a review report.

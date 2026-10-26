@@ -176,3 +176,69 @@ Independent archive objects, synchronization and member-name semantics. Evidence
 [Windows ReadDirectoryChangesW](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw) · Current Win32 documentation
 
 Overflow detection, reconciliation and network buffer limits. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## JSON01
+
+[orjson official repository](https://github.com/ijl/orjson) · 3.13.0 installed from PyPI
+
+API constraints, performance claims and official Codeberg alternative. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## JSON02
+
+[UltraJSON project status](https://github.com/ultrajson/ultrajson) · 6.0.0 installed from PyPI
+
+Maintenance-only policy and migration recommendation. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## JSON03
+
+[Python 3.12 JSON documentation](https://docs.python.org/3.12/library/json.html) · 3.12 docs; local interpreter 3.12.14
+
+Decode hooks, default extensions and resource caution. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## JSON04
+
+[simdjson official repository](https://github.com/simdjson/simdjson) · 5.0.5; released 2026-10-14
+
+SIMD parsing candidate and benchmark methodology. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## JSON05
+
+[yyjson official repository](https://github.com/ibireme/yyjson) · 0.13.0; released 2026-09-08
+
+DOM benchmark scope and limitations. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## JSON06
+
+[Sonic official repository](https://github.com/bytedance/sonic) · 1.15.4; released 2026-09-11
+
+Configuration, first-hit compilation and memory caveats. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## PAPER01
+
+[Wasure](https://arxiv.org/html/2602.05488v1) · v1; submitted 2026-02-05
+
+Multidimensional Wasm benchmarking; not reproduced locally. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## PAPER02
+
+[WarpL performance debugging paper](https://arxiv.org/html/2604.13693v1) · v1; ICSE 2026
+
+Mutation-based diagnosis and bounded case evaluation; not reproduced locally. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## PAPER03
+
+[Heavy-light incremental join maintenance](https://arxiv.org/html/2605.08397v1) · v1; submitted 2026-05-08
+
+Theoretical join maintenance; no local performance reproduction. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## TOOL01
+
+[Zig canonical Codeberg migration](https://ziglang.org/news/migrating-from-github-to-codeberg/) · Announcement 2025-11-26
+
+Official canonical repository location. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## TOOL02
+
+[Zig 0.17.0 release notes](https://ziglang.org/download/0.17.0/release-notes.html) · 0.17.0; released 2026-10-01
+
+Build dependency tracking, incremental compilation and compatibility constraints. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
