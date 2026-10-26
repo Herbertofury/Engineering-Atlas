@@ -488,3 +488,27 @@ Official SDK candidate; GPL-3.0 repository metadata. Evidence: primary documente
 [HLS.js playback library](https://github.com/video-dev/hls.js/tree/v1.7.3) · 1.7.3; pinned npm bundle integrity verified
 
 Maintained HLS playback candidate with original license and browser integrity check. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## E82
+
+[Public media parser reference revision](https://github.com/Herbertofury/Enderloom/blob/fc55c422f93480d75604203b288a837bb87ed623/src/provider-media.js) · fc55c422f93480d75604203b288a837bb87ed623
+
+Pinned public implementation, tested unchanged before an isolated allocation-reuse experiment; not installed-target acceptance. Evidence: primary documented. Review after 7 days or before a version-sensitive decision.
+
+## E83
+
+[RustSec zstd context-reuse advisory](https://rustsec.org/advisories/RUSTSEC-2026-0391.html) · Issued 2026-10-26; fixed >=0.14.3
+
+Context reset prevents abandoned stream data crossing reused contexts; applicability must include transitive wrappers. Evidence: primary documented. Review after 7 days or before a version-sensitive decision.
+
+## E84
+
+[HLS.js security policy and published advisory listing](https://github.com/video-dev/hls.js/security) · Observed 2026-10-26
+
+No published advisories shown at review; absence is not a security guarantee. Evidence: primary documented. Review after 7 days or before a version-sensitive decision.
+
+## E85
+
+[SQLite 3.54.1 release log](https://www.sqlite.org/releaselog/3_54_1.html) · 3.54.1; released 2026-10-16
+
+Matches the storage-lab runtime version; no performance claim from release metadata. Evidence: primary documented. Review after 7 days or before a version-sensitive decision.

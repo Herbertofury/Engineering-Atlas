@@ -36,6 +36,8 @@ A substantial improvement changes the actual end-to-end experience while retaini
 
 [Real public-media workbench](docs/media-lab/index.html) combines actual source snapshots, image-decode checks and explicit playback states. [Adapter laboratory](docs/adapters/README.md) tracks platform-specific access, reuse candidates, complete-media requirements and truthful evidence states. Paid/private fixtures stay private; source identity and playback are tested separately from metadata.
 
+[Isolated parser experiment](experiments/adapter-parser-lab/README.md) retains full-output parity and a small-workload tail regression. It is not an accepted application upgrade.
+
 ## Browser card and storage experiments
 
 [Card-density browser harness](docs/card-lab/index.html) tests initial rendering and keyed incremental updates with complete generated records. [Rust storage experiment](experiments/rust-storage-lab/README.md) retains transaction and durability boundaries. These are research workloads, not target-project acceptance.

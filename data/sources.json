@@ -889,5 +889,49 @@
     "checked_at": "2026-10-26",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "E82",
+    "title": "Public media parser reference revision",
+    "url": "https://github.com/Herbertofury/Enderloom/blob/fc55c422f93480d75604203b288a837bb87ed623/src/provider-media.js",
+    "observed_version": "fc55c422f93480d75604203b288a837bb87ed623",
+    "topic": "collection",
+    "note": "Pinned public implementation, tested unchanged before an isolated allocation-reuse experiment; not installed-target acceptance",
+    "checked_at": "2026-10-26",
+    "review_after_days": 7,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "E83",
+    "title": "RustSec zstd context-reuse advisory",
+    "url": "https://rustsec.org/advisories/RUSTSEC-2026-0391.html",
+    "observed_version": "Issued 2026-10-26; fixed >=0.14.3",
+    "topic": "security",
+    "note": "Context reset prevents abandoned stream data crossing reused contexts; applicability must include transitive wrappers",
+    "checked_at": "2026-10-26",
+    "review_after_days": 7,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "E84",
+    "title": "HLS.js security policy and published advisory listing",
+    "url": "https://github.com/video-dev/hls.js/security",
+    "observed_version": "Observed 2026-10-26",
+    "topic": "security",
+    "note": "No published advisories shown at review; absence is not a security guarantee",
+    "checked_at": "2026-10-26",
+    "review_after_days": 7,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "E85",
+    "title": "SQLite 3.54.1 release log",
+    "url": "https://www.sqlite.org/releaselog/3_54_1.html",
+    "observed_version": "3.54.1; released 2026-10-16",
+    "topic": "security",
+    "note": "Matches the storage-lab runtime version; no performance claim from release metadata",
+    "checked_at": "2026-10-26",
+    "review_after_days": 7,
+    "evidence": "primary_documented"
   }
 ]
