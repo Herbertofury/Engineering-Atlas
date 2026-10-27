@@ -1,5 +1,8 @@
-export function makeData(count,bytes) {
+export function validateBounds(count,bytes) {
   if(!Number.isInteger(count)||count<1||count>3000||!Number.isInteger(bytes)||bytes<64||bytes>65536||count*bytes>96*1024*1024)throw new RangeError('Dataset exceeds validated bounds');
+}
+export function makeData(count,bytes) {
+  validateBounds(count,bytes);
   return Array.from({length:count},(_,i)=>{const id='card-'+String(i).padStart(6,'0');const prefix=id+'|';return {id,title:'Discovery '+String(i+1).padStart(4,'0'),description:'A complete generated record. Exact identity and full metadata retained.',metadata:prefix+'abcdefgh01234567'.repeat(Math.ceil((bytes-prefix.length)/16)).slice(0,bytes-prefix.length)};});
 }
 export function completePairs(samples) {

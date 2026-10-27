@@ -60,3 +60,23 @@ A second complete run is retained as a control-attempt diagnostic, excluded from
 The exact-record inspector showed all 512 metadata characters for card-000199 with the metadata-only candidate active. Subsequent inspector/download interactions did not enter the ended run's event window. Four served asset hashes and loaded harness identity were checked. Original v4/v5 failures, the new diagnostic run and stopped samples are all retained rather than replaced.
 
 The result motivates further investigation of granular containment and preparation work. It does not justify changing any other project's wiki, TODO, implementation or deployment without its own comparison and requirements checks.
+
+## Worker preparation lane (v7, 2026-10-27)
+
+Implementation candidate, not a measured speed recommendation yet. The default
+remains main-thread preparation. An explicit dedicated-worker option runs the
+same generator, JSON serialization, UTF-8 encoding and SHA-256 digest off the
+main thread, then returns every record by structured clone. Request-to-ready
+includes startup, cloning and receiver validation; phase timing separates the
+asynchronous digest from synchronous generation/serialization/encoding. The
+previous aggregate hash timing must not be interpreted as all blocking CPU time.
+
+A 30-second worker budget and explicit cancellation terminate that worker.
+No silent main-thread fallback is used. Zero-sample failures are downloadable,
+last-completed evidence remains separate, and visibility loss is latched even if
+the tab becomes visible again. Rendering and incremental per-sample dataset
+resets remain on the main thread. Receiver validation checks field identities,
+lengths and timing/hash contracts; it is not an independent rehash or a security
+boundary against a malicious worker. Independent Node digest and full-record
+comparisons pass; real browser worker/timeout/cancellation behavior still needs
+verification. No target-project adoption is authorized by these generated tests.

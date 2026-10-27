@@ -27,7 +27,7 @@ jobs:
       - name: Test media contracts
         run: node --test tests/media-lab.test.mjs
       - name: Test card workload and paired-summary invariants
-        run: node --test tests/card-lab.test.mjs
+        run: node --test tests/card-lab.test.mjs tests/card-preparation.test.mjs
       - name: Exercise explicitly synthetic benchmark example
         run: python scripts/compare_benchmarks.py tests/fixtures/synthetic-baseline.json tests/fixtures/synthetic-candidate.json
   rust-lab:

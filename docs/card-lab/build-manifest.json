@@ -1,9 +1,11 @@
 {
-  "harness": "atlas-card-density-v6-metadata-regions",
+  "harness": "atlas-card-density-v7-worker-preparation",
   "artifacts": {
-    "lab-core.a13903134978651c.mjs": "a13903134978651ce17cded011c359cd597d101992fcdfe160f31d0439b68c8b",
-    "lab.596e362ed265462f.js": "596e362ed265462f95cff95d74cb357fb57da456aaa432ae397fe207d6a530b0",
+    "lab-core.654213c6b07077e3.mjs": "654213c6b07077e31b21ead6a31a6ec64134aa39f07611adc44650df9acb7428",
+    "preparation-core.4599a540506a9447.mjs": "4599a540506a944735b92b9d472a2d0f21dd04e4518140ecb3c147255fe382aa",
+    "lab-worker.896f1b6d830cb8dc.mjs": "896f1b6d830cb8dcd894806d3892448a78ea35a87f540b8a945815018a1b2a13",
+    "lab.56e3b76fe0b4b39c.js": "56e3b76fe0b4b39cae043e1c5a73dfde2bb61f1febb489bb367ebb8e48950b8a",
     "lab.0c9685b839507ac7.css": "0c9685b839507ac70dab29d95da82c5b89f16a764ca8b18f337126ebc3bc4873",
-    "index.html": "7e7b2719e6f02a7cc085083ed2dce24f30132437dba6aacccd274eedbaeb059e"
+    "index.html": "d650172f7373717ac2f9b4e489fb25e58cb9a9ce31ed217b5f55c3545dd55499"
   }
 }
