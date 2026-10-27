@@ -40,3 +40,16 @@ WAL permits reader/writer overlap but still has one writer at a time and same-ho
 ## Trace the whole causal path
 
 Perfetto Trace Processor supports programmatic trace analysis. Use correlated operation IDs and timestamps to connect UI requests, queue wait, native work and completion. Keep raw traces private until sanitized; a trace tool is not a speedup by itself. [OBS01](sources.md#obs01)
+
+## SIMD parsing stabilization evidence · 2026-10-27
+
+[The isolated Rust parser lab](../experiments/rust-json-parser-lab/README.md)
+compares complete Values from six public responses with input-copy costs included.
+The tested released candidate accepted malformed high-surrogate escapes. A narrow
+backport of the recent official decoder fix removed 1,024 single-escape and eight
+boundary-pair discrepancies. Float differences required checking the reference:
+the candidate was closer to the exact decimal in all 484 observed mismatches;
+a separately labeled precise-float reference eliminated them. Remaining large
+integer semantics and mixed speed results block promotion. No application
+dependency changed. An upstream headline or a repaired bug is not blanket
+acceptance; preserve failed evidence and remeasure the full contract.

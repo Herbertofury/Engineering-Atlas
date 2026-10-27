@@ -668,3 +668,21 @@ Plain records clone; DOM, functions and class metadata do not have general lossl
 [Modrinth multiple-version operation](https://docs.modrinth.com/api/operations/getversions/) · v2 official API reviewed 2026-10-27
 
 Version files, hashes, dependencies and compatibility fields; metadata only is not file verification or authorization to execute attachments. Evidence: primary documented. Reviewed 2026-10-27.
+
+## SIMD01
+
+[simd-json released source](https://github.com/simd-lite/simd-json/tree/61d649d13fae83ac6d9f587863696be2741f5b8b) · 0.18.1 published source; registry artifact verified
+
+Default runtime SIMD detection; destructive input parsing requires counted copying for retained source bytes. Reviewed 2026-10-27.
+
+## SIMD02
+
+[Upstream Unicode surrogate correction](https://github.com/simd-lite/simd-json/commit/ff8f5c8bb75dfc56803321c2f5a92656c7de842f) · Fix committed 2026-10-25; not in tested 0.18.1 release
+
+Missing low surrogate must return an error, not U+0000; isolated backport evaluated without application promotion. Reviewed 2026-10-27.
+
+## JSON09
+
+[serde_json precise-float feature contract](https://github.com/serde-rs/json/blob/v1.0.154/Cargo.toml) · 1.0.154 pinned
+
+float_roundtrip and arbitrary_precision address different contracts; a reference parser can itself be less accurate. Reviewed 2026-10-27.

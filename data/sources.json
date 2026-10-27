@@ -555,8 +555,8 @@
     "url": "https://codeberg.org/ijl/orjson",
     "observed_version": "Head bd00937c5c46ab20eb5d7fe1cfc034b906c4578f; 3.13.0",
     "topic": "repository-provenance",
-    "note": "Direct browser repository/README inspection; head matches GitHub observation",
-    "checked_at": "2026-10-26",
+    "note": "Direct browser repository/README inspection; head matches GitHub observation Unchanged head reconfirmed by public browser inspection on 2026-10-27.",
+    "checked_at": "2026-10-27",
     "review_after_days": 30,
     "evidence": "primary_documented"
   },
@@ -566,8 +566,8 @@
     "url": "https://codeberg.org/ziglang/zig",
     "observed_version": "Master cb6f0c25f176dbebf0c6801170c360c2c1198524 observed 2026-10-26",
     "topic": "repository-provenance",
-    "note": "Direct browser metadata/README inspection; no build or full source audit",
-    "checked_at": "2026-10-26",
+    "note": "Direct browser metadata/README inspection; no build or full source audit Unchanged head reconfirmed by public browser inspection on 2026-10-27.",
+    "checked_at": "2026-10-27",
     "review_after_days": 30,
     "evidence": "primary_documented"
   },
@@ -1218,6 +1218,39 @@
     "note": "Version files, hashes, dependencies and compatibility fields; metadata only is not file verification or authorization to execute attachments.",
     "checked_at": "2026-10-27",
     "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SIMD01",
+    "title": "simd-json released source",
+    "url": "https://github.com/simd-lite/simd-json/tree/61d649d13fae83ac6d9f587863696be2741f5b8b",
+    "observed_version": "0.18.1 published source; registry artifact verified",
+    "topic": "json-correctness-and-performance",
+    "note": "Default runtime SIMD detection; destructive input parsing requires counted copying for retained source bytes.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SIMD02",
+    "title": "Upstream Unicode surrogate correction",
+    "url": "https://github.com/simd-lite/simd-json/commit/ff8f5c8bb75dfc56803321c2f5a92656c7de842f",
+    "observed_version": "Fix committed 2026-10-25; not in tested 0.18.1 release",
+    "topic": "json-correctness-and-performance",
+    "note": "Missing low surrogate must return an error, not U+0000; isolated backport evaluated without application promotion.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON09",
+    "title": "serde_json precise-float feature contract",
+    "url": "https://github.com/serde-rs/json/blob/v1.0.154/Cargo.toml",
+    "observed_version": "1.0.154 pinned",
+    "topic": "json-correctness-and-performance",
+    "note": "float_roundtrip and arbitrary_precision address different contracts; a reference parser can itself be less accurate.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
     "evidence": "primary_documented"
   }
 ]
