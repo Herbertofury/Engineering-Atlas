@@ -1,9 +1,9 @@
 {
-  "harness": "atlas-card-density-v5-grouped-regions",
+  "harness": "atlas-card-density-v6-metadata-regions",
   "artifacts": {
-    "lab-core.c44fb461024357ba.mjs": "c44fb461024357bacf4a23a7ea7a0ddf31009b29889c04328d4e9b160527ccc4",
-    "lab.8d2386f2cac5c7a4.js": "8d2386f2cac5c7a42b0fdd19c919a1866da466e98125ec35875aada2442d8324",
-    "lab.32f7898d587ec7ed.css": "32f7898d587ec7ed0c4197f7d6fff1b6fbd0f2bd3fe30122f9f775fd1072ec6d",
-    "index.html": "043a974a3c2a08bd20d66cc116891576ec11e732382ded4397323d727e94e478"
+    "lab-core.a13903134978651c.mjs": "a13903134978651ce17cded011c359cd597d101992fcdfe160f31d0439b68c8b",
+    "lab.596e362ed265462f.js": "596e362ed265462f95cff95d74cb357fb57da456aaa432ae397fe207d6a530b0",
+    "lab.0c9685b839507ac7.css": "0c9685b839507ac70dab29d95da82c5b89f16a764ca8b18f337126ebc3bc4873",
+    "index.html": "7e7b2719e6f02a7cc085083ed2dce24f30132437dba6aacccd274eedbaeb059e"
   }
 }

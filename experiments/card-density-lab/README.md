@@ -40,3 +40,10 @@ Upstream reuse review [UI04]: TanStack Virtual core 3.19.8 fixes an end-of-scrol
 [Raw grouped-region receipt](grouped-1000-8k-v5-2026-10-26.json) retains seven complete pairs and all 1000 records in 84 regions. Full DOM / grouped median frame-ready proxies were 3531.9 / 204.7 ms; median per-sample maximum scroll waits were 84.5 / 281.8 ms. Grouping made the scroll tradeoff worse in this run, not better. All 14 complete-output comparisons passed; the final partial group held four records and exact inspection of card-000999 returned all 8192 metadata characters.
 
 Frame attribution shows substantial time after style/layout begins, consistent with deferred rendering work appearing during scrolling, but these timestamps alone do not isolate layout versus paint or prove a root cause. The candidate stays isolated and unpromoted. Preserve the per-card baseline, full-DOM reference and this failed result for further diagnosis; do not call the initial-rendering gain a no-loss win.
+
+
+## v6: metadata-only containment and evidence-window repair
+
+The new explicit metadata-only candidate moves containment to the heavy raw-text region while retaining the full card structure, metadata text, nested scrolling and exact-record inspector. It is not virtualization, truncation or a proven improvement. Earlier per-card and grouped candidates and their failed scroll evidence remain available. Browser measurement of this new candidate is pending.
+
+The harness also bounds observed Event Timing entries to the run window, including overlap but excluding later interactions. It retains an immutable last completed equal-output run in memory if a subsequent run fails or stops, with a separate download control. A new failure during data preparation no longer edits a previous run object. These are measurement/data-retention repairs, not an INP score or a production UI speed claim. Sources UI02 and UI07 distinguish rendering containment from source-data completeness and thresholded event observations from full interaction metrics.
