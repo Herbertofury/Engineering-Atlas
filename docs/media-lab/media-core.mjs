@@ -21,6 +21,7 @@ export function validateFixture(data) {
     ids.add(card.id);
     const source = safeSourceUrl(card.source);
     if (!source || new URL(source).hostname !== SOURCE_HOSTS[card.provider]) throw Error('Disallowed provider source link');
+    if(card.provider==='YouTube') validateYouTubeCardIdentity(card, source);
     if(card.provider==='Bilibili'){if(card.cover!==null||card.cover_status!=='official-player-only'||card.gallery.length!==0||card.videos.length!==1)throw Error('Unverified Bilibili cover or media scope');}
     else if (!providerOwnsHost(card.cover, card.provider)) throw Error('Disallowed cover host');
     for (const media of card.gallery) {
@@ -49,4 +50,26 @@ export function providerOwnsHost(value,provider){const safe=safeMediaUrl(value);
 export function nativePlaybackLabel(type) {
   const labels={playing:'Playing the selected source trailer.',pause:'Paused.',ended:'Playback ended.',error:'Playback failed. The source entry is preserved.'};
   return Object.hasOwn(labels,type)?labels[type]:null;
+}
+
+// The current workbench's YouTube cards represent one watch-page video each.
+// This binds URL namespaces, not asset ownership or complete channel coverage.
+function validateYouTubeCardIdentity(card, source) {
+  const url=new URL(source), ids=url.searchParams.getAll('v');
+  const video=card.videos[0];
+  if(url.pathname!=='/watch'||ids.length!==1||
+      card.videos.length!==1||video?.kind!=='youtube'||
+      typeof video.id!=='string'||!/^[A-Za-z0-9_-]{11}$/.test(video.id)||
+      ids[0]!==video.id||card.id!=='youtube:'+video.id)
+    throw Error('Mismatched YouTube source, card or player identity');
+  const thumbnailId=value=>{
+    const safe=safeMediaUrl(value);if(!safe)return null;
+    const media=new URL(safe);
+    if(media.hostname!=='i.ytimg.com')return null;
+    return /^\/(?:vi|vi_webp)\/([A-Za-z0-9_-]{11})\/[^/]+$/.exec(media.pathname)?.[1]??null;
+  };
+  if(thumbnailId(card.cover)!==video.id)throw Error('Mismatched YouTube cover identity');
+  for(const media of card.gallery)
+    if(thumbnailId(media?.preview)!==video.id||thumbnailId(media?.original)!==video.id)
+      throw Error('Mismatched YouTube gallery identity');
 }

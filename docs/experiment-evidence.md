@@ -86,3 +86,5 @@ not a general recommendation or approval to change another project.
 ## Upstream parser allocation stabilization
 
 [Full-record parser comparison](../experiments/upstream-validation-lab/README.md) retains a fast real-record candidate's generated-density memory regression, replaces an unnecessary owned validation copy with borrowed validation, and repeats exact-byte, stress, timing and allocation checks. Tail regressions remain visible; the working collector is unchanged.
+
+- [YouTube per-video identity binding](../experiments/youtube-identity-lab/README.md): actual workbench validator repair with nine retained known-bad identity mutations, full-field parity and explicit single-video scope. Host allowlisting is not item identity; fixture tests are not playback proof.

@@ -31,3 +31,12 @@ No promotion without target-baseline improvement and preserved requirements.
 The public workbench validator now binds each source link to its declared provider, rejects cross-provider YouTube player entries and unreviewed player kinds, and validates optional Steam poster hosts. Previously, globally allowlisted hosts could pass without all of those relationships being checked. Four new adversarial checks failed against the previous implementation and pass after the repair; the complete 4-card, 19-gallery-image, 18-video fixture is unchanged and validation does not mutate it.
 
 This establishes provider-host consistency, not ownership of every asset or a complete security audit. Live playback results remain separately versioned. [Raw regression receipt](https://github.com/Herbertofury/Engineering-Atlas/blob/main/experiments/real-media-lab/provider-binding-receipt-2026-10-26.json) retains before/after identities and test scope.
+
+## Per-video identity binding · 2026-10-27
+
+[YouTube workbench repair](../../experiments/youtube-identity-lab/README.md) binds
+its single-video source page, canonical card ID, official player ID and thumbnail
+URL namespaces. Nine generated mismatches passed the former host-only guard and
+are now rejected. Complete retained public fields remain unchanged. This is URL
+identity consistency, not ownership verification or complete YouTube coverage;
+unsupported collection/source shapes remain explicit future work.

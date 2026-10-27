@@ -4,7 +4,7 @@ import {createBilibiliController} from './bilibili-player.mjs';
 import {createRetryableLoader} from './resource-loader.mjs';
 import {validateFixture,mediaCounts,safeMediaUrl,nativePlaybackLabel} from './media-core.mjs';
 const $=id=>document.getElementById(id);
-const receipt={schema_version:1,harness:'atlas-real-media-v9-event-identity',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
+const receipt={schema_version:1,harness:'atlas-real-media-v10-video-identity',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
 let dataset=null,decoded=0,previewLoader=null,previewBusy=false;
 const pendingImages=[];
 function event(type,details={}){receipt.events.push(createMediaEvent(type,performance.now(),details));$('events').textContent=JSON.stringify(receipt.events,null,2);$('export').disabled=false;}
