@@ -1,12 +1,12 @@
 {
-  "harness": "atlas-real-media-v5-playback-state",
+  "harness": "atlas-real-media-v6-hls-recovery",
   "artifacts": {
     "media-core.77b87670a46b9128.mjs": "77b87670a46b912866e1c379b1207614da3685e8d3920c956311b91b584b6f67",
     "resource-loader.f95053a1d56a8533.mjs": "f95053a1d56a85330314efe88ca6c26b45ac1c3abb530639b770601e03608c06",
     "public-fixtures.09bc53f20b0f552b.json": "09bc53f20b0f552b6beae9c5c87c6662f94299ec4cb665b153d9e05196ef0348",
-    "media.a50519971a6bba6f.js": "a50519971a6bba6fc5a10aeb882539a3ab3dfd63f6fac9ad6d1f9741519f3373",
+    "media.be1b3d363a27304e.js": "be1b3d363a27304ea8f9a4a0de2c4eeef1f1e9e99148f73cf4215bdc90c2d550",
     "media.22d542777e3cf22e.css": "22d542777e3cf22e24394955cb48ed68ea26d9408babc2c00d1d89e471ea3176",
-    "index.html": "ba396eb73c41d2515c61604ba4d23c879a6c52e6d71cb94e7d37a8981308f43b"
+    "index.html": "212395bc8c4a544f037ece4b8497e70255cf0b60c113f3fac7d4147d4c787287"
   },
   "vendor_sha256": "a12e7ee1cd64a69dcdb314157e45dafcba705bfb0b1440b7935cb265d374423e",
   "vendor_sri": "sha384-cciJ0zi8d1uMKC2zJd7jvPY4HQt7W4ByUI/FlMkltvBi31aW61rcpVBhpmW8/NwX"

@@ -53,3 +53,7 @@ not a general recommendation or approval to change another project.
 
 [Research method](research-method.md) · [Source register](sources.md) ·
 [Adapter directory](adapters/README.md) · [Scoped recommendations](ranked-recommendations.md)
+
+## Additional media lifecycle regression
+
+[HLS loader cleanup](../experiments/hls-recovery-lab/README.md) reproduces stale-ready events after a failed timeout and repairs timer/script/handler cleanup. Four before failures become passing fixture checks; real playback and served-asset checks remain separate evidence. No collection or performance ranking is implied.

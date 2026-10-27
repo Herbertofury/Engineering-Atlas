@@ -25,7 +25,7 @@ jobs:
       - name: Test collection input contracts
         run: node --test tests/collection-input.test.mjs
       - name: Test media contracts
-        run: node --test tests/media-lab.test.mjs tests/resource-loader.test.mjs tests/youtube-recovery.test.mjs
+        run: node --test tests/media-lab.test.mjs tests/resource-loader.test.mjs tests/youtube-recovery.test.mjs tests/hls-recovery.test.mjs
       - name: Test card workload and paired-summary invariants
         run: node --test tests/card-lab.test.mjs tests/card-preparation.test.mjs
       - name: Exercise explicitly synthetic benchmark example
