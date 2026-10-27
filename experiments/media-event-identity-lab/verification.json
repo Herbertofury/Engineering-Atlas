@@ -7,6 +7,21 @@
     "tests/media-events.test.mjs": "8981ac6702f62bab66ee6faff3e16861550127e736e1b2918ac876c135ef4a33"
   },
   "fixture_mode": "generated fatal HLS callback; no induced provider failure",
-  "browser_regression": "pending",
+  "browser_regression": {
+    "receipt": "browser-receipt.json",
+    "actual_source_media": true,
+    "cards": 5,
+    "gallery_images": 19,
+    "video_entries": 19,
+    "decoded": 22,
+    "failed": 1,
+    "failed_only_retry_attempted": 1,
+    "report_errors": 0,
+    "hls_version": "1.7.3",
+    "playing_then_paused_seconds": 0.209739,
+    "final_paused": true,
+    "fatal_error_test": "generated callback fixture only",
+    "served_assets_exact": 9
+  },
   "native_or_other_project_claim": false
 }
