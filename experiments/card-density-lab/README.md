@@ -44,6 +44,19 @@ Frame attribution shows substantial time after style/layout begins, consistent w
 
 ## v6: metadata-only containment and evidence-window repair
 
-The new explicit metadata-only candidate moves containment to the heavy raw-text region while retaining the full card structure, metadata text, nested scrolling and exact-record inspector. It is not virtualization, truncation or a proven improvement. Earlier per-card and grouped candidates and their failed scroll evidence remain available. Browser measurement of this new candidate is pending.
+The new explicit metadata-only candidate moves containment to the heavy raw-text region while retaining the full card structure, metadata text, nested scrolling and exact-record inspector. It is not virtualization, truncation or a proven improvement. Earlier per-card and grouped candidates and their failed scroll evidence remain available. Browser measurement is recorded below; this remains a scoped laboratory candidate, not target-project acceptance.
 
 The harness also bounds observed Event Timing entries to the run window, including overlap but excluding later interactions. It retains an immutable last completed equal-output run in memory if a subsequent run fails or stops, with a separate download control. A new failure during data preparation no longer edits a previous run object. These are measurement/data-retention repairs, not an INP score or a production UI speed claim. Sources UI02 and UI07 distinguish rendering containment from source-data completeness and thresholded event observations from full interaction metrics.
+
+
+### v6 browser result and limits
+
+The verified served v6 build (source 63339369ae3913b7422f9737ed358ba05aef1ba2; script lab.596e362ed265462f.js) completed seven pairs with 1,000 generated cards and 8,192 metadata bytes each. All 14 samples retained exactly 1,000 DOM cards and complete field equality. Frame-ready proxy median: full DOM 4,802.1 ms, metadata-only containment 373.2 ms. Median worst scroll-frame wait: 101.9 versus 88.0 ms; observed maximum: 147.9 versus 114.6 ms. This is not physical-paint timing, a target application, images/media loading, or a peak-memory result.
+
+Setup separately took 32.2 ms for data generation and 138.5 ms for checksum preparation. One observed button interaction produced three Event Timing entries with durations 216–224 ms. Most other entries were non-interaction hover events; their count must not be presented as user interactions or an INP score. These setup/input costs are not hidden by the faster render proxy.
+
+A second complete run is retained as a control-attempt diagnostic, excluded from clean ranking: an attempted Stop action during its heavy baseline hit browser-control timeouts and did not cancel it. A later small 200-card/512-byte run was successfully stopped after one sample. Its raw partial receipt remained downloadable, and the last completed full run downloaded identically afterward. This establishes that tested retention path, not large-workload cancellation responsiveness. A zero-sample failure export remains a separate edge case.
+
+The exact-record inspector showed all 512 metadata characters for card-000199 with the metadata-only candidate active. Subsequent inspector/download interactions did not enter the ended run's event window. Four served asset hashes and loaded harness identity were checked. Original v4/v5 failures, the new diagnostic run and stopped samples are all retained rather than replaced.
+
+The result motivates further investigation of granular containment and preparation work. It does not justify changing any other project's wiki, TODO, implementation or deployment without its own comparison and requirements checks.
