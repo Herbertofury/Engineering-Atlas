@@ -121,6 +121,24 @@ fn bounded_output(succeeded: bool, output: serde_json::Value) -> (bool, serde_js
         ),
     }
 }
+// Ordinary one-second pacing belongs to the provider, not every job type.
+// Long rate-limit cooldowns remain explicit failures rather than occupying a lease.
+fn await_provider_slot(delay: Duration, stop: &AtomicBool) -> Result<(), &'static str> {
+    if delay > Duration::from_secs(1) {
+        return Err("Provider cooldown active; retry later; previous results retained");
+    }
+    let until = std::time::Instant::now() + delay;
+    loop {
+        if stop.load(Ordering::Relaxed) {
+            return Err("Collection cancelled before request; previous results retained");
+        }
+        let remaining = until.saturating_duration_since(std::time::Instant::now());
+        if remaining.is_zero() {
+            return Ok(());
+        }
+        std::thread::sleep(remaining.min(Duration::from_millis(20)));
+    }
+}
 fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Receiver<()>) {
     let mut q = match Queue::open(&path) {
         Ok(q) => q,
@@ -141,8 +159,8 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
         match q.claim("local-worker", now(), 60_000) {
             Ok(Some(claim)) => {
                 let result=match &claim.job {
-                    Job::CollectModrinth {project}=>client.project(project).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|_|"Collection failed; previous results are retained"),
-                    Job::CollectModrinthBatch {projects}=>client.projects(projects).map(batch_output).map_err(|_|"Batch collection failed; previous results are retained"),
+                    Job::CollectModrinth {project}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.project(project)).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|_|"Collection failed; previous results are retained"),
+                    Job::CollectModrinthBatch {projects}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.projects(projects)).map(batch_output).map_err(|_|"Batch collection failed; previous results are retained"),
                     Job::DedupExperiment=>crate::experiment_runner::run_builtin(||stop.load(Ordering::Relaxed)).map(|run|{
                         let completed=run.completed;
                         let mut output=serde_json::json!({"experiment":run});
@@ -243,6 +261,21 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn provider_wait_preserves_long_cooldown_and_cancellation() {
+        let stop = AtomicBool::new(false);
+        assert!(await_provider_slot(Duration::ZERO, &stop).is_ok());
+        assert!(await_provider_slot(Duration::from_secs(60), &stop).is_err());
+        stop.store(true, Ordering::Relaxed);
+        assert!(await_provider_slot(Duration::ZERO, &stop).is_err());
+    }
+    #[test]
+    fn normal_provider_slot_does_not_return_early() {
+        let stop = AtomicBool::new(false);
+        let start = std::time::Instant::now();
+        assert!(await_provider_slot(Duration::from_millis(25), &stop).is_ok());
+        assert!(start.elapsed() >= Duration::from_millis(25));
+    }
     #[test]
     fn partial_batch_is_not_reported_as_success() {
         let batch = crate::modrinth::ProjectBatch {

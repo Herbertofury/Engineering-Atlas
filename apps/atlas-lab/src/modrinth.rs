@@ -197,6 +197,15 @@ impl PublicClient {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn an_immediate_second_call_is_rejected_before_transport() {
+        let mut client = PublicClient::new().unwrap();
+        client.next_request = Instant::now() + Duration::from_secs(1);
+        let error = client.project("sodium").unwrap_err().to_string();
+        assert!(error.contains("cooldown active"));
+        assert!(!client.cooldown_remaining().is_zero());
+    }
+
     fn batch_fixture(id: &str) -> serde_json::Value {
         serde_json::json!({"id":id,"slug":format!("fixture-{id}"),"title":"Fixture","description":"Complete fixture","project_type":"mod","versions":["version1"],"gallery":[]})
     }
