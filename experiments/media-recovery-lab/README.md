@@ -42,5 +42,9 @@ retained, not counted as a clean UI pass. CI for the v4 source succeeded.
 V5 adds explicit native pause/ended status handling, tested event-label mapping,
 and a stale-generation guard for asynchronous Play rejections. It retains the
 v4 retry repair. All 46 Node tests pass locally. Actual v5 pause-state browser
-reverification is still pending publication. Ended-state mapping is fixture-tested,
+reverification passed after publication: the real Steam trailer played, then
+paused with both native paused=true and the visible Paused label. Changing the
+selected trailer removed the old video and disabled Play/Pause until another
+explicit load. YouTube reached player-ready without a play request. Six served
+assets, the loaded module, exact source commit and CI were verified. Ended-state mapping is fixture-tested,
 not a claim that a real trailer has been played to completion.

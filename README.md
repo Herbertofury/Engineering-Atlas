@@ -12,6 +12,8 @@ A practical, evolving research library for desktop apps, web services, Minecraft
 
 ## Start here
 
+[Experiment evidence directory](docs/experiment-evidence.md) organizes real-source tests, generated workloads, failures, repairs and remaining acceptance gates.
+
 | Need | Guide |
 |---|---|
 | Choose a stack without hype | [Stack decision map](docs/stack-selection.md) |

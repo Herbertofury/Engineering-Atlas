@@ -1,0 +1,52 @@
+# Experiment evidence directory
+
+Updated 2026-10-27. Follow each study's source commit, harness identity, raw
+results and limitations. A working demo, upstream claim or passing fixture is
+not a general recommendation or approval to change another project.
+
+## Interactive laboratories
+
+- [Card density laboratory](https://herbertofury.github.io/Engineering-Atlas/card-lab/): generated records, complete-field comparisons and separately measured preparation/rendering. Not a target application's performance test.
+- [Real media laboratory](https://herbertofury.github.io/Engineering-Atlas/media-lab/): dated public-source cards, explicit image/player loading, autoplay off. Player-ready and actually playing are separate evidence states.
+- [Rust application prototype](../apps/atlas-lab/README.md): local-only collection queue, durable snapshots and bounded experiments. This link is source/documentation, not a hosted authenticated service or finished installer.
+
+## Collection and complete records
+
+| Study | Evidence available | Important boundary |
+|---|---|---|
+| [Public project batching](../experiments/modrinth-batch-lab/README.md) | Real API comparison, explicit missing IDs, atomic snapshots | Fewer requests; timing mixed, not universal speedup |
+| [Long-description retention](../experiments/body-projection-lab/README.md) | Exact body text and previous fields retained; reopen checks | More data costs additional parsing; linked media not collected automatically |
+| [Version/file metadata](../experiments/modrinth-version-lab/README.md) | Three real public records; original JSON and unknown fields survive reopen | CLI-only; file links/hashes are metadata, not downloaded or verified files |
+| [Collection diagnostics](../experiments/collection-diagnostics-lab/worker-http-2026-10-27.json) | Safe error categories and actual loopback checks | No private URL, credential or response-body logging |
+| [Real media](../experiments/real-media-lab/README.md) | Source-owned galleries, official player and Steam trailer evidence | Selected dated snapshots, not exhaustive or authenticated platform coverage |
+
+## Performance and correctness
+
+| Study | Evidence available | Decision boundary |
+|---|---|---|
+| [Card density and preparation](../experiments/card-density-lab/README.md) | Complete generated data, paired render proxies, scroll waits, worker costs, cancellation receipts | Worker remains optional; no target adoption or peak-memory claim |
+| [Queue dispatch](../experiments/queue-wakeup-lab/README.md) | Actual loopback queue delay comparison and provider-pacing repair | Dispatch latency is not provider/network speed |
+| [HTTP overview serialization](../experiments/overview-http-lab/README.md) | Actual HTTP comparisons, snapshot-coherence repair, retained regression evidence | Normal route gets correctness repair; raw serializer remains isolated |
+| [Rust parser stabilization](../experiments/rust-json-parser-lab/README.md) | Six real public inputs, all failed Unicode cases, source backport, accurate-reference diagnosis | Mixed speed and incompatible integer behavior; no app dependency changed |
+| [HTML image extraction](../experiments/html-image-parser-lab/README.md) | Differential fixtures and parser repairs | No complete provider or target-application acceptance |
+| [Python JSON](../experiments/json-lab/README.md) | Generated-corpus timings and adversarial numeric/Unicode differences | Runtime packaging and target workload remain separate gates |
+| [Storage](../experiments/rust-storage-lab/README.md) | Configured durable writes, readback and complete records | Do not compare different durability contracts or infer hardware power-loss survival |
+
+## Recovery and the experimentation engine
+
+- [Media recovery](../experiments/media-recovery-lab/README.md): retained rejected-promise failure, explicit retry repair, actual playback-state discrepancy and verification status.
+- [Bounded runner](../experiments/bounded-runner-lab/README.md): fixed experiments, budgets, cancellation and retained partial results. Not general autonomous self-modification.
+- [Checked raw JSON](../experiments/overview-serialization-lab/README.md): naive forwarding failures, strict validation repair and isolated measurements.
+
+## How to use the directory
+
+1. Identify the required data, correctness, access and durability contract.
+2. Check whether evidence is generated, fixture-tested, real public, authenticated,
+   player-ready or actually playing. Never substitute one for another.
+3. Read failed cases, tail regressions and missing measurements before ranking.
+4. Reproduce on the actual target implementation before recommending adoption.
+5. Keep source-owned text, private fixtures and accounts out of public evidence;
+   retain public hashes/counts and authorized local raw data where appropriate.
+
+[Research method](research-method.md) · [Source register](sources.md) ·
+[Adapter directory](adapters/README.md) · [Scoped recommendations](ranked-recommendations.md)
