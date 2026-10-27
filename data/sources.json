@@ -1384,5 +1384,49 @@
     "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "TLS01",
+    "title": "RustSec rustls-ffi lifetime advisory",
+    "url": "https://github.com/RustSec/advisory-db/blob/99670cfc0bc574433034b75876a4b791ccaa2efb/crates/rustls-ffi/RUSTSEC-2026-0413.md",
+    "observed_version": "RUSTSEC-2026-0413; assigned October 27 for advisory dated October 26",
+    "topic": "security",
+    "note": "Affected rustls-ffi 0.12.0–0.15.6; distinct package identity, not all rustls users.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "NXT01",
+    "title": "RustSec nextest portable-recording advisory",
+    "url": "https://github.com/RustSec/advisory-db/blob/99670cfc0bc574433034b75876a4b791ccaa2efb/crates/cargo-nextest/RUSTSEC-2026-0412.md",
+    "observed_version": "RUSTSEC-2026-0412 assignment October 27; fixed in 0.9.150",
+    "topic": "security",
+    "note": "Untrusted experimental rerun recordings can inject build arguments in affected releases; no prototype executed.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SEM01",
+    "title": "SemanticZip pilot",
+    "url": "https://arxiv.org/html/2605.24541v1",
+    "observed_version": "Preprint submitted 2026-05-23; newly reviewed, not newly released",
+    "topic": "research",
+    "note": "Explicitly lossy semantic reconstruction; not eligible as byte-exact raw snapshot compression.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 90,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "MTS01",
+    "title": "MTS-1 telemetry encoding",
+    "url": "https://arxiv.org/html/2601.01602v1",
+    "observed_version": "Preprint 2026-01-04; specialized synthetic telemetry",
+    "topic": "research",
+    "note": "Thresholded delta rule requires a fidelity budget; generated probe is not an author-code reproduction.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 90,
+    "evidence": "primary_documented"
   }
 ]

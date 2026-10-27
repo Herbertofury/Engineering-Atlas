@@ -69,3 +69,8 @@ not a general recommendation or approval to change another project.
 ## Preview lifecycle recovery
 
 [Image preview retry and cleanup](../experiments/preview-recovery-lab/README.md) repairs settled timers, one-shot failure handling and early-click gating. A real 23-element batch decoded 22; explicit retry attempted only the remaining failed thumbnail, which stayed unavailable. Previous success and failure evidence were preserved; no universal recovery or speedup claim.
+
+## Advisory and representation eligibility checks
+
+- [Pinned dependency advisory checks](../experiments/dependency-audit-lab/README.md): freshly fetched database, clean worktree, exact remote lock hashes and zero known matches in three scoped lockfiles. Not a whole-system security clearance.
+- [Representation contract probe](../experiments/representation-contract-lab/README.md): independently written exact-rational cases expose a positive-threshold fidelity boundary. Not a paper implementation, performance reproduction or target adoption result.

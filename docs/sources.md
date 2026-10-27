@@ -758,3 +758,27 @@ Records alloc feature change, invalid-offset fixes and later short-dictionary fi
 [Bilibili official external player documentation](https://player.bilibili.com/) · Current documented HTTPS external player and provider-selected BV1B7411m7LV example
 
 Explicit autoplay=0; canonical video identity and player frame are distinct from verified playing or complete post collection. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.
+
+## TLS01
+
+[RustSec rustls-ffi lifetime advisory](https://github.com/RustSec/advisory-db/blob/99670cfc0bc574433034b75876a4b791ccaa2efb/crates/rustls-ffi/RUSTSEC-2026-0413.md) · RUSTSEC-2026-0413; assigned October 27 for advisory dated October 26
+
+Affected rustls-ffi 0.12.0–0.15.6; distinct package identity, not all rustls users. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.
+
+## NXT01
+
+[RustSec nextest portable-recording advisory](https://github.com/RustSec/advisory-db/blob/99670cfc0bc574433034b75876a4b791ccaa2efb/crates/cargo-nextest/RUSTSEC-2026-0412.md) · RUSTSEC-2026-0412 assignment October 27; fixed in 0.9.150
+
+Untrusted experimental rerun recordings can inject build arguments in affected releases; no prototype executed. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.
+
+## SEM01
+
+[SemanticZip pilot](https://arxiv.org/html/2605.24541v1) · Preprint submitted 2026-05-23; newly reviewed, not newly released
+
+Explicitly lossy semantic reconstruction; not eligible as byte-exact raw snapshot compression. Evidence: primary documented. Checked 2026-10-27; review after 90 days or before a version-sensitive decision.
+
+## MTS01
+
+[MTS-1 telemetry encoding](https://arxiv.org/html/2601.01602v1) · Preprint 2026-01-04; specialized synthetic telemetry
+
+Thresholded delta rule requires a fidelity budget; generated probe is not an author-code reproduction. Evidence: primary documented. Checked 2026-10-27; review after 90 days or before a version-sensitive decision.

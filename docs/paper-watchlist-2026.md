@@ -40,3 +40,7 @@ The upstream README confirms [codeberg.org/ijl/orjson](https://codeberg.org/ijl/
 - An unavailable source page. Record the access gap; do not invent its contents.
 
 This watchlist is a first researched set, not an exhaustive survey of all 2026 papers or all hosting platforms. Broader parsing, runtime, incremental-state, graphics and security investigations remain on the [roadmap](roadmap.md).
+
+## Representation-contract screen · 2026-10-27
+
+[Two additional paper reviews](../research/2026-10-27-representation-contracts.md) separate approximate reconstruction and thresholded telemetry from byte-exact snapshot requirements. No research prototype was run; the generated probe tests a fidelity boundary, not runtime superiority.
