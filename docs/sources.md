@@ -722,3 +722,15 @@ README inspected, including count mismatch with paper; no dataset download or ex
 [GraphQL response and execution errors](https://spec.graphql.org/September2025/#sec-Response-Format) · September 2025 specification, not a new October 2026 release
 
 Execution may return partial data with errors; retain both and distinguish request failure, partial execution and complete requested scope. Evidence: primary documented. Checked 2026-10-27; review after 90 days or before a version-sensitive decision.
+
+## ZSTD01
+
+[Zstandard upstream release](https://github.com/facebook/zstd/releases/tag/v1.5.7) · 1.5.7 released 2025-02-19; latest release endpoint observed 2026-10-27
+
+Lossless codec candidate; release status does not establish faster application writes. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## ZSTD02
+
+[Rust Zstandard binding](https://docs.rs/zstd/0.14.3/zstd/) · 0.14.3, zstd-sys 2.1.2+zstd.1.5.7 in isolated lock
+
+Bulk context reuse and bounded decompression evaluated in an isolated SQLite component. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.

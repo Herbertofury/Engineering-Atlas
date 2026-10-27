@@ -53,3 +53,9 @@ jobs:
         run: |
           cargo +1.99.1 test --locked
           cargo +1.99.1 test --locked --example version_validation_lab
+      - name: Isolated lossless storage candidate checks
+        working-directory: experiments/compressed-snapshot-lab
+        run: |
+          cargo +1.99.1 fmt --all -- --check
+          cargo +1.99.1 clippy --locked --all-targets -- -D warnings
+          cargo +1.99.1 test --locked

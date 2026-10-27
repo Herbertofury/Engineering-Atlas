@@ -4,3 +4,5 @@ __pycache__/
 private-evidence/
 .env
 .env.*
+**/target/
+**/node_modules/

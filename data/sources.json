@@ -1318,5 +1318,27 @@
     "checked_at": "2026-10-27",
     "review_after_days": 90,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "ZSTD01",
+    "title": "Zstandard upstream release",
+    "url": "https://github.com/facebook/zstd/releases/tag/v1.5.7",
+    "observed_version": "1.5.7 released 2025-02-19; latest release endpoint observed 2026-10-27",
+    "topic": "storage",
+    "note": "Lossless codec candidate; release status does not establish faster application writes.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "ZSTD02",
+    "title": "Rust Zstandard binding",
+    "url": "https://docs.rs/zstd/0.14.3/zstd/",
+    "observed_version": "0.14.3, zstd-sys 2.1.2+zstd.1.5.7 in isolated lock",
+    "topic": "storage",
+    "note": "Bulk context reuse and bounded decompression evaluated in an isolated SQLite component.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

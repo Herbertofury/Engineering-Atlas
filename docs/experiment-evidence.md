@@ -57,3 +57,7 @@ not a general recommendation or approval to change another project.
 ## Additional media lifecycle regression
 
 [HLS loader cleanup](../experiments/hls-recovery-lab/README.md) reproduces stale-ready events after a failed timeout and repairs timer/script/handler cleanup. Four before failures become passing fixture checks; real playback and served-asset checks remain separate evidence. No collection or performance ranking is implied.
+
+## Lossless storage density
+
+[Compressed snapshot component](../experiments/compressed-snapshot-lab/README.md) compares raw BLOBs with per-record and reused-context Zstd under identical FULL commit boundaries. Six actual public records plus explicitly generated replay data retain every byte. Compression saves space but loses end-to-end latency versus raw storage; context reuse improves only parts of the compression lane. No default migration or project recommendation follows.
