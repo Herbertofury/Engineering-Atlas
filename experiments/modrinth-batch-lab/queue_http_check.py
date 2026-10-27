@@ -26,7 +26,7 @@ try:
  expect('batch size budget enforced',request('/api/jobs',{'CollectModrinthBatch':{'projects':[str(x).zfill(8) for x in range(21)]}},h)[0],400)
  expect('arbitrary URL rejected',request('/api/jobs',{'CollectModrinthBatch':{'projects':['https://evil.example']}},h)[0],400)
  expect('request body budget enforced',request('/api/jobs',{'CollectModrinth':{'project':'x'*5000}},h)[0],413)
- expect('disabled experiment remains disabled',request('/api/jobs','DedupExperiment',h)[0],501)
+ expect('arbitrary operation remains rejected',request('/api/jobs',{'RunShell':{'command':'unrecognized'}},h)[0],422)
  status,content,headers=request('/collection-input.mjs');expect('input module served',status,200);expect('module type',headers.get('content-type'),'text/javascript');expect('no-store preserved',headers.get('cache-control'),'no-store');expect('CSP remains same-origin',"connect-src 'self'" in headers.get('content-security-policy',''),True)
  status,content,_=request('/');expect('HTML uses module entrypoint',b'type="module" src="/app.js"' in content,True)
  status,content,_=request('/api/jobs',job,h);expect('batch queued',status,200);ident=json.loads(content)['id']

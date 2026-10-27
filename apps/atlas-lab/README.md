@@ -62,7 +62,7 @@ Source-register IDs: [R05], [DB05], [NET01], [COL01], [COL02].
 
 `serve` binds only `127.0.0.1:41379`. It exposes no CORS permission; write requests require the exact local Origin and a custom same-origin header, and requests with unexpected Host values are rejected. SQL work is moved off async executor threads and bounded to four concurrent database operations. One serial worker executes permitted public metadata jobs. Job output and terminal status commit in one transaction; an expired worker cannot finalize a later attempt. A crash may repeat a public read, so this is not exactly-once network execution. The CLI snapshot store and queued-job result history are currently separate representations.
 
-A prototype dashboard exposes collection and evidence state. It does not enable background experiments or code generation. The local HTTP smoke pass verified real queued public collection, input limits and origin/host guards; cloud-browser access to the isolated loopback preview was unavailable, so visual and browser-interaction acceptance is explicitly pending.
+A prototype dashboard exposes collection and evidence state. Its explicit run control now queues a bounded built-in comparison; it does not enable arbitrary code generation or autonomous deployment. The local HTTP smoke pass verified real queued public collection, input limits and origin/host guards; cloud-browser access to the isolated loopback preview was unavailable, so visual and browser-interaction acceptance is explicitly pending.
 
 [Card-density browser lab](../../docs/card-lab/index.html) is a separate generated-data measurement harness, not a claim about any project's current UI. [Storage lab evidence](../../experiments/rust-storage-lab/README.md) compares preparation strategies with the same transaction and durability boundaries.
 
@@ -75,3 +75,7 @@ Queue integration verification: 22 loopback HTTP checks exercised a real three-p
 ## Isolated serialization research
 
 `Queue::overview_raw_candidate` is an experimental full-result serializer, not used by the HTTP overview route. The [stabilization record](../../experiments/overview-serialization-lab/README.md) retains naive-parser failures, the checked repair, complete-output comparisons and qualified Linux memory measurements. No production switch follows automatically from this experiment.
+
+## Bounded queued experiment
+
+The explicit Run bounded comparison button runs only the two built-in identifier strategies, with 2 warmups, 15 timed pairs and 10,000 run-specific differential stress cases. A cooperative 15-second budget and shutdown checks preserve partial results. Raw results and failures are journaled; earlier successful evidence is retained. Peak memory is unmeasured, so the gate still returns Incomplete and no candidate is promoted. This queued runner is separate from the older CLI lab described above. See [runner evidence](../../experiments/bounded-runner-lab/README.md).

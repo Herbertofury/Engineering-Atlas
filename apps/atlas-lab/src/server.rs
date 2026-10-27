@@ -80,9 +80,6 @@ async fn enqueue(
     State(app): State<App>,
     Json(job): Json<Job>,
 ) -> Result<Json<serde_json::Value>, StatusCode> {
-    if matches!(job, Job::DedupExperiment) {
-        return Err(StatusCode::NOT_IMPLEMENTED);
-    }
     let permit = app
         .db_slots
         .try_acquire_owned()
@@ -139,7 +136,14 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>) {
                 let result=match &claim.job {
                     Job::CollectModrinth {project}=>client.project(project).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|_|"Collection failed; previous results are retained"),
                     Job::CollectModrinthBatch {projects}=>client.projects(projects).map(batch_output).map_err(|_|"Batch collection failed; previous results are retained"),
-                    Job::DedupExperiment=>Err("Background experiment runner is not enabled yet; use the CLI lab"),
+                    Job::DedupExperiment=>crate::experiment_runner::run_builtin(||stop.load(Ordering::Relaxed)).map(|run|{
+                        let completed=run.completed;
+                        let mut output=serde_json::json!({"experiment":run});
+                        match crate::journal::Journal::open(&path).map_err(|_|()).and_then(|mut journal|journal.record(&run.evidence,&crate::experiment_runner::policy(),None).map_err(|_|())) {
+                            Ok(id)=>{output["experiment_id"]=id.into();(completed,output)}
+                            Err(())=>{output["error"]="Could not append the experiment journal; raw evidence is retained in this job result".into();(false,output)}
+                        }
+                    }).map_err(|_|"Built-in experiment configuration rejected"),
                 };
                 let (succeeded, output) = match result {
                     Ok((complete, value)) => bounded_output(complete, value),
