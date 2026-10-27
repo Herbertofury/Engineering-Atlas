@@ -752,3 +752,9 @@ Older block decoders could leak uninitialized or reused-buffer content. Tested 0
 [lz4_flex changelog](https://github.com/PSeitz/lz4_flex/blob/1bffdcbbf906a234b913937cb2f57c0245915038/CHANGELOG.md) · 0.14.0 dated 2026-07-14; GitHub latest release object separately returned 0.13.1
 
 Records alloc feature change, invalid-offset fixes and later short-dictionary fix; do not blindly use one latest endpoint. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## BILI01
+
+[Bilibili official external player documentation](https://player.bilibili.com/) · Current documented HTTPS external player and provider-selected BV1B7411m7LV example
+
+Explicit autoplay=0; canonical video identity and player frame are distinct from verified playing or complete post collection. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.

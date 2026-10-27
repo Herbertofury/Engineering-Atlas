@@ -1,12 +1,13 @@
 {
-  "harness": "atlas-real-media-v6-hls-recovery",
+  "harness": "atlas-real-media-v7-bilibili-official",
   "artifacts": {
-    "media-core.77b87670a46b9128.mjs": "77b87670a46b912866e1c379b1207614da3685e8d3920c956311b91b584b6f67",
+    "bilibili-player.4f893473b3fc38d2.mjs": "4f893473b3fc38d20e38ee709f305137bfa3b48290dba1c42fbdb01c8f763444",
+    "media-core.6c838e70bb5a1a0c.mjs": "6c838e70bb5a1a0c374e6f1950ab4a663126839364fdc444b9a406ff1a273603",
     "resource-loader.f95053a1d56a8533.mjs": "f95053a1d56a85330314efe88ca6c26b45ac1c3abb530639b770601e03608c06",
-    "public-fixtures.09bc53f20b0f552b.json": "09bc53f20b0f552b6beae9c5c87c6662f94299ec4cb665b153d9e05196ef0348",
-    "media.be1b3d363a27304e.js": "be1b3d363a27304ea8f9a4a0de2c4eeef1f1e9e99148f73cf4215bdc90c2d550",
-    "media.22d542777e3cf22e.css": "22d542777e3cf22e24394955cb48ed68ea26d9408babc2c00d1d89e471ea3176",
-    "index.html": "212395bc8c4a544f037ece4b8497e70255cf0b60c113f3fac7d4147d4c787287"
+    "public-fixtures.2aa0668aba0eb29c.json": "2aa0668aba0eb29c69faf368fab206369718335be7f47bc0c6592236e79d1aba",
+    "media.1e8cee967fc5cf08.js": "1e8cee967fc5cf08b321142026669a4f046bcbba61f5722fbb5fb87190ad127f",
+    "media.6d66277c4a909ad6.css": "6d66277c4a909ad66dd32dfd66659fcb00de143ce2f4bc535a5a182e3916cd02",
+    "index.html": "ff639d426f34d050db3966a30be1db0ffdcd774e5db4cf122318afe7ad54a5d6"
   },
   "vendor_sha256": "a12e7ee1cd64a69dcdb314157e45dafcba705bfb0b1440b7935cb265d374423e",
   "vendor_sri": "sha384-cciJ0zi8d1uMKC2zJd7jvPY4HQt7W4ByUI/FlMkltvBi31aW61rcpVBhpmW8/NwX"

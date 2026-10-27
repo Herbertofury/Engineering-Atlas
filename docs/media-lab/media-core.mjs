@@ -1,4 +1,5 @@
-export function safeSourceUrl(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.port&&!u.username&&!u.password&&new Set(['modrinth.com','www.nexusmods.com','store.steampowered.com','www.youtube.com']).has(u.hostname)?u.href:null;}catch{return null;}}
+import {bilibiliEmbedUrl} from './bilibili-player.mjs';
+export function safeSourceUrl(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.port&&!u.username&&!u.password&&new Set(['modrinth.com','www.nexusmods.com','store.steampowered.com','www.youtube.com','www.bilibili.com']).has(u.hostname)?u.href:null;}catch{return null;}}
 export const MEDIA_HOSTS = new Set(['cdn.modrinth.com','staticdelivery.nexusmods.com','shared.akamai.steamstatic.com','store.akamai.steamstatic.com','video.akamai.steamstatic.com','i.ytimg.com']);
 export function safeMediaUrl(value) {try{const u=new URL(value);return u.protocol==='https:'&&!u.port&&!u.username&&!u.password&&MEDIA_HOSTS.has(u.hostname)?u.href:null;}catch{return null;}}
 const SOURCE_HOSTS = Object.freeze({
@@ -6,6 +7,7 @@ const SOURCE_HOSTS = Object.freeze({
   'Nexus Mods': 'www.nexusmods.com',
   Steam: 'store.steampowered.com',
   YouTube: 'www.youtube.com',
+  Bilibili: 'www.bilibili.com',
 });
 export function validateFixture(data) {
   if (data?.schema_version !== 1 || data.access !== 'public-only' || data.private_data_included !== false || !Array.isArray(data.cards)) {
@@ -19,13 +21,17 @@ export function validateFixture(data) {
     ids.add(card.id);
     const source = safeSourceUrl(card.source);
     if (!source || new URL(source).hostname !== SOURCE_HOSTS[card.provider]) throw Error('Disallowed provider source link');
-    if (!providerOwnsHost(card.cover, card.provider)) throw Error('Disallowed cover host');
+    if(card.provider==='Bilibili'){if(card.cover!==null||card.cover_status!=='official-player-only'||card.gallery.length!==0||card.videos.length!==1)throw Error('Unverified Bilibili cover or media scope');}
+    else if (!providerOwnsHost(card.cover, card.provider)) throw Error('Disallowed cover host');
     for (const media of card.gallery) {
       if (!media || !providerOwnsHost(media.preview, card.provider) || !providerOwnsHost(media.original, card.provider)) throw Error('Disallowed gallery host');
     }
     for (const video of card.videos) {
       if (!video || typeof video !== 'object') throw Error('Invalid video entry');
-      if (video.kind === 'youtube') {
+      if(video.kind==='bilibili'){
+        if(card.provider!=='Bilibili'||card.id!=='bilibili:'+video.id)throw Error('Invalid Bilibili provider identity');
+        bilibiliEmbedUrl(video.id);const u=new URL(source);if(u.pathname!=='/video/'+video.id+'/'||u.search||u.hash)throw Error('Mismatched Bilibili source identity');
+      } else if (video.kind === 'youtube') {
         if (card.provider !== 'YouTube' || typeof video.id !== 'string' || !/^[A-Za-z0-9_-]{11}$/.test(video.id)) throw Error('Invalid video provider or ID');
       } else {
         // Existing Steam snapshots omit kind. Do not interpret future kinds as HLS.

@@ -355,6 +355,28 @@
       ],
       "completeness": "Public oEmbed metadata and official player; captions and channel history not collected.",
       "retrieved_at": "2026-10-26"
+    },
+    {
+      "id": "bilibili:BV1B7411m7LV",
+      "kind": "media",
+      "provider": "Bilibili",
+      "title": "四月番毒奶安利！四月看这八部动画就够了！！",
+      "creator": "瓶子君152",
+      "summary": "Public video selected by Bilibili’s official embed documentation as its demonstration. Title and creator observed in the official player; not a full post collector.",
+      "source": "https://www.bilibili.com/video/BV1B7411m7LV/",
+      "cover": null,
+      "cover_status": "official-player-only",
+      "gallery": [],
+      "videos": [
+        {
+          "kind": "bilibili",
+          "id": "BV1B7411m7LV",
+          "name": "Official documentation embed example"
+        }
+      ],
+      "completeness": "One provider-documented public embed. Gallery, captions, multi-part completeness and account-only content uncollected. Frame-loaded does not mean player-ready or playing.",
+      "retrieved_at": "2026-10-27",
+      "provenance": "https://player.bilibili.com/"
     }
   ]
 }
