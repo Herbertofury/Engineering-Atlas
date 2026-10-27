@@ -15,3 +15,7 @@ Repository license metadata: yt-dlp Unlicense, gallery-dl GPL-2.0, Crawlee Apach
 [Scrapy AutoThrottle](https://docs.scrapy.org/en/latest/topics/autothrottle.html) adjusts delay from latency and bounded concurrency; fast error responses must not accelerate traffic. [Crawlee families](https://crawlee.dev/js/docs/quick-start) distinguish static HTML parsing from JavaScript rendering. Choose by required work, not browser-everything or regex-everything.
 
 These packages were researched, not benchmarked or accepted as Atlas dependencies. No credentials, paid requests or third-party extractor downloads were used.
+
+## HTML image-token candidates · 2026-10-27
+
+[Controlled parser study](https://github.com/Herbertofury/Engineering-Atlas/blob/main/experiments/html-image-parser-lab/README.md): maintained parse5/SAX and htmlparser2 candidates correct 21 targeted image-token fixtures while preserving the pinned adapter's other guards. Repaired htmlparser2 improved larger clean-workload medians but regressed small-input time and one observed maximum. A streaming allocation variant did not beat its median. These are isolated candidates, not a universal parser ranking or a live-platform deployment.

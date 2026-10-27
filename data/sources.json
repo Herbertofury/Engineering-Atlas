@@ -1032,5 +1032,49 @@
     "checked_at": "2026-10-27",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "HTML01",
+    "title": "parse5 and SAX parser upstream",
+    "url": "https://github.com/inikulin/parse5/releases/tag/v8.0.1",
+    "observed_version": "parse5 8.0.1 and SAX 8.0.0 installed from official npm; reviewed 2026-10-27",
+    "topic": "collection",
+    "note": "Spec-focused upstream parser used as a scoped image-token reference; only local fixtures are accepted here",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "HTML02",
+    "title": "htmlparser2 12.0.0 release",
+    "url": "https://github.com/fb55/htmlparser2/releases/tag/v12.0.0",
+    "observed_version": "12.0.0; released 2026-03-20; reviewed 2026-10-27",
+    "topic": "collection",
+    "note": "Maintained callback parser; raw-text and context fixes do not imply universal spec conformance",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "HTML03",
+    "title": "WHATWG HTML parsing rules",
+    "url": "https://html.spec.whatwg.org/multipage/parsing.html",
+    "observed_version": "Living Standard updated 2026-10-26; reviewed 2026-10-27",
+    "topic": "collection",
+    "note": "Input CR normalization precedes tokenization; NULL treatment is context dependent, including attribute replacement",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "OBS02",
+    "title": "Node performance GC diagnostics",
+    "url": "https://nodejs.org/docs/latest-v24.x/api/perf_hooks.html",
+    "observed_version": "Node 24.22.1 observed and used",
+    "topic": "collection",
+    "note": "Passive GC detail observations and timings; instrumentation and shared heap are not per-parser peak memory",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
   }
 ]

@@ -566,3 +566,27 @@ Streaming validation through deserialize_any; not a substitute for differential 
 [Linux process status memory accounting](https://man7.org/linux/man-pages/man5/proc_pid_status.5.html) · Manual reviewed 2026-10-27
 
 VmHWM reports resident high-water usage but is explicitly documented as inaccurate; qualify measurements. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## HTML01
+
+[parse5 and SAX parser upstream](https://github.com/inikulin/parse5/releases/tag/v8.0.1) · parse5 8.0.1 and SAX 8.0.0 installed from official npm; reviewed 2026-10-27
+
+Spec-focused upstream parser used as a scoped image-token reference; only local fixtures are accepted here. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## HTML02
+
+[htmlparser2 12.0.0 release](https://github.com/fb55/htmlparser2/releases/tag/v12.0.0) · 12.0.0; released 2026-03-20; reviewed 2026-10-27
+
+Maintained callback parser; raw-text and context fixes do not imply universal spec conformance. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## HTML03
+
+[WHATWG HTML parsing rules](https://html.spec.whatwg.org/multipage/parsing.html) · Living Standard updated 2026-10-26; reviewed 2026-10-27
+
+Input CR normalization precedes tokenization; NULL treatment is context dependent, including attribute replacement. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## OBS02
+
+[Node performance GC diagnostics](https://nodejs.org/docs/latest-v24.x/api/perf_hooks.html) · Node 24.22.1 observed and used
+
+Passive GC detail observations and timings; instrumentation and shared heap are not per-parser peak memory. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
