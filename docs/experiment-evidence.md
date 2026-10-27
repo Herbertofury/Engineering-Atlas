@@ -61,3 +61,7 @@ not a general recommendation or approval to change another project.
 ## Lossless storage density
 
 [Compressed snapshot component](../experiments/compressed-snapshot-lab/README.md) compares raw BLOBs with per-record and reused-context Zstd under identical FULL commit boundaries. Six actual public records plus explicitly generated replay data retain every byte. Compression saves space but loses end-to-end latency versus raw storage; context reuse improves only parts of the compression lane. No default migration or project recommendation follows.
+
+## Official Bilibili player
+
+[Public official embed lane](../experiments/bilibili-player-lab/README.md) preserves the original four cards and adds one provider-documented media example. Real sandboxed iframe play/pause and reload/unload passed with autoplay off; application events intentionally report only frame lifecycle, not cross-origin playback. No authenticated or full-post collection claim.
