@@ -82,3 +82,7 @@ not a general recommendation or approval to change another project.
 ## New inference and hardware-specific storage screening
 
 [GUIFlow and FlintKV scope review](../research/2026-10-27-inference-and-nvm-scope.md) separates compute-operation ratios from wall-clock latency and checks quality/hardware boundaries. Research-only: no prototype execution, local speed claim or target recommendation.
+
+## Upstream parser allocation stabilization
+
+[Full-record parser comparison](../experiments/upstream-validation-lab/README.md) retains a fast real-record candidate's generated-density memory regression, replaces an unnecessary owned validation copy with borrowed validation, and repeats exact-byte, stress, timing and allocation checks. Tail regressions remain visible; the working collector is unchanged.

@@ -64,8 +64,14 @@ impl<'de> Deserialize<'de> for CheckedValue {
         d.deserialize_any(CheckVisitor)
     }
 }
+/// Validate the complete borrowed text without constructing a Value tree or trimmed RawValue.
+/// The caller retains ownership and is responsible for preserving its original bytes.
+pub fn validate_json(json: &str) -> serde_json::Result<()> {
+    serde_json::from_str::<CheckedValue>(json)?;
+    Ok(())
+}
 pub fn validate_and_preserve(json: String) -> serde_json::Result<Box<RawValue>> {
-    serde_json::from_str::<CheckedValue>(&json)?;
+    validate_json(&json)?;
     RawValue::from_string(json)
 }
 #[cfg(test)]
