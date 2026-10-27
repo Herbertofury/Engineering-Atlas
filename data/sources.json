@@ -1391,7 +1391,7 @@
     "url": "https://github.com/RustSec/advisory-db/blob/99670cfc0bc574433034b75876a4b791ccaa2efb/crates/rustls-ffi/RUSTSEC-2026-0413.md",
     "observed_version": "RUSTSEC-2026-0413; assigned October 27 for advisory dated October 26",
     "topic": "security",
-    "note": "Affected rustls-ffi 0.12.0–0.15.6; distinct package identity, not all rustls users.",
+    "note": "Affected rustls-ffi 0.12.0\u20130.15.6; distinct package identity, not all rustls users.",
     "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
@@ -1493,6 +1493,17 @@
     "note": "Static source review only: cover-only scope and metadata shape changes; no provider execution or adoption.",
     "checked_at": "2026-10-27",
     "review_after_days": 7,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "MODLOOKUP01",
+    "title": "Modrinth project ID and slug lookup implementation",
+    "url": "https://github.com/modrinth/code/blob/2bb257a8923fa6084d8250a79bef6a3860f9a802/apps/labrinth/src/database/models/project_item.rs",
+    "observed_version": "commit 2bb257a8923fa6084d8250a79bef6a3860f9a802; reviewed 2026-10-27",
+    "topic": "collection",
+    "note": "Static source: base62 IDs and lowercased slug candidates are separate; not execution or full API parity.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
     "evidence": "primary_documented"
   }
 ]

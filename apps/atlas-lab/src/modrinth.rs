@@ -55,6 +55,20 @@ pub fn parse_project(body: &[u8]) -> Result<Project, Box<dyn std::error::Error>>
     Ok(project)
 }
 
+/// Bind a single-project response to the requested canonical ID or current slug.
+/// Slugs are ASCII case-insensitive; canonical IDs are not case-folded.
+pub fn parse_requested_project(
+    body: &[u8],
+    requested: &str,
+) -> Result<Project, Box<dyn std::error::Error>> {
+    project_url(requested)?;
+    let project = parse_project(body)?;
+    if requested != project.id && !requested.eq_ignore_ascii_case(&project.slug) {
+        return Err("Project response identity does not match request".into());
+    }
+    Ok(project)
+}
+
 fn validate_project(project: &Project) -> Result<(), Box<dyn std::error::Error>> {
     if project.id.len() != 8 || !project.id.bytes().all(|b| b.is_ascii_alphanumeric()) {
         return Err("Invalid canonical project identifier".into());
@@ -136,7 +150,7 @@ impl PublicClient {
     }
     pub fn project(&mut self, id: &str) -> Result<Project, Box<dyn std::error::Error>> {
         let url = project_url(id)?;
-        parse_project(&self.request_json(&url)?)
+        parse_requested_project(&self.request_json(&url)?, id)
     }
     pub fn projects(&mut self, ids: &[String]) -> Result<ProjectBatch, Box<dyn std::error::Error>> {
         let url = projects_url(ids)?;
@@ -368,6 +382,39 @@ mod tests {
                 .gallery
                 .unwrap()
                 .is_empty()
+        );
+    }
+    #[test]
+    fn single_response_binds_request_without_folding_canonical_id() {
+        let body = serde_json::to_vec(&batch_fixture("AANobbMI")).unwrap();
+        for request in ["AANobbMI", "fixture-AANobbMI", "FIXTURE-aanobbmi"] {
+            let p = parse_requested_project(&body, request).unwrap();
+            assert_eq!(
+                serde_json::to_value(p).unwrap(),
+                serde_json::to_value(parse_project(&body).unwrap()).unwrap()
+            );
+        }
+        for request in [
+            "othermod",
+            "ZZZZZZZZ",
+            "aanobbmi",
+            "",
+            "https://example.invalid/",
+        ] {
+            assert!(
+                parse_requested_project(&body, request).is_err(),
+                "{request}"
+            );
+        }
+    }
+    #[test]
+    fn eight_character_slug_is_not_misclassified_as_canonical_id() {
+        let mut value = batch_fixture("AANobbMI");
+        value["slug"] = "abcdefgh".into();
+        let bytes = serde_json::to_vec(&value).unwrap();
+        assert_eq!(
+            parse_requested_project(&bytes, "ABCDEFGH").unwrap().id,
+            "AANobbMI"
         );
     }
     #[test]

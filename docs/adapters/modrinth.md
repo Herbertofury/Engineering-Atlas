@@ -40,3 +40,7 @@ coverage expansion, not a measured speedup. The original CLI-only study preceded
 ## Queued version workflow — 2026-10-27
 
 The local Collection form and queue now reuse the version CLI's official client and complete raw snapshot store. A small hash/generation receipt avoids copying or rounding raw provider content in the UI result. Three real public versions, an explicit missing-ID refresh and a subsequent saved-record experiment passed 32 HTTP checks. Earlier generations remained intact; native-browser interaction is not yet verified. See [workflow evidence and crash/coverage limits](../../experiments/version-collection-queue-lab/README.md).
+
+## Single-project request binding · 2026-10-27
+
+The Rust single-project client and snapshot store now bind the returned canonical ID/current slug to the requested identity before accepting data. Three generated mismatches formerly created successful stored attempts; all now fail before writes. Canonical IDs retain exact case, slugs accept ASCII case differences, and eight-character slugs still work. Three retained public responses preserve the complete existing typed projection across canonical and slug request forms. This is offline correctness evidence, not new live collection or a performance claim. [Reproducer, primary lookup source and limitations](../../experiments/project-identity-lab/README.md).

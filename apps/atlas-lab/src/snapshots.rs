@@ -157,7 +157,7 @@ impl SnapshotStore {
         crate::modrinth::project_url(requested_id)?;
         let body = serde_json::to_vec(p)?;
         // Enforce the same validation for callers as for network responses.
-        crate::modrinth::parse_project(&body)?;
+        crate::modrinth::parse_requested_project(&body, requested_id)?;
         let body = String::from_utf8(body)?;
         let tx = self.0.transaction()?;
         tx.execute(
@@ -530,6 +530,23 @@ mod tests {
             s.latest_modrinth("AANobbMI").unwrap().unwrap().versions,
             ["version-a"]
         );
+        assert_eq!(s.attempts().unwrap(), 2);
+    }
+    #[test]
+    fn mismatched_single_response_cannot_write_or_replace_a_generation() {
+        let mut s = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        s.save_modrinth("sodium", &project()).unwrap();
+        let mut changed = project();
+        changed.title = "Must not replace last good".into();
+        for request in ["othermod", "ZZZZZZZZ", "aanobbmi"] {
+            assert!(s.save_modrinth(request, &changed).is_err());
+            assert_eq!(s.attempts().unwrap(), 1);
+            assert_eq!(
+                s.latest_modrinth("AANobbMI").unwrap().unwrap().title,
+                "Sodium fixture"
+            );
+        }
+        s.save_modrinth("SODIUM", &project()).unwrap();
         assert_eq!(s.attempts().unwrap(), 2);
     }
     #[test]
