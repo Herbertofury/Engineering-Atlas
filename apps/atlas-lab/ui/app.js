@@ -1,4 +1,5 @@
 'use strict';
+import {collectionJob} from './collection-input.mjs';
 const $ = id => document.getElementById(id);
 const renderedJobs = new Map();
 let emptyNode = null;
@@ -17,9 +18,10 @@ function render(data) {
   if(!data.jobs.length){if(!emptyNode){emptyNode=text('div','','empty');emptyNode.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));}nodes.push(emptyNode);}
   const present = new Set();
   for(const job of data.jobs){present.add(job.id);const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(job.id);if(prior&&prior.signature===signature){nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
-    const name=job.job.CollectModrinth?'Modrinth · '+job.job.CollectModrinth.project:'Identifier deduplication';
+    const name=job.job.CollectModrinth?'Modrinth · '+job.job.CollectModrinth.project:job.job.CollectModrinthBatch?'Modrinth batch · '+job.job.CollectModrinthBatch.projects.length+' projects':'Identifier deduplication';
     top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+job.id+' · attempt '+job.attempt));
     if(job.result?.project){const p=job.result.project;e.append(text('p',p.title+' · '+p.id+' · '+p.versions.length+' version IDs'));}
+    if(job.result?.batch){const b=job.result.batch;e.append(text('p',b.projects.length+' retrieved · '+b.missing_ids.length+' missing from response'));if(b.missing_ids.length)e.append(text('p','Partial result. Missing IDs: '+b.missing_ids.join(', '),'error'));}
     if(job.result?.error)e.append(text('p',job.result.error,'error'));
     if(job.result){const d=document.createElement('details');d.append(text('summary','Inspect recorded result'),text('pre',JSON.stringify(job.result,null,2)));e.append(d);}
     renderedJobs.set(job.id,{signature,node:e});nodes.push(e);
@@ -31,5 +33,5 @@ function render(data) {
 }
 let fetching=false;
 async function refresh(){if(fetching||document.hidden)return;fetching=true;try{const r=await fetch('/api/overview',{cache:'no-store'});if(!r.ok)throw Error('Local engine unavailable ('+r.status+').');const data=await r.json();render(data);$('connection').textContent='Connected · worker '+data.worker_status+' · refreshed '+new Date().toLocaleTimeString();$('connection').classList.remove('error');}catch(e){$('connection').textContent=e.message+' Previous results remain visible.';$('connection').classList.add('error');}finally{fetching=false;}}
-$('collect-form').addEventListener('submit',async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');if(button.disabled)return;button.disabled=true;$('collect-status').textContent='Queuing request…';$('collect-status').classList.remove('error');try{const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json','X-Atlas-Request':'local-ui'},body:JSON.stringify({CollectModrinth:{project:$('project').value.trim()}})});if(!r.ok)throw Error('Could not queue request ('+r.status+').');const j=await r.json();$('collect-status').textContent='Job '+j.id+' queued. Follow its result in Overview.';await refresh();}catch(error){$('collect-status').textContent=error.message;$('collect-status').classList.add('error');}finally{button.disabled=false;}});
+$('collect-form').addEventListener('submit',async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');if(button.disabled)return;button.disabled=true;$('collect-status').textContent='Queuing request…';$('collect-status').classList.remove('error');try{const r=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json','X-Atlas-Request':'local-ui'},body:JSON.stringify(collectionJob($('project').value))});if(!r.ok)throw Error('Could not queue request ('+r.status+').');const j=await r.json();$('collect-status').textContent='Job '+j.id+' queued. Follow its result in Overview.';await refresh();}catch(error){$('collect-status').textContent=error.message;$('collect-status').classList.add('error');}finally{button.disabled=false;}});
 refresh();setInterval(refresh,2500);document.addEventListener('visibilitychange',refresh);

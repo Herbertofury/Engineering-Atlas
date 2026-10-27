@@ -5,6 +5,7 @@ use std::path::Path;
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum Job {
     CollectModrinth { project: String },
+    CollectModrinthBatch { projects: Vec<String> },
     DedupExperiment,
 }
 #[derive(Debug, Clone, PartialEq)]
@@ -14,6 +15,7 @@ pub struct Claim {
     pub worker: String,
     pub job: Job,
 }
+pub const MAX_JOB_OUTPUT_BYTES: usize = 2 * 1024 * 1024;
 pub struct Queue(Connection);
 impl Queue {
     pub fn open(path: &Path) -> rusqlite::Result<Self> {
@@ -34,8 +36,14 @@ impl Queue {
         if now_ms < 0 {
             return Err("Invalid clock".into());
         }
-        if let Job::CollectModrinth { project } = job {
-            crate::modrinth::project_url(project)?;
+        match job {
+            Job::CollectModrinth { project } => {
+                crate::modrinth::project_url(project)?;
+            }
+            Job::CollectModrinthBatch { projects } => {
+                crate::modrinth::projects_url(projects)?;
+            }
+            Job::DedupExperiment => {}
         }
         let payload = serde_json::to_string(job)?;
         let tx = self
@@ -138,7 +146,10 @@ impl Queue {
             return Err("Invalid clock".into());
         }
         let payload = result.map(serde_json::to_string).transpose()?;
-        if payload.as_ref().is_some_and(|s| s.len() > 2 * 1024 * 1024) {
+        if payload
+            .as_ref()
+            .is_some_and(|s| s.len() > MAX_JOB_OUTPUT_BYTES)
+        {
             return Err("Job output exceeds budget".into());
         }
         let state = if succeeded { "succeeded" } else { "failed" };
@@ -192,6 +203,26 @@ impl Queue {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn batch_jobs_validate_and_deduplicate_without_reordering() {
+        let mut q = Queue::open(Path::new(":memory:")).unwrap();
+        let job = Job::CollectModrinthBatch {
+            projects: vec!["AANobbMI".into(), "gvQqBUqZ".into()],
+        };
+        let first = q.enqueue(&job, 0).unwrap();
+        assert_eq!(q.enqueue(&job, 1).unwrap(), first);
+        assert_eq!(q.claim("worker", 2, 1000).unwrap().unwrap().job, job);
+        for projects in [
+            vec![],
+            vec!["sodium".into()],
+            vec!["AANobbMI".into(), "AANobbMI".into()],
+        ] {
+            assert!(
+                q.enqueue(&Job::CollectModrinthBatch { projects }, 3)
+                    .is_err()
+            );
+        }
+    }
     #[test]
     fn duplicate_pending_jobs_share_one_record() {
         let mut q = Queue::open(Path::new(":memory:")).unwrap();

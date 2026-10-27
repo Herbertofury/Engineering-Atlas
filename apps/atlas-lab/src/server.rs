@@ -97,6 +97,26 @@ async fn enqueue(
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
 }
+fn batch_output(batch: crate::modrinth::ProjectBatch) -> (bool, serde_json::Value) {
+    let complete = batch.missing_ids.is_empty();
+    (
+        complete,
+        serde_json::json!({"batch":batch,"status":if complete {"complete"} else {"partial"},"scope":"bounded public metadata projections; missing identities retained explicitly"}),
+    )
+}
+fn bounded_output(succeeded: bool, output: serde_json::Value) -> (bool, serde_json::Value) {
+    match serde_json::to_vec(&output) {
+        Ok(bytes) if bytes.len() <= crate::jobs::MAX_JOB_OUTPUT_BYTES => (succeeded, output),
+        Ok(bytes) => (
+            false,
+            serde_json::json!({"error":"Result exceeds job output budget; no truncated success recorded. Try a smaller batch.","rejected_serialized_bytes":bytes.len()}),
+        ),
+        Err(_) => (
+            false,
+            serde_json::json!({"error":"Result serialization failed; previous results retained"}),
+        ),
+    }
+}
 fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>) {
     let mut q = match Queue::open(&path) {
         Ok(q) => q,
@@ -117,13 +137,13 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>) {
         match q.claim("local-worker", now(), 60_000) {
             Ok(Some(claim)) => {
                 let result=match &claim.job {
-                    Job::CollectModrinth {project}=>client.project(project).map(|p|serde_json::json!({"project":p,"scope":"one public metadata projection"})).map_err(|_|"Collection failed; previous results are retained"),
+                    Job::CollectModrinth {project}=>client.project(project).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|_|"Collection failed; previous results are retained"),
+                    Job::CollectModrinthBatch {projects}=>client.projects(projects).map(batch_output).map_err(|_|"Batch collection failed; previous results are retained"),
                     Job::DedupExperiment=>Err("Background experiment runner is not enabled yet; use the CLI lab"),
                 };
-                let succeeded = result.is_ok();
-                let output = match result {
-                    Ok(v) => v,
-                    Err(e) => serde_json::json!({"error":e}),
+                let (succeeded, output) = match result {
+                    Ok((complete, value)) => bounded_output(complete, value),
+                    Err(error) => (false, serde_json::json!({"error":error})),
                 };
                 if q.finish_output(&claim, succeeded, now(), Some(&output))
                     .is_err()
@@ -170,6 +190,15 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
                 )
             }),
         )
+        .route(
+            "/collection-input.mjs",
+            get(|| async {
+                (
+                    [(header::CONTENT_TYPE, "text/javascript")],
+                    include_str!("../ui/collection-input.mjs"),
+                )
+            }),
+        )
         .route("/api/overview", get(overview))
         .route("/api/jobs", post(enqueue))
         .layer(DefaultBodyLimit::max(4096))
@@ -195,6 +224,34 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn partial_batch_is_not_reported_as_success() {
+        let batch = crate::modrinth::ProjectBatch {
+            requested_ids: vec!["AANobbMI".into()],
+            projects: vec![],
+            missing_ids: vec!["AANobbMI".into()],
+        };
+        let (success, value) = batch_output(batch);
+        assert!(!success);
+        assert_eq!(value["status"], "partial");
+        assert_eq!(value["batch"]["missing_ids"][0], "AANobbMI");
+    }
+    #[test]
+    fn oversized_result_fails_explicitly_instead_of_looping_on_finalization() {
+        let (success, value) = bounded_output(
+            true,
+            serde_json::json!({"data":"x".repeat(crate::jobs::MAX_JOB_OUTPUT_BYTES)}),
+        );
+        assert!(!success);
+        assert!(
+            value["error"]
+                .as_str()
+                .unwrap()
+                .contains("no truncated success")
+        );
+        let original = serde_json::json!({"complete":"exact"});
+        assert_eq!(bounded_output(true, original.clone()), (true, original));
+    }
     #[test]
     fn rejects_cross_site_and_dns_rebinding() {
         let mut h = HeaderMap::new();

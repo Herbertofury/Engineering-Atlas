@@ -80,7 +80,7 @@
     "slug": "modrinth",
     "name": "Modrinth",
     "source": "https://docs.modrinth.com/api/",
-    "status": "Rust public metadata and all 6 selected project gallery entries collected with durable receipts. Description-linked media completeness remains unaudited.",
-    "checked_at": "2026-10-26"
+    "status": "Rust public metadata/gallery collection, bounded canonical-ID batch CLI and local queue tested. Five complete projected-output comparisons matched; 22 loopback checks and durable reopen passed. Description-linked media and visual local UI acceptance remain incomplete.",
+    "checked_at": "2026-10-27"
   }
 ]

@@ -25,4 +25,10 @@ From `apps/atlas-lab`, explicitly run `cargo run --locked --release --example mo
 
 ## Boundaries
 
-This is not the full provider response: description-body content and other fields outside the existing projection remain outside scope. Gallery URLs are metadata, not downloaded images. No image decode, video, account access, peak memory, concurrent UI, power-loss durability or other-project baseline was tested. A combined response above 2 MiB fails explicitly rather than being truncated; use smaller batches. The web UI queue still uses the single-project job. Nothing was promoted to another project's implementation, wiki or TODO.
+This is not the full provider response: description-body content and other fields outside the existing projection remain outside scope. Gallery URLs are metadata, not downloaded images. No image decode, video, account access, peak memory, concurrent UI, power-loss durability or other-project baseline was tested. A combined response above 2 MiB fails explicitly rather than being truncated; use smaller batches. The timing run covered the CLI collector. The later local UI/queue integration is verified separately below. Nothing was promoted to another project's implementation, wiki or TODO.
+
+## Local queue integration
+
+The Collection form accepts one slug/ID or comma-separated canonical IDs; the Rust queue independently validates and bounds the request. Missing identities produce a partial failed job with returned data retained. Full results and terminal states remain one atomic queue transaction. An oversized envelope produces an explicit failed receipt rather than a truncated success.
+
+[22 real loopback HTTP checks](queue-http-receipt-2026-10-27.json) passed, including three live projects, source guards, duplicate requests, request limits, module assets, shutdown and SQLite reopen parity. [Reproduction helper](queue_http_check.py) uses a fresh temporary database and refuses to overwrite an existing test database; build the release binary first. It makes a public Modrinth request and is not run by CI. The final local suite has 40 Rust unit tests plus 3 integration tests, 30 Node tests and 53 Python tests. HTTP/module tests do not establish visual browser or installed-desktop acceptance.

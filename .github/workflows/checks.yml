@@ -22,6 +22,8 @@ jobs:
         run: python scripts/build_card_lab.py --check
       - name: Verify public media asset identities
         run: python scripts/build_media_lab.py --check
+      - name: Test collection input contracts
+        run: node --test tests/collection-input.test.mjs
       - name: Test media contracts
         run: node --test tests/media-lab.test.mjs
       - name: Test card workload and paired-summary invariants
