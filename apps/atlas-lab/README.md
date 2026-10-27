@@ -79,3 +79,7 @@ Queue integration verification: 22 loopback HTTP checks exercised a real three-p
 ## Bounded queued experiment
 
 The explicit Run bounded comparison button runs only the two built-in identifier strategies, with 2 warmups, 15 timed pairs and 10,000 run-specific differential stress cases. A cooperative 15-second budget and shutdown checks preserve partial results. Raw results and failures are journaled; earlier successful evidence is retained. Peak memory is unmeasured, so the gate still returns Incomplete and no candidate is promoted. This queued runner is separate from the older CLI lab described above. See [runner evidence](../../experiments/bounded-runner-lab/README.md).
+
+## Event-driven queue wake-up
+
+Successful enqueues notify a capacity-one channel, and the worker drains ready jobs without a mandatory sleep between them. The one-second idle recovery scan remains; provider cooldowns and transaction boundaries are unchanged. The [actual Atlas HTTP comparison](../../experiments/queue-wakeup-lab/README.md) retains full results, cancellation checks and the prior baseline. This removes measured dispatch delay, not algorithm work or evidence gates.

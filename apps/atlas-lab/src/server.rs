@@ -13,6 +13,7 @@ use std::{
     sync::{
         Arc,
         atomic::{AtomicBool, AtomicU8, Ordering},
+        mpsc::{self, Receiver, SyncSender},
     },
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
@@ -23,6 +24,7 @@ struct App {
     path: PathBuf,
     db_slots: Arc<tokio::sync::Semaphore>,
     worker_status: Arc<AtomicU8>,
+    wake: SyncSender<()>,
 }
 fn now() -> i64 {
     SystemTime::now()
@@ -88,7 +90,12 @@ async fn enqueue(
         let _permit = permit;
         let mut q = Queue::open(&app.path).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
         q.enqueue(&job, now())
-            .map(|id| Json(serde_json::json!({"id":id})))
+            .map(|id| {
+                // A bounded token cannot be lost between the queue scan and wait.
+                // Full means a wake is already pending; never block the HTTP worker.
+                let _ = app.wake.try_send(());
+                Json(serde_json::json!({"id":id}))
+            })
             .map_err(|_| StatusCode::BAD_REQUEST)
     })
     .await
@@ -114,7 +121,7 @@ fn bounded_output(succeeded: bool, output: serde_json::Value) -> (bool, serde_js
         ),
     }
 }
-fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>) {
+fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Receiver<()>) {
     let mut q = match Queue::open(&path) {
         Ok(q) => q,
         Err(_) => {
@@ -154,11 +161,14 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>) {
                 {
                     eprintln!("A job could not be finalized; its lease remains recoverable");
                 }
+                // Drain durable ready work immediately. Provider throttling remains in PublicClient.
+                continue;
             }
             Ok(None) => {}
             Err(_) => eprintln!("Queue temporarily unavailable"),
         }
-        std::thread::sleep(Duration::from_secs(1));
+        // Periodic fallback still discovers expired leases or external durable enqueues.
+        let _ = wake.recv_timeout(Duration::from_secs(1));
     }
 }
 pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
@@ -169,8 +179,11 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
     let worker_path = path.clone();
     let worker_status = Arc::new(AtomicU8::new(0));
     let status_for_thread = worker_status.clone();
-    let worker_handle =
-        std::thread::spawn(move || worker(worker_path, worker_stop, status_for_thread));
+    let (wake, wake_receiver) = mpsc::sync_channel(1);
+    let wake_for_shutdown = wake.clone();
+    let worker_handle = std::thread::spawn(move || {
+        worker(worker_path, worker_stop, status_for_thread, wake_receiver)
+    });
     let app = Router::new()
         .route(
             "/",
@@ -210,6 +223,7 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
         .with_state(App {
             path,
             worker_status,
+            wake,
             db_slots: Arc::new(tokio::sync::Semaphore::new(4)),
         });
     println!(
@@ -221,6 +235,7 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
         })
         .await;
     stop.store(true, Ordering::Relaxed);
+    let _ = wake_for_shutdown.try_send(());
     let _ = tokio::task::spawn_blocking(move || worker_handle.join()).await;
     served?;
     Ok(())
