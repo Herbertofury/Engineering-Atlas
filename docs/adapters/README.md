@@ -18,6 +18,7 @@ Research and implementation status are separate. A platform listing is not proof
 - [CurseForge](curseforge.md)
 - [Nexus Mods](nexus-mods.md)
 - [Modrinth](modrinth.md)
+- [GitHub](github.md) · selected public upstream metadata, not release-asset coverage
 
 Nexus Mods groups Skyrim Special Edition, Fallout 4 and Starfield with distinct game-domain fixtures.
 
@@ -28,7 +29,7 @@ Nexus Mods groups Skyrim Special Edition, Fallout 4 and Starfield with distinct 
 - [Browser card-density lab](../card-lab/index.html)
 - [Measured storage workload](../../experiments/rust-storage-lab/README.md)
 
-Next coverage expansion includes official/permission-compatible routes for GitHub, GitLab, Hangar, SpigotMC, Bukkit, BuiltByBit, ModDB, Polymart, Planet Minecraft, MCPEDL, ModBay, Minecraft Marketplace, BOOTH, Fourthwall, Ko-fi, itch.io, Gumroad, GOG, Epic, RAWG, IGDB, console storefronts, Tumblr and additional creator platforms. Each needs its own source, access and completeness evidence before a working-support claim.
+Next coverage expansion includes official/permission-compatible routes for GitLab, Hangar, SpigotMC, Bukkit, BuiltByBit, ModDB, Polymart, Planet Minecraft, MCPEDL, ModBay, Minecraft Marketplace, BOOTH, Fourthwall, Ko-fi, itch.io, Gumroad, GOG, Epic, RAWG, IGDB, console storefronts, Tumblr and additional creator platforms. Each needs its own source, access and completeness evidence before a working-support claim.
 
 ## Promotion rule
 
