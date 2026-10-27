@@ -3,6 +3,8 @@
 This validates measurement structure and caller-supplied input identity, not whether
 an executable is trustworthy or whether its reported measurements are truthful.
 """
+import json
+import math
 import re
 
 
@@ -65,3 +67,30 @@ def validate_receipt(data, kind, source, input_bytes):
                     f'Missing {key}')
     else:
         require(data.get('accounting_error') is False, 'Allocation accounting error')
+
+
+def decode_receipt(raw):
+    """Decode the receipt wire format without silently discarding contradictions.
+
+    Unknown fields remain intact; duplicate keys at any depth and non-finite
+    JSON numbers are invalid. This is not an executable trust boundary.
+    """
+    def object_pairs(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('Duplicate JSON object key')
+            result[key] = value
+        return result
+
+    def invalid_constant(_value):
+        raise ValueError('Non-finite JSON number')
+
+    def finite_float(value):
+        result = float(value)
+        if not math.isfinite(result):
+            raise ValueError('Non-finite JSON number')
+        return result
+
+    return json.loads(raw, object_pairs_hook=object_pairs,
+                      parse_constant=invalid_constant, parse_float=finite_float)
