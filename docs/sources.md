@@ -1,6 +1,6 @@
 # Primary-source register
 
-Checked October 26, 2026. These sources document behavior; they do not establish local performance wins.
+Updated through October 27, 2026. Entries retain their individual observed-version and review context; this is not a claim that every source was freshly rechecked today. These sources document behavior; they do not establish local performance wins.
 
 ## E01
 

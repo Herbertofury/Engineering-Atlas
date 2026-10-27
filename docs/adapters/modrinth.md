@@ -35,8 +35,7 @@ bounded transport. Original per-version JSON retains files/hashes, dependency
 metadata, compatibility and changelog fields without fetching or executing file
 links. Separate atomic snapshots preserve last-good data on missing/failed
 refreshes. Three public responses and reopened exact payloads passed; this is
-coverage expansion, not a measured speedup. The queue/form does not yet expose
-this lane. [Evidence and limitations](../../experiments/modrinth-version-lab/README.md).
+coverage expansion, not a measured speedup. The original CLI-only study preceded the queued workflow documented below. [Evidence and limitations](../../experiments/modrinth-version-lab/README.md).
 
 ## Queued version workflow — 2026-10-27
 
