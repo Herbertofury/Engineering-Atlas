@@ -27,3 +27,13 @@ An optional Rust CLI collector uses the official multiple-project API with 1–2
 ## Long description retention · 2026-10-27
 
 [Measured body-projection study](../../experiments/body-projection-lab/README.md) preserves all earlier fields and exact long-form text in three public responses and reopened snapshots. The added data costs a small measured parse increase; it is not a speedup or proof of lag-free cards. Missing/legacy text stays unknown, markup is inert, and linked media are not fetched or executed.
+
+## Public version/file metadata · 2026-10-27
+
+The optional CLI now collects 1–20 official version records using the existing
+bounded transport. Original per-version JSON retains files/hashes, dependency
+metadata, compatibility and changelog fields without fetching or executing file
+links. Separate atomic snapshots preserve last-good data on missing/failed
+refreshes. Three public responses and reopened exact payloads passed; this is
+coverage expansion, not a measured speedup. The queue/form does not yet expose
+this lane. [Evidence and limitations](../../experiments/modrinth-version-lab/README.md).

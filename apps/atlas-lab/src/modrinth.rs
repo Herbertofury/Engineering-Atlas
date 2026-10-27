@@ -143,6 +143,13 @@ impl PublicClient {
         let url = projects_url(ids)?;
         parse_projects(&self.request_json(&url)?, ids)
     }
+    pub fn versions(
+        &mut self,
+        ids: &[String],
+    ) -> Result<crate::modrinth_versions::VersionBatch, Box<dyn std::error::Error>> {
+        let url = crate::modrinth_versions::versions_url(ids)?;
+        crate::modrinth_versions::parse_versions(&self.request_json(&url)?, ids)
+    }
     pub fn cooldown_remaining(&self) -> Duration {
         self.next_request.saturating_duration_since(Instant::now())
     }

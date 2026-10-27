@@ -590,3 +590,81 @@ Input CR normalization precedes tokenization; NULL treatment is context dependen
 [Node performance GC diagnostics](https://nodejs.org/docs/latest-v24.x/api/perf_hooks.html) · Node 24.22.1 observed and used
 
 Passive GC detail observations and timings; instrumentation and shared heap are not per-parser peak memory. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## LIVE01
+
+[LiveWeb-IE paper](https://arxiv.org/html/2603.13773v1) · v1, submitted 2026-03-14; ICLR 2026
+
+Live-site methodology, limitations and latency tradeoffs; not locally benchmarked Evidence: primary documented. Reviewed 2026-10-27.
+
+## LIVE02
+
+[LiveWeb-IE official dataset and terms](https://github.com/sbY99/LiveWeb-IE) · README observed 2026-10-27
+
+Non-commercial research restriction; no dataset downloaded or executed Evidence: primary documented. Reviewed 2026-10-27.
+
+## WAKE01
+
+[Rust bounded synchronous channel](https://doc.rust-lang.org/std/sync/mpsc/fn.sync_channel.html) · Rust 1.99.1
+
+Bounded capacity and nonblocking send; local queue experiment is separate evidence Evidence: primary documented. Reviewed 2026-10-27.
+
+## WAKE02
+
+[Rust nonblocking channel send](https://doc.rust-lang.org/std/sync/mpsc/struct.SyncSender.html#method.try_send) · Rust 1.99.1
+
+Bounded capacity and nonblocking send; local queue experiment is separate evidence Evidence: primary documented. Reviewed 2026-10-27.
+
+## BROTLI01
+
+[Brotli Python package advisory](https://github.com/advisories/GHSA-9v8h-qqgm-4m35) · Reviewed advisory updated 2026-10-23
+
+Exact dependency scope and safe error categories; not a full-system audit Evidence: primary documented. Reviewed 2026-10-27.
+
+## CERTIFI01
+
+[certifi compromised intermediate root advisory](https://github.com/advisories/GHSA-6q48-6c7w-9gw2) · Reviewed advisory updated 2026-10-26
+
+Exact dependency scope and safe error categories; not a full-system audit Evidence: primary documented. Reviewed 2026-10-27.
+
+## NET03
+
+[reqwest safe error inspection](https://docs.rs/reqwest/0.13.5/reqwest/struct.Error.html) · 0.13.5
+
+Request error category inspection without emitting attached URLs Evidence: primary documented. Reviewed 2026-10-27.
+
+## ISOL01
+
+[SQLite isolation and read snapshots](https://www.sqlite.org/isolation.html) · Official isolation documentation; checked 2026-10-27
+
+Multiple queries need one read transaction for one response snapshot Evidence: primary documented. Reviewed 2026-10-27.
+
+## ISOL02
+
+[rusqlite transaction source](https://github.com/rusqlite/rusqlite/blob/a60e76b5e86ee60442213efe79758a6c2ca8cf3d/src/transaction.rs) · 0.41.0, exact registry and release tag commit
+
+DEFERRED transaction and runtime nested-transaction checks; JSON validation is separate Evidence: primary documented. Reviewed 2026-10-27.
+
+## UI07
+
+[Event Timing API working draft](https://www.w3.org/TR/2026/WD-event-timing-20261013/) · W3C Working Draft 2026-10-13
+
+Trusted event types, observation thresholds and timing boundaries; not a complete INP score Evidence: primary documented. Reviewed 2026-10-27.
+
+## UI08
+
+[MDN Using Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) · Living documentation reviewed 2026-10-27
+
+Dedicated worker execution and messaging; startup and clone cost must be measured rather than assumed beneficial. Evidence: primary documented. Reviewed 2026-10-27.
+
+## UI09
+
+[MDN structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) · Living documentation reviewed 2026-10-27
+
+Plain records clone; DOM, functions and class metadata do not have general lossless clone semantics. Evidence: primary documented. Reviewed 2026-10-27.
+
+## COL04
+
+[Modrinth multiple-version operation](https://docs.modrinth.com/api/operations/getversions/) · v2 official API reviewed 2026-10-27
+
+Version files, hashes, dependencies and compatibility fields; metadata only is not file verification or authorization to execute attachments. Evidence: primary documented. Reviewed 2026-10-27.

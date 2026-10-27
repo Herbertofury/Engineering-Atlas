@@ -7,6 +7,35 @@ use std::{hint::black_box, path::Path, time::Instant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
+    if args.len() >= 4 && args[1] == "collect-modrinth-versions" {
+        let ids = &args[3..];
+        atlas_lab::modrinth_versions::versions_url(ids)?;
+        let mut store = atlas_lab::snapshots::SnapshotStore::open(Path::new(&args[2]))?;
+        match atlas_lab::modrinth::PublicClient::new()?.versions(ids) {
+            Ok(batch) => {
+                let generations = store.save_modrinth_versions(&batch)?;
+                #[derive(serde::Serialize)]
+                struct Receipt {
+                    generations: Vec<(String, i64)>,
+                    batch: atlas_lab::modrinth_versions::VersionBatch,
+                    scope: &'static str,
+                }
+                println!(
+                    "{}",
+                    serde_json::to_string_pretty(&Receipt {
+                        generations,
+                        batch,
+                        scope: "bounded public version metadata; file links retained only, no downloads or execution; CLI lane, not queued UI coverage"
+                    })?
+                );
+                return Ok(());
+            }
+            Err(error) => {
+                store.record_version_failure(ids)?;
+                return Err(error);
+            }
+        }
+    }
     if args.len() >= 4 && args[1] == "collect-modrinth-batch" {
         let ids = &args[3..];
         atlas_lab::modrinth::projects_url(ids)?;
@@ -75,7 +104,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     if args.len() != 3 || args[1] != "dedup-lab" {
         eprintln!(
-            "Usage: atlas-lab serve OUTPUT.sqlite\n       atlas-lab serve-candidate OUTPUT.sqlite (isolated validated-raw overview)\n       atlas-lab storage-lab NEW_DIRECTORY\n       atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
+            "Usage: atlas-lab collect-modrinth-versions OUTPUT.sqlite CANONICAL_VERSION_ID...\n       atlas-lab serve OUTPUT.sqlite\n       atlas-lab serve-candidate OUTPUT.sqlite (isolated validated-raw overview)\n       atlas-lab storage-lab NEW_DIRECTORY\n       atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
         );
         std::process::exit(2);
     }

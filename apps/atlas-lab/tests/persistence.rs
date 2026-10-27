@@ -107,3 +107,65 @@ fn batch_survives_reopen_without_replacing_missing_project() {
         "ok"
     );
 }
+
+#[test]
+fn version_payloads_survive_reopen_missing_refresh_and_failed_transaction() {
+    use atlas_lab::modrinth_versions::parse_versions;
+    let scratch = Scratch::new();
+    let body = r#"[{"id":"abcdefgh","project_id":"AANobbMI","name":"Fixture","version_number":"1","date_published":"2026-10-27T00:00:00Z","game_versions":["1.21.1"],"loaders":["fabric"],"dependencies":[],"files":[{"filename":"fixture.jar","url":"https://cdn.modrinth.com/example.jar","size":42,"primary":true,"hashes":{"sha1":"fixture-only"}}],"changelog":null,"future_field":18446744073709551617}]"#;
+    let ids = vec!["abcdefgh".into()];
+    let batch = parse_versions(body.as_bytes(), &ids).unwrap();
+    let exact = batch.versions[0].payload.get().to_owned();
+    {
+        let mut store = SnapshotStore::open(&scratch.0).unwrap();
+        store.save_modrinth_versions(&batch).unwrap();
+    }
+    {
+        let mut store = SnapshotStore::open(&scratch.0).unwrap();
+        assert_eq!(
+            store
+                .latest_modrinth_version("abcdefgh")
+                .unwrap()
+                .unwrap()
+                .payload
+                .get(),
+            exact
+        );
+        store
+            .save_modrinth_versions(&parse_versions(b"[]", &ids).unwrap())
+            .unwrap();
+        store.record_version_failure(&ids).unwrap();
+        assert_eq!(store.attempts().unwrap(), 3);
+        assert_eq!(
+            store
+                .latest_modrinth_version("abcdefgh")
+                .unwrap()
+                .unwrap()
+                .payload
+                .get(),
+            exact
+        );
+        assert!(store.latest_modrinth("abcdefgh").unwrap().is_none());
+        let mut forged = parse_versions(body.as_bytes(), &ids).unwrap();
+        forged.versions[0].project_id = "ijklmnop".into();
+        assert!(store.save_modrinth_versions(&forged).is_err());
+        assert_eq!(store.attempts().unwrap(), 3);
+        let c = rusqlite::Connection::open(&scratch.0).unwrap();
+        c.execute_batch("CREATE TRIGGER reject_version_attempt BEFORE INSERT ON collection_attempts WHEN NEW.requested_id LIKE 'modrinth-version:%' BEGIN SELECT RAISE(ABORT,'fixture failure'); END;").unwrap();
+        assert!(store.save_modrinth_versions(&batch).is_err());
+        assert_eq!(
+            c.query_row(
+                "SELECT count(*) FROM snapshots WHERE provider='modrinth-version'",
+                [],
+                |r| r.get::<_, i64>(0)
+            )
+            .unwrap(),
+            1
+        );
+        assert_eq!(
+            c.query_row("PRAGMA integrity_check", [], |r| r.get::<_, String>(0))
+                .unwrap(),
+            "ok"
+        );
+    }
+}

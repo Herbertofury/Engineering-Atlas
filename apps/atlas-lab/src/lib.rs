@@ -312,6 +312,7 @@ mod tests {
 pub mod collection;
 
 pub mod modrinth;
+pub mod modrinth_versions;
 
 pub mod snapshots;
 

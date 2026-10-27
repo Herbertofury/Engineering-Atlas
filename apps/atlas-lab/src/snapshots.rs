@@ -109,6 +109,68 @@ impl SnapshotStore {
         self.0
             .query_row("SELECT count(*) FROM collection_attempts", [], |r| r.get(0))
     }
+
+    pub fn save_modrinth_versions(
+        &mut self,
+        batch: &crate::modrinth_versions::VersionBatch,
+    ) -> Result<Vec<(String, i64)>, Box<dyn std::error::Error>> {
+        let payloads: Vec<_> = batch.versions.iter().map(|v| &v.payload).collect();
+        let checked = crate::modrinth_versions::parse_versions(
+            &serde_json::to_vec(&payloads)?,
+            &batch.requested_ids,
+        )?;
+        if checked.missing_ids != batch.missing_ids
+            || checked.versions.len() != batch.versions.len()
+            || checked
+                .versions
+                .iter()
+                .zip(&batch.versions)
+                .any(|(a, b)| a.canonical_id != b.canonical_id || a.project_id != b.project_id)
+        {
+            return Err("Inconsistent version batch identities or missing state".into());
+        }
+        let tx = self.0.transaction()?;
+        let mut generations = Vec::new();
+        for version in checked.versions {
+            tx.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth-version',?1,?2)", params![version.canonical_id, version.payload.get()])?;
+            let generation = tx.last_insert_rowid();
+            tx.execute("INSERT INTO collection_attempts(requested_id,outcome,generation) VALUES(?1,'success',?2)", params![format!("modrinth-version:{}",version.canonical_id),generation])?;
+            generations.push((version.canonical_id, generation));
+        }
+        for id in checked.missing_ids {
+            tx.execute(
+                "INSERT INTO collection_attempts(requested_id,outcome) VALUES(?1,'failure')",
+                [format!("modrinth-version:{id}")],
+            )?;
+        }
+        tx.commit()?;
+        Ok(generations)
+    }
+
+    pub fn record_version_failure(
+        &mut self,
+        ids: &[String],
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        crate::modrinth_versions::versions_url(ids)?;
+        let tx = self.0.transaction()?;
+        for id in ids {
+            tx.execute(
+                "INSERT INTO collection_attempts(requested_id,outcome) VALUES(?1,'failure')",
+                [format!("modrinth-version:{id}")],
+            )?;
+        }
+        tx.commit()?;
+        Ok(())
+    }
+
+    pub fn latest_modrinth_version(
+        &self,
+        id: &str,
+    ) -> Result<Option<crate::modrinth_versions::VersionRecord>, Box<dyn std::error::Error>> {
+        let body: Option<String> = self.0.query_row("SELECT payload FROM snapshots WHERE provider='modrinth-version' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|r.get(0)).optional()?;
+        body.map(|b| crate::modrinth_versions::parse_version(b.as_bytes()))
+            .transpose()
+    }
 }
 #[cfg(test)]
 mod tests {
