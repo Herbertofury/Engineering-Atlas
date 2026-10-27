@@ -32,3 +32,11 @@ No parser was promoted in the collector. Storage throughput, native peak memory,
 Build the `upstream_validation_lab` and `upstream_validation_allocations` examples with the app's pinned toolchain/lockfile. Supply the three retained public input files and the explicitly generated density file described in provenance, then run `run_local.py --binary-dir PATH --input-dir PATH --output-dir NEW_DIRECTORY`. This analyst CLI runs only already-built example paths supplied by the operator; it is not exposed through the application. It bounds each process to 20 seconds, keeps failures, and refuses an existing output directory.
 
 The final timing receipt includes compiler/profile/target, flags, dependency lock, baseline/candidate/validator and measurement-harness hashes. Earlier receipts lack the final harness field and have a generic origin label corrected explicitly in provenance; they are not silently rewritten. Shared-host scheduling was not controlled, and no target-project recommendation is justified.
+
+## Receipt acceptance repair · October 27, 2026
+
+The analyst runner now rejects incomplete rounds, wrong input/source identities, truthy non-boolean parity, changed defaults, invalid timing fields and inconsistent allocation counters before calculating comparisons. Validation uses explicit errors and remains active under Python optimization. The extracted original checks accepted 24 adversarial mutations; all are now rejected. This was an acceptance-gate weakness, not evidence that prior published samples were fabricated or incomplete: all 16 retained final receipts pass the new structural checks.
+
+[Before failure log](receipt-gate/before.log), [focused checks](receipt-gate/after.log), [optimized-mode checks](receipt-gate/optimized.log) and a [fresh 16-run comparison](receipt-gate/summary.json) are retained. All 67 Python and 73 Node tests pass. Fresh real-record comparisons favor the candidate in 116/120 pairs; an hls sample maximum still regresses. No default promotion follows.
+
+The gate verifies the fixed measurement protocol and the actual local input digest/length, not honesty of arbitrary executables or process memory. Allocation receipts do not independently embed compiler/source identity; the runner records executable hashes. This remains a trusted, already-built local experiment, not an untrusted-code sandbox.
