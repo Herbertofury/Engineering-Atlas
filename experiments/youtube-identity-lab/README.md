@@ -43,3 +43,9 @@ New harness: `atlas-real-media-v10-video-identity`. Browser/deployment verificat
 is recorded separately; local tests do not establish actual playback. No speed,
 peak-memory, broad security, authenticated adapter or other-project acceptance
 is claimed. Existing working assets and failures remain retained.
+
+## Deployed public-browser observation
+
+On 2026-10-27 the exact implementation commit above passed Linux/Windows CI and Pages deployment; all nine served assets matched. The exported [raw browser receipt](live-browser-receipt.json) identifies v10 and its content-addressed loaded module. All five cards and 19 gallery / 19 video entries remained. 22 of 23 preview elements decoded; the YouTube thumbnail failed and remains a failure.
+
+The official YouTube player became ready, then a user-initiated Play request buffered. The 30-second unverified timeout is retained. The player subsequently reported state 1 / playing approximately 123.536 seconds after the request, and state 2 after Pause; visible player captions independently appeared. Reload cleanup left zero iframe/video elements. Autoplay was off. This proves one public example reached playback, not reliable start latency, full-video delivery, authentication, captions collection or broad YouTube support. The identity repair did not establish a playback-speed improvement.
