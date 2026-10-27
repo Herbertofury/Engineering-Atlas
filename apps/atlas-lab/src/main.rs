@@ -149,14 +149,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         baseline_revision: "linear-unique-v1".into(),
         workload_id: "generated-6000-ids-4001-unique-v1".into(),
         environment_id: format!(
-            "{}-{}; atlas-lab {}; standalone generated workload",
-            std::env::consts::OS,
-            std::env::consts::ARCH,
-            env!("CARGO_PKG_VERSION")
+            "{}; runner:{}",
+            atlas_lab::build_identity::environment("standalone generated workload"),
+            atlas_lab::build_identity::sha256_hex(include_bytes!("main.rs"))
         ),
         trials,
         stress_cases: 0,
         stress_failures: 0,
+        correctness_failures: 0,
     };
     let policy = Gate {
         minimum_pairs: 15,

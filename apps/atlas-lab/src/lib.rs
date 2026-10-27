@@ -1,4 +1,5 @@
 //! Evidence gates for bounded implementation experiments, not a general self-rewriting AI.
+extern crate self as atlas_lab;
 pub mod collection_failure;
 use serde::{Deserialize, Serialize};
 
@@ -22,6 +23,12 @@ pub struct Evidence {
     pub trials: Vec<Trial>,
     pub stress_cases: u64,
     pub stress_failures: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub correctness_failures: u64,
+}
+
+fn is_zero(value: &u64) -> bool {
+    *value == 0
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -64,7 +71,8 @@ impl Gate {
             return Decision::Incomplete("Missing or indistinguishable experiment identity".into());
         }
         // Never hide a known failure behind an insufficient sample count.
-        if e.stress_failures > 0
+        if e.correctness_failures > 0
+            || e.stress_failures > 0
             || e.trials
                 .iter()
                 .any(|t| !t.equal_complete_output || t.cancelled_cleanly == Some(false))
@@ -157,9 +165,10 @@ pub mod journal {
                 let previous: Evidence = serde_json::from_str(&previous)?;
                 if previous.baseline_revision != e.baseline_revision
                     || previous.workload_id != e.workload_id
+                    || previous.environment_id != e.environment_id
                     || previous.candidate_revision == e.candidate_revision
                 {
-                    return Err("Repair must identify a new candidate against the same baseline and workload".into());
+                    return Err("Repair must identify a new candidate against the same baseline, workload and environment".into());
                 }
             }
             tx.execute("INSERT INTO experiments(candidate,baseline,evidence,decision,parent) VALUES(?1,?2,?3,?4,?5)",
@@ -178,6 +187,29 @@ pub mod journal {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn legacy_evidence_defaults_and_early_failure_gate() {
+        let mut e = evidence();
+        let serialized = serde_json::to_string(&e).unwrap();
+        assert!(!serialized.contains("correctness_failures"));
+        let old: Evidence = serde_json::from_str(&serialized).unwrap();
+        assert_eq!(old.correctness_failures, 0);
+        e.trials.clear();
+        e.stress_cases = 0;
+        e.correctness_failures = 1;
+        assert!(matches!(gate().evaluate(&e), Decision::Stabilize(_)));
+    }
+    #[test]
+    fn repair_lineage_rejects_changed_environment() {
+        let mut journal = journal::Journal::open(std::path::Path::new(":memory:")).unwrap();
+        let original = evidence();
+        let id = journal.record(&original, &gate(), None).unwrap();
+        let mut next = original.clone();
+        next.candidate_revision = "another-candidate".into();
+        next.environment_id = "changed-compiler-or-lock".into();
+        assert!(journal.record(&next, &gate(), Some(id)).is_err());
+        assert_eq!(journal.count().unwrap(), 1);
+    }
     fn gate() -> Gate {
         Gate {
             minimum_pairs: 5,
@@ -204,6 +236,7 @@ mod tests {
             ],
             stress_cases: 1000,
             stress_failures: 0,
+            correctness_failures: 0,
         }
     }
     #[test]
@@ -325,3 +358,11 @@ pub mod storage_lab;
 pub mod validated_raw;
 
 pub mod experiment_runner;
+
+// Compiled only as an explicit experimental strategy; collection keeps its baseline.
+#[path = "../../../experiments/version-validation-lab/candidate.rs"]
+pub mod version_validation_candidate;
+
+pub mod version_experiment_runner;
+
+pub mod build_identity;

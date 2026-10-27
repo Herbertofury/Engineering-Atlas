@@ -142,14 +142,14 @@ fn run_with(
             budget.input_count, budget.modulus
         ),
         environment_id: format!(
-            "{}-{}; atlas-lab {}; bounded shared-process worker",
-            std::env::consts::OS,
-            std::env::consts::ARCH,
-            env!("CARGO_PKG_VERSION")
+            "{}; runner:{}",
+            crate::build_identity::environment("bounded shared-process worker"),
+            crate::build_identity::sha256_hex(include_bytes!("experiment_runner.rs"))
         ),
         trials: Vec::new(),
         stress_cases: 0,
         stress_failures: 0,
+        correctness_failures: 0,
     };
     let mut warmups = Vec::new();
     macro_rules! checkpoint {

@@ -9,7 +9,7 @@ use axum::{
     routing::{get, post},
 };
 use std::{
-    path::PathBuf,
+    path::{Path, PathBuf},
     sync::{
         Arc,
         atomic::{AtomicBool, AtomicU8, Ordering},
@@ -164,6 +164,56 @@ fn await_provider_slot(delay: Duration, stop: &AtomicBool) -> Result<(), &'stati
         std::thread::sleep(remaining.min(Duration::from_millis(20)));
     }
 }
+fn persist_experiment(
+    path: &Path,
+    completed: bool,
+    mut output: serde_json::Value,
+    evidence: &crate::Evidence,
+    policy: &crate::Gate,
+) -> (bool, serde_json::Value) {
+    match crate::journal::Journal::open(path)
+        .map_err(|_| ())
+        .and_then(|mut journal| journal.record(evidence, policy, None).map_err(|_| ()))
+    {
+        Ok(id) => {
+            output["experiment_id"] = id.into();
+            (completed, output)
+        }
+        Err(()) => {
+            output["error"]="Could not append the experiment journal; raw evidence is retained in this job result".into();
+            (false, output)
+        }
+    }
+}
+fn saved_version_experiment(
+    path: &Path,
+    version: &str,
+    stop: &AtomicBool,
+) -> Result<(bool, serde_json::Value), &'static str> {
+    let store = crate::snapshots::SnapshotStore::open(path)
+        .map_err(|_| "Saved version database could not be opened")?;
+    let (generation, record) = store
+        .latest_modrinth_version_snapshot(version)
+        .map_err(|_| "Saved version is invalid or its identity does not match")?
+        .ok_or(
+            "No saved version found. Collect public version metadata into this database first",
+        )?;
+    drop(store);
+    let run = crate::version_experiment_runner::run_stored_version(
+        version,
+        generation,
+        record.payload.get(),
+        || stop.load(Ordering::Relaxed),
+    )?;
+    let output = serde_json::json!({"experiment":run});
+    Ok(persist_experiment(
+        path,
+        run.completed,
+        output,
+        &run.evidence,
+        &crate::version_experiment_runner::policy(),
+    ))
+}
 fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Receiver<()>) {
     let mut q = match Queue::open(&path) {
         Ok(q) => q,
@@ -187,13 +237,10 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
                     Job::CollectModrinth {project}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.project(project)).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
                     Job::CollectModrinthBatch {projects}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.projects(projects)).map(batch_output).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
                     Job::DedupExperiment=>crate::experiment_runner::run_builtin(||stop.load(Ordering::Relaxed)).map(|run|{
-                        let completed=run.completed;
-                        let mut output=serde_json::json!({"experiment":run});
-                        match crate::journal::Journal::open(&path).map_err(|_|()).and_then(|mut journal|journal.record(&run.evidence,&crate::experiment_runner::policy(),None).map_err(|_|())) {
-                            Ok(id)=>{output["experiment_id"]=id.into();(completed,output)}
-                            Err(())=>{output["error"]="Could not append the experiment journal; raw evidence is retained in this job result".into();(false,output)}
-                        }
+                        let output=serde_json::json!({"experiment":run});
+                        persist_experiment(&path,run.completed,output,&run.evidence,&crate::experiment_runner::policy())
                     }).map_err(|_|"Built-in experiment configuration rejected"),
+                    Job::VersionValidationExperiment {version}=>saved_version_experiment(&path,version,&stop),
                 };
                 let (succeeded, output) = match result {
                     Ok((complete, value)) => bounded_output(complete, value),

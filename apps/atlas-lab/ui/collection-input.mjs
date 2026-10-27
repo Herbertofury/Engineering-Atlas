@@ -12,3 +12,10 @@ export function collectionJob(input) {
   }
   return {CollectModrinthBatch:{projects}};
 }
+
+export function versionExperimentJob(input) {
+  if(typeof input!=='string'||input.length>32)throw new Error('Enter one saved eight-character version ID.');
+  const version=input.trim();
+  if(!/^[A-Za-z0-9]{8}$/.test(version))throw new Error('Enter one saved eight-character version ID, not a URL, slug or file path.');
+  return {VersionValidationExperiment:{version}};
+}

@@ -1,5 +1,5 @@
 'use strict';
-import {collectionJob} from './collection-input.mjs';
+import {collectionJob,versionExperimentJob} from './collection-input.mjs';
 const $ = id => document.getElementById(id);
 const renderedJobs = new Map();
 let emptyNode = null;
@@ -18,7 +18,7 @@ function render(data) {
   if(!data.jobs.length){if(!emptyNode){emptyNode=text('div','','empty');emptyNode.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));}nodes.push(emptyNode);}
   const present = new Set();
   for(const job of data.jobs){present.add(job.id);const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(job.id);if(prior&&prior.signature===signature){nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
-    const name=job.job.CollectModrinth?'Modrinth · '+job.job.CollectModrinth.project:job.job.CollectModrinthBatch?'Modrinth batch · '+job.job.CollectModrinthBatch.projects.length+' projects':'Identifier deduplication';
+    const name=job.job.CollectModrinth?'Modrinth · '+job.job.CollectModrinth.project:job.job.CollectModrinthBatch?'Modrinth batch · '+job.job.CollectModrinthBatch.projects.length+' projects':job.job.VersionValidationExperiment?'Version validation · '+job.job.VersionValidationExperiment.version:'Identifier deduplication';
     top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+job.id+' · attempt '+job.attempt));
     if(job.result?.project){const p=job.result.project;e.append(text('p',p.title+' · '+p.id+' · '+p.versions.length+' version IDs'));}
     if(job.result?.batch){const b=job.result.batch;e.append(text('p',b.projects.length+' retrieved · '+b.missing_ids.length+' missing from response'));if(b.missing_ids.length)e.append(text('p','Partial result. Missing IDs: '+b.missing_ids.join(', '),'error'));}
@@ -38,3 +38,5 @@ $('collect-form').addEventListener('submit',async e=>{e.preventDefault();const b
 refresh();setInterval(refresh,2500);document.addEventListener('visibilitychange',refresh);
 
 $('run-experiment').addEventListener('click',async()=>{const button=$('run-experiment');if(button.disabled)return;button.disabled=true;const status=$('experiment-status');status.textContent='Queuing the fixed bounded experiment…';try{const response=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json','X-Atlas-Request':'local-ui'},body:JSON.stringify('DedupExperiment')});if(!response.ok)throw Error('Could not queue experiment ('+response.status+').');const job=await response.json();status.textContent='Job '+job.id+' queued. Review raw evidence and its gate in Overview; no deployment occurs.';await refresh();}catch(error){status.textContent=error.message;}finally{button.disabled=false;}});
+
+$('version-experiment-form').addEventListener('submit',async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');if(button.disabled)return;button.disabled=true;const status=$('version-experiment-status');status.classList.remove('error');status.textContent='Queuing a fixed comparison of the saved record…';try{const response=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json','X-Atlas-Request':'local-ui'},body:JSON.stringify(versionExperimentJob($('version-experiment-id').value))});if(!response.ok)throw Error('Could not queue saved-record experiment ('+response.status+').');const job=await response.json();status.textContent='Job '+job.id+' queued. This does not fetch data or change the default parser.';await refresh();}catch(error){status.textContent=error.message;status.classList.add('error');}finally{button.disabled=false;}});

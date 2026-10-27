@@ -36,6 +36,7 @@ not a general recommendation or approval to change another project.
 ## Recovery and the experimentation engine
 
 - [Media recovery](../experiments/media-recovery-lab/README.md): retained rejected-promise failure, explicit retry repair, actual playback-state discrepancy and verification status.
+- [Saved-record runner](../experiments/saved-version-runner-lab/README.md): actual stored-input comparisons, build/source fingerprints, partial samples and explicit no-promotion gates.
 - [Bounded runner](../experiments/bounded-runner-lab/README.md): fixed experiments, budgets, cancellation and retained partial results. Not general autonomous self-modification.
 - [Checked raw JSON](../experiments/overview-serialization-lab/README.md): naive forwarding failures, strict validation repair and isolated measurements.
 

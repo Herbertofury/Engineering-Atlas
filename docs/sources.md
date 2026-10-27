@@ -692,3 +692,27 @@ float_roundtrip and arbitrary_precision address different contracts; a reference
 [Rust GlobalAlloc contracts and measurement limits](https://doc.rust-lang.org/std/alloc/trait.GlobalAlloc.html) · Rust 1.99.1 documentation; matches local toolchain
 
 Forward exact allocation contracts without panics or re-entrant allocation; optimizer-visible counts are observations, not correctness assumptions or total process memory. Reviewed 2026-10-27.
+
+## SHA01
+
+[RustCrypto SHA-2 release source](https://github.com/RustCrypto/hashes/tree/138dc5a05b93f8e49cda177fc6cfd7cc43673e5d/sha2) · sha2 0.11.1 registry source; source revision verified
+
+SHA-256 for input and build fingerprints, not authentication or automatic trust. Reviewed 2026-10-27.
+
+## AUDIT01
+
+[cargo-audit official package](https://github.com/RustSec/rustsec/blob/main/cargo-audit/Cargo.toml) · 0.22.2 installed from crates.io with locked dependencies; binary scanning disabled
+
+Dependency advisory matching only; no claim of complete code security or malware assessment. Reviewed 2026-10-27.
+
+## WCXB01
+
+[WCXB multi-type extraction preprint](https://arxiv.org/abs/2605.21097) · v1, submitted 2026-05-20; reviewed 2026-10-27
+
+Static text-extraction benchmark; category, annotation and internal-consistency limits require independent review. Reviewed 2026-10-27.
+
+## WCXB02
+
+[WCXB source repository and declared license](https://github.com/Murrough-Foley/web-content-extraction-benchmark) · c039d5ee9f5a3a984a0e167e63aacd04e76e78a9
+
+README inspected, including count mismatch with paper; no dataset download or executable run. Reviewed 2026-10-27.

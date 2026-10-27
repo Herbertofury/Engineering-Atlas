@@ -167,14 +167,53 @@ impl SnapshotStore {
         &self,
         id: &str,
     ) -> Result<Option<crate::modrinth_versions::VersionRecord>, Box<dyn std::error::Error>> {
-        let body: Option<String> = self.0.query_row("SELECT payload FROM snapshots WHERE provider='modrinth-version' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|r.get(0)).optional()?;
-        body.map(|b| crate::modrinth_versions::parse_version(b.as_bytes()))
+        Ok(self
+            .latest_modrinth_version_snapshot(id)?
+            .map(|(_, record)| record))
+    }
+    pub fn latest_modrinth_version_snapshot(
+        &self,
+        id: &str,
+    ) -> Result<Option<(i64, crate::modrinth_versions::VersionRecord)>, Box<dyn std::error::Error>>
+    {
+        let stored:Option<(i64,String)>=self.0.query_row("SELECT generation,payload FROM snapshots WHERE provider='modrinth-version' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|Ok((r.get(0)?,r.get(1)?))).optional()?;
+        stored
+            .map(|(generation, body)| {
+                let record = crate::modrinth_versions::parse_version(body.as_bytes())?;
+                if record.canonical_id != id {
+                    return Err("Stored version identity does not match its lookup key".into());
+                }
+                Ok((generation, record))
+            })
             .transpose()
     }
 }
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn version_lookup_rejects_misbound_stored_identity() {
+        let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let body=br#"[{"id":"abcdefgh","project_id":"AANobbMI","name":"fixture","version_number":"1","date_published":"2026-10-27","game_versions":[],"loaders":[],"files":[],"dependencies":[]}]"#;
+        let batch = crate::modrinth_versions::parse_versions(body, &["abcdefgh".into()]).unwrap();
+        store.save_modrinth_versions(&batch).unwrap();
+        assert!(
+            store
+                .latest_modrinth_version_snapshot("abcdefgh")
+                .unwrap()
+                .unwrap()
+                .0
+                > 0
+        );
+        store
+            .0
+            .execute(
+                "UPDATE snapshots SET canonical_id='ijklmnop' WHERE provider='modrinth-version'",
+                [],
+            )
+            .unwrap();
+        assert!(store.latest_modrinth_version_snapshot("ijklmnop").is_err());
+    }
     fn project() -> Project {
         Project {
             id: "AANobbMI".into(),

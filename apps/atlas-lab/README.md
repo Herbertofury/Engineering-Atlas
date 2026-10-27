@@ -7,7 +7,7 @@ This Rust application starts the evidence and collection core. It does not repla
 ## What executes now
 
 - A complete-output comparison gate separates incomplete evidence, stabilization work, insufficient improvement and eligibility for review. Eligibility is not deployment permission.
-- SQLite records experiments transactionally. Repairs create a new linked record; they cannot overwrite the failed record through this API. The decision is computed by the gate, not supplied by the caller. Repair records must keep the baseline/workload and identify a new candidate revision.
+- SQLite records experiments transactionally. Repairs create a new linked record; they cannot overwrite the failed record through this API. The decision is computed by the gate, not supplied by the caller. Repair records must keep the baseline/workload and declared environment identity and identify a new candidate revision.
 - A real algorithm experiment compares linear exact identifier deduplication with a hash-indexed implementation. Both retain first-seen order, case, Unicode distinctions and arbitrarily long string identifiers. Ten thousand generated differential cases run in the unit suite.
 - A read-only Modrinth adapter retrieves one public project's defined metadata projection from the official HTTPS endpoint. It rejects arbitrary URLs, redirects, malformed fields and oversized responses; supplies a specific User-Agent; imposes timeouts and a serial cooldown; respects rate-limit responses. It downloads no mod files and accepts no credentials.
 - Successful project snapshots are committed with their collection receipt. Failed refreshes do not replace a previous generation. Canonical IDs survive slug changes. This is a selected metadata projection, **not all fields, assets/downloads or a complete platform catalogue**.
@@ -26,7 +26,7 @@ cargo run --locked --release -- dedup-lab experiments.sqlite
 cargo run --locked --release -- storage-lab NEW_OUTPUT_DIRECTORY
 ```
 
-The first two commands make no platform requests. Cargo may download pinned registry dependencies. The Modrinth commands explicitly make public API requests. The lab runs only built-in code on generated identifiers, not downloaded third-party implementations.
+The first two commands make no platform requests. Cargo may download pinned registry dependencies. The Modrinth commands explicitly make public API requests. The labs run fixed built-in strategies on generated identifiers or an existing saved version record, not downloaded third-party implementations.
 
 The dedup lab intentionally remains ineligible for review: it does not yet measure peak memory, exercise cancellation or attach run-specific stress evidence. Unit test coverage is not silently substituted for runtime evidence. Timings from this narrow generated workload are not end-to-end application speed claims.
 
@@ -95,3 +95,27 @@ The Modrinth projection retains its full long-description text when provided. Ab
 ## Isolated HTTP overview candidate
 
 `cargo run --locked --release -- serve-candidate TEST_COPY.sqlite` exposes the checked-raw serializer only when explicitly selected. Use a fresh or copied test database, not a working production database. The HTML labels the experimental mode and responses include its strategy identity. Normal `serve` retains the Value serializer. Both now read job rows and aggregate counts in one transaction after a real concurrent-write inconsistency was reproduced. [HTTP evidence and retained failures](../../experiments/overview-http-lab/README.md) include complete parity, stress repair and unresolved maximum-latency tradeoffs. No automatic promotion or other-project change occurs.
+
+
+## Saved-version R&D action
+
+The Experiments panel now offers a fixed comparison of the baseline version
+validator and the isolated fixed-field candidate. Collect a canonical public
+version into the SAME database first, then start the local interface:
+
+```sh
+cargo +1.99.1 run --release --locked -- collect-modrinth-versions local.sqlite g6ju16VJ
+cargo +1.99.1 run --release --locked -- serve local.sqlite
+```
+
+The ID above was observed in a public response at review time; it is an example,
+not a promise of perpetual availability. The experiment itself makes no provider
+request. It retains exact source/hash/generation identity, up to 20 timing pairs,
+10,000 generated stress variations and raw partial samples within a cooperative
+15-second budget. Missing process-memory and per-strategy cancellation evidence
+still block promotion. The default collection parser is not replaced.
+
+[Protocol, limits and verification](../../experiments/saved-version-runner-lab/README.md).
+Current verification is loopback HTTP and source/DOM wiring, not native-browser
+visual/input acceptance. No installer, credential integration, arbitrary code
+execution or general autonomous self-modification is claimed.

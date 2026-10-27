@@ -3,10 +3,12 @@ use rusqlite::{Connection, OptionalExtension, TransactionBehavior, params};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(deny_unknown_fields)]
 pub enum Job {
     CollectModrinth { project: String },
     CollectModrinthBatch { projects: Vec<String> },
     DedupExperiment,
+    VersionValidationExperiment { version: String },
 }
 #[derive(Debug, Clone, PartialEq)]
 pub struct Claim {
@@ -44,6 +46,9 @@ impl Queue {
                 crate::modrinth::projects_url(projects)?;
             }
             Job::DedupExperiment => {}
+            Job::VersionValidationExperiment { version } => {
+                crate::modrinth_versions::versions_url(std::slice::from_ref(version))?;
+            }
         }
         let payload = serde_json::to_string(job)?;
         let tx = self
@@ -328,6 +333,34 @@ mod tests {
         assert!(
             queue.0.is_autocommit(),
             "Failed candidate must release read transaction"
+        );
+    }
+    #[test]
+    fn saved_version_jobs_are_bounded_deduplicated_and_reject_extra_fields() {
+        let mut queue = Queue::open(Path::new(":memory:")).unwrap();
+        let job = Job::VersionValidationExperiment {
+            version: "g6ju16VJ".into(),
+        };
+        let id = queue.enqueue(&job, 0).unwrap();
+        assert_eq!(queue.enqueue(&job, 1).unwrap(), id);
+        assert_eq!(queue.claim("worker", 2, 1000).unwrap().unwrap().job, job);
+        for version in ["sodium", "../file", "", "abcdefghijk"] {
+            assert!(
+                queue
+                    .enqueue(
+                        &Job::VersionValidationExperiment {
+                            version: version.into()
+                        },
+                        3
+                    )
+                    .is_err()
+            );
+        }
+        assert!(
+            serde_json::from_str::<Job>(
+                r#"{"VersionValidationExperiment":{"version":"g6ju16VJ","command":"not executed"}}"#
+            )
+            .is_err()
         );
     }
     #[test]
