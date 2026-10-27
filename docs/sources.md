@@ -686,3 +686,9 @@ Missing low surrogate must return an error, not U+0000; isolated backport evalua
 [serde_json precise-float feature contract](https://github.com/serde-rs/json/blob/v1.0.154/Cargo.toml) · 1.0.154 pinned
 
 float_roundtrip and arbitrary_precision address different contracts; a reference parser can itself be less accurate. Reviewed 2026-10-27.
+
+## MEM02
+
+[Rust GlobalAlloc contracts and measurement limits](https://doc.rust-lang.org/std/alloc/trait.GlobalAlloc.html) · Rust 1.99.1 documentation; matches local toolchain
+
+Forward exact allocation contracts without panics or re-entrant allocation; optimizer-visible counts are observations, not correctness assumptions or total process memory. Reviewed 2026-10-27.

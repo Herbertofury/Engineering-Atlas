@@ -14,6 +14,8 @@ subprocess.run(['patch','--batch','--forward','-p1','-i',str(here/'unicode-backp
 if hashlib.sha256((dest/'patched-simd-json/src/stringparse.rs').read_bytes()).hexdigest()!=repaired:raise SystemExit('Repair output mismatch; retained directory for diagnosis')
 for name,accurate in [('repaired-runner',False),('accurate-reference-runner',True)]:
  runner=dest/name;(runner/'src').mkdir(parents=True);shutil.copy2(here/'src/main.rs',runner/'src/main.rs');shutil.copy2(here/'Cargo.lock',runner/'Cargo.lock')
+ if (here/'src/bin/allocations.rs').exists():
+  (runner/'src/bin').mkdir();shutil.copy2(here/'src/bin/allocations.rs',runner/'src/bin/allocations.rs')
  manifest=(here/'Cargo.toml').read_text()
  if accurate:manifest=manifest.replace('serde_json = "=1.0.154"','serde_json = { version = "=1.0.154", features = ["float_roundtrip"] }')
  (runner/'Cargo.toml').write_text(manifest+'\n[patch.crates-io]\nsimd-json = { path = "../patched-simd-json" }\n')

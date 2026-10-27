@@ -53,3 +53,9 @@ a separately labeled precise-float reference eliminated them. Remaining large
 integer semantics and mixed speed results block promotion. No application
 dependency changed. An upstream headline or a repaired bug is not blanket
 acceptance; preserve failed evidence and remeasure the full contract.
+
+A separate requested-allocation experiment found the SIMD path used about
+1.9–2.6× the peak requested Rust bytes on those six real responses when preserving
+the input buffer. The materialized result's held bytes were equal. This is not
+RSS, native memory or physical peak usage; the full counter scope and raw results
+are in the same parser study. Instrumented counters are not pooled with timings.

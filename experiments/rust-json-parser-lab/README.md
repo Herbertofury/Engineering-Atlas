@@ -92,3 +92,43 @@ this is not a claim that the full upstream test suite ran.
 - Matching summary files and provenance identify the exact builds and corpus.
 - Earlier exploratory outputs and failed build/lint logs remain locally retained,
   not pooled into the final comparison.
+
+## Requested-allocation follow-up
+
+A separate `allocations` binary forwards allocation operations to Rust's System
+allocator while recording nonallocating atomic counters. It does not replace the
+application allocator. No performance timing is inferred from this instrumented
+binary. Source MEM02 explains why allocator counts are observations rather than
+correctness assumptions: compilers may remove or combine allocations.
+
+Six alternating-order pairs per public input were measured in each of the three
+build configurations (108 pairs total). Every complete Value matched, accounting
+reported no underflow/overflow, and requested-live bytes returned to the pre-pair
+level after both results were dropped. All three configurations produced the same
+per-input requested-allocation peaks in these runs.
+
+| Public response | Baseline peak delta, bytes | Candidate with retained-input copy, bytes |
+|---|---:|---:|
+| Sodium project | 48,610 | 92,076 |
+| Lithium project | 23,842 | 51,892 |
+| Iris project | 27,056 | 71,497 |
+| Iris version | 5,148 | 10,326 |
+| Sodium version | 6,554 | 12,290 |
+| Lithium version | 5,924 | 11,264 |
+
+The fully materialized result had equal held requested bytes in both paths.
+The candidate's transient requested peak was about 1.9–2.6× larger here. This
+includes the copy needed to retain unchanged source bytes. A caller that can
+surrender its input buffer has a different contract and needs a separate test.
+
+These are NOT whole-process or physical peak-memory measurements. Stack memory,
+other native allocators, allocation overhead, fragmentation, cached heap pages
+and transient overlap internal to System realloc are excluded. Zero requested
+post-drop delta does not prove zero RSS retention or absence of all leaks. No
+new memory acceptance or target-project recommendation is implied.
+
+Build with `cargo build --release --locked --bin allocations`, then pass the same
+local public fixture paths. The backport helper also copies this binary source
+into its isolated runners. Inspect the three `allocations-*-2026-10-27.json`
+files and `allocation-provenance-2026-10-27.json`; do not merge these counters with
+the earlier uninstrumented timing samples.
