@@ -35,12 +35,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
         return Ok(());
     }
-    if args.len() == 3 && args[1] == "serve" {
+    if args.len() == 3 && matches!(args[1].as_str(), "serve" | "serve-candidate") {
         return tokio::runtime::Builder::new_multi_thread()
             .worker_threads(2)
             .enable_all()
             .build()?
-            .block_on(atlas_lab::server::serve(args[2].clone().into()));
+            .block_on(async {
+                if args[1] == "serve-candidate" {
+                    atlas_lab::server::serve_candidate(args[2].clone().into()).await
+                } else {
+                    atlas_lab::server::serve(args[2].clone().into()).await
+                }
+            });
     }
     if args.len() == 4 && args[1] == "collect-modrinth" {
         atlas_lab::modrinth::project_url(&args[2])?;
@@ -69,7 +75,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     if args.len() != 3 || args[1] != "dedup-lab" {
         eprintln!(
-            "Usage: atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
+            "Usage: atlas-lab serve OUTPUT.sqlite\n       atlas-lab serve-candidate OUTPUT.sqlite (isolated validated-raw overview)\n       atlas-lab storage-lab NEW_DIRECTORY\n       atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
         );
         std::process::exit(2);
     }

@@ -25,6 +25,7 @@ struct App {
     db_slots: Arc<tokio::sync::Semaphore>,
     worker_status: Arc<AtomicU8>,
     wake: SyncSender<()>,
+    overview_candidate: bool,
 }
 fn now() -> i64 {
     SystemTime::now()
@@ -54,29 +55,53 @@ async fn guard(request: Request, next: Next) -> Response {
     h.insert(header::REFERRER_POLICY, "no-referrer".parse().unwrap());
     response
 }
-async fn overview(State(app): State<App>) -> Result<Json<serde_json::Value>, StatusCode> {
+async fn overview(State(app): State<App>) -> Result<Response, StatusCode> {
     let permit = app
         .db_slots
         .try_acquire_owned()
         .map_err(|_| StatusCode::TOO_MANY_REQUESTS)?;
     tokio::task::spawn_blocking(move || {
         let _permit = permit;
-        Queue::open(&app.path)
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
-            .overview()
-            .map(|mut value| {
-                value["worker_status"] = match app.worker_status.load(Ordering::Relaxed) {
-                    1 => "running",
-                    2 => "failed",
-                    _ => "starting_or_stopped",
-                }
-                .into();
-                Json(value)
-            })
-            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
+        let queue = Queue::open(&app.path).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        let status = match app.worker_status.load(Ordering::Relaxed) {
+            1 => "running",
+            2 => "failed",
+            _ => "starting_or_stopped",
+        };
+        let mut response = if app.overview_candidate {
+            let bytes = queue
+                .overview_raw_candidate_with_worker_status(status)
+                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            ([(header::CONTENT_TYPE, "application/json")], bytes).into_response()
+        } else {
+            let mut value = queue
+                .overview()
+                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            value["worker_status"] = status.into();
+            Json(value).into_response()
+        };
+        response.headers_mut().insert(
+            "x-atlas-overview-strategy",
+            if app.overview_candidate {
+                "validated-raw-candidate"
+            } else {
+                "baseline"
+            }
+            .parse()
+            .unwrap(),
+        );
+        Ok(response)
     })
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+}
+async fn index(State(app): State<App>) -> Html<String> {
+    let html = include_str!("../ui/index.html");
+    Html(if app.overview_candidate {
+        html.replace("<body>","<body data-overview-strategy=\"validated-raw-candidate\"><p role=\"status\">ISOLATED OVERVIEW CANDIDATE · not automatically promoted</p>")
+    } else {
+        html.to_owned()
+    })
 }
 async fn enqueue(
     State(app): State<App>,
@@ -190,6 +215,15 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
     }
 }
 pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    serve_strategy(path, false).await
+}
+pub async fn serve_candidate(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    serve_strategy(path, true).await
+}
+async fn serve_strategy(
+    path: PathBuf,
+    overview_candidate: bool,
+) -> Result<(), Box<dyn std::error::Error>> {
     Queue::open(&path)?;
     let listener = tokio::net::TcpListener::bind(HOST).await?;
     let stop = Arc::new(AtomicBool::new(false));
@@ -203,10 +237,7 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
         worker(worker_path, worker_stop, status_for_thread, wake_receiver)
     });
     let app = Router::new()
-        .route(
-            "/",
-            get(|| async { Html(include_str!("../ui/index.html")) }),
-        )
+        .route("/", get(index))
         .route(
             "/app.js",
             get(|| async {
@@ -242,6 +273,7 @@ pub async fn serve(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
             path,
             worker_status,
             wake,
+            overview_candidate,
             db_slots: Arc::new(tokio::sync::Semaphore::new(4)),
         });
     println!(

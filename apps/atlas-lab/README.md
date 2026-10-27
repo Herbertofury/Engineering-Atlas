@@ -91,3 +91,7 @@ Collection failures now return fixed category messages for transport problems, m
 ## Long description retention
 
 The Modrinth projection retains its full long-description text when provided. Absence in legacy or partial responses is unknown, not an empty description. Markup remains inert; no body-linked image, video or attachment is automatically fetched. [Body comparison and reopened parity](../../experiments/body-projection-lab/README.md) report the real data gain and parse overhead without a UI speed claim.
+
+## Isolated HTTP overview candidate
+
+`cargo run --locked --release -- serve-candidate TEST_COPY.sqlite` exposes the checked-raw serializer only when explicitly selected. Use a fresh or copied test database, not a working production database. The HTML labels the experimental mode and responses include its strategy identity. Normal `serve` retains the Value serializer. Both now read job rows and aggregate counts in one transaction after a real concurrent-write inconsistency was reproduced. [HTTP evidence and retained failures](../../experiments/overview-http-lab/README.md) include complete parity, stress repair and unresolved maximum-latency tradeoffs. No automatic promotion or other-project change occurs.

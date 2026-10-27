@@ -167,8 +167,30 @@ impl Queue {
         tx.commit()?;
         Ok(())
     }
-    /// Isolated experiment. The HTTP server still uses overview() until acceptance is established.
+    /// Isolated experiment. Normal serve uses overview(); serve-candidate explicitly opts in.
     pub fn overview_raw_candidate(&self) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+        self.serialize_overview_candidate(None)
+    }
+    pub fn overview_raw_candidate_with_worker_status(
+        &self,
+        status: &str,
+    ) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+        self.serialize_overview_candidate(Some(status))
+    }
+    fn serialize_overview_candidate(
+        &self,
+        status: Option<&str>,
+    ) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+        // One database snapshot for rows and aggregate counts. JSON validation remains checked.
+        let tx = self.0.unchecked_transaction()?;
+        let result = Self::serialize_overview_candidate_in(&tx, status)?;
+        tx.commit()?;
+        Ok(result)
+    }
+    fn serialize_overview_candidate_in(
+        connection: &Connection,
+        status: Option<&str>,
+    ) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
         #[derive(Serialize)]
         struct Row {
             id: i64,
@@ -178,12 +200,14 @@ impl Queue {
             result: Option<Box<serde_json::value::RawValue>>,
         }
         #[derive(Serialize)]
-        struct Overview {
+        struct Overview<'a> {
+            #[serde(skip_serializing_if = "Option::is_none")]
+            worker_status: Option<&'a str>,
             jobs: Vec<Row>,
             counts: std::collections::BTreeMap<String, i64>,
             display_limit: usize,
         }
-        let mut stmt = self.0.prepare(
+        let mut stmt = connection.prepare(
             "SELECT id,payload,state,attempt,result FROM jobs ORDER BY id DESC LIMIT 50",
         )?;
         let rows = stmt.query_map([], |r| {
@@ -209,21 +233,28 @@ impl Queue {
             });
         }
         let mut counts = std::collections::BTreeMap::new();
-        let mut stmt = self
-            .0
-            .prepare("SELECT state,count(*) FROM jobs GROUP BY state")?;
+        let mut stmt = connection.prepare("SELECT state,count(*) FROM jobs GROUP BY state")?;
         for row in stmt.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, i64>(1)?)))? {
             let (state, count) = row?;
             counts.insert(state, count);
         }
         Ok(serde_json::to_vec(&Overview {
+            worker_status: status,
             jobs,
             counts,
             display_limit: 50,
         })?)
     }
     pub fn overview(&self) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
-        let mut stmt = self.0.prepare(
+        let tx = self.0.unchecked_transaction()?;
+        let result = Self::overview_in(&tx)?;
+        tx.commit()?;
+        Ok(result)
+    }
+    fn overview_in(
+        connection: &Connection,
+    ) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
+        let mut stmt = connection.prepare(
             "SELECT id,payload,state,attempt,result FROM jobs ORDER BY id DESC LIMIT 50",
         )?;
         let rows = stmt.query_map([], |r| {
@@ -245,9 +276,7 @@ impl Queue {
             jobs.push(serde_json::json!({"id":id,"job":job,"state":state,"attempt":attempt,"result":result}));
         }
         let mut counts = serde_json::Map::new();
-        let mut stmt = self
-            .0
-            .prepare("SELECT state,count(*) FROM jobs GROUP BY state")?;
+        let mut stmt = connection.prepare("SELECT state,count(*) FROM jobs GROUP BY state")?;
         for row in stmt.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, i64>(1)?)))? {
             let (state, count) = row?;
             counts.insert(state, count.into());
@@ -258,6 +287,21 @@ impl Queue {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn raw_overview_worker_status_is_serialized_not_concatenated() {
+        let queue = Queue::open(Path::new(":memory:")).unwrap();
+        for status in ["running", "failed", "quoted\"status", "</script>", "\0"] {
+            let mut expected = queue.overview().unwrap();
+            expected["worker_status"] = status.into();
+            let actual: serde_json::Value = serde_json::from_slice(
+                &queue
+                    .overview_raw_candidate_with_worker_status(status)
+                    .unwrap(),
+            )
+            .unwrap();
+            assert_eq!(actual, expected);
+        }
+    }
     #[test]
     fn raw_overview_retains_complete_outputs_and_rejects_corruption() {
         let mut queue = Queue::open(Path::new(":memory:")).unwrap();
@@ -276,7 +320,15 @@ mod tests {
             .execute("UPDATE jobs SET result='1e400' WHERE id=1", [])
             .unwrap();
         assert!(queue.overview().is_err());
+        assert!(
+            queue.0.is_autocommit(),
+            "Failed overview must release read transaction"
+        );
         assert!(queue.overview_raw_candidate().is_err());
+        assert!(
+            queue.0.is_autocommit(),
+            "Failed candidate must release read transaction"
+        );
     }
     #[test]
     fn batch_jobs_validate_and_deduplicate_without_reordering() {
