@@ -437,9 +437,9 @@ API keys, project/file identity and pagination. Evidence: primary documented. Re
 
 ## ADP10
 
-[Nexus GraphQL API](https://graphql.nexusmods.com/) · Experimental v2 documentation; live public query checked
+[Nexus GraphQL API](https://graphql.nexusmods.com/) · Experimental v2 docs rechecked; prior public query evidence retained
 
-Stable v1 alternative, public versus OAuth operations and typed identities. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+Stable v1 alternative; public versus OAuth operations; game/mod identity and separate media union pagination Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.
 
 ## EXT01
 
@@ -479,9 +479,9 @@ Static parser and browser-rendering lanes. Evidence: primary documented. Review 
 
 ## EXT07
 
-[Nexus official Node SDK](https://github.com/Nexus-Mods/node-nexus-api) · Repository inspected; no latest release object
+[Nexus official Node SDK](https://github.com/Nexus-Mods/node-nexus-api) · package 1.7.3; source c5eda4a46cafb5dc8000ed2a7986b22132625e2e (2026-10-07)
 
-Official SDK candidate; GPL-3.0 repository metadata. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+Official SDK candidate; package declares LGPL-3.0 while LICENSE.md contains GPLv3. Licensing ambiguity requires resolution before reuse; partial GraphQL result handling needs an explicit contract. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.
 
 ## EXT08
 
@@ -716,3 +716,9 @@ Static text-extraction benchmark; category, annotation and internal-consistency 
 [WCXB source repository and declared license](https://github.com/Murrough-Foley/web-content-extraction-benchmark) · c039d5ee9f5a3a984a0e167e63aacd04e76e78a9
 
 README inspected, including count mismatch with paper; no dataset download or executable run. Reviewed 2026-10-27.
+
+## GQL01
+
+[GraphQL response and execution errors](https://spec.graphql.org/September2025/#sec-Response-Format) · September 2025 specification, not a new October 2026 release
+
+Execution may return partial data with errors; retain both and distinguish request failure, partial execution and complete requested scope. Evidence: primary documented. Checked 2026-10-27; review after 90 days or before a version-sensitive decision.

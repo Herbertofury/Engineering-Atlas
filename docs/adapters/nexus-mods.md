@@ -19,3 +19,7 @@ Separate Skyrim Special Edition, Fallout 4 and Starfield fixtures. Test gallerie
 Anonymous game identities and SkyUI metadata verified live; full gallery and authenticated downloads not accepted. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
 
 [Primary platform reference](https://graphql.nexusmods.com/) · [Shared collection contract](contract.md)
+
+## Reuse and partial-response review · 2026-10-27
+
+[Exact-source review](../../research/2026-10-27-nexus-reuse-review.md) records the official SDK's package/license mismatch and the need to retain GraphQL errors alongside partial data. Batching and quota patterns are reuse candidates, not performance winners. No SDK execution, new authenticated access or complete gallery acceptance was performed.

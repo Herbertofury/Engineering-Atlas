@@ -795,10 +795,10 @@
     "id": "ADP10",
     "title": "Nexus GraphQL API",
     "url": "https://graphql.nexusmods.com/",
-    "observed_version": "Experimental v2 documentation; live public query checked",
+    "observed_version": "Experimental v2 docs rechecked; prior public query evidence retained",
     "topic": "adapters",
-    "note": "Stable v1 alternative, public versus OAuth operations and typed identities",
-    "checked_at": "2026-10-26",
+    "note": "Stable v1 alternative; public versus OAuth operations; game/mod identity and separate media union pagination",
+    "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
   },
@@ -872,10 +872,10 @@
     "id": "EXT07",
     "title": "Nexus official Node SDK",
     "url": "https://github.com/Nexus-Mods/node-nexus-api",
-    "observed_version": "Repository inspected; no latest release object",
+    "observed_version": "package 1.7.3; source c5eda4a46cafb5dc8000ed2a7986b22132625e2e (2026-10-07)",
     "topic": "adapters",
-    "note": "Official SDK candidate; GPL-3.0 repository metadata",
-    "checked_at": "2026-10-26",
+    "note": "Official SDK candidate; package declares LGPL-3.0 while LICENSE.md contains GPLv3. Licensing ambiguity requires resolution before reuse; partial GraphQL result handling needs an explicit contract.",
+    "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
   },
@@ -1306,6 +1306,17 @@
     "note": "README inspected, including count mismatch with paper; no dataset download or executable run.",
     "checked_at": "2026-10-27",
     "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "GQL01",
+    "title": "GraphQL response and execution errors",
+    "url": "https://spec.graphql.org/September2025/#sec-Response-Format",
+    "observed_version": "September 2025 specification, not a new October 2026 release",
+    "topic": "adapters",
+    "note": "Execution may return partial data with errors; retain both and distinguish request failure, partial execution and complete requested scope.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 90,
     "evidence": "primary_documented"
   }
 ]
