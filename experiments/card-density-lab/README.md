@@ -78,5 +78,24 @@ the tab becomes visible again. Rendering and incremental per-sample dataset
 resets remain on the main thread. Receiver validation checks field identities,
 lengths and timing/hash contracts; it is not an independent rehash or a security
 boundary against a malicious worker. Independent Node digest and full-record
-comparisons pass; real browser worker/timeout/cancellation behavior still needs
-verification. No target-project adoption is authorized by these generated tests.
+comparisons pass; real browser worker completion and preparation cancellation now pass the
+bounded checks below. Timeout and hidden-tab paths remain browser-unverified. No target-project adoption is authorized by these generated tests.
+
+
+### v7 observed browser result, not promotion
+
+Published source c00528de, exact six served artifacts and loaded v7 identity
+verified. CI 40456268926 and Pages 40456268531 succeeded. Four sequential
+200-card × 8 KiB runs used main, worker, worker, main order. All 24 rendering
+samples retained all fields and the same canonical dataset hash. Preparation
+request-to-ready values were 71.2, 165.5, 61.2 and 19.6 ms respectively. The
+worker did not establish an end-to-end preparation speed win. Both lanes showed
+first-use/repeat variation, which is not credited as an implementation speedup.
+Two preparation observations per lane do not estimate tails or generalize.
+
+Stopping the worker during a separate 200 × 64 KiB preparation produced a
+zero-sample downloadable failure receipt. The previous completed download was
+byte-identical afterward, and its final 8 KiB record remained inspectable.
+No browser timeout, hidden-tab transition, preparation input-latency comparison
+or peak-memory result is claimed. See the retained `*-v7-2026-10-27.json` files.
+The worker remains optional, not the default and not recommended to other apps.
