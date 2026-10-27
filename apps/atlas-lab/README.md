@@ -10,7 +10,7 @@ This Rust application starts the evidence and collection core. It does not repla
 - SQLite records experiments transactionally. Repairs create a new linked record; they cannot overwrite the failed record through this API. The decision is computed by the gate, not supplied by the caller. Repair records must keep the baseline/workload and identify a new candidate revision.
 - A real algorithm experiment compares linear exact identifier deduplication with a hash-indexed implementation. Both retain first-seen order, case, Unicode distinctions and arbitrarily long string identifiers. Ten thousand generated differential cases run in the unit suite.
 - A read-only Modrinth adapter retrieves one public project's defined metadata projection from the official HTTPS endpoint. It rejects arbitrary URLs, redirects, malformed fields and oversized responses; supplies a specific User-Agent; imposes timeouts and a serial cooldown; respects rate-limit responses. It downloads no mod files and accepts no credentials.
-- Successful project snapshots are committed with their collection receipt. Failed refreshes do not replace a previous generation. Canonical IDs survive slug changes. This is a selected metadata projection, **not all fields, descriptions/assets/downloads or a complete platform catalogue**.
+- Successful project snapshots are committed with their collection receipt. Failed refreshes do not replace a previous generation. Canonical IDs survive slug changes. This is a selected metadata projection, **not all fields, assets/downloads or a complete platform catalogue**.
 
 ## Run
 
@@ -87,3 +87,7 @@ Successful enqueues notify a capacity-one channel, and the worker drains ready j
 ## Safe failure categories
 
 Collection failures now return fixed category messages for transport problems, malformed JSON and known cooldown/rate-limit/cancellation/size conditions. Raw URLs, headers, error strings and response bodies are not echoed into job results. Unknown failures remain generic; a category is not a complete root-cause diagnosis. Tests include synthetic secret-bearing URLs and unknown private-looking error text. Earlier unexplained failures remain unexplained in historical receipts.
+
+## Long description retention
+
+The Modrinth projection retains its full long-description text when provided. Absence in legacy or partial responses is unknown, not an empty description. Markup remains inert; no body-linked image, video or attachment is automatically fetched. [Body comparison and reopened parity](../../experiments/body-projection-lab/README.md) report the real data gain and parse overhead without a UI speed claim.

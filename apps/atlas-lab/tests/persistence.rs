@@ -34,6 +34,7 @@ fn snapshots_survive_close_reopen_and_failure() {
         slug: "sodium".into(),
         title: "fixture".into(),
         description: "not a live result".into(),
+        body: Some("# Full fixture\n![image](https://example.invalid/a.png)".into()),
         project_type: "mod".into(),
         versions: vec!["abc".into()],
         icon_url: None,
@@ -49,6 +50,10 @@ fn snapshots_survive_close_reopen_and_failure() {
         assert_eq!(
             s.latest_modrinth("AANobbMI").unwrap().unwrap().versions,
             vec!["abc"]
+        );
+        assert_eq!(
+            s.latest_modrinth("AANobbMI").unwrap().unwrap().body,
+            project.body
         );
         assert_eq!(s.attempts().unwrap(), 2);
     }

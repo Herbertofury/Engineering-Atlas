@@ -13,6 +13,9 @@ pub struct Project {
     pub slug: String,
     pub title: String,
     pub description: String,
+    /// Exact long description text. None means absent/legacy, not verified empty.
+    #[serde(default)]
+    pub body: Option<String>,
     pub project_type: String,
     pub versions: Vec<String>,
     #[serde(default)]
@@ -197,6 +200,46 @@ impl PublicClient {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn long_body_is_retained_exactly_without_executing_markup() {
+        let text =
+            "# Fixture\n![image](https://example.invalid/a.png)\n<script>not executed</script>\n"
+                .repeat(1000);
+        let mut value = batch_fixture("AANobbMI");
+        value["body"] = text.clone().into();
+        let bytes = serde_json::to_vec(&value).unwrap();
+        let project = parse_project(&bytes).unwrap();
+        assert_eq!(project.body.as_deref(), Some(text.as_str()));
+        let batch = parse_projects(
+            &serde_json::to_vec(&vec![value]).unwrap(),
+            &["AANobbMI".into()],
+        )
+        .unwrap();
+        assert_eq!(batch.projects[0].body, project.body);
+        let roundtrip: Project =
+            serde_json::from_slice(&serde_json::to_vec(&project).unwrap()).unwrap();
+        assert_eq!(roundtrip.body, project.body);
+    }
+    #[test]
+    fn absent_body_is_distinct_from_empty_and_invalid_body_is_rejected() {
+        let mut value = batch_fixture("AANobbMI");
+        assert!(
+            parse_project(&serde_json::to_vec(&value).unwrap())
+                .unwrap()
+                .body
+                .is_none()
+        );
+        value["body"] = "".into();
+        assert_eq!(
+            parse_project(&serde_json::to_vec(&value).unwrap())
+                .unwrap()
+                .body
+                .as_deref(),
+            Some("")
+        );
+        value["body"] = serde_json::json!({"unexpected":"object"});
+        assert!(parse_project(&serde_json::to_vec(&value).unwrap()).is_err());
+    }
     #[test]
     fn an_immediate_second_call_is_rejected_before_transport() {
         let mut client = PublicClient::new().unwrap();

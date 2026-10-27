@@ -119,6 +119,7 @@ mod tests {
             slug: "sodium".into(),
             title: "Sodium fixture".into(),
             description: "unit fixture only".into(),
+            body: Some("full description fixture".into()),
             project_type: "mod".into(),
             versions: vec!["version-a".into()],
             icon_url: None,

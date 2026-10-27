@@ -621,8 +621,8 @@
     "url": "https://docs.modrinth.com/api/operations/getproject/",
     "observed_version": "Current v2 project operation",
     "topic": "collection",
-    "note": "Single-project metadata endpoint and response fields",
-    "checked_at": "2026-10-26",
+    "note": "Single-project metadata including long body text; legacy absence is distinguished from empty in Atlas",
+    "checked_at": "2026-10-27",
     "review_after_days": 30,
     "evidence": "primary_documented"
   },

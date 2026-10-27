@@ -16,10 +16,14 @@ Project identity; gallery order; originals/previews; version IDs; malformed/over
 
 ## Evidence status
 
-Live metadata collection, durable receipt and all six returned gallery entries/original URLs tested. Description-linked media remains outside the projection. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
+Live metadata collection, durable receipt and all six returned gallery entries/original URLs tested. Long description text is now retained verbatim when present; parsing or playing its linked media remains outside the implementation. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
 
 [Primary platform reference](https://docs.modrinth.com/api/) · [Shared collection contract](contract.md)
 
 ## Bounded batch lane · 2026-10-27
 
 An optional Rust CLI collector uses the official multiple-project API with 1–20 canonical IDs, the existing 2 MiB total response budget, transport guards, explicit missing IDs and atomic snapshot/attempt writes. Five real public comparisons retained identical typed gallery/metadata projections with one request instead of three. Timing was mixed (batch faster in three pairs), not a universal speed claim. The local Collection form and queue now support the same bounded batch. Separate loopback checks verified real results, security guards and reopened durable output; visual browser acceptance is not claimed. [Raw evidence and scope](https://github.com/Herbertofury/Engineering-Atlas/blob/main/experiments/modrinth-batch-lab/README.md).
+
+## Long description retention · 2026-10-27
+
+[Measured body-projection study](../../experiments/body-projection-lab/README.md) preserves all earlier fields and exact long-form text in three public responses and reopened snapshots. The added data costs a small measured parse increase; it is not a speedup or proof of lag-free cards. Missing/legacy text stays unknown, markup is inert, and linked media are not fetched or executed.
