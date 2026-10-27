@@ -65,3 +65,7 @@ not a general recommendation or approval to change another project.
 ## Official Bilibili player
 
 [Public official embed lane](../experiments/bilibili-player-lab/README.md) preserves the original four cards and adds one provider-documented media example. Real sandboxed iframe play/pause and reload/unload passed with autoplay off; application events intentionally report only frame lifecycle, not cross-origin playback. No authenticated or full-post collection claim.
+
+## Preview lifecycle recovery
+
+[Image preview retry and cleanup](../experiments/preview-recovery-lab/README.md) repairs settled timers, one-shot failure handling and early-click gating. A real 23-element batch decoded 22; explicit retry attempted only the remaining failed thumbnail, which stayed unavailable. Previous success and failure evidence were preserved; no universal recovery or speedup claim.
