@@ -78,3 +78,7 @@ not a general recommendation or approval to change another project.
 ## Public upstream observation workflow
 
 [Fixed GitHub checkpoints](../experiments/upstream-review-lab/README.md) add real anonymous source checks to the Rust app, retaining complete raw JSON and durable request budgets. CLI and loopback queue results distinguish a new revision from metadata drift; generated cooldown and interrupted-request cases are not live rate-limit incidents. No automatic upgrade or performance ranking follows.
+
+## New inference and hardware-specific storage screening
+
+[GUIFlow and FlintKV scope review](../research/2026-10-27-inference-and-nvm-scope.md) separates compute-operation ratios from wall-clock latency and checks quality/hardware boundaries. Research-only: no prototype execution, local speed claim or target recommendation.

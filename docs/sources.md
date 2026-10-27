@@ -794,3 +794,15 @@ Explicit request version and actual selected version recorded separately. Eviden
 [GitHub REST API rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api) · Anonymous public requests: 60/hour per originating IP
 
 Provider headers outrank a local budget; reset is epoch seconds, retry-after is duration. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.
+
+## GUIFLOW01
+
+[GUIFlow incremental inference](https://arxiv.org/html/2610.34959v1) · Preprint submitted 2026-10-26
+
+FLOPs ratios are distinct from wall-clock latency; quality varies by model. Research only. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## FLINT01
+
+[FlintKV durable NVM storage](https://arxiv.org/html/2607.02401v1) · Preprint submitted 2026-07-02; newly reviewed October 27
+
+Hardware-specific persistent-memory study; not a SQLite replacement result. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.

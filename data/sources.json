@@ -1450,5 +1450,27 @@
     "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "GUIFLOW01",
+    "title": "GUIFlow incremental inference",
+    "url": "https://arxiv.org/html/2610.34959v1",
+    "observed_version": "Preprint submitted 2026-10-26",
+    "topic": "research-method",
+    "note": "FLOPs ratios are distinct from wall-clock latency; quality varies by model. Research only.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "FLINT01",
+    "title": "FlintKV durable NVM storage",
+    "url": "https://arxiv.org/html/2607.02401v1",
+    "observed_version": "Preprint submitted 2026-07-02; newly reviewed October 27",
+    "topic": "research-method",
+    "note": "Hardware-specific persistent-memory study; not a SQLite replacement result.",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]
