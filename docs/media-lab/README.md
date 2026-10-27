@@ -8,6 +8,7 @@ This browser workbench combines real, dated public metadata with source-owned me
 - SkyUI: anonymous Nexus GraphQL metadata for game 1704 / mod 12604, with one public picture/thumbnail pair. Full mod-gallery completeness is explicitly unknown.
 - Portal 2: reused public catalogue snapshot for Steam AppID 620, preserving all 12 screenshots and 17 trailer entries from that snapshot. Current-store completeness is not assumed.
 - YouTube: the official IFrame documentation demo video, public oEmbed metadata and official player. Captions and channel history are not included.
+- Bilibili: the official player-documentation example, with cover handled inside the player. No authenticated API, full gallery or account-library coverage is claimed.
 
 No private posts, account details, credentials, personal notes or favorites are included. Media remains on its source host and is not relicensed. Source attribution and dated provenance are retained in the fixture.
 
@@ -22,3 +23,7 @@ Unit checks validate all selected entry counts, exact original/preview URLs, sou
 The page measures actual media events and exports a local receipt. Autoplay is disabled. Previews load only on request, using four bounded decode workers; all source entries remain represented. Media-player loading is user-initiated, with stale-generation guards and cleanup on selection changes. No receipt is uploaded automatically.
 
 Content-addressed app/data assets and a pinned player integrity check prevent stale-source confusion. The fixture is a public contract test, not an authorization to copy signed or account-bound media into public research.
+
+## Event identity repair
+
+Harness v9 keeps the observation name separate from the provider’s error category (`error_type`) and rejects attempts to overwrite the envelope timestamp/type. [Failure and regression evidence](../../experiments/media-event-identity-lab/README.md) distinguishes generated fatal-error fixtures from actual browser playback. Existing v8 receipts are retained unchanged. This correctness repair is not a measured speedup.
