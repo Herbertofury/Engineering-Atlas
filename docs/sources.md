@@ -806,3 +806,9 @@ FLOPs ratios are distinct from wall-clock latency; quality varies by model. Rese
 [FlintKV durable NVM storage](https://arxiv.org/html/2607.02401v1) · Preprint submitted 2026-07-02; newly reviewed October 27
 
 Hardware-specific persistent-memory study; not a SQLite replacement result. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## PAD01
+
+[Padding to k: schema minimums and extraction lists](https://arxiv.org/html/2610.30997v1) · v1, submitted 2026-10-22
+
+Model-extraction completeness risk; not replicated or promoted. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
