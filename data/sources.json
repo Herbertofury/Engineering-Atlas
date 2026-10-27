@@ -1076,5 +1076,27 @@
     "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "LIVE01",
+    "title": "LiveWeb-IE paper",
+    "url": "https://arxiv.org/html/2603.13773v1",
+    "observed_version": "v1, submitted 2026-03-14; ICLR 2026",
+    "topic": "extraction-evaluation",
+    "note": "Live-site methodology, limitations and latency tradeoffs; not locally benchmarked",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "LIVE02",
+    "title": "LiveWeb-IE official dataset and terms",
+    "url": "https://github.com/sbY99/LiveWeb-IE",
+    "observed_version": "README observed 2026-10-27",
+    "topic": "extraction-evaluation",
+    "note": "Non-commercial research restriction; no dataset downloaded or executed",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

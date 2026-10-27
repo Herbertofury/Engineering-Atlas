@@ -19,3 +19,7 @@ These packages were researched, not benchmarked or accepted as Atlas dependencie
 ## HTML image-token candidates · 2026-10-27
 
 [Controlled parser study](https://github.com/Herbertofury/Engineering-Atlas/blob/main/experiments/html-image-parser-lab/README.md): maintained parse5/SAX and htmlparser2 candidates correct 21 targeted image-token fixtures while preserving the pinned adapter's other guards. Repaired htmlparser2 improved larger clean-workload medians but regressed small-input time and one observed maximum. A streaming allocation variant did not beat its median. These are isolated candidates, not a universal parser ranking or a live-platform deployment.
+
+## Live-web wrapper evaluation · 2026-10-27
+
+[LiveWeb-IE review](../../research/2026-10-27-liveweb-ie.md) distinguishes reported extraction quality from simple-page latency, complete-media coverage and dataset reuse restrictions. This is a methodology candidate only; its non-commercial dataset has not been downloaded or used. No automatic adoption or target-project recommendation.

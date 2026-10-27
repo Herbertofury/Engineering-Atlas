@@ -1,6 +1,6 @@
 # Bounded experiment worker
 
-2026-10-27: implementation and local HTTP validation, not an autonomous code-rewriting system. Publication pending.
+2026-10-27: implementation and local HTTP validation, not an autonomous code-rewriting system. Published in commit `f06dcb9c64b179252973f6f86d32791301e3e00f`; Windows/Linux CI and Pages passed.
 
 The fixed deduplication comparison now runs through the local queue. Explicit UI control only; no automatic startup work or arbitrary commands. Defaults: 6,000 generated IDs, two warmups, 15 paired measurements, 10,000 differential stress cases, cooperative 15-second budget. Individual operations may finish after the deadline; this is not a hard real-time limit.
 
