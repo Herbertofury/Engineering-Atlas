@@ -159,8 +159,8 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
         match q.claim("local-worker", now(), 60_000) {
             Ok(Some(claim)) => {
                 let result=match &claim.job {
-                    Job::CollectModrinth {project}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.project(project)).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|_|"Collection failed; previous results are retained"),
-                    Job::CollectModrinthBatch {projects}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.projects(projects)).map(batch_output).map_err(|_|"Batch collection failed; previous results are retained"),
+                    Job::CollectModrinth {project}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.project(project)).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
+                    Job::CollectModrinthBatch {projects}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.projects(projects)).map(batch_output).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
                     Job::DedupExperiment=>crate::experiment_runner::run_builtin(||stop.load(Ordering::Relaxed)).map(|run|{
                         let completed=run.completed;
                         let mut output=serde_json::json!({"experiment":run});

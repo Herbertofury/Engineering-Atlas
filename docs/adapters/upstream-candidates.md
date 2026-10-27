@@ -4,7 +4,7 @@
 
 | Candidate | Observed release | Starting use | Adoption gate |
 |---|---|---|---|
-| [yt-dlp](https://github.com/yt-dlp/yt-dlp/releases/tag/2026.10.21) | 2026.10.21 | Permitted specialist video metadata/extraction | Exact route, access, media completeness, security and measured advantage |
+| [yt-dlp](https://github.com/yt-dlp/yt-dlp/releases/tag/2026.10.26) | 2026.10.26 | Permitted specialist video metadata/extraction | Exact route, access, media completeness, security and measured advantage |
 | [gallery-dl](https://github.com/mikf/gallery-dl/releases/tag/v1.32.18) | 1.32.18, October 25 | Gallery-oriented extraction | Active upstream moved to [Codeberg](https://codeberg.org/mikf/gallery-dl); verify extractor/access, do not export sessions |
 | [Crawlee](https://github.com/apify/crawlee/releases/tag/v3.18.2) | 3.18.2 | Established crawl orchestration | Bounded concurrency/recovery; no stealth or network-identity evasion |
 | [Scrapy](https://github.com/scrapy/scrapy/releases/tag/2.19.0) | 2.19.0 | Queues and adaptive throttling | Lifecycle, memory, completeness and integration cost; remote control off unless authorized |
@@ -23,3 +23,7 @@ These packages were researched, not benchmarked or accepted as Atlas dependencie
 ## Live-web wrapper evaluation · 2026-10-27
 
 [LiveWeb-IE review](../../research/2026-10-27-liveweb-ie.md) distinguishes reported extraction quality from simple-page latency, complete-media coverage and dataset reuse restrictions. This is a methodology candidate only; its non-commercial dataset has not been downloaded or used. No automatic adoption or target-project recommendation.
+
+## Extractor release refresh · 2026-10-27
+
+[Release and advisory review](../../research/2026-10-27-extractor-release-review.md): yt-dlp 2026.10.26 changes Python/Windows compatibility and bundled security dependencies. It remains a researched candidate, not an installed or benchmark-accepted Atlas adapter. No paywall or session-export route was tested.

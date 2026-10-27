@@ -1,4 +1,5 @@
 //! Evidence gates for bounded implementation experiments, not a general self-rewriting AI.
+pub mod collection_failure;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

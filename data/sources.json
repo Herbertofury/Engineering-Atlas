@@ -805,11 +805,11 @@
   {
     "id": "EXT01",
     "title": "yt-dlp release",
-    "url": "https://github.com/yt-dlp/yt-dlp/releases/tag/2026.10.21",
-    "observed_version": "2026.10.21",
+    "url": "https://github.com/yt-dlp/yt-dlp/releases/tag/2026.10.26",
+    "observed_version": "2026.10.26; published 2026-10-26T22:25:26Z",
     "topic": "adapters",
-    "note": "Maintained video extractor candidate; not locally accepted",
-    "checked_at": "2026-10-26",
+    "note": "Python 3.11+/Windows 10+ binary compatibility and bundled security fixes; researched, not installed",
+    "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
   },
@@ -1117,6 +1117,39 @@
     "observed_version": "Rust 1.99.1",
     "topic": "concurrency",
     "note": "Bounded capacity and nonblocking send; local queue experiment is separate evidence",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "BROTLI01",
+    "title": "Brotli Python package advisory",
+    "url": "https://github.com/advisories/GHSA-9v8h-qqgm-4m35",
+    "observed_version": "Reviewed advisory updated 2026-10-23",
+    "topic": "security",
+    "note": "Exact dependency scope and safe error categories; not a full-system audit",
+    "checked_at": "2026-10-27",
+    "review_after_days": 7,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "CERTIFI01",
+    "title": "certifi compromised intermediate root advisory",
+    "url": "https://github.com/advisories/GHSA-6q48-6c7w-9gw2",
+    "observed_version": "Reviewed advisory updated 2026-10-26",
+    "topic": "security",
+    "note": "Exact dependency scope and safe error categories; not a full-system audit",
+    "checked_at": "2026-10-27",
+    "review_after_days": 7,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "NET03",
+    "title": "reqwest safe error inspection",
+    "url": "https://docs.rs/reqwest/0.13.5/reqwest/struct.Error.html",
+    "observed_version": "0.13.5",
+    "topic": "security",
+    "note": "Request error category inspection without emitting attached URLs",
     "checked_at": "2026-10-27",
     "review_after_days": 30,
     "evidence": "primary_documented"

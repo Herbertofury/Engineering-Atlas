@@ -83,3 +83,7 @@ The explicit Run bounded comparison button runs only the two built-in identifier
 ## Event-driven queue wake-up
 
 Successful enqueues notify a capacity-one channel, and the worker drains ready jobs without a mandatory sleep between them. The one-second idle recovery scan remains; provider cooldowns and transaction boundaries are unchanged. The [actual Atlas HTTP comparison](../../experiments/queue-wakeup-lab/README.md) retains full results, cancellation checks and the prior baseline. This removes measured dispatch delay, not algorithm work or evidence gates.
+
+## Safe failure categories
+
+Collection failures now return fixed category messages for transport problems, malformed JSON and known cooldown/rate-limit/cancellation/size conditions. Raw URLs, headers, error strings and response bodies are not echoed into job results. Unknown failures remain generic; a category is not a complete root-cause diagnosis. Tests include synthetic secret-bearing URLs and unknown private-looking error text. Earlier unexplained failures remain unexplained in historical receipts.
