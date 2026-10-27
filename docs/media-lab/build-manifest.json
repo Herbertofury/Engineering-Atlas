@@ -1,12 +1,12 @@
 {
-  "harness": "atlas-real-media-v4-retryable-player",
+  "harness": "atlas-real-media-v5-playback-state",
   "artifacts": {
-    "media-core.be8652593af35f35.mjs": "be8652593af35f351b3ca2619a8aeb6a6ebfed29f3cbeb5873d554215cec4e01",
+    "media-core.77b87670a46b9128.mjs": "77b87670a46b912866e1c379b1207614da3685e8d3920c956311b91b584b6f67",
     "resource-loader.f95053a1d56a8533.mjs": "f95053a1d56a85330314efe88ca6c26b45ac1c3abb530639b770601e03608c06",
     "public-fixtures.09bc53f20b0f552b.json": "09bc53f20b0f552b6beae9c5c87c6662f94299ec4cb665b153d9e05196ef0348",
-    "media.9aeb06c0a1ec1e4f.js": "9aeb06c0a1ec1e4f3aec4c9182b1abf96ffe0d22102972fd173f8e1565c3f0e4",
+    "media.a50519971a6bba6f.js": "a50519971a6bba6fc5a10aeb882539a3ab3dfd63f6fac9ad6d1f9741519f3373",
     "media.22d542777e3cf22e.css": "22d542777e3cf22e24394955cb48ed68ea26d9408babc2c00d1d89e471ea3176",
-    "index.html": "f017b978ae9dfd2fc01da5b229ff0d67869d3364c2ca1844cd926ccf53f91b5b"
+    "index.html": "ba396eb73c41d2515c61604ba4d23c879a6c52e6d71cb94e7d37a8981308f43b"
   },
   "vendor_sha256": "a12e7ee1cd64a69dcdb314157e45dafcba705bfb0b1440b7935cb265d374423e",
   "vendor_sri": "sha384-cciJ0zi8d1uMKC2zJd7jvPY4HQt7W4ByUI/FlMkltvBi31aW61rcpVBhpmW8/NwX"

@@ -29,3 +29,18 @@ Source tests:
 - tests/youtube-recovery.test.mjs: actual loader with mocked script/timer environment,
   plus retained v3 failure reproduction.
 - tests/media-lab.test.mjs: unchanged full public fixture and provider binding checks.
+
+## Real-browser v4 check and follow-on state repair
+
+The exact six served v4 assets and loaded module identity were verified. The
+YouTube player reached ready twice without playback being requested. Pinned
+HLS.js 1.7.3 loaded, the real Steam trailer played, and Pause stopped it at
+0.519 seconds. That exposed an existing UI bug: the DOM video was paused but its
+status still said Playing. The failed DOM observation and event receipt are
+retained, not counted as a clean UI pass. CI for the v4 source succeeded.
+
+V5 adds explicit native pause/ended status handling, tested event-label mapping,
+and a stale-generation guard for asynchronous Play rejections. It retains the
+v4 retry repair. All 46 Node tests pass locally. Actual v5 pause-state browser
+reverification is still pending publication. Ended-state mapping is fixture-tested,
+not a claim that a real trailer has been played to completion.

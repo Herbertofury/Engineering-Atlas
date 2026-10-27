@@ -39,3 +39,8 @@ export function validateFixture(data) {
 export function mediaCounts(data){return {cards:data.cards.length,gallery_images:data.cards.reduce((n,c)=>n+c.gallery.length,0),video_entries:data.cards.reduce((n,c)=>n+c.videos.length,0)};}
 
 export function providerOwnsHost(value,provider){const safe=safeMediaUrl(value);if(!safe)return false;const host=new URL(safe).hostname;const hosts={Modrinth:['cdn.modrinth.com'],'Nexus Mods':['staticdelivery.nexusmods.com'],Steam:['shared.akamai.steamstatic.com','store.akamai.steamstatic.com','video.akamai.steamstatic.com'],YouTube:['i.ytimg.com']};return Boolean(hosts[provider]?.includes(host));}
+
+export function nativePlaybackLabel(type) {
+  const labels={playing:'Playing the selected source trailer.',pause:'Paused.',ended:'Playback ended.',error:'Playback failed. The source entry is preserved.'};
+  return Object.hasOwn(labels,type)?labels[type]:null;
+}
