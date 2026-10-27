@@ -31,3 +31,8 @@ These packages were researched, not benchmarked or accepted as Atlas dependencie
 ## Nexus reuse review · 2026-10-27
 
 [Exact-source review](../../research/2026-10-27-nexus-reuse-review.md) finds reusable batching/quota patterns, a package/license mismatch and a partial-result warning boundary in the default GraphQL helper. Static inspection is not a live failure reproduction or performance ranking. No SDK installation, grant or session export was performed.
+
+
+## Cover-only extraction is not complete-media coverage · 2026-10-27
+
+[Static Codeberg source review](../../research/2026-10-27-gallery-cover-scope.md) records a newer master checkpoint separately from stable gallery-dl 1.32.18. Its dedicated highlight-cover path deliberately omits story items, while cover metadata receives an explicit type and changed code representation. Treat this as narrow coverage, not an empty complete story or a general extraction-quality win. Source inspection only; no provider requests, session export, prototype execution or target recommendation.
