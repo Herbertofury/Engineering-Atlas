@@ -65,6 +65,18 @@ fn decode_reusing(
     }
     Ok(bytes)
 }
+fn decode_lz4(input: &[u8], length: usize, expected: &str) -> Result<Vec<u8>, Box<dyn Error>> {
+    if length > MAX_RECORD || input.len() > MAX_RECORD + 65536 {
+        return Err("Stored record budget exceeded".into());
+    }
+    // Independently stored length is bounded before allocation; never trust a size prefix.
+    let mut bytes = vec![0u8; length];
+    let written = lz4_flex::block::decompress_into(input, &mut bytes)?;
+    if written != length || hash(&bytes) != expected {
+        return Err("Stored record integrity mismatch".into());
+    }
+    Ok(bytes)
+}
 #[derive(Serialize)]
 struct Sample {
     scope: &'static str,
@@ -93,7 +105,14 @@ fn sample(
 ) -> Result<Sample, Box<dyn Error>> {
     let compressed = strategy != 0;
     let reuse = strategy == 2;
-    if strategy > 2 {
+    let codec_name = if strategy == 3 {
+        "lz4block"
+    } else if compressed {
+        "zstd3"
+    } else {
+        "raw"
+    };
+    if strategy > 3 {
         return Err("Unknown fixed strategy".into());
     }
     if path.exists() {
@@ -120,7 +139,9 @@ fn sample(
     let encoded: Vec<_> = (0..count)
         .map(|i| {
             let raw = &originals[i % originals.len()];
-            let bytes = if let Some(c) = compressor.as_mut() {
+            let bytes = if strategy == 3 {
+                lz4_flex::block::compress(raw)
+            } else if let Some(c) = compressor.as_mut() {
                 c.compress(raw)?
             } else {
                 encode(raw, compressed)?
@@ -136,13 +157,7 @@ fn sample(
             "INSERT INTO records(id,codec,original_bytes,sha256,payload) VALUES(?1,?2,?3,?4,?5)",
         )?;
         for (i, (bytes, len, digest)) in encoded.iter().enumerate() {
-            statement.execute(params![
-                i as i64,
-                if compressed { "zstd3" } else { "raw" },
-                *len as i64,
-                digest,
-                bytes
-            ])?;
+            statement.execute(params![i as i64, codec_name, *len as i64, digest, bytes])?;
         }
     }
     tx.commit()?;
@@ -167,19 +182,21 @@ fn sample(
             let length: i64 = row.get(2)?;
             let digest: String = row.get(3)?;
             let bytes: Vec<u8> = row.get(4)?;
-            if id != materialized.len() as i64
-                || length < 0
-                || codec != if compressed { "zstd3" } else { "raw" }
-            {
+            if id != materialized.len() as i64 || length < 0 || codec != codec_name {
                 return Err("Stored metadata mismatch".into());
             }
-            materialized.push(decode_reusing(
-                &bytes,
-                compressed,
-                length as usize,
-                &digest,
-                decompressor.as_mut(),
-            )?);
+            let decoded = if strategy == 3 {
+                decode_lz4(&bytes, length as usize, &digest)?
+            } else {
+                decode_reusing(
+                    &bytes,
+                    compressed,
+                    length as usize,
+                    &digest,
+                    decompressor.as_mut(),
+                )?
+            };
+            materialized.push(decoded);
         }
     }
     let reopen_read_decode_verify_ns = read_started.elapsed().as_nanos();
@@ -201,7 +218,11 @@ fn sample(
         [],
         |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?)),
     )?;
-    let rollback_preserved = decode(&b, compressed, len as usize, &digest)? == originals[0];
+    let rollback_preserved = (if strategy == 3 {
+        decode_lz4(&b, len as usize, &digest)?
+    } else {
+        decode(&b, compressed, len as usize, &digest)?
+    }) == originals[0];
     let integrity: String = c.query_row("PRAGMA integrity_check", [], |r| r.get(0))?;
     if !rollback_preserved || integrity != "ok" {
         return Err("Rollback or integrity failure".into());
@@ -218,6 +239,7 @@ fn sample(
             "uncompressed_blob",
             "zstd_level3",
             "zstd_level3_reused_contexts",
+            "lz4_block_safe",
         ][strategy],
         records: count,
         input_bytes: total,
@@ -264,8 +286,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let start = Instant::now();
     for repeat in [1, 32] {
         for round in 0..7 {
-            let mut order = [0usize, 1, 2];
-            order.rotate_left(round % 3);
+            let mut order = [0usize, 1, 2, 3];
+            order.rotate_left(round % 4);
             if round % 2 == 1 {
                 order.reverse();
             }
@@ -290,7 +312,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
     }
-    let result = serde_json::json!({"schema_version":1,"scope":"Isolated codec/storage component; not current SnapshotStore implementation or another project baseline","sqlite_version":rusqlite::version(),"zstd_version":zstd::zstd_safe::version_string(),"input_identities":identities,"samples":samples,"limitations":["No power-loss proof; virtualized filesystem and host caches","Readback is reopened, not cold-cache","Compression and checksum CPU included; no peak-memory measurement","Replica density is generated, not additional real provider coverage","No automatic migration, deletion, default adoption or cross-project recommendation"]});
+    let result = serde_json::json!({"schema_version":2,"codec_features":"lz4_flex 0.14.0 default safe-encode and safe-decode; fixed-output zero-initialized block decoding","scope":"Isolated codec/storage component; not current SnapshotStore implementation or another project baseline","sqlite_version":rusqlite::version(),"zstd_version":zstd::zstd_safe::version_string(),"input_identities":identities,"samples":samples,"limitations":["No power-loss proof; virtualized filesystem and host caches","Readback is reopened, not cold-cache","Compression and checksum CPU included; no peak-memory measurement","Replica density is generated, not additional real provider coverage","No automatic migration, deletion, default adoption or cross-project recommendation"]});
     fs::write(
         out.join("results.json"),
         serde_json::to_vec_pretty(&result)?,
@@ -304,6 +326,28 @@ fn main() -> Result<(), Box<dyn Error>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn lz4_bounded_roundtrip_and_malformed_offsets() {
+        for i in 0..10000 {
+            let raw = format!("{{\"id\":{i},\"data\":\"{}\"}}", "abc".repeat(i % 128)).into_bytes();
+            let encoded = lz4_flex::block::compress(&raw);
+            assert_eq!(decode_lz4(&encoded, raw.len(), &hash(&raw)).unwrap(), raw);
+            if i % 1000 == 0 {
+                for n in 0..encoded.len() {
+                    assert!(decode_lz4(&encoded[..n], raw.len(), &hash(&raw)).is_err());
+                }
+                assert!(decode_lz4(&encoded, MAX_RECORD + 1, &hash(&raw)).is_err());
+                assert!(decode_lz4(&encoded, raw.len(), "wrong").is_err());
+            }
+        }
+        for invalid in [
+            &[0u8, 0, 0][..],
+            &[0x10, b'A', 0, 0][..],
+            &[0x10, b'A', 0xff, 0xff][..],
+        ] {
+            assert!(decode_lz4(invalid, 32, &hash(&[0u8; 32])).is_err());
+        }
+    }
     #[test]
     fn reused_contexts_preserve_full_records_and_recover_after_bad_frame() {
         let mut encoder = zstd::bulk::Compressor::new(3).unwrap();

@@ -34,3 +34,22 @@ Use pinned Rust 1.99.1 and `cargo test --locked`, then `cargo build --locked --r
 SQLite 3.54.1 and bundled Zstd 1.5.7 were actually reported by the binary; Rust binding is pinned 0.14.3 with default features disabled. Upstream Zstd 1.5.7 was released February 19, 2025, not today. Advisory database refresh failed; cached commit 3279c999 was checked without ignores and found no known matches. That is not a fresh or complete security guarantee.
 
 Reopen is not cold-cache; FULL on a virtualized filesystem is not proof of physical power-loss durability. SQL/file sync cost varies across rounds. No UI/input latency, peak-memory, concurrent-reader, migration or target-project acceptance follows. Keep this lane isolated; do not add these findings as another project's recommendation without its own baseline comparison.
+
+## Additional maintained codec: safe LZ4 · 2026-10-27
+
+Sources [LZ401], [LZ402], [LZ403]. The preceding Zstd results and verification belong to source commit `7d74b122b550993d7be7905f3ff1091a56337497`; they remain unchanged. A fourth candidate uses official lz4_flex 0.14.0 with default safe-encode, safe-decode and checked-decode enabled. The GitHub latest-release endpoint still returned 0.13.1 while the official crate documentation and changelog describe 0.14.0, dated July 14. Version selection is pinned, not inferred from one latest endpoint.
+
+Independent database records already have bounded original lengths and SHA-256, so the block API is evaluated deliberately rather than presented as the general streaming recommendation. Decoding allocates a fresh zero-filled buffer only after checking the stored length, uses decompress_into, and verifies the exact written length and SHA. It does not trust a size prefix or disable safety features.
+
+The [upstream advisory](https://github.com/PSeitz/lz4_flex/security/advisories/GHSA-vvp9-7p8x-rfvv) covers invalid-offset leakage in older block decoders, including reused output buffers even with safe-decode. Tested 0.14.0 is outside its stated affected versions; the patched-history and later short-dictionary correction were reviewed. Vulnerable old versions were not executed. Four unit tests now include 10,000 generated LZ4 roundtrips, truncations, invalid offsets, bounds and checksum failures alongside the Zstd tests. These checks do not prove absence of unknown vulnerabilities.
+
+Two fresh four-strategy runs retain 56 samples each. The original six records and the separately labeled generated replay are unchanged. Complete bytes, rollback and integrity pass in all new samples. [First run](four-codec-2026-10-27.json) · [repeat](four-codec-repeat-2026-10-27.json) · [source/features/cached audit](lz4-verification-2026-10-27.json). [Additional frame comparisons](zstd-frame-parity-2026-10-27.json) establish per-record versus reused-context Zstd frame equality for this tested corpus only.
+
+| Repeat median | Raw | Zstd per record | Zstd reused contexts | LZ4 safe block |
+|---|---:|---:|---:|---:|
+| Six real records: encode+commit ms | 2.1389 | 2.5707 | 3.0512 | 2.4278 |
+| Six real records: reopen/read/decode/hash ms | 0.1827 | 0.4321 | 0.2816 | 0.2838 |
+| Generated 192 records: encode+commit ms | 5.2333 | 15.3254 | 11.8081 | 7.1470 |
+| Generated 192 records: reopen/read/decode/hash ms | 2.2373 | 7.9218 | 4.2525 | 2.2745 |
+
+LZ4's database sizes are 32,768 / 753,664 bytes for real / replay cases. It saves less space than Zstd but has the lowest compressed write median in both new runs. Raw remains faster for write+commit. LZ4's replay read median beats raw in the first run but not the repeat; do not present that as a stable read-speed win. No overall winner or storage migration is accepted. Native peak memory, real SnapshotStore integration and physical power-loss acceptance remain open.

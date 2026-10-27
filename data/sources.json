@@ -1340,5 +1340,38 @@
     "checked_at": "2026-10-27",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "LZ401",
+    "title": "lz4_flex Rust API",
+    "url": "https://docs.rs/lz4_flex/0.14.0/lz4_flex/",
+    "observed_version": "0.14.0, default safe and checked features verified",
+    "note": "Frame API recommended generally; isolated bounded database records deliberately evaluate block API.",
+    "topic": "storage",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "LZ402",
+    "title": "lz4_flex invalid-offset advisory",
+    "url": "https://github.com/PSeitz/lz4_flex/security/advisories/GHSA-vvp9-7p8x-rfvv",
+    "observed_version": "Published 2026-03-14; affected <=0.11.5 and 0.12.0, patched 0.11.6/0.12.1",
+    "note": "Older block decoders could leak uninitialized or reused-buffer content. Tested 0.14.0 is outside stated affected range; this is not a full security assurance.",
+    "topic": "storage",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "LZ403",
+    "title": "lz4_flex changelog",
+    "url": "https://github.com/PSeitz/lz4_flex/blob/1bffdcbbf906a234b913937cb2f57c0245915038/CHANGELOG.md",
+    "observed_version": "0.14.0 dated 2026-07-14; GitHub latest release object separately returned 0.13.1",
+    "note": "Records alloc feature change, invalid-offset fixes and later short-dictionary fix; do not blindly use one latest endpoint.",
+    "topic": "storage",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

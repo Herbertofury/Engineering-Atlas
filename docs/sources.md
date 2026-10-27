@@ -734,3 +734,21 @@ Lossless codec candidate; release status does not establish faster application w
 [Rust Zstandard binding](https://docs.rs/zstd/0.14.3/zstd/) · 0.14.3, zstd-sys 2.1.2+zstd.1.5.7 in isolated lock
 
 Bulk context reuse and bounded decompression evaluated in an isolated SQLite component. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## LZ401
+
+[lz4_flex Rust API](https://docs.rs/lz4_flex/0.14.0/lz4_flex/) · 0.14.0, default safe and checked features verified
+
+Frame API recommended generally; isolated bounded database records deliberately evaluate block API. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## LZ402
+
+[lz4_flex invalid-offset advisory](https://github.com/PSeitz/lz4_flex/security/advisories/GHSA-vvp9-7p8x-rfvv) · Published 2026-03-14; affected <=0.11.5 and 0.12.0, patched 0.11.6/0.12.1
+
+Older block decoders could leak uninitialized or reused-buffer content. Tested 0.14.0 is outside stated affected range; this is not a full security assurance. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## LZ403
+
+[lz4_flex changelog](https://github.com/PSeitz/lz4_flex/blob/1bffdcbbf906a234b913937cb2f57c0245915038/CHANGELOG.md) · 0.14.0 dated 2026-07-14; GitHub latest release object separately returned 0.13.1
+
+Records alloc feature change, invalid-offset fixes and later short-dictionary fix; do not blindly use one latest endpoint. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
