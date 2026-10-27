@@ -75,3 +75,30 @@ fn separate_connections_cannot_claim_the_same_live_job() {
     assert!(second.finish(&a, true, 1002).is_err());
     second.finish(&b, true, 1003).unwrap();
 }
+
+#[test]
+fn batch_survives_reopen_without_replacing_missing_project() {
+    let scratch = Scratch::new();
+    let ids = vec!["AANobbMI".into(), "P7dR8mSH".into()];
+    let body=br#"[{"id":"AANobbMI","slug":"fixture","title":"Full fixture","description":"test","project_type":"mod","versions":["all1","all2"],"gallery":[]}]"#;
+    let batch = atlas_lab::modrinth::parse_projects(body, &ids).unwrap();
+    {
+        let mut store = SnapshotStore::open(&scratch.0).unwrap();
+        store.save_modrinth_batch(&batch).unwrap();
+        store.record_batch_failure(&ids).unwrap();
+    }
+    let store = SnapshotStore::open(&scratch.0).unwrap();
+    assert_eq!(store.attempts().unwrap(), 4);
+    assert_eq!(
+        serde_json::to_value(store.latest_modrinth("AANobbMI").unwrap().unwrap()).unwrap(),
+        serde_json::to_value(&batch.projects[0]).unwrap()
+    );
+    assert!(store.latest_modrinth("P7dR8mSH").unwrap().is_none());
+    let connection = rusqlite::Connection::open(&scratch.0).unwrap();
+    assert_eq!(
+        connection
+            .query_row("PRAGMA integrity_check", [], |r| r.get::<_, String>(0))
+            .unwrap(),
+        "ok"
+    );
+}

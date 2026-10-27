@@ -530,3 +530,21 @@ End-of-scroll calculation includes scrollMargin; source diff and upstream regres
 [Chrome guidance on complex layout interactions](https://github.com/GoogleChrome/modern-web-guidance-src/blob/main/guides/performance/interactions-in-complex-layouts/guide.md) · Official source reviewed 2026-10-26
 
 Self-contained layout-region boundaries; hypothesis basis, not evidence that a particular grouping is faster. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## COL03
+
+[Modrinth multiple-project operation](https://docs.modrinth.com/api/operations/getprojects/) · Official operation reviewed and live-tested 2026-10-27
+
+JSON-array project identities and typed multi-project response; local budgets are separate from provider limits. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## PAPER06
+
+[WCXB multi-type extraction benchmark](https://arxiv.org/html/2605.21097v1) · Preprint v1, 2026-05-20; reviewed 2026-10-27
+
+Main-text extraction across seven types; not complete-media, authenticated-session or playback acceptance. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## UI06
+
+[Measure Memory API draft](https://wicg.github.io/performance-measure-memory/) · Draft Community Group Report, 2021-05-28; reviewed 2026-10-27
+
+Cross-origin-isolated estimated memory measurements; not peak process memory and not a W3C Standard. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.

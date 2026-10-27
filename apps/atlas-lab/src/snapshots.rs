@@ -41,6 +41,54 @@ impl SnapshotStore {
         tx.commit()?;
         Ok(generation)
     }
+    pub fn save_modrinth_batch(
+        &mut self,
+        batch: &crate::modrinth::ProjectBatch,
+    ) -> Result<Vec<(String, i64)>, Box<dyn std::error::Error>> {
+        // Revalidate before opening the transaction, including forged missing-state metadata.
+        let validated = crate::modrinth::parse_projects(
+            &serde_json::to_vec(&batch.projects)?,
+            &batch.requested_ids,
+        )?;
+        if validated.missing_ids != batch.missing_ids {
+            return Err("Inconsistent missing project identities".into());
+        }
+        let tx = self.0.transaction()?;
+        let mut generations = Vec::new();
+        for project in validated.projects {
+            let body = serde_json::to_string(&project)?;
+            tx.execute(
+                "INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth',?1,?2)",
+                params![project.id, body],
+            )?;
+            let generation = tx.last_insert_rowid();
+            tx.execute("INSERT INTO collection_attempts(requested_id,outcome,generation) VALUES(?1,'success',?2)",params![project.id,generation])?;
+            generations.push((project.id, generation));
+        }
+        for id in validated.missing_ids {
+            tx.execute(
+                "INSERT INTO collection_attempts(requested_id,outcome) VALUES(?1,'failure')",
+                [id],
+            )?;
+        }
+        tx.commit()?;
+        Ok(generations)
+    }
+    pub fn record_batch_failure(
+        &mut self,
+        ids: &[String],
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        crate::modrinth::projects_url(ids)?;
+        let tx = self.0.transaction()?;
+        for id in ids {
+            tx.execute(
+                "INSERT INTO collection_attempts(requested_id,outcome) VALUES(?1,'failure')",
+                [id],
+            )?;
+        }
+        tx.commit()?;
+        Ok(())
+    }
     pub fn record_failure(&self, requested_id: &str) -> rusqlite::Result<()> {
         // Intentionally do not persist error URLs, response bodies or credentials.
         self.0.execute(
@@ -76,6 +124,52 @@ mod tests {
             icon_url: None,
             gallery: None,
         }
+    }
+    #[test]
+    fn partial_batch_keeps_last_good_and_records_each_identity() {
+        let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        store.save_modrinth("AANobbMI", &project()).unwrap();
+        let mut other = project();
+        other.id = "P7dR8mSH".into();
+        let batch = crate::modrinth::ProjectBatch {
+            requested_ids: vec!["AANobbMI".into(), "P7dR8mSH".into()],
+            projects: vec![other],
+            missing_ids: vec!["AANobbMI".into()],
+        };
+        assert_eq!(store.save_modrinth_batch(&batch).unwrap().len(), 1);
+        assert_eq!(store.attempts().unwrap(), 3);
+        assert_eq!(
+            store.latest_modrinth("AANobbMI").unwrap().unwrap().title,
+            "Sodium fixture"
+        );
+        assert!(store.latest_modrinth("P7dR8mSH").unwrap().is_some());
+    }
+    #[test]
+    fn database_failure_rolls_back_earlier_batch_rows() {
+        let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        store.0.execute_batch("CREATE TRIGGER reject_second BEFORE INSERT ON snapshots WHEN NEW.canonical_id='P7dR8mSH' BEGIN SELECT RAISE(ABORT,'injected fixture failure'); END;").unwrap();
+        let mut other = project();
+        other.id = "P7dR8mSH".into();
+        let batch = crate::modrinth::ProjectBatch {
+            requested_ids: vec!["AANobbMI".into(), "P7dR8mSH".into()],
+            projects: vec![project(), other],
+            missing_ids: vec![],
+        };
+        assert!(store.save_modrinth_batch(&batch).is_err());
+        assert_eq!(store.attempts().unwrap(), 0);
+        assert!(store.latest_modrinth("AANobbMI").unwrap().is_none());
+    }
+    #[test]
+    fn invalid_batch_cannot_partially_commit() {
+        let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let batch = crate::modrinth::ProjectBatch {
+            requested_ids: vec!["AANobbMI".into()],
+            projects: vec![project()],
+            missing_ids: vec!["AANobbMI".into()],
+        };
+        assert!(store.save_modrinth_batch(&batch).is_err());
+        assert_eq!(store.attempts().unwrap(), 0);
+        assert!(store.latest_modrinth("AANobbMI").unwrap().is_none());
     }
     #[test]
     fn failure_preserves_last_verified_generation() {

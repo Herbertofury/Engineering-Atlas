@@ -65,3 +65,7 @@ Source-register IDs: [R05], [DB05], [NET01], [COL01], [COL02].
 A prototype dashboard exposes collection and evidence state. It does not enable background experiments or code generation. The local HTTP smoke pass verified real queued public collection, input limits and origin/host guards; cloud-browser access to the isolated loopback preview was unavailable, so visual and browser-interaction acceptance is explicitly pending.
 
 [Card-density browser lab](../../docs/card-lab/index.html) is a separate generated-data measurement harness, not a claim about any project's current UI. [Storage lab evidence](../../experiments/rust-storage-lab/README.md) compares preparation strategies with the same transaction and durability boundaries.
+
+## Optional bounded public batch collection
+
+`cargo run --locked --release -- collect-modrinth-batch OUTPUT.sqlite AANobbMI gvQqBUqZ YL57xq9U` collects 1–20 unique canonical Modrinth IDs through one official request and commits successful projections plus missing-identity receipts atomically. Existing single-project CLI and web queue remain unchanged. Read the [measured scope and limits](../../experiments/modrinth-batch-lab/README.md) before interpreting request reduction as speed. No authentication is needed or configured.

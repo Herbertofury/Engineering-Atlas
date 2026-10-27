@@ -25,8 +25,12 @@ def validate_sources(rows,today):
         if (today-checked).days>interval:stale.append(ident)
     return ids,stale
 
+def utc_today():
+    """Source review dates use UTC, independent of executor local timezone."""
+    return dt.datetime.now(dt.timezone.utc).date()
+
 def check(root=ROOT,today=None):
-    ids,stale=validate_sources(json.loads((root/'data/sources.json').read_text()),today or dt.date.today())
+    ids,stale=validate_sources(json.loads((root/'data/sources.json').read_text()),today or utc_today())
     failures=[];files=list(root.rglob('*.md'))
     for path in files:
         text=path.read_text()

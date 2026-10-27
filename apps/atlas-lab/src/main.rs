@@ -7,6 +7,27 @@ use std::{hint::black_box, path::Path, time::Instant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
+    if args.len() >= 4 && args[1] == "collect-modrinth-batch" {
+        let ids = &args[3..];
+        atlas_lab::modrinth::projects_url(ids)?;
+        let mut store = atlas_lab::snapshots::SnapshotStore::open(Path::new(&args[2]))?;
+        match atlas_lab::modrinth::PublicClient::new()?.projects(ids) {
+            Ok(batch) => {
+                let generations = store.save_modrinth_batch(&batch)?;
+                println!(
+                    "{}",
+                    serde_json::to_string_pretty(
+                        &serde_json::json!({"generations":generations,"batch":batch,"scope":"bounded public project projection; missing IDs explicit, not a complete content collector"})
+                    )?
+                );
+                return Ok(());
+            }
+            Err(error) => {
+                store.record_batch_failure(ids)?;
+                return Err(error);
+            }
+        }
+    }
     if args.len() == 3 && args[1] == "storage-lab" {
         println!(
             "{}",
@@ -48,7 +69,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     if args.len() != 3 || args[1] != "dedup-lab" {
         eprintln!(
-            "Usage: atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
+            "Usage: atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
         );
         std::process::exit(2);
     }

@@ -1,6 +1,7 @@
 //! Read-only public project metadata. Not a complete catalogue, download client or account integration.
 use serde::{Deserialize, Serialize};
 use std::{
+    collections::{HashMap, HashSet},
     io::Read,
     time::{Duration, Instant},
 };
@@ -48,6 +49,11 @@ pub fn parse_project(body: &[u8]) -> Result<Project, Box<dyn std::error::Error>>
         return Err("Response exceeds size budget".into());
     }
     let project: Project = serde_json::from_slice(body)?;
+    validate_project(&project)?;
+    Ok(project)
+}
+
+fn validate_project(project: &Project) -> Result<(), Box<dyn std::error::Error>> {
     if project.id.len() != 8 || !project.id.bytes().all(|b| b.is_ascii_alphanumeric()) {
         return Err("Invalid canonical project identifier".into());
     }
@@ -55,7 +61,63 @@ pub fn parse_project(body: &[u8]) -> Result<Project, Box<dyn std::error::Error>>
     if project.title.trim().is_empty() {
         return Err("Missing project title".into());
     }
-    Ok(project)
+    Ok(())
+}
+
+/// Bounded canonical-ID lane. Missing projects are explicit, never successful empty snapshots.
+#[derive(Debug, Serialize)]
+pub struct ProjectBatch {
+    pub requested_ids: Vec<String>,
+    pub projects: Vec<Project>,
+    pub missing_ids: Vec<String>,
+}
+
+pub fn projects_url(ids: &[String]) -> Result<String, Box<dyn std::error::Error>> {
+    if ids.is_empty() || ids.len() > 20 {
+        return Err("Batch requires 1..=20 canonical project IDs".into());
+    }
+    let mut unique = HashSet::new();
+    for id in ids {
+        if id.len() != 8 || !id.bytes().all(|b| b.is_ascii_alphanumeric()) || !unique.insert(id) {
+            return Err("Batch IDs must be unique eight-character canonical IDs".into());
+        }
+    }
+    let mut url = reqwest::Url::parse("https://api.modrinth.com/v2/projects")?;
+    url.query_pairs_mut()
+        .append_pair("ids", &serde_json::to_string(ids)?);
+    Ok(url.into())
+}
+
+pub fn parse_projects(
+    body: &[u8],
+    ids: &[String],
+) -> Result<ProjectBatch, Box<dyn std::error::Error>> {
+    projects_url(ids)?;
+    if body.len() as u64 > MAX_BODY {
+        return Err("Response exceeds size budget; no partial snapshot accepted".into());
+    }
+    let projects: Vec<Project> = serde_json::from_slice(body)?;
+    let mut by_id = HashMap::new();
+    for project in projects {
+        validate_project(&project)?;
+        if !ids.contains(&project.id) || by_id.contains_key(&project.id) {
+            return Err("Unexpected or duplicate project in batch response".into());
+        }
+        by_id.insert(project.id.clone(), project);
+    }
+    let mut result = ProjectBatch {
+        requested_ids: ids.to_vec(),
+        projects: Vec::new(),
+        missing_ids: Vec::new(),
+    };
+    for id in ids {
+        if let Some(project) = by_id.remove(id) {
+            result.projects.push(project);
+        } else {
+            result.missing_ids.push(id.clone());
+        }
+    }
+    Ok(result)
 }
 
 pub struct PublicClient {
@@ -72,6 +134,16 @@ impl PublicClient {
     }
     pub fn project(&mut self, id: &str) -> Result<Project, Box<dyn std::error::Error>> {
         let url = project_url(id)?;
+        parse_project(&self.request_json(&url)?)
+    }
+    pub fn projects(&mut self, ids: &[String]) -> Result<ProjectBatch, Box<dyn std::error::Error>> {
+        let url = projects_url(ids)?;
+        parse_projects(&self.request_json(&url)?, ids)
+    }
+    pub fn cooldown_remaining(&self) -> Duration {
+        self.next_request.saturating_duration_since(Instant::now())
+    }
+    fn request_json(&mut self, url: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
         if Instant::now() < self.next_request {
             return Err("Provider cooldown active; retry later".into());
         }
@@ -115,13 +187,105 @@ impl PublicClient {
         }
         let mut bytes = Vec::new();
         response.take(MAX_BODY + 1).read_to_end(&mut bytes)?;
-        parse_project(&bytes)
+        if bytes.len() as u64 > MAX_BODY {
+            return Err("Response exceeds size budget".into());
+        }
+        Ok(bytes)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn batch_fixture(id: &str) -> serde_json::Value {
+        serde_json::json!({"id":id,"slug":format!("fixture-{id}"),"title":"Fixture","description":"Complete fixture","project_type":"mod","versions":["version1"],"gallery":[]})
+    }
+    #[test]
+    fn batch_preserves_request_order_and_explicit_missing() {
+        let ids = vec!["AANobbMI".into(), "P7dR8mSH".into(), "abcdefgh".into()];
+        let body = serde_json::to_vec(&vec![batch_fixture("P7dR8mSH"), batch_fixture("AANobbMI")])
+            .unwrap();
+        let batch = parse_projects(&body, &ids).unwrap();
+        assert_eq!(
+            batch
+                .projects
+                .iter()
+                .map(|p| p.id.as_str())
+                .collect::<Vec<_>>(),
+            vec!["AANobbMI", "P7dR8mSH"]
+        );
+        assert_eq!(batch.missing_ids, vec!["abcdefgh"]);
+        assert_eq!(batch.requested_ids, ids);
+        for p in batch.projects {
+            assert_eq!(p.versions, vec!["version1"]);
+            assert_eq!(p.gallery.unwrap().len(), 0);
+        }
+    }
+    #[test]
+    fn batch_rejects_duplicates_unknown_ids_and_invalid_later_records() {
+        let ids = vec!["AANobbMI".into()];
+        for values in [
+            vec![batch_fixture("P7dR8mSH")],
+            vec![batch_fixture("AANobbMI"), batch_fixture("AANobbMI")],
+            vec![
+                batch_fixture("AANobbMI"),
+                serde_json::json!({"id":"P7dR8mSH"}),
+            ],
+        ] {
+            assert!(parse_projects(&serde_json::to_vec(&values).unwrap(), &ids).is_err());
+        }
+    }
+    #[test]
+    fn thousand_batch_permutations_preserve_complete_project_projection() {
+        for case in 0..1000 {
+            let count = case % 20 + 1;
+            let ids: Vec<String> = (0..count)
+                .map(|i| format!("{:08}", case * 20 + i))
+                .collect();
+            let values: Vec<serde_json::Value> = ids
+                .iter()
+                .enumerate()
+                .filter(|(i, _)| (i + case) % 3 != 0)
+                .map(|(_, id)| batch_fixture(id))
+                .collect();
+            let expected: Vec<serde_json::Value> = values
+                .iter()
+                .map(|v| {
+                    serde_json::to_value(parse_project(&serde_json::to_vec(v).unwrap()).unwrap())
+                        .unwrap()
+                })
+                .collect();
+            let reversed: Vec<_> = values.into_iter().rev().collect();
+            let batch = parse_projects(&serde_json::to_vec(&reversed).unwrap(), &ids).unwrap();
+            assert_eq!(
+                serde_json::to_value(&batch.projects).unwrap(),
+                serde_json::to_value(expected).unwrap()
+            );
+            assert_eq!(batch.projects.len() + batch.missing_ids.len(), ids.len());
+        }
+    }
+    #[test]
+    fn batch_limits_and_query_are_unambiguous() {
+        for ids in [
+            vec![],
+            vec!["sodium".into()],
+            vec!["AANobbMI".into(), "AANobbMI".into()],
+            vec!["AANobbMI".into(); 21],
+            vec!["../x?a=b".into()],
+        ] {
+            assert!(projects_url(&ids).is_err());
+        }
+        let ids = vec!["AANobbMI".into(), "P7dR8mSH".into()];
+        let url = reqwest::Url::parse(&projects_url(&ids).unwrap()).unwrap();
+        assert_eq!(url.host_str(), Some("api.modrinth.com"));
+        assert_eq!(url.path(), "/v2/projects");
+        assert_eq!(
+            url.query_pairs().collect::<Vec<_>>(),
+            vec![("ids".into(), serde_json::to_string(&ids).unwrap().into())]
+        );
+        assert!(parse_projects(&vec![b' '; MAX_BODY as usize + 1], &ids).is_err());
+        assert_eq!(parse_projects(b"[]", &ids).unwrap().missing_ids, ids);
+    }
     #[test]
     fn rejects_url_path_query_and_unicode_injection() {
         for id in [

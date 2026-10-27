@@ -24,7 +24,7 @@ A search snippet is a lead. Read the relevant source section before using a prec
 
 ## Freshness
 
-The source register records checked_at and review_after_days. The local checker flags stale entries but does not claim to monitor the internet. Review volatile releases before use; stable principles still need version applicability checks. No automatic recurring research service is implied by this repository.
+The source register records checked_at (UTC calendar date) and review_after_days. The local checker flags stale entries but does not claim to monitor the internet. Review volatile releases before use; stable principles still need version applicability checks. No automatic recurring research service is implied by this repository.
 
 ## Publication hygiene
 

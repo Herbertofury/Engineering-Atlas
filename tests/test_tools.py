@@ -1,5 +1,6 @@
 import copy,datetime as dt,importlib.util,json,math,unittest
 from pathlib import Path
+from unittest.mock import patch
 R=Path(__file__).resolve().parents[1]
 def load(name):
  spec=importlib.util.spec_from_file_location(name,R/'scripts'/f'{name}.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
@@ -63,7 +64,15 @@ class BenchmarkTests(unittest.TestCase):
   result=bench.compare(self.a,self.b)
   self.assertIn('Synthetic',result['qualification'])
 class ResearchTests(unittest.TestCase):
- def setUp(self):self.rows=json.loads((R/'data/sources.json').read_text());self.today=dt.date(2026,10,26)
+ def setUp(self):self.rows=json.loads((R/'data/sources.json').read_text());self.today=research.utc_today()
+ def test_default_date_uses_utc_across_local_midnight_boundary(self):
+  instant=dt.datetime(2026,10,27,0,10,tzinfo=dt.timezone.utc)
+  class Clock(dt.datetime):
+   @classmethod
+   def now(cls,tz=None):
+    if tz is not dt.timezone.utc:raise AssertionError('UTC clock required')
+    return instant
+  with patch.object(research.dt,'datetime',Clock):self.assertEqual(research.utc_today(),dt.date(2026,10,27))
  def test_register_and_links(self):self.assertGreater(research.check(R,self.today)['sources'],10)
  def test_duplicate_source(self):
   self.rows.append(copy.deepcopy(self.rows[0]))
@@ -74,7 +83,9 @@ class ResearchTests(unittest.TestCase):
  def test_url_credentials_rejected(self):
   self.rows[0]['url']='https://secret@example.com/'
   with self.assertRaises(ValueError):research.validate_sources(self.rows,self.today)
- def test_stale_is_visible(self):self.assertTrue(research.validate_sources(self.rows,dt.date(2027,1,1))[1])
+ def test_stale_is_visible(self):
+  self.rows[0]['checked_at']=(self.today-dt.timedelta(days=self.rows[0]['review_after_days']+1)).isoformat()
+  self.assertIn(self.rows[0]['id'],research.validate_sources(self.rows,self.today)[1])
  def test_no_evidence_promotion(self):
   self.rows[0]['evidence']='production_proven'
   with self.assertRaises(ValueError):research.validate_sources(self.rows,self.today)

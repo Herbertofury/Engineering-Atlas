@@ -34,3 +34,9 @@ The v5 harness adds a separate, explicitly experimental grouped-region operation
 This is a structural hypothesis based on layout-region guidance [UI05] and intrinsic-size semantics [UI03], not a claimed fix. v5 also records available Long Animation Frame render/style-layout start times, blocking duration and aggregate script duration, and resets retained observer arrays at the start of a run to avoid accumulating prior-run evidence indefinitely. The old v4 receipt and old content-addressed assets remain intact.
 
 Upstream reuse review [UI04]: TanStack Virtual core 3.19.8 fixes an end-of-scroll calculation when content has a scroll margin, with two upstream regression cases. This source inspection does not establish a local performance win or authorize adopting virtualization: focus, find-in-page, accessibility, full-record access and target requirements would need separate parity tests. No project-specific recommendation was made.
+
+### v5 result: grouping is not accepted
+
+[Raw grouped-region receipt](grouped-1000-8k-v5-2026-10-26.json) retains seven complete pairs and all 1000 records in 84 regions. Full DOM / grouped median frame-ready proxies were 3531.9 / 204.7 ms; median per-sample maximum scroll waits were 84.5 / 281.8 ms. Grouping made the scroll tradeoff worse in this run, not better. All 14 complete-output comparisons passed; the final partial group held four records and exact inspection of card-000999 returned all 8192 metadata characters.
+
+Frame attribution shows substantial time after style/layout begins, consistent with deferred rendering work appearing during scrolling, but these timestamps alone do not isolate layout versus paint or prove a root cause. The candidate stays isolated and unpromoted. Preserve the per-card baseline, full-DOM reference and this failed result for further diagnosis; do not call the initial-rendering gain a no-loss win.

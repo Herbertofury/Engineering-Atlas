@@ -966,5 +966,38 @@
     "checked_at": "2026-10-26",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "COL03",
+    "title": "Modrinth multiple-project operation",
+    "url": "https://docs.modrinth.com/api/operations/getprojects/",
+    "observed_version": "Official operation reviewed and live-tested 2026-10-27",
+    "topic": "collection",
+    "note": "JSON-array project identities and typed multi-project response; local budgets are separate from provider limits",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "PAPER06",
+    "title": "WCXB multi-type extraction benchmark",
+    "url": "https://arxiv.org/html/2605.21097v1",
+    "observed_version": "Preprint v1, 2026-05-20; reviewed 2026-10-27",
+    "topic": "collection",
+    "note": "Main-text extraction across seven types; not complete-media, authenticated-session or playback acceptance",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "UI06",
+    "title": "Measure Memory API draft",
+    "url": "https://wicg.github.io/performance-measure-memory/",
+    "observed_version": "Draft Community Group Report, 2021-05-28; reviewed 2026-10-27",
+    "topic": "ui",
+    "note": "Cross-origin-isolated estimated memory measurements; not peak process memory and not a W3C Standard",
+    "checked_at": "2026-10-27",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
   }
 ]
