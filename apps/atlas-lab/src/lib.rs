@@ -366,3 +366,6 @@ pub mod version_validation_candidate;
 pub mod version_experiment_runner;
 
 pub mod build_identity;
+
+pub(crate) mod public_http;
+pub mod upstream_reviews;

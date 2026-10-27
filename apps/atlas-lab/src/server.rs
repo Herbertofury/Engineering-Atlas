@@ -265,6 +265,29 @@ fn collect_versions(
         }
     }
 }
+fn upstream_job(
+    path: &Path,
+    source: &str,
+    client: &mut Option<crate::upstream_reviews::PublicClient>,
+    stop: &AtomicBool,
+) -> Result<(bool, serde_json::Value), &'static str> {
+    let source = crate::upstream_reviews::Source::parse(source)?;
+    if client.is_none() {
+        *client = Some(
+            crate::upstream_reviews::PublicClient::new()
+                .map_err(|_| "Public upstream client could not be initialized")?,
+        );
+    }
+    let (accepted, receipt) = crate::upstream_reviews::review_with_cancel(
+        client
+            .as_ref()
+            .ok_or("Public upstream client unavailable")?,
+        source,
+        path,
+        || stop.load(Ordering::Relaxed),
+    )?;
+    Ok((accepted, serde_json::json!({"upstream_review":receipt})))
+}
 fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Receiver<()>) {
     let mut q = match Queue::open(&path) {
         Ok(q) => q,
@@ -280,6 +303,7 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
             return;
         }
     };
+    let mut upstream_client = None;
     status.store(1, Ordering::Relaxed);
     while !stop.load(Ordering::Relaxed) {
         match q.claim("local-worker", now(), 60_000) {
@@ -291,6 +315,7 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
                         await_provider_slot(client.cooldown_remaining(), &stop)?;
                         client.versions(versions)
                     }),
+                    Job::ReviewUpstream {source}=>upstream_job(&path,source,&mut upstream_client,&stop),
                     Job::DedupExperiment=>crate::experiment_runner::run_builtin(||stop.load(Ordering::Relaxed)).map(|run|{
                         let output=serde_json::json!({"experiment":run});
                         persist_experiment(&path,run.completed,output,&run.evidence,&crate::experiment_runner::policy())

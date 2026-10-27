@@ -7,6 +7,21 @@ use std::{hint::black_box, path::Path, time::Instant};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
+    if args.len() == 4 && args[1] == "review-upstream" {
+        let source = atlas_lab::upstream_reviews::Source::parse(&args[3])?;
+        let (accepted, receipt) = atlas_lab::upstream_reviews::review(
+            &atlas_lab::upstream_reviews::PublicClient::new()?,
+            source,
+            Path::new(&args[2]),
+        )?;
+        println!("{}", serde_json::to_string_pretty(&receipt)?);
+        if !accepted {
+            return Err(
+                "No new upstream observation; failure or cooldown receipt printed above".into(),
+            );
+        }
+        return Ok(());
+    }
     if args.len() >= 4 && args[1] == "collect-modrinth-versions" {
         let ids = &args[3..];
         atlas_lab::modrinth_versions::versions_url(ids)?;
@@ -104,7 +119,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     if args.len() != 3 || args[1] != "dedup-lab" {
         eprintln!(
-            "Usage: atlas-lab collect-modrinth-versions OUTPUT.sqlite CANONICAL_VERSION_ID...\n       atlas-lab serve OUTPUT.sqlite\n       atlas-lab serve-candidate OUTPUT.sqlite (isolated validated-raw overview)\n       atlas-lab storage-lab NEW_DIRECTORY\n       atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
+            "Usage: atlas-lab review-upstream OUTPUT.sqlite rustsec|hls|serde-json\n       atlas-lab collect-modrinth-versions OUTPUT.sqlite CANONICAL_VERSION_ID...\n       atlas-lab serve OUTPUT.sqlite\n       atlas-lab serve-candidate OUTPUT.sqlite (isolated validated-raw overview)\n       atlas-lab storage-lab NEW_DIRECTORY\n       atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
         );
         std::process::exit(2);
     }

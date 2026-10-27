@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {collectionJob,versionExperimentJob,versionCollectionJob} from '../apps/atlas-lab/ui/collection-input.mjs';
+import {collectionJob,versionExperimentJob,versionCollectionJob,upstreamReviewJob} from '../apps/atlas-lab/ui/collection-input.mjs';
 test('existing single slug and ID remain supported',()=>{assert.deepEqual(collectionJob(' sodium '),{CollectModrinth:{project:'sodium'}});assert.deepEqual(collectionJob('AANobbMI'),{CollectModrinth:{project:'AANobbMI'}});});
 test('batch retains exact identity order and case',()=>assert.deepEqual(collectionJob('AANobbMI, gvQqBUqZ,YL57xq9U'),{CollectModrinthBatch:{projects:['AANobbMI','gvQqBUqZ','YL57xq9U']}}));
 test('malformed batches are rejected rather than silently repaired',()=>{for(const value of ['','https://localhost/private','AANobbMI,','AANobbMI,,gvQqBUqZ','sodium,lithium','AANobbMI,AANobbMI','AANobbMI,../test?','a'.repeat(513),null])assert.throws(()=>collectionJob(value));});
@@ -17,3 +17,5 @@ test('version collection preserves canonical IDs and rejects ambiguous requests'
  assert.equal(versionCollectionJob(ids.slice(0,20).join(',')).CollectModrinthVersions.versions.length,20);
  assert.throws(()=>versionCollectionJob(ids.join(',')));
 });
+
+test('upstream input is a fixed public source, not a URL or token',()=>{for(const source of ['rustsec','hls','serde-json'])assert.deepEqual(upstreamReviewJob(source),{ReviewUpstream:{source}});for(const input of ['',null,'https://api.github.com/repos/private/repo','HLS',{source:'hls'}])assert.throws(()=>upstreamReviewJob(input));});

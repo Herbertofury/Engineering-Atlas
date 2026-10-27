@@ -35,7 +35,7 @@ The dedup lab intentionally remains ineligible for review: it does not yet measu
 - No credentials, account sessions, paywall bypasses or arbitrary command execution.
 - The journal is append-only through the application API, not cryptographically tamper-proof against local database edits.
 - A timeout, HTTP failure or schema failure is not an empty successful collection.
-- Cooldowns are per client instance, not yet a cross-process provider scheduler. Do not launch parallel processes to evade provider limits.
+- Modrinth cooldowns are per client instance. The fixed GitHub upstream reader persists its budget in the selected database, not globally across databases or the shared originating IP. Do not launch parallel processes or create databases to evade provider limits.
 - No crash/power-loss durability certification, process sandbox, parallel collector orchestration or production promotion/rollback mechanism yet. SQLite transactions are not a substitute for those tests.
 - Native dependency builds and platform behavior need separate Linux and Windows CI evidence. A Linux pass is not a Windows release.
 - Rust/SQLite/reqwest are evaluated starting choices, not universal winners. Storage alternatives and UI choices remain an explicit experimental decision.
@@ -123,3 +123,11 @@ execution or general autonomous self-modification is claimed.
 ## Collect versions before experimenting
 
 In Collection, submit 1–20 canonical version IDs. The queue saves complete original public JSON to the same database used by Experiments. Wait for a complete/partial receipt in Overview, then enter a successfully saved version ID under Saved version validation. No separate CLI step is required; the CLI remains supported. See [real HTTP evidence and remaining browser acceptance gap](../../experiments/version-collection-queue-lab/README.md). No binary files are fetched, no experimental parser is promoted, and no API grant is created.
+
+## Fixed public upstream checkpoints · October 27, 2026
+
+The Collection panel can queue a read-only checkpoint for RustSec advisory-db, hls.js or serde_json. The same bounded path is available with `cargo run --locked -- review-upstream local.sqlite rustsec` (or `hls`, `serde-json`). It requests official public JSON without credentials and retains complete original response bytes, receipt hash, revision, provider timestamp and observation time. Unknown fields are retained, not projected away.
+
+Only these three compiled sources are accepted. Release metadata is not source-signature verification, a dependency audit, an upgrade, a registry-newest guarantee or evidence of better performance. A changed response can mean metadata drift rather than a changed revision. No release assets execute or download. Current tests and exact limitations: [upstream review evidence](../../experiments/upstream-review-lab/README.md).
+
+The reader shares the existing bounded JSON transport with Modrinth without new dependencies. It reserves a request transactionally before HTTP, limits each database to 30 requests per hour, persists server cooldowns, and blocks interrupted reservations for manual reconciliation. There is deliberately no automatic reset or credential escalation. A process killed between reservation and completion requires investigation; the UI does not yet offer a reconciliation operation. Queue finalization and snapshot commit remain separate transactions, so a crash can cause a later duplicate observation, not exactly-once delivery. Previously saved generations remain intact.

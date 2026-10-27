@@ -2,7 +2,6 @@
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{HashMap, HashSet},
-    io::Read,
     time::{Duration, Instant},
 };
 
@@ -178,29 +177,7 @@ impl PublicClient {
             )
             .into());
         }
-        let content_type = response
-            .headers()
-            .get(reqwest::header::CONTENT_TYPE)
-            .and_then(|h| h.to_str().ok())
-            .unwrap_or("");
-        if !content_type
-            .split(';')
-            .next()
-            .unwrap_or("")
-            .trim()
-            .eq_ignore_ascii_case("application/json")
-        {
-            return Err("Expected a JSON response".into());
-        }
-        if response.content_length().is_some_and(|n| n > MAX_BODY) {
-            return Err("Response exceeds size budget".into());
-        }
-        let mut bytes = Vec::new();
-        response.take(MAX_BODY + 1).read_to_end(&mut bytes)?;
-        if bytes.len() as u64 > MAX_BODY {
-            return Err("Response exceeds size budget".into());
-        }
-        Ok(bytes)
+        crate::public_http::read_json_response(response, MAX_BODY)
     }
 }
 

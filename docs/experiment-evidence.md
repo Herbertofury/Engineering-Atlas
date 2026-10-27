@@ -74,3 +74,7 @@ not a general recommendation or approval to change another project.
 
 - [Pinned dependency advisory checks](../experiments/dependency-audit-lab/README.md): freshly fetched database, clean worktree, exact remote lock hashes and zero known matches in three scoped lockfiles. Not a whole-system security clearance.
 - [Representation contract probe](../experiments/representation-contract-lab/README.md): independently written exact-rational cases expose a positive-threshold fidelity boundary. Not a paper implementation, performance reproduction or target adoption result.
+
+## Public upstream observation workflow
+
+[Fixed GitHub checkpoints](../experiments/upstream-review-lab/README.md) add real anonymous source checks to the Rust app, retaining complete raw JSON and durable request budgets. CLI and loopback queue results distinguish a new revision from metadata drift; generated cooldown and interrupted-request cases are not live rate-limit incidents. No automatic upgrade or performance ranking follows.

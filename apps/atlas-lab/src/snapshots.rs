@@ -1,6 +1,6 @@
 //! Atomic metadata generations. Failed refreshes never replace a successful snapshot.
 use crate::modrinth::Project;
-use rusqlite::{Connection, OptionalExtension, params};
+use rusqlite::{Connection, OptionalExtension, TransactionBehavior, params};
 use std::path::Path;
 pub struct SnapshotStore(Connection);
 impl SnapshotStore {
@@ -20,6 +20,134 @@ impl SnapshotStore {
               recorded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
               CHECK((outcome='success' AND generation IS NOT NULL) OR (outcome='failure' AND generation IS NULL)));")?;
         Ok(Self(c))
+    }
+    fn prepare_upstream_tables(&self) -> rusqlite::Result<()> {
+        self.0.execute_batch("CREATE TABLE IF NOT EXISTS upstream_budget (id INTEGER PRIMARY KEY CHECK(id=1), window_start INTEGER NOT NULL, attempts INTEGER NOT NULL, next_allowed INTEGER NOT NULL, limited_count INTEGER NOT NULL, pending INTEGER NOT NULL CHECK(pending IN(0,1)));
+        INSERT OR IGNORE INTO upstream_budget VALUES(1,0,0,0,0,0);
+        CREATE TABLE IF NOT EXISTS upstream_receipts (generation INTEGER PRIMARY KEY REFERENCES snapshots(generation), payload TEXT NOT NULL);")
+    }
+    pub fn upstream_delay(&self, now: i64) -> Result<i64, Box<dyn std::error::Error>> {
+        self.prepare_upstream_tables()?;
+        let (start, attempts, next): (i64, i64, i64) = self.0.query_row(
+            "SELECT window_start,attempts,next_allowed FROM upstream_budget WHERE id=1",
+            [],
+            |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?)),
+        )?;
+        let until = if attempts >= 30 {
+            next.max(start.saturating_add(3600))
+        } else {
+            next
+        };
+        Ok(until.saturating_sub(now).max(0))
+    }
+    /// Reserve before any public request. An interrupted reservation fails closed.
+    pub fn reserve_upstream_request(
+        &mut self,
+        now: i64,
+    ) -> Result<u32, Box<dyn std::error::Error>> {
+        if now < 0 {
+            return Err("Invalid upstream clock".into());
+        }
+        self.prepare_upstream_tables()?;
+        let tx = self
+            .0
+            .transaction_with_behavior(TransactionBehavior::Immediate)?;
+        let (mut start,mut attempts,next,limits,pending):(i64,i64,i64,i64,i64)=tx.query_row("SELECT window_start,attempts,next_allowed,limited_count,pending FROM upstream_budget WHERE id=1",[],|r|Ok((r.get(0)?,r.get(1)?,r.get(2)?,r.get(3)?,r.get(4)?)))?;
+        if pending != 0 {
+            return Err("Interrupted upstream request requires cooldown reconciliation before another request".into());
+        }
+        if now < next {
+            return Err("Provider cooldown active; retry later".into());
+        }
+        if now < start {
+            return Err("Upstream clock moved backwards; no request made".into());
+        }
+        if now.saturating_sub(start) >= 3600 {
+            start = now;
+            attempts = 0;
+        }
+        if attempts >= 30 {
+            return Err("Local public-upstream hourly request budget reached".into());
+        }
+        tx.execute("UPDATE upstream_budget SET window_start=?1,attempts=?2,next_allowed=?3,pending=1 WHERE id=1",params![start,attempts+1,now.saturating_add(1)])?;
+        tx.commit()?;
+        Ok(limits.clamp(0, 10) as u32)
+    }
+    pub fn finish_upstream_request(
+        &mut self,
+        meta: &crate::upstream_reviews::ResponseMeta,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        self.prepare_upstream_tables()?;
+        if meta.next_allowed_epoch < 0 {
+            return Err("Invalid upstream cooldown".into());
+        }
+        let count=self.0.execute("UPDATE upstream_budget SET next_allowed=max(next_allowed,?1),limited_count=CASE WHEN ?2 THEN min(limited_count+1,10) WHEN ?3=200 THEN 0 ELSE limited_count END,pending=0 WHERE id=1 AND pending=1",params![meta.next_allowed_epoch,meta.rate_limited,meta.status])?;
+        if count != 1 {
+            return Err("No upstream request reservation".into());
+        }
+        Ok(())
+    }
+    pub fn record_upstream_failure(
+        &self,
+        source: crate::upstream_reviews::Source,
+    ) -> rusqlite::Result<()> {
+        self.record_failure(&format!("github-upstream:{}", source.id()))
+    }
+    pub fn save_upstream(
+        &mut self,
+        source: crate::upstream_reviews::Source,
+        bytes: &[u8],
+        meta: &crate::upstream_reviews::ResponseMeta,
+    ) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
+        if meta.status != 200
+            || meta.rate_limited
+            || meta.api_version_requested != crate::upstream_reviews::API_VERSION
+            || meta
+                .api_version_selected
+                .as_deref()
+                .is_some_and(|v| v != crate::upstream_reviews::API_VERSION)
+        {
+            return Err("Unverified upstream response metadata".into());
+        }
+        let record = crate::upstream_reviews::parse_record(source, bytes)?;
+        self.prepare_upstream_tables()?;
+        let tx = self
+            .0
+            .transaction_with_behavior(TransactionBehavior::Immediate)?;
+        let previous:Option<(i64,String)>=tx.query_row("SELECT generation,payload FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r|Ok((r.get(0)?,r.get(1)?))).optional()?;
+        let comparison = match &previous {
+            None => "first_observation",
+            Some((_, old)) => match crate::upstream_reviews::parse_record(source, old.as_bytes()) {
+                Err(_) => "previous_record_invalid",
+                Ok(p) if p.revision != record.revision => "revision_changed",
+                Ok(_) if old.as_bytes() != bytes => "raw_metadata_changed",
+                Ok(_) => "unchanged",
+            },
+        };
+        tx.execute(
+            "INSERT INTO snapshots(provider,canonical_id,payload) VALUES('github-upstream',?1,?2)",
+            params![source.id(), record.payload],
+        )?;
+        let generation = tx.last_insert_rowid();
+        let observed_at: String = tx.query_row(
+            "SELECT observed_at FROM snapshots WHERE generation=?1",
+            [generation],
+            |r| r.get(0),
+        )?;
+        let receipt = serde_json::json!({"source_id":source.id(),"repository":source.repo(),"revision":record.revision,"source_url":record.source_url,"provider_timestamp":record.published_at,"timestamp_kind":if source==crate::upstream_reviews::Source::RustSec {"commit_committer_date"}else{"release_published_at"},"observed_at_utc":observed_at,"generation":generation.to_string(),"previous_generation":previous.map(|p|p.0.to_string()),"comparison":comparison,"payload_sha256":crate::build_identity::sha256_hex(bytes),"payload_bytes":bytes.len(),"response":meta,"scope":"Fixed public upstream observation; not registry-newest, installed version, signature verification, security clearance or automatic adoption. Complete original JSON retained locally; no assets downloaded."});
+        tx.execute(
+            "INSERT INTO upstream_receipts(generation,payload) VALUES(?1,?2)",
+            params![generation, serde_json::to_string(&receipt)?],
+        )?;
+        tx.execute("INSERT INTO collection_attempts(requested_id,outcome,generation) VALUES(?1,'success',?2)",params![format!("github-upstream:{}",source.id()),generation])?;
+        tx.commit()?;
+        Ok(receipt)
+    }
+    pub fn latest_upstream_payload(
+        &self,
+        source: crate::upstream_reviews::Source,
+    ) -> rusqlite::Result<Option<String>> {
+        self.0.query_row("SELECT payload FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r|r.get(0)).optional()
     }
     pub fn save_modrinth(
         &mut self,
@@ -191,6 +319,126 @@ impl SnapshotStore {
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn upstream_meta(now: i64) -> crate::upstream_reviews::ResponseMeta {
+        crate::upstream_reviews::response_meta(200, &reqwest::header::HeaderMap::new(), now, 0)
+    }
+    #[test]
+    fn upstream_budget_is_bounded_and_interruption_fails_closed() {
+        let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        store.reserve_upstream_request(10000).unwrap();
+        assert!(
+            store
+                .reserve_upstream_request(20000)
+                .unwrap_err()
+                .to_string()
+                .contains("Interrupted")
+        );
+        store
+            .finish_upstream_request(&upstream_meta(10000))
+            .unwrap();
+        assert!(store.reserve_upstream_request(10000).is_err());
+        for i in 1..30 {
+            let now = 10000 + i * 2;
+            store.reserve_upstream_request(now).unwrap();
+            store.finish_upstream_request(&upstream_meta(now)).unwrap();
+        }
+        assert!(
+            store
+                .reserve_upstream_request(10061)
+                .unwrap_err()
+                .to_string()
+                .contains("hourly")
+        );
+        store.reserve_upstream_request(13600).unwrap();
+    }
+    #[test]
+    fn upstream_snapshots_preserve_bytes_states_and_failures() {
+        use crate::upstream_reviews::{Source, tests::fixture};
+        let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let first = fixture("v1.7.3");
+        let a = store
+            .save_upstream(Source::Hls, &first, &upstream_meta(10000))
+            .unwrap();
+        assert_eq!(a["comparison"], "first_observation");
+        assert!(a["generation"].is_string());
+        let b = store
+            .save_upstream(Source::Hls, &first, &upstream_meta(10002))
+            .unwrap();
+        assert_eq!(b["comparison"], "unchanged");
+        let metadata = String::from_utf8(first.clone())
+            .unwrap()
+            .replace("unknown", "another_unknown")
+            .into_bytes();
+        assert_eq!(
+            store
+                .save_upstream(Source::Hls, &metadata, &upstream_meta(10004))
+                .unwrap()["comparison"],
+            "raw_metadata_changed"
+        );
+        assert_eq!(
+            store
+                .save_upstream(Source::Hls, &fixture("v1.7.4"), &upstream_meta(10006))
+                .unwrap()["comparison"],
+            "revision_changed"
+        );
+        store.record_upstream_failure(Source::Hls).unwrap();
+        assert_eq!(
+            store
+                .latest_upstream_payload(Source::Hls)
+                .unwrap()
+                .unwrap()
+                .as_bytes(),
+            fixture("v1.7.4")
+        );
+        let mut bad = upstream_meta(10008);
+        bad.status = 403;
+        assert!(
+            store
+                .save_upstream(Source::Hls, &fixture("v1.7.5"), &bad)
+                .is_err()
+        );
+        let before = store.attempts().unwrap();
+        store.0.execute_batch("CREATE TRIGGER fixture_block_upstream_receipt BEFORE INSERT ON upstream_receipts BEGIN SELECT RAISE(ABORT,'fixture rollback'); END;").unwrap();
+        assert!(
+            store
+                .save_upstream(Source::Hls, &fixture("v1.7.5"), &upstream_meta(10010))
+                .is_err()
+        );
+        assert_eq!(store.attempts().unwrap(), before);
+        assert_eq!(
+            store
+                .latest_upstream_payload(Source::Hls)
+                .unwrap()
+                .unwrap()
+                .as_bytes(),
+            fixture("v1.7.4")
+        );
+    }
+    #[test]
+    fn upstream_provider_cooldown_survives_reopen() {
+        let path = std::env::temp_dir().join(format!(
+            "atlas-upstream-{}-{}.sqlite",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let mut store = SnapshotStore::open(&path).unwrap();
+        store.reserve_upstream_request(10000).unwrap();
+        let mut headers = reqwest::header::HeaderMap::new();
+        headers.insert("retry-after", "5000".parse().unwrap());
+        store
+            .finish_upstream_request(&crate::upstream_reviews::response_meta(
+                429, &headers, 10000, 0,
+            ))
+            .unwrap();
+        drop(store);
+        let mut reopened = SnapshotStore::open(&path).unwrap();
+        assert_eq!(reopened.upstream_delay(11000).unwrap(), 4000);
+        assert!(reopened.reserve_upstream_request(11000).is_err());
+        assert_eq!(reopened.reserve_upstream_request(15000).unwrap(), 1);
+    }
     #[test]
     fn version_lookup_rejects_misbound_stored_identity() {
         let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();

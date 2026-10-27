@@ -8,6 +8,7 @@ pub enum Job {
     CollectModrinth { project: String },
     CollectModrinthBatch { projects: Vec<String> },
     CollectModrinthVersions { versions: Vec<String> },
+    ReviewUpstream { source: String },
     DedupExperiment,
     VersionValidationExperiment { version: String },
 }
@@ -48,6 +49,9 @@ impl Queue {
             }
             Job::CollectModrinthVersions { versions } => {
                 crate::modrinth_versions::versions_url(versions)?;
+            }
+            Job::ReviewUpstream { source } => {
+                crate::upstream_reviews::Source::parse(source)?;
             }
             Job::DedupExperiment => {}
             Job::VersionValidationExperiment { version } => {
@@ -296,6 +300,31 @@ impl Queue {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn upstream_jobs_accept_only_fixed_public_sources() {
+        let mut q = Queue::open(Path::new(":memory:")).unwrap();
+        let job = Job::ReviewUpstream {
+            source: "rustsec".into(),
+        };
+        let id = q.enqueue(&job, 0).unwrap();
+        assert_eq!(q.enqueue(&job, 1).unwrap(), id);
+        assert_eq!(q.claim("worker", 2, 1000).unwrap().unwrap().job, job);
+        assert!(
+            q.enqueue(
+                &Job::ReviewUpstream {
+                    source: "https://api.github.com/repos/private/repo".into()
+                },
+                3
+            )
+            .is_err()
+        );
+        assert!(
+            serde_json::from_str::<Job>(
+                r#"{"ReviewUpstream":{"source":"hls","token":"not accepted"}}"#
+            )
+            .is_err()
+        );
+    }
     #[test]
     fn version_collection_is_bounded_durable_and_not_an_arbitrary_request() {
         let mut q = Queue::open(Path::new(":memory:")).unwrap();

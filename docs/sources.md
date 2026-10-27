@@ -782,3 +782,15 @@ Explicitly lossy semantic reconstruction; not eligible as byte-exact raw snapsho
 [MTS-1 telemetry encoding](https://arxiv.org/html/2601.01602v1) · Preprint 2026-01-04; specialized synthetic telemetry
 
 Thresholded delta rule requires a fidelity budget; generated probe is not an author-code reproduction. Evidence: primary documented. Checked 2026-10-27; review after 90 days or before a version-sensitive decision.
+
+## GHR01
+
+[GitHub REST API versioning](https://docs.github.com/en/rest/about-the-rest-api/api-versions) · 2026-03-10 supported; old default 2022-11-28 ends March 10, 2028
+
+Explicit request version and actual selected version recorded separately. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.
+
+## GHR02
+
+[GitHub REST API rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api) · Anonymous public requests: 60/hour per originating IP
+
+Provider headers outrank a local budget; reset is epoch seconds, retry-after is duration. Evidence: primary documented. Checked 2026-10-27; review after 14 days or before a version-sensitive decision.

@@ -26,3 +26,5 @@ export function versionCollectionJob(input) {
   if(versions.length>20||versions.some(id=>! /^[A-Za-z0-9]{8}$/.test(id))||new Set(versions).size!==versions.length)throw new Error('Enter 1–20 unique eight-character version IDs, not URLs or slugs.');
   return {CollectModrinthVersions:{versions}};
 }
+
+export function upstreamReviewJob(source){if(!['rustsec','hls','serde-json'].includes(source))throw new Error('Choose one fixed public upstream source.');return {ReviewUpstream:{source}};}
