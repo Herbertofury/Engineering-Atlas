@@ -16,7 +16,8 @@ not a general recommendation or approval to change another project.
 |---|---|---|
 | [Public project batching](../experiments/modrinth-batch-lab/README.md) | Real API comparison, explicit missing IDs, atomic snapshots | Fewer requests; timing mixed, not universal speedup |
 | [Long-description retention](../experiments/body-projection-lab/README.md) | Exact body text and previous fields retained; reopen checks | More data costs additional parsing; linked media not collected automatically |
-| [Version/file metadata](../experiments/modrinth-version-lab/README.md) | Three real public records; original JSON and unknown fields survive reopen | CLI-only; file links/hashes are metadata, not downloaded or verified files |
+| [Queued version collection](../experiments/version-collection-queue-lab/README.md) | 32 real HTTP checks: collect → exact durable snapshot → fixed experiment; 47 runner regressions | Native-browser interaction unverified; no downloads or speed claim |
+| [Version/file metadata](../experiments/modrinth-version-lab/README.md) | Three real public records; original JSON and unknown fields survive reopen | Original CLI study; queued collection evaluated separately below; file links/hashes remain metadata |
 | [Collection diagnostics](../experiments/collection-diagnostics-lab/worker-http-2026-10-27.json) | Safe error categories and actual loopback checks | No private URL, credential or response-body logging |
 | [Real media](../experiments/real-media-lab/README.md) | Source-owned galleries, official player and Steam trailer evidence | Selected dated snapshots, not exhaustive or authenticated platform coverage |
 

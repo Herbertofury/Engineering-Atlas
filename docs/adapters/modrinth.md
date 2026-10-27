@@ -37,3 +37,7 @@ links. Separate atomic snapshots preserve last-good data on missing/failed
 refreshes. Three public responses and reopened exact payloads passed; this is
 coverage expansion, not a measured speedup. The queue/form does not yet expose
 this lane. [Evidence and limitations](../../experiments/modrinth-version-lab/README.md).
+
+## Queued version workflow — 2026-10-27
+
+The local Collection form and queue now reuse the version CLI's official client and complete raw snapshot store. A small hash/generation receipt avoids copying or rounding raw provider content in the UI result. Three real public versions, an explicit missing-ID refresh and a subsequent saved-record experiment passed 32 HTTP checks. Earlier generations remained intact; native-browser interaction is not yet verified. See [workflow evidence and crash/coverage limits](../../experiments/version-collection-queue-lab/README.md).

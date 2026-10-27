@@ -19,3 +19,10 @@ export function versionExperimentJob(input) {
   if(!/^[A-Za-z0-9]{8}$/.test(version))throw new Error('Enter one saved eight-character version ID, not a URL, slug or file path.');
   return {VersionValidationExperiment:{version}};
 }
+
+export function versionCollectionJob(input) {
+  if(typeof input!=='string'||input.length>512)throw new Error('Enter 1–20 unique eight-character version IDs.');
+  const versions=input.split(',').map(id=>id.trim());
+  if(versions.length>20||versions.some(id=>! /^[A-Za-z0-9]{8}$/.test(id))||new Set(versions).size!==versions.length)throw new Error('Enter 1–20 unique eight-character version IDs, not URLs or slugs.');
+  return {CollectModrinthVersions:{versions}};
+}

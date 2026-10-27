@@ -7,6 +7,7 @@ use std::path::Path;
 pub enum Job {
     CollectModrinth { project: String },
     CollectModrinthBatch { projects: Vec<String> },
+    CollectModrinthVersions { versions: Vec<String> },
     DedupExperiment,
     VersionValidationExperiment { version: String },
 }
@@ -44,6 +45,9 @@ impl Queue {
             }
             Job::CollectModrinthBatch { projects } => {
                 crate::modrinth::projects_url(projects)?;
+            }
+            Job::CollectModrinthVersions { versions } => {
+                crate::modrinth_versions::versions_url(versions)?;
             }
             Job::DedupExperiment => {}
             Job::VersionValidationExperiment { version } => {
@@ -292,6 +296,28 @@ impl Queue {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn version_collection_is_bounded_durable_and_not_an_arbitrary_request() {
+        let mut q = Queue::open(Path::new(":memory:")).unwrap();
+        let job = Job::CollectModrinthVersions {
+            versions: vec!["g6ju16VJ".into(), "Ag5S66CF".into()],
+        };
+        let id = q.enqueue(&job, 0).unwrap();
+        assert_eq!(q.enqueue(&job, 1).unwrap(), id);
+        assert_eq!(q.claim("worker", 2, 1000).unwrap().unwrap().job, job);
+        for versions in [
+            vec![],
+            vec!["sodium".into()],
+            vec!["abcdefgh".into(); 2],
+            (0..21).map(|i| format!("{i:08}")).collect(),
+        ] {
+            assert!(
+                q.enqueue(&Job::CollectModrinthVersions { versions }, 3)
+                    .is_err()
+            );
+        }
+        assert!(serde_json::from_str::<Job>(r#"{"CollectModrinthVersions":{"versions":["g6ju16VJ"],"url":"https://example.com"}}"#).is_err());
+    }
     #[test]
     fn raw_overview_worker_status_is_serialized_not_concatenated() {
         let queue = Queue::open(Path::new(":memory:")).unwrap();

@@ -214,6 +214,57 @@ fn saved_version_experiment(
         &crate::version_experiment_runner::policy(),
     ))
 }
+// Raw provider JSON stays in SnapshotStore, never round-tripped through Value.
+// The bounded job result is a receipt, not a replacement for the complete data.
+fn save_version_receipt(
+    path: &Path,
+    batch: crate::modrinth_versions::VersionBatch,
+) -> Result<(bool, serde_json::Value), &'static str> {
+    let mut store = crate::snapshots::SnapshotStore::open(path)
+        .map_err(|_| "Version snapshot database could not be opened")?;
+    let generations = store
+        .save_modrinth_versions(&batch)
+        .map_err(|_| "Version snapshots could not be committed; no success claimed")?;
+    let records: Vec<_> = batch
+        .versions
+        .iter()
+        .zip(generations)
+        .map(|(record, (id, generation))| {
+            serde_json::json!({"canonical_id":id,"project_id":record.project_id,
+            "generation":generation.to_string(),"payload_bytes":record.payload.get().len(),
+            "payload_sha256":crate::build_identity::sha256_hex(record.payload.get().as_bytes())})
+        })
+        .collect();
+    let complete = batch.missing_ids.is_empty();
+    Ok((
+        complete,
+        serde_json::json!({"version_collection":{
+        "requested_ids":batch.requested_ids,"records":records,"missing_ids":batch.missing_ids,
+        "status":if complete {"complete"} else {"partial"},
+        "scope":"Receipt only; complete original JSON retained in local version snapshots. File links are metadata, never downloaded or executed."}}),
+    ))
+}
+fn collect_versions(
+    path: &Path,
+    ids: &[String],
+    fetch: impl FnOnce() -> Result<crate::modrinth_versions::VersionBatch, Box<dyn std::error::Error>>,
+) -> Result<(bool, serde_json::Value), &'static str> {
+    crate::modrinth_versions::versions_url(ids).map_err(|_| "Invalid version collection IDs")?;
+    match fetch() {
+        Ok(batch) if batch.requested_ids == ids => save_version_receipt(path, batch),
+        result => {
+            let message = match result {
+                Err(error) => crate::collection_failure::safe_message(error.as_ref()),
+                Ok(_) => "Version response request identity mismatch",
+            };
+            let mut store = crate::snapshots::SnapshotStore::open(path)
+                .map_err(|_| "Collection failed and failure history could not be opened; previous snapshots retained")?;
+            store.record_version_failure(ids)
+                .map_err(|_| "Collection failed and failure history could not be committed; previous snapshots retained")?;
+            Err(message)
+        }
+    }
+}
 fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Receiver<()>) {
     let mut q = match Queue::open(&path) {
         Ok(q) => q,
@@ -236,6 +287,10 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
                 let result=match &claim.job {
                     Job::CollectModrinth {project}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.project(project)).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
                     Job::CollectModrinthBatch {projects}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.projects(projects)).map(batch_output).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
+                    Job::CollectModrinthVersions {versions}=>collect_versions(&path,versions,|| {
+                        await_provider_slot(client.cooldown_remaining(), &stop)?;
+                        client.versions(versions)
+                    }),
                     Job::DedupExperiment=>crate::experiment_runner::run_builtin(||stop.load(Ordering::Relaxed)).map(|run|{
                         let output=serde_json::json!({"experiment":run});
                         persist_experiment(&path,run.completed,output,&run.evidence,&crate::experiment_runner::policy())
@@ -340,6 +395,87 @@ async fn serve_strategy(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn queued_version_receipts_preserve_full_bytes_and_last_good() {
+        let dir = std::env::temp_dir().join(format!(
+            "atlas-version-queue-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&dir).unwrap();
+        let path = dir.join("fixture.sqlite");
+        let id = "abcdefgh".to_owned();
+        let ids = vec![id.clone()];
+        let raw = r#"{"id":"abcdefgh","project_id":"AANobbMI","name":"fixture","version_number":"1","date_published":"2026-10-27","game_versions":[],"loaders":[],"files":[],"dependencies":[],"future":{"exact":18446744073709551617,"nullable":null},"changelog":"line 1\nline 2"}"#;
+        let batch =
+            crate::modrinth_versions::parse_versions(format!("[{raw}]").as_bytes(), &ids).unwrap();
+        let (complete, receipt) = collect_versions(&path, &ids, || Ok(batch)).unwrap();
+        assert!(complete);
+        assert_eq!(
+            receipt["version_collection"]["records"][0]["payload_sha256"],
+            crate::build_identity::sha256_hex(raw.as_bytes())
+        );
+        assert!(receipt["version_collection"]["records"][0]["generation"].is_string());
+        assert!(
+            !serde_json::to_string(&receipt)
+                .unwrap()
+                .contains("18446744073709551617")
+        );
+        let store = crate::snapshots::SnapshotStore::open(&path).unwrap();
+        assert_eq!(
+            store
+                .latest_modrinth_version(&id)
+                .unwrap()
+                .unwrap()
+                .payload
+                .get(),
+            raw
+        );
+        let batch = crate::modrinth_versions::parse_versions(b"[]", &ids).unwrap();
+        let (complete, receipt) = collect_versions(&path, &ids, || Ok(batch)).unwrap();
+        assert!(!complete);
+        assert_eq!(receipt["version_collection"]["missing_ids"][0], id);
+        assert!(
+            collect_versions(&path, &ids, || Err("secret-provider-error-token".into())).is_err()
+        );
+        assert_eq!(
+            store
+                .latest_modrinth_version(&id)
+                .unwrap()
+                .unwrap()
+                .payload
+                .get(),
+            raw
+        );
+        let conn = rusqlite::Connection::open(&path).unwrap();
+        let outcomes: Vec<String> = conn
+            .prepare("SELECT outcome FROM collection_attempts ORDER BY id")
+            .unwrap()
+            .query_map([], |r| r.get(0))
+            .unwrap()
+            .collect::<Result<_, _>>()
+            .unwrap();
+        assert_eq!(outcomes, vec!["success", "failure", "failure"]);
+        assert_eq!(
+            conn.query_row("PRAGMA integrity_check", [], |r| r.get::<_, String>(0))
+                .unwrap(),
+            "ok"
+        );
+        let bad = crate::modrinth_versions::parse_versions(b"[]", &["ijklmnop".into()]).unwrap();
+        assert_eq!(
+            collect_versions(&path, &ids, || Ok(bad)).unwrap_err(),
+            "Version response request identity mismatch"
+        );
+        assert!(
+            collect_versions(&path, &["https://example.com".into()], || panic!(
+                "invalid IDs must not fetch"
+            ))
+            .is_err()
+        );
+    }
     #[test]
     fn provider_wait_preserves_long_cooldown_and_cancellation() {
         let stop = AtomicBool::new(false);

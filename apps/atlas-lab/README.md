@@ -60,7 +60,7 @@ Source-register IDs: [R05], [DB05], [NET01], [COL01], [COL02].
 
 ## Current local-interface boundary
 
-`serve` binds only `127.0.0.1:41379`. It exposes no CORS permission; write requests require the exact local Origin and a custom same-origin header, and requests with unexpected Host values are rejected. SQL work is moved off async executor threads and bounded to four concurrent database operations. One serial worker executes permitted public metadata jobs. Job output and terminal status commit in one transaction; an expired worker cannot finalize a later attempt. A crash may repeat a public read, so this is not exactly-once network execution. The CLI snapshot store and queued-job result history are currently separate representations.
+`serve` binds only `127.0.0.1:41379`. It exposes no CORS permission; write requests require the exact local Origin and a custom same-origin header, and requests with unexpected Host values are rejected. SQL work is moved off async executor threads and bounded to four concurrent database operations. One serial worker executes permitted public metadata jobs. Job output and terminal status commit in one transaction; an expired worker cannot finalize a later attempt. A crash may repeat a public read, so this is not exactly-once network execution. Project collection results and CLI snapshots remain separate representations. Queued version collection writes complete raw SnapshotStore records and a bounded job receipt; snapshot and queue finalization are separate transactions, so crash recovery may append another snapshot.
 
 A prototype dashboard exposes collection and evidence state. Its explicit run control now queues a bounded built-in comparison; it does not enable arbitrary code generation or autonomous deployment. The local HTTP smoke pass verified real queued public collection, input limits and origin/host guards; cloud-browser access to the isolated loopback preview was unavailable, so visual and browser-interaction acceptance is explicitly pending.
 
@@ -119,3 +119,7 @@ still block promotion. The default collection parser is not replaced.
 Current verification is loopback HTTP and source/DOM wiring, not native-browser
 visual/input acceptance. No installer, credential integration, arbitrary code
 execution or general autonomous self-modification is claimed.
+
+## Collect versions before experimenting
+
+In Collection, submit 1–20 canonical version IDs. The queue saves complete original public JSON to the same database used by Experiments. Wait for a complete/partial receipt in Overview, then enter a successfully saved version ID under Saved version validation. No separate CLI step is required; the CLI remains supported. See [real HTTP evidence and remaining browser acceptance gap](../../experiments/version-collection-queue-lab/README.md). No binary files are fetched, no experimental parser is promoted, and no API grant is created.
