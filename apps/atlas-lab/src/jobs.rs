@@ -167,6 +167,61 @@ impl Queue {
         tx.commit()?;
         Ok(())
     }
+    /// Isolated experiment. The HTTP server still uses overview() until acceptance is established.
+    pub fn overview_raw_candidate(&self) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+        #[derive(Serialize)]
+        struct Row {
+            id: i64,
+            job: Job,
+            state: String,
+            attempt: i64,
+            result: Option<Box<serde_json::value::RawValue>>,
+        }
+        #[derive(Serialize)]
+        struct Overview {
+            jobs: Vec<Row>,
+            counts: std::collections::BTreeMap<String, i64>,
+            display_limit: usize,
+        }
+        let mut stmt = self.0.prepare(
+            "SELECT id,payload,state,attempt,result FROM jobs ORDER BY id DESC LIMIT 50",
+        )?;
+        let rows = stmt.query_map([], |r| {
+            Ok((
+                r.get::<_, i64>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+                r.get::<_, i64>(3)?,
+                r.get::<_, Option<String>>(4)?,
+            ))
+        })?;
+        let mut jobs = Vec::new();
+        for row in rows {
+            let (id, payload, state, attempt, result) = row?;
+            jobs.push(Row {
+                id,
+                job: serde_json::from_str(&payload)?,
+                state,
+                attempt,
+                result: result
+                    .map(crate::validated_raw::validate_and_preserve)
+                    .transpose()?,
+            });
+        }
+        let mut counts = std::collections::BTreeMap::new();
+        let mut stmt = self
+            .0
+            .prepare("SELECT state,count(*) FROM jobs GROUP BY state")?;
+        for row in stmt.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, i64>(1)?)))? {
+            let (state, count) = row?;
+            counts.insert(state, count);
+        }
+        Ok(serde_json::to_vec(&Overview {
+            jobs,
+            counts,
+            display_limit: 50,
+        })?)
+    }
     pub fn overview(&self) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
         let mut stmt = self.0.prepare(
             "SELECT id,payload,state,attempt,result FROM jobs ORDER BY id DESC LIMIT 50",
@@ -203,6 +258,26 @@ impl Queue {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn raw_overview_retains_complete_outputs_and_rejects_corruption() {
+        let mut queue = Queue::open(Path::new(":memory:")).unwrap();
+        for index in 0..5 {
+            queue.enqueue(&Job::DedupExperiment, index * 3).unwrap();
+            let claim = queue.claim("test", index * 3 + 1, 1000).unwrap().unwrap();
+            queue.finish_output(&claim,true,index*3+2,Some(&serde_json::json!({"id":index,"text":"Unicode 🎮","full":[1,2,3],"unknown_forward_field":{"x":true}}))).unwrap();
+        }
+        assert_eq!(
+            queue.overview().unwrap(),
+            serde_json::from_slice::<serde_json::Value>(&queue.overview_raw_candidate().unwrap())
+                .unwrap()
+        );
+        queue
+            .0
+            .execute("UPDATE jobs SET result='1e400' WHERE id=1", [])
+            .unwrap();
+        assert!(queue.overview().is_err());
+        assert!(queue.overview_raw_candidate().is_err());
+    }
     #[test]
     fn batch_jobs_validate_and_deduplicate_without_reordering() {
         let mut q = Queue::open(Path::new(":memory:")).unwrap();

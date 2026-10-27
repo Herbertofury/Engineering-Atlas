@@ -319,3 +319,5 @@ pub mod jobs;
 pub mod server;
 
 pub mod storage_lab;
+
+pub mod validated_raw;

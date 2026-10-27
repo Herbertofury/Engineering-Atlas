@@ -548,3 +548,21 @@ Main-text extraction across seven types; not complete-media, authenticated-sessi
 [Measure Memory API draft](https://wicg.github.io/performance-measure-memory/) · Draft Community Group Report, 2021-05-28; reviewed 2026-10-27
 
 Cross-origin-isolated estimated memory measurements; not peak process memory and not a W3C Standard. Evidence: primary documented. Review after 14 days or before a version-sensitive decision.
+
+## JSON07
+
+[serde_json RawValue checked API](https://docs.rs/serde_json/latest/serde_json/value/struct.RawValue.html) · 1.0.154; reviewed 2026-10-27
+
+Checked byte forwarding avoids building a value tree; naive validation differs from Value, reproduced locally. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## JSON08
+
+[Serde custom Deserialize visitor](https://serde.rs/impl-deserialize.html) · Official visitor model reviewed 2026-10-27
+
+Streaming validation through deserialize_any; not a substitute for differential tests. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.
+
+## MEM01
+
+[Linux process status memory accounting](https://man7.org/linux/man-pages/man5/proc_pid_status.5.html) · Manual reviewed 2026-10-27
+
+VmHWM reports resident high-water usage but is explicitly documented as inaccurate; qualify measurements. Evidence: primary documented. Review after 30 days or before a version-sensitive decision.

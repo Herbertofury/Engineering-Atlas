@@ -999,5 +999,38 @@
     "checked_at": "2026-10-27",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON07",
+    "title": "serde_json RawValue checked API",
+    "url": "https://docs.rs/serde_json/latest/serde_json/value/struct.RawValue.html",
+    "observed_version": "1.0.154; reviewed 2026-10-27",
+    "topic": "serialization",
+    "note": "Checked byte forwarding avoids building a value tree; naive validation differs from Value, reproduced locally",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSON08",
+    "title": "Serde custom Deserialize visitor",
+    "url": "https://serde.rs/impl-deserialize.html",
+    "observed_version": "Official visitor model reviewed 2026-10-27",
+    "topic": "serialization",
+    "note": "Streaming validation through deserialize_any; not a substitute for differential tests",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "MEM01",
+    "title": "Linux process status memory accounting",
+    "url": "https://man7.org/linux/man-pages/man5/proc_pid_status.5.html",
+    "observed_version": "Manual reviewed 2026-10-27",
+    "topic": "serialization",
+    "note": "VmHWM reports resident high-water usage but is explicitly documented as inaccurate; qualify measurements",
+    "checked_at": "2026-10-27",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]
