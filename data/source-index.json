@@ -3,6 +3,7 @@
   "files": [
     "data/sources.json",
     "data/sources.d/dom-replacement.json",
-    "data/sources.d/node-resource-usage.json"
+    "data/sources.d/node-resource-usage.json",
+    "data/sources.d/query-reuse-and-extraction.json"
   ]
 }
