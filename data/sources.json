@@ -1571,5 +1571,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 90,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "FRAME01",
+    "title": "requestAnimationFrame scheduling and background behavior",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame",
+    "observed_version": "Current documentation checked 2026-10-28",
+    "topic": "measurement",
+    "note": "Refresh-linked callback scheduling; background content may pause. Not physical-paint or INP proof.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 90,
+    "evidence": "primary_documented"
   }
 ]

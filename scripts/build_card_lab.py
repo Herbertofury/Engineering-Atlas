@@ -14,7 +14,7 @@ def outputs():
     css=(ROOT/'lab.css').read_bytes();css_name=f'lab.{hashlib.sha256(css).hexdigest()[:16]}.css'
     html=(ROOT/'index.template.html').read_text().replace('href="lab.css"',f'href="{css_name}"').replace('src="lab.js"',f'src="{script_name}"').encode()
     files={core_name:core,preparation_name:preparation,worker_name:worker,script_name:script,css_name:css,'index.html':html}
-    manifest={'harness':'atlas-card-density-v10-focus-guard','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}}
+    manifest={'harness':'atlas-card-density-v11-cadence-guard','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}}
     files['build-manifest.json']=(json.dumps(manifest,indent=2)+'\n').encode()
     return files
 if __name__=='__main__':

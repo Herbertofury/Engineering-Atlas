@@ -818,3 +818,9 @@ Model-extraction completeness risk; not replicated or promoted. Evidence: primar
 [Document.hasFocus and active-element distinction](https://developer.mozilla.org/en-US/docs/Web/API/Document/hasFocus) · Documentation modified 2025-09-25
 
 Focus differs from active-element presence. Used as an additional controlled-run guard, not physical-paint proof. Evidence: primary documented. Checked 2026-10-28; review after 90 days.
+
+## FRAME01
+
+[requestAnimationFrame scheduling and background behavior](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) · Current documentation
+
+Callback scheduling ordinarily follows refresh; background content may pause. Not physical-paint or INP proof. Evidence: primary documented. Checked 2026-10-28; review after 90 days.

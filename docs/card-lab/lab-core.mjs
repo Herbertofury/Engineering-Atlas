@@ -81,3 +81,31 @@ export function createFocusGuard(doc, target) {
     finish(){active=false;}
   };
 }
+
+// A bounded scheduling check, not a paint measurement or a device-speed score.
+// Keep raw waits even on interruption; cancel both outstanding callbacks.
+export function calibrateFrameCadence({requestFrame,cancelFrame,setTimer,clearTimer,now,check}) {
+  return new Promise(resolve=>{
+    const waits=[];let frameId=null,timerId=null,done=false,last=now();
+    const finish=(reason=null)=>{
+      if(done)return;done=true;
+      if(frameId!==null)cancelFrame(frameId);
+      if(timerId!==null)clearTimer(timerId);
+      const slow=waits.filter(x=>x>=200).length;
+      resolve({scope:'empty-frame scheduling check; not physical paint',waits_ms:waits,
+        complete:waits.length===8,reliable:reason===null&&waits.length===8&&slow<4,
+        slow_count:slow,threshold_ms:200,reason:reason||(slow>=4?'Slow empty-frame cadence':null)});
+    };
+    const tick=()=>{
+      frameId=null;
+      try{
+        check();const time=now(),gap=time-last;last=time;
+        if(!Number.isFinite(gap)||gap<0){finish('Invalid scheduling clock');return;}
+        waits.push(gap);
+        if(waits.length===8)finish();else frameId=requestFrame(tick);
+      }catch(error){finish(String(error.message||error));}
+    };
+    timerId=setTimer(()=>finish('Frame calibration exceeded eight-second budget'),8000);
+    try{check();frameId=requestFrame(tick);}catch(error){finish(String(error.message||error));}
+  });
+}
