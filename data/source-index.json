@@ -2,6 +2,7 @@
   "schema_version": 1,
   "files": [
     "data/sources.json",
-    "data/sources.d/dom-replacement.json"
+    "data/sources.d/dom-replacement.json",
+    "data/sources.d/node-resource-usage.json"
   ]
 }
