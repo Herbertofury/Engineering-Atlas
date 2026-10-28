@@ -1,6 +1,13 @@
 // Isolated candidate. The production browser harness is deliberately unchanged.
 import {validatePrepared} from './baseline.mjs';
+import {encodeRecordArray} from './bounded-encoding.mjs';
 export async function verifyPrepared(result,count,bytes) {
+  return verify(result,count,bytes,false);
+}
+export async function verifyPreparedBounded(result,count,bytes) {
+  return verify(result,count,bytes,true);
+}
+async function verify(result,count,bytes,bounded) {
   validatePrepared(result,count,bytes);
   if(!globalThis.crypto?.subtle)throw new Error('Secure digest API unavailable');
   const suffix='abcdefgh01234567'.repeat(Math.ceil((bytes-12)/16)).slice(0,bytes-12);
@@ -10,7 +17,7 @@ export async function verifyPrepared(result,count,bytes) {
     if(keys.length!==4||!['id','title','description','metadata'].every(key=>Object.hasOwn(record,key)))throw new Error('Unexpected generated record fields');
     if(record.metadata.slice(12)!==suffix)throw new Error('Complete metadata mismatch');
   }
-  const encoded=new TextEncoder().encode(JSON.stringify(result.records));
+  const encoded=bounded?encodeRecordArray(result.records,result.dataset.serialized_bytes):new TextEncoder().encode(JSON.stringify(result.records));
   if(encoded.byteLength!==result.dataset.serialized_bytes)throw new Error('Serialized byte count mismatch');
   const digest=await crypto.subtle.digest('SHA-256',encoded);
   const actual=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');

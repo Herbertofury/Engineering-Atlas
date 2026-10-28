@@ -14626,5 +14626,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "ENCODE01",
+    "title": "WHATWG TextEncoder encodeInto progress semantics",
+    "url": "https://encoding.spec.whatwg.org/#dom-textencoder-encodeinto",
+    "observed_version": "Living Standard, last updated 2026-10-19; reviewed 2026-10-28",
+    "topic": "complete-record-encoding",
+    "note": "encodeInto writes UTF-8 into a supplied destination; read counts consumed UTF-16 code units and written counts bytes. Partial progress must be checked. No performance guarantee.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

@@ -3852,3 +3852,9 @@ Opened Linux baseline and macOS exclusions for LTO, gcc-fast and qemu mode. Evid
 [Linux proc and smaps memory-accounting semantics](https://docs.kernel.org/filesystems/proc.html) · Kernel documentation reviewed 2026-10-28
 
 Status RSS can be asynchronous and imprecise; rollup provides an instantaneous page-accounting snapshot, not an atomic peak measurement. Evidence: primary documented. Checked 2026-10-28; review after 30 days.
+
+## ENCODE01
+
+[WHATWG TextEncoder encodeInto](https://encoding.spec.whatwg.org/#dom-textencoder-encodeinto) · Living Standard last updated 2026-10-19; checked 2026-10-28.
+
+The destination is supplied by the caller. Read progress counts UTF-16 code units; written progress counts UTF-8 bytes. Partial progress must be checked. No standard-level speed guarantee. Review after 30 days.
