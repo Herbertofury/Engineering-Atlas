@@ -2,7 +2,11 @@
 This is an analyst CLI, not an application endpoint or a general command executor.
 """
 from pathlib import Path
-import argparse,datetime,hashlib,json,re,subprocess
+import argparse,datetime,hashlib,importlib.util,json,re,subprocess
+
+_ROOT=Path(__file__).resolve().parents[2]
+_spec=importlib.util.spec_from_file_location("atlas_audit_receipt_decoder",_ROOT/"experiments/upstream-validation-lab/receipt_gate.py")
+_decoder=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(_decoder)
 
 LOCKS=('apps/atlas-lab/Cargo.lock','experiments/compressed-snapshot-lab/Cargo.lock','experiments/rust-json-parser-lab/Cargo.lock')
 MAX_LOCK=1024*1024
@@ -45,8 +49,21 @@ def freeze_locks(root,out):
     return records
 
 def unfiltered_result(result):
-    settings=result.get('settings',{})
-    return (all(settings.get(k)==[] for k in ('ignore','target_arch','target_os')) and settings.get('severity') is None and set(settings.get('informational_warnings',[]))=={'unmaintained','unsound','notice'})
+    if not isinstance(result,dict):return False
+    settings=result.get('settings')
+    return (isinstance(settings,dict) and all(settings.get(k)==[] for k in ('ignore','target_arch','target_os')) and 'severity' in settings and settings['severity'] is None and isinstance(settings.get('informational_warnings'),list) and len(settings['informational_warnings'])==3 and all(isinstance(x,str) for x in settings['informational_warnings']) and set(settings['informational_warnings'])=={'unmaintained','unsound','notice'})
+
+def decode_audit_result(text):
+    result=_decoder.decode_receipt(text)
+    if not unfiltered_result(result):raise ValueError('Audit filtering or ignores differ from the required policy')
+    vulnerabilities=result.get('vulnerabilities')
+    if not isinstance(vulnerabilities,dict):raise ValueError('Missing vulnerability result')
+    count=vulnerabilities.get('count');found=vulnerabilities.get('found');items=vulnerabilities.get('list')
+    if type(count) is not int or count<0 or type(found) is not bool or not isinstance(items,list):raise ValueError('Invalid vulnerability result types')
+    if count!=len(items) or found!=(count>0) or not all(isinstance(x,dict) for x in items):raise ValueError('Contradictory vulnerability result')
+    warnings=result.get('warnings')
+    if not isinstance(warnings,dict) or not all(isinstance(k,str) and isinstance(v,list) for k,v in warnings.items()):raise ValueError('Invalid warnings result')
+    return result
 
 def run(root,db,expected_db,tool,expected_tool,out,runner=subprocess.run):
     # All validation precedes any executable invocation. Existing outputs are never reused.
@@ -68,8 +85,7 @@ def run(root,db,expected_db,tool,expected_tool,out,runner=subprocess.run):
             # Preserve tool output before interpretation, including nonzero/error outcomes.
             (out/f'audit-{i}.json').write_text(p.stdout);(out/f'audit-{i}.stderr.txt').write_text(p.stderr)
             if len(p.stdout.encode())>4*1024*1024 or len(p.stderr.encode())>1024*1024:raise ValueError('Audit output exceeded receipt budget')
-            result=json.loads(p.stdout)
-            if not unfiltered_result(result):raise ValueError('Audit filtering or ignores differ from the required policy')
+            result=decode_audit_result(p.stdout)
             receipt['runs'].append({'lock':lock['path'],'tool_exit_code':p.returncode,'raw_result':f'audit-{i}.json','known_matches':result['vulnerabilities']['count'],'warnings':result.get('warnings',{})})
             if digest((out/lock['input_file']).read_bytes())!=lock['sha256']:raise ValueError('Frozen input changed during audit')
         validate_database(db,expected_db,runner);validate_tool(tool,expected_tool)
