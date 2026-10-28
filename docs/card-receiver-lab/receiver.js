@@ -1,8 +1,9 @@
+import {acceptVerifiedInput} from './receipt-protocol.mjs';
 import {prepareDataset} from './baseline.mjs';
 import {verifyPrepared,verifyPreparedBounded} from './verified-receiver.mjs';
 import {createFocusGuard,calibrateFrameCadence} from './lab-core.mjs';
 const $=id=>document.getElementById(id),guard=createFocusGuard(document,window);
-const identity='atlas-complete-receiver-v4-reuse-encoding';$('build').textContent='Loaded harness: '+identity;
+const identity='atlas-complete-receiver-v5-input-receipt';$('build').textContent='Loaded harness: '+identity;
 let busy=false,stopped=false,hidden=false,sequence=0,cancelWorker=null,current=null,lastGood=null;
 document.addEventListener('visibilitychange',()=>{if(busy&&document.hidden)hidden=true;});
 const check=()=>{guard.check();if(stopped)throw Error('Cancelled; partial evidence retained');if(hidden||document.hidden)throw Error('Visibility lost; partial evidence retained');};
@@ -16,23 +17,25 @@ function workerRun(lane,prepared,count,bytes){
   cancelWorker=()=>finish(Error('Worker cancelled; partial evidence retained'));
   w.onerror=()=>finish(Error('Worker error; no silent fallback'));
   w.onmessage=e=>{if(e.data?.id!==id)return;if(e.data.ok!==true){finish(Error(e.data.error||'Worker validation failed'));return;}try{
-      const response=e.data;if(response.format==='utf8-records'){
+      const response=e.data;if(response.format==='verified-input'){response.result=acceptVerifiedInput(response.receipt,prepared,count,bytes);}
+      else if(response.format==='utf8-records'){
         if(!(response.buffer instanceof ArrayBuffer)||response.buffer.byteLength!==response.dataset?.serialized_bytes)throw Error('Transferred payload size mismatch');
         response.result={records:JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(response.buffer)),dataset:response.dataset,preparation_ms:response.preparation_ms};
       }finish(null,response);
     }catch(error){finish(error);}};
-  try{w.postMessage({id,lane:lane==='clone'||lane==='transfer'?'bounded':lane,transport:lane==='transfer'?'transfer':'clone',prepared,count,bytes});}catch(error){finish(error);}
+  try{w.postMessage({id,lane:['clone','transfer','receipt'].includes(lane)?'bounded':lane,transport:lane==='transfer'?'transfer':lane==='receipt'?'receipt':'clone',prepared,count,bytes});}catch(error){finish(error);}
  });
 }
 $('run').addEventListener('click',async()=>{
  if(busy)return;busy=true;stopped=false;hidden=false;guard.begin();$('run').disabled=true;$('cancel').disabled=false;$('bytes').disabled=true;$('execution').disabled=true;
  const count=200,bytes=Number($('bytes').value),execution=$('execution').value;
- current={harness:identity,started_at:new Date().toISOString(),scope:'Generated browser receiver validation; no target acceptance',count,bytes,execution,complete:false,samples:[],limitations:['Frame gaps are scheduling observations, not INP or physical paint','No heap/RSS or provider-media measurement','Worker request duration includes startup and full input clone; clone mode also clones the full result, transfer mode includes complete output encoding, transfer and decoding','Preparation and post-validation parity check are outside sample timers','Main-thread synchronous serialization cannot be interrupted mid-call; cancellation is checked at the next boundary']};publish();
+ current={harness:identity,started_at:new Date().toISOString(),scope:'Generated browser receiver validation; no target acceptance',count,bytes,execution,complete:false,samples:[],limitations:['Frame gaps are scheduling observations, not INP or physical paint','No heap/RSS or provider-media measurement','Worker request duration includes startup and full input clone; clone mode also clones the full result, transfer mode includes complete output encoding, transfer and decoding','Receipt mode is validation-only: original complete input stays owned by the main thread; no transformed/new records are produced',
+  'Preparation and post-validation parity check are outside sample timers','Main-thread synchronous serialization cannot be interrupted mid-call; cancellation is checked at the next boundary']};publish();
  try{
   check();current.calibration=await calibrate();if(!current.calibration.reliable)throw Error(current.calibration.reason);
   $('status').textContent='Generating complete input…';const prepared=await prepareDataset(count,bytes),canonical=JSON.stringify(prepared.records);check();current.dataset=prepared.dataset;
   const began=performance.now();
-  const pair=execution==='transport'?['clone','transfer']:['whole','bounded'];
+  const pair=execution==='receipt'?['clone','receipt']:execution==='transport'?['clone','transfer']:['whole','bounded'];
   for(let round=0;round<3;round++)for(const lane of round%2?[...pair].reverse():pair){
    check();if(performance.now()-began>90000)throw Error('90-second cooperative run budget exceeded');
    $('status').textContent=`Round ${round+1}/3: ${lane}, ${execution}`;
@@ -40,7 +43,7 @@ $('run').addEventListener('click',async()=>{
    const tick=()=>{const now=performance.now();waits.push(now-last);last=now;if(active)frameId=requestAnimationFrame(tick);};frameId=requestAnimationFrame(tick);
    const start=performance.now();let response;
    try{
-    if(execution==='worker'||execution==='transport')response=await workerRun(lane,prepared,count,bytes);
+    if(execution==='worker'||execution==='transport'||execution==='receipt')response=await workerRun(lane,prepared,count,bytes);
     else{const a=performance.now();const result=await(lane==='whole'?verifyPrepared:verifyPreparedBounded)(prepared,count,bytes);response={result,validation_ms:performance.now()-a};}
     const request_ms=performance.now()-start;
     await new Promise(resolve=>requestAnimationFrame(resolve));

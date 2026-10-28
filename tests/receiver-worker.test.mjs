@@ -26,3 +26,15 @@ test('actual transfer handler preserves JSON bytes and transfers buffer ownershi
  await context.self.onmessage({data:{id:7,lane:'bounded',transport:'transfer',prepared:payload,count:1,bytes:64}});
  assert.equal(delivered.ok,true);assert.equal(delivered.id,7);assert.equal(sourceBuffer.byteLength,0);assert.equal(new TextDecoder().decode(delivered.buffer),expected);assert.deepEqual(JSON.parse(new TextDecoder().decode(delivered.buffer)),records);
 });
+test('actual receipt handler validates full input before returning only its binding',async()=>{
+ const {prepareDataset}=await import('../experiments/card-receiver-lab/baseline.mjs');
+ const validators=await import('../experiments/card-receiver-lab/verified-receiver.mjs');
+ const prepared=await prepareDataset(2,512),messages=[];
+ const context={self:{postMessage:x=>messages.push(x)},performance,Number,Error,...validators};
+ vm.runInNewContext(source.replace(/^import .*;\n/gm,''),context);
+ await context.self.onmessage({data:{id:1,lane:'bounded',transport:'receipt',prepared,count:2,bytes:512}});
+ assert.equal(messages[0].ok,true);assert.equal(messages[0].receipt.sha256,prepared.dataset.sha256);assert.equal(messages[0].receipt.count,2);assert.equal(messages[0].result,undefined);
+ const damaged=structuredClone(prepared);damaged.records[0].metadata=damaged.records[0].metadata.slice(0,-1)+'Z';
+ await context.self.onmessage({data:{id:2,lane:'bounded',transport:'receipt',prepared:damaged,count:2,bytes:512}});
+ assert.equal(messages[1].ok,false);assert.match(messages[1].error,/metadata/);assert.equal(messages[1].receipt,undefined);
+});
