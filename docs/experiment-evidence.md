@@ -88,3 +88,7 @@ not a general recommendation or approval to change another project.
 [Full-record parser comparison](../experiments/upstream-validation-lab/README.md) retains a fast real-record candidate's generated-density memory regression, replaces an unnecessary owned validation copy with borrowed validation, and repeats exact-byte, stress, timing and allocation checks. Tail regressions remain visible; the working collector is unchanged.
 
 - [YouTube per-video identity binding](../experiments/youtube-identity-lab/README.md): actual workbench validator repair with nine retained known-bad identity mutations, full-field parity and explicit single-video scope. Host allowlisting is not item identity; fixture tests are not playback proof.
+
+## Ordered KV storage, 2026-10-28
+
+[SQLite/redb complete-record comparison](../experiments/ordered-kv-lab/README.md) retains a failed 64 MiB file-budget pass and a separate 32-sample diagnostic. The sorted cursor candidate did not win; complete readback, rollback and duplicate-key regression are explicit. No relational-store or cross-project promotion.
