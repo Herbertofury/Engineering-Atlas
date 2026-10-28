@@ -114,6 +114,22 @@ pub fn parse_project_record(
     })
 }
 
+/// Consume an already owned response without allocating a second raw buffer.
+/// Validation is identical to the borrowed entry point; ownership is not trust.
+pub fn parse_project_record_owned(
+    body: Vec<u8>,
+    requested: &str,
+) -> Result<ProjectRecord, Box<dyn std::error::Error>> {
+    let project = parse_requested_project(&body, requested)?;
+    // Retaining a network buffer's spare capacity could regress steady memory.
+    // Exact-capacity inputs transfer directly; excess capacity is discarded.
+    let body = body.into_boxed_slice().into_vec();
+    Ok(ProjectRecord {
+        project,
+        payload: String::from_utf8(body)?,
+    })
+}
+
 /// Bounded canonical-ID lane. Missing projects are explicit, never successful empty snapshots.
 #[derive(Debug, Serialize)]
 pub struct ProjectBatch {
@@ -191,7 +207,7 @@ impl PublicClient {
         id: &str,
     ) -> Result<ProjectRecord, Box<dyn std::error::Error>> {
         let url = project_url(id)?;
-        parse_project_record(&self.request_json(&url)?, id)
+        parse_project_record_owned(self.request_json(&url)?, id)
     }
     pub fn projects(&mut self, ids: &[String]) -> Result<ProjectBatch, Box<dyn std::error::Error>> {
         let url = projects_url(ids)?;
@@ -492,5 +508,21 @@ mod tests {
     #[test]
     fn limits_body_before_json_parse() {
         assert!(parse_project(&vec![b' '; MAX_BODY as usize + 1]).is_err());
+    }
+}
+
+#[cfg(test)]
+mod owned_capacity_tests {
+    use super::*;
+    #[test]
+    fn excess_capacity_is_not_retained_in_the_archive_envelope() {
+        let body=br#"{"id":"AANobbMI","slug":"sodium","title":"Fixture","description":"fixture","project_type":"mod","versions":[]}"#;
+        for extra in [0, 64, 65536] {
+            let mut bytes = Vec::with_capacity(body.len() + extra);
+            bytes.extend_from_slice(body);
+            let record = parse_project_record_owned(bytes, "sodium").unwrap();
+            assert_eq!(record.payload.as_bytes(), body);
+            assert_eq!(record.payload.capacity(), record.payload.len());
+        }
     }
 }

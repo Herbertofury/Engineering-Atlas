@@ -188,7 +188,7 @@ impl SnapshotStore {
                 }
                 let text =
                     text.ok_or("Stored project payload is missing or exceeds bounded read budget")?;
-                let record = crate::modrinth::parse_project_record(text.as_bytes(), id)?;
+                let record = crate::modrinth::parse_project_record_owned(text.into_bytes(), id)?;
                 Ok((generation, record))
             })
             .transpose()
