@@ -25,9 +25,8 @@ pub struct Queue(Connection);
 impl Queue {
     pub fn open(path: &Path) -> rusqlite::Result<Self> {
         let c = Connection::open(path)?;
-        c.busy_timeout(std::time::Duration::from_secs(5))?;
-        c.execute_batch("PRAGMA synchronous=FULL;
-            CREATE TABLE IF NOT EXISTS jobs (
+        crate::storage_connection::configure(&c)?;
+        c.execute_batch("CREATE TABLE IF NOT EXISTS jobs (
               id INTEGER PRIMARY KEY, payload TEXT NOT NULL, state TEXT NOT NULL,
               attempt INTEGER NOT NULL DEFAULT 0, worker TEXT, lease_until INTEGER, result TEXT,
               CHECK(state IN ('queued','running','succeeded','failed')));
@@ -518,5 +517,20 @@ mod tests {
             .is_err()
         );
         assert!(serde_json::from_str::<Job>(r#"{"RunShell":"echo unsafe"}"#).is_err());
+    }
+}
+
+#[cfg(test)]
+mod durability_contract_regression {
+    #[test]
+    fn opened_store_requests_extra_sync() {
+        let store = super::Queue::open(std::path::Path::new(":memory:")).unwrap();
+        assert_eq!(
+            store
+                .0
+                .query_row("PRAGMA synchronous", [], |r| r.get::<_, i64>(0))
+                .unwrap(),
+            3
+        );
     }
 }

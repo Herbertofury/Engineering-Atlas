@@ -1,6 +1,7 @@
 //! Evidence gates for bounded implementation experiments, not a general self-rewriting AI.
 extern crate self as atlas_lab;
 pub mod collection_failure;
+mod storage_connection;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -181,15 +182,26 @@ impl Gate {
 pub mod journal {
     use super::{Evidence, Gate, GatePolicy};
     use rusqlite::{Connection, params};
+    #[cfg(test)]
+    #[test]
+    fn opened_journal_requests_extra_sync() {
+        let store = Journal::open(std::path::Path::new(":memory:")).unwrap();
+        assert_eq!(
+            store
+                .0
+                .query_row("PRAGMA synchronous", [], |r| r.get::<_, i64>(0))
+                .unwrap(),
+            3
+        );
+    }
     /// Local append-only API. Not tamper-proof against someone editing the database itself.
     pub struct Journal(Connection);
     impl Journal {
         pub fn open(path: &std::path::Path) -> rusqlite::Result<Self> {
             let mut conn = Connection::open(path)?;
-            conn.busy_timeout(std::time::Duration::from_secs(5))?;
+            crate::storage_connection::configure(&conn)?;
             conn.execute_batch(
-                "PRAGMA foreign_keys=ON; PRAGMA synchronous=FULL;
-                CREATE TABLE IF NOT EXISTS experiments (
+                "CREATE TABLE IF NOT EXISTS experiments (
                   id INTEGER PRIMARY KEY, recorded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                   candidate TEXT NOT NULL, baseline TEXT NOT NULL, evidence TEXT NOT NULL,
                   decision TEXT NOT NULL, parent INTEGER REFERENCES experiments(id), acceptance_policy TEXT);",

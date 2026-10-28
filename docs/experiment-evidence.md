@@ -92,3 +92,7 @@ not a general recommendation or approval to change another project.
 ## Ordered KV storage, 2026-10-28
 
 [SQLite/redb complete-record comparison](../experiments/ordered-kv-lab/README.md) retains a failed 64 MiB file-budget pass and a separate 32-sample diagnostic. The sorted cursor candidate did not win; complete readback, rollback and duplicate-key regression are explicit. No relational-store or cross-project promotion.
+
+## Verified SQLite connection requirements, 2026-10-28
+
+[Actual store contract repair](../experiments/sqlite-contract-lab/README.md) retains three baseline failures, a shared fail-closed connection check, 108 Rust unit/eight integration tests and 55 real loopback HTTP checks. Existing rows and journal modes are preserved. Configured EXTRA synchronization is not a physical power-loss certification or performance claim.

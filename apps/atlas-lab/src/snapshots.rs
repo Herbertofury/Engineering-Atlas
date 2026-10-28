@@ -6,9 +6,8 @@ pub struct SnapshotStore(Connection);
 impl SnapshotStore {
     pub fn open(path: &Path) -> rusqlite::Result<Self> {
         let c = Connection::open(path)?;
-        c.busy_timeout(std::time::Duration::from_secs(5))?;
-        c.execute_batch("PRAGMA foreign_keys=ON; PRAGMA synchronous=FULL;
-            CREATE TABLE IF NOT EXISTS snapshots (
+        crate::storage_connection::configure(&c)?;
+        c.execute_batch("CREATE TABLE IF NOT EXISTS snapshots (
               generation INTEGER PRIMARY KEY, provider TEXT NOT NULL,
               canonical_id TEXT NOT NULL, observed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
               payload TEXT NOT NULL);
@@ -729,5 +728,20 @@ mod tests {
             "new-name"
         );
         assert!(s.latest_modrinth("missing").unwrap().is_none());
+    }
+}
+
+#[cfg(test)]
+mod durability_contract_regression {
+    #[test]
+    fn opened_store_requests_extra_sync() {
+        let store = super::SnapshotStore::open(std::path::Path::new(":memory:")).unwrap();
+        assert_eq!(
+            store
+                .0
+                .query_row("PRAGMA synchronous", [], |r| r.get::<_, i64>(0))
+                .unwrap(),
+            3
+        );
     }
 }

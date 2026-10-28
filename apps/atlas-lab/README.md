@@ -151,3 +151,7 @@ Cloud-desktop Chromium now verifies the saved-response dialog, exact JSON downlo
 ## Recorded acceptance policies · October 28, 2026
 
 New experiment-journal rows retain an exact versioned acceptance policy, also exposed in CLI and queued HTTP results. Linked repairs must preserve that policy, not simply raise a budget or lower an acceptance threshold. Legacy rows are preserved with policy unknown and cannot be retroactively labeled policy-equivalent repair parents. Decimal/hexadecimal strings preserve full integer and floating-point identity across browser JSON. This does not make the journal tamper-proof or authorize deployment. [Failure, migration and real HTTP/CLI evidence](../../experiments/gate-policy-lab/README.md).
+
+## Verified connection requirements
+
+Snapshot, queue and journal connections share a fail-closed synchronization/foreign-key/journal-mode check. They request EXTRA without changing an existing safe journal mode; temporary/in-memory fixtures remain explicitly non-durable. This strengthens the DELETE-journal configuration contract, not a speed claim or power-loss certification. [Baseline failures, implementation and HTTP regression evidence](../../experiments/sqlite-contract-lab/README.md).
