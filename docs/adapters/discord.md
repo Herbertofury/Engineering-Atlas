@@ -19,3 +19,7 @@ Guild/channel/message identity; attachments versus embeds; spoilers; edit/delete
 Message schema reviewed; no bot grant or private-message collection configured. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
 
 [Primary platform reference](https://docs.discord.com/developers/resources/message) · [Shared collection contract](contract.md)
+
+## October 28 research expansion
+
+[Current platform-family research](social-platforms.md) adds author/avatar attribution, full body/media/files, follow/import distinctions and current interface limits. [Coverage catalog](coverage-catalog.md) and [authenticated fixtures](authenticated-research.md) describe the remaining work. This update preserves the evidence status above; it does not broaden an earlier narrow success or erase a failure.

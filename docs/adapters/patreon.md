@@ -19,3 +19,7 @@ Post/campaign identity; carousel order; embedded video versus attachments; pagin
 Documentation reviewed; authenticated extraction and full-media parity not yet tested. No recommendation transfers to a project until it beats that project's actual baseline without sacrificing requirements.
 
 [Primary platform reference](https://docs.patreon.com/) · [Shared collection contract](contract.md)
+
+## October 28 research expansion
+
+[Current platform-family research](paid-platforms.md) adds author/avatar attribution, full body/media/files, follow/import distinctions and current interface limits. [Coverage catalog](coverage-catalog.md) and [authenticated fixtures](authenticated-research.md) describe the remaining work. This update preserves the evidence status above; it does not broaden an earlier narrow success or erase a failure.

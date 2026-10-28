@@ -20,6 +20,14 @@ Research entry created; no live complete-media or authenticated acceptance. No r
 
 [Primary platform reference](https://openhome.bilibili.com/doc) · [Shared collection contract](contract.md)
 
-## Official embed lane · 2026-10-27
+## Official public embed · 2026-10-27
 
-[Documented external player](https://player.bilibili.com/) provides a supported public route distinct from authenticated open-platform APIs. Its selected sample played and paused in the cloud browser with autoplay off. A bounded official-iframe lane is implemented in the Atlas media workbench; iframe load is deliberately not labeled ready or playing. The [evidence and exact limits](../../experiments/bilibili-player-lab/README.md) distinguish the direct-player observation, fixture tests and deployed-iframe play/pause/reload/unload acceptance for this one public example. No account grant or full-media scraper is claimed.
+The [official external-player documentation](https://player.bilibili.com/) supplies the public BV1B7411m7LV example. Atlas now includes that one media card using the supported iframe route, canonical source/video binding, explicit loading and autoplay=0. No poster URL is guessed: the poster stays inside the official player. Gallery, captions, multipart completeness and account-only data remain uncollected.
+
+Real cloud-browser checks passed both directly and inside the deployed sandboxed Atlas iframe: explicit play/pause, reload with one frame, immediate unload with zero remaining frames and no stale loaded event. The original four card objects remain unchanged. Seven served assets matched the build; 62 Node and 53 Python tests passed, and source CI passed on Linux/Windows.
+
+The application correctly reports only frame lifecycle. Actual playing/paused observations are external test evidence, not an implemented cross-origin playback API. YouTube was rechecked only to ready; a Steam HLS trailer was rechecked playing/paused. All players were unloaded after testing. [Raw receipts, exact source and limits](https://github.com/Herbertofury/Engineering-Atlas/tree/ab5a35a03df55bfa83ac188e28652dc94f1be2ff/experiments/bilibili-player-lab).
+
+## October 28 research expansion
+
+[Current platform-family research](social-platforms.md) adds author/avatar attribution, full body/media/files, follow/import distinctions and current interface limits. [Coverage catalog](coverage-catalog.md) and [authenticated fixtures](authenticated-research.md) describe the remaining work. This update preserves the evidence status above; it does not broaden an earlier narrow success or erase a failure.

@@ -1,6 +1,6 @@
 # GitHub · fixed public source observations
 
-Reviewed October 27, 2026. [Adapter directory](README.md) · [Executable evidence](../../experiments/upstream-review-lab/README.md)
+Reviewed October 27, 2026. [Adapter directory](README.md) · [Executable evidence](https://github.com/Herbertofury/Engineering-Atlas/tree/50a32d09767c0ba01d136906d6ae6929435f80c4/experiments/upstream-review-lab)
 
 ## Coverage, not a blanket support claim
 
@@ -30,3 +30,7 @@ Complete public JSON remains local with append-only application generations. Pub
 2. Reconcile interrupted reservations with an explicit, auditable operation before claiming unattended recovery. The current conservative lane fails closed.
 3. Test asset identity, license, size, missing/deleted states and user-initiated playback separately before promoting game/mod/media-card coverage.
 4. Compare actual target workloads and complete requirements before recommending another project's migration. Current evidence provides no such recommendation.
+
+## October 28 research expansion
+
+[Current platform-family research](social-platforms.md) adds author/avatar attribution, full body/media/files, follow/import distinctions and current interface limits. [Coverage catalog](coverage-catalog.md) and [authenticated fixtures](authenticated-research.md) describe the remaining work. This update preserves the evidence status above; it does not broaden an earlier narrow success or erase a failure.

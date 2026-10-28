@@ -22,17 +22,15 @@ These packages were researched, not benchmarked or accepted as Atlas dependencie
 
 ## Live-web wrapper evaluation · 2026-10-27
 
-[LiveWeb-IE review](../../research/2026-10-27-liveweb-ie.md) distinguishes reported extraction quality from simple-page latency, complete-media coverage and dataset reuse restrictions. This is a methodology candidate only; its non-commercial dataset has not been downloaded or used. No automatic adoption or target-project recommendation.
+[LiveWeb-IE review](https://github.com/Herbertofury/Engineering-Atlas/blob/main/research/2026-10-27-liveweb-ie.md) distinguishes reported extraction quality from simple-page latency, complete-media coverage and dataset reuse restrictions. This is a methodology candidate only; its non-commercial dataset has not been downloaded or used. No automatic adoption or target-project recommendation.
 
 ## Extractor release refresh · 2026-10-27
 
-[Release and advisory review](../../research/2026-10-27-extractor-release-review.md): yt-dlp 2026.10.26 changes Python/Windows compatibility and bundled security dependencies. It remains a researched candidate, not an installed or benchmark-accepted Atlas adapter. No paywall or session-export route was tested.
-
-## Nexus reuse review · 2026-10-27
-
-[Exact-source review](../../research/2026-10-27-nexus-reuse-review.md) finds reusable batching/quota patterns, a package/license mismatch and a partial-result warning boundary in the default GraphQL helper. Static inspection is not a live failure reproduction or performance ranking. No SDK installation, grant or session export was performed.
+[Release and advisory review](https://github.com/Herbertofury/Engineering-Atlas/blob/main/research/2026-10-27-extractor-release-review.md): yt-dlp 2026.10.26 changes Python/Windows compatibility and bundled security dependencies. It remains a researched candidate, not an installed or benchmark-accepted Atlas adapter. No paywall or session-export route was tested.
 
 
 ## Cover-only extraction is not complete-media coverage · 2026-10-27
 
-[Static Codeberg source review](../../research/2026-10-27-gallery-cover-scope.md) records a newer master checkpoint separately from stable gallery-dl 1.32.18. Its dedicated highlight-cover path deliberately omits story items, while cover metadata receives an explicit type and changed code representation. Treat this as narrow coverage, not an empty complete story or a general extraction-quality win. Source inspection only; no provider requests, session export, prototype execution or target recommendation.
+[Static Codeberg source review](https://github.com/Herbertofury/Engineering-Atlas/blob/144868ae595d2faa18dbb865228785920a9bc2b7/research/2026-10-27-gallery-cover-scope.md) records master checkpoint 46163680fda0cbc976790d5678095d02b39d2b3e separately from stable gallery-dl 1.32.18. The dedicated highlight-cover path deliberately omits story items and changes cover metadata. Such a result must remain covers-only, not an empty complete story or a reason to erase a complete snapshot. Source inspection only: no extractor execution, provider requests, credential/session export, performance ranking or target-project recommendation.
+
+[Nexus source and license review](https://github.com/Herbertofury/Engineering-Atlas/blob/main/research/2026-10-27-nexus-reuse-review.md) retains the package/license mismatch and partial-result boundaries; no SDK acceptance is implied.

@@ -38,6 +38,8 @@ A substantial improvement changes the actual end-to-end experience while retaini
 
 [Real public-media workbench](docs/media-lab/index.html) combines actual source snapshots, image-decode checks and explicit playback states. [Adapter laboratory](docs/adapters/README.md) tracks platform-specific access, reuse candidates, complete-media requirements and truthful evidence states. Paid/private fixtures stay private; source identity and playback are tested separately from metadata.
 
+[Expanded site research](docs/adapters/coverage-catalog.md) covers 162 service/scope entries, including paid creator sites, social networks, mod hosts and specialist indexes. It links identity/avatar, complete-content, follow, login and validation requirements; research coverage is separate from implemented support. [October 28 decision record](research/2026-10-28-site-adapters.md).
+
 [Isolated parser experiment](experiments/adapter-parser-lab/README.md) retains full-output parity and a small-workload tail regression. It is not an accepted application upgrade.
 
 ## Browser card and storage experiments
