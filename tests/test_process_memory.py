@@ -6,14 +6,14 @@ spec=importlib.util.spec_from_file_location('process_memory_runner',ROOT/'experi
 runner=importlib.util.module_from_spec(spec);spec.loader.exec_module(runner)
 class ProcessMemoryTests(unittest.TestCase):
     def fixture(self):
-        result={'schema_version':1,'lane':'baseline','capacity_mode':'exact','source_sha256':'source','source_bytes':123,'project_id':'TEST0001','harness_sha256':'harness','adapter_sha256':'adapter','complete_output_equal':True,'repeated_records':8,'unknown':{'preserved':True}}
+        result={'schema_version':2,'lane':'baseline','capacity_mode':'exact','source_sha256':'source','source_bytes':123,'project_id':'TEST0001','harness_sha256':'harness','adapter_sha256':'adapter','observer_sha256':'observer','complete_output_equal':True,'repeated_records':8,'unknown':{'preserved':True}}
         for phase in ('before_input','before_records','retained','after_drop'):result[phase]={name:4096 for name in runner.FIELDS}
         return result
-    def validate(self,data):return runner.validate(data,'baseline','exact',{'sha256':'source','bytes':123,'id':'TEST0001'},'harness','adapter')
+    def validate(self,data):return runner.validate(data,'baseline','exact',{'sha256':'source','bytes':123,'id':'TEST0001'},'harness','adapter','observer')
     def test_complete_receipt_and_unknown_fields_preserved(self):
         data=self.fixture();self.assertIs(self.validate(data),data);self.assertTrue(data['unknown']['preserved'])
     def test_identity_parity_and_count_fail_closed(self):
-        for field,value in [('schema_version',True),('lane','candidate'),('capacity_mode','spare'),('source_sha256','wrong'),('source_bytes',True),('source_bytes',124),('project_id','other'),('harness_sha256','wrong'),('adapter_sha256','wrong'),('complete_output_equal',1),('complete_output_equal',False),('repeated_records',7),('repeated_records',True)]:
+        for field,value in [('schema_version',True),('lane','candidate'),('capacity_mode','spare'),('source_sha256','wrong'),('source_bytes',True),('source_bytes',124),('project_id','other'),('harness_sha256','wrong'),('adapter_sha256','wrong'),('observer_sha256','wrong'),('schema_version',1),('complete_output_equal',1),('complete_output_equal',False),('repeated_records',7),('repeated_records',True)]:
             with self.subTest(field=field,value=value):
                 data=self.fixture();data[field]=value
                 with self.assertRaises(ValueError):self.validate(data)

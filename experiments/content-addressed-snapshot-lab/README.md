@@ -18,7 +18,7 @@ Six candidate tests cover duplicate observations, changed payloads, injected has
 
 Seven alternating-order pairs per workload use new databases. Write time includes parsing, candidate hashing/equality checking, generation/attempt inserts and commit. Setup is separately reported. Latest-read timing includes reopen, parsing, candidate hash verification and exact comparison to the input. Complete history, provider/identity, attempt linkage, original bytes, SQLite integrity and foreign keys are checked outside the timer.
 
-Both lanes retain their observation timestamps. Those wall-clock values are format-checked but are not required to be identical across separately timed databases. Reopen is not cold-cache. This is a single-connection storage-component comparison, not full collection-job/network/UI latency. Peak memory, concurrent readers/writers, migration, broader crash recovery and physical power-loss behavior remain acceptance gates. EXTRA configuration is not proof of hardware durability.
+Both lanes retain their observation timestamps. Those wall-clock values are format-checked but are not required to be identical across separately timed databases. Reopen is not cold-cache. This is a single-connection storage-component comparison, not full collection-job/network/UI latency. Real-corpus peak memory, concurrent readers/writers, migration, broader crash recovery and physical power-loss behavior remain acceptance gates. EXTRA configuration is not proof of hardware durability.
 
 The fixed harness accepts exactly five authorized public JSON files, at most 2 MiB each and 4 MiB total, and requires a new output directory. It never overwrites an existing evidence directory. It checks a cooperative 120-second budget; measured runs also use an external 150-second timeout. Partial JSONL samples and every database are retained. Database size is checked against 64 MiB after each sample. This is not a hard whole-process RSS limit.
 
@@ -43,6 +43,24 @@ The repaired candidate's reopen cost fell substantially versus its initial imple
 
 ## Process interruption checks
 
-[Two retained runs](process-interruption.json) killed 24 newly created fixture processes after their first durable generation, at six requested delays while further commits were running. Both the actual SnapshotStore and addressed candidate reopened successfully. Every retained generation matched complete original bytes; attempts remained paired with generations; integrity and foreign-key checks passed. Candidate payload storage had no orphan or duplicated row. The exact instruction/transaction phase of each kill was not observed.
+[Four retained runs](process-interruption.json) killed 48 newly created fixture processes after their first durable generation, at six requested delays while further commits were running. Both the actual SnapshotStore and addressed candidate reopened successfully. Every retained generation matched complete original bytes; attempts remained paired with generations; integrity and foreign-key checks passed. Candidate payload storage had no orphan or duplicated row. The exact instruction/transaction phase of each kill was not observed.
 
 This is SIGKILL process-recovery evidence on Linux with SQLite 3.54.1, not a physical power-loss test, Windows recovery result or proof of every crash point. The second run uses strict duplicate-key/nonfinite/identity/completeness receipt validation, tested with and without Python optimization. All databases, original output and failures remain retained privately. The experimental format marker is local identification, not a globally registered ID or a security boundary.
+
+
+## Memory accounting repair
+
+[Retained runs and launcher control](memory-results.json) and [scoped medians](memory-summary.json) distinguish an initial launcher-inclusive measurement from four post-exec self-observation passes. Linux resource accounting survives exec, so a Python-launched child's wait4 maximum can be dominated by its earlier launcher footprint. A no-op control and the difference from the Rust process's self observations exposed that problem. Maxima are not additive: do not subtract the control and call the remainder application memory.
+
+The implementation reuses Atlas's existing Linux status/smaps_rollup observer rather than inventing another memory API. It now samples before input, with the connection retained after 1,001 writes, and after connection drop. The full original response and all 1,001 committed observations are independently verified for every process. The final four-pair medians for retained rollup RSS are 5,869,568 bytes for the actual store and 4,106,240 for the addressed candidate. This is a duplicate-heavy generated replay of one public response, not the five-generation corpus, a live collector or universal RAM saving.
+
+VmHWM is approximate kernel status accounting; rollup is a separate instantaneous observation, not peak memory. Shared mappings, allocator behavior and measurement overhead remain included. The original wait4 values and no-op controls are retained but rejected as isolated backend-memory evidence. Sources: MEM01, PROCMEM01, LNXWAIT01, LNXRSS01, PYWAIT01. No new runtime dependency or unsafe native wrapper was needed.
+
+
+The final memory runner additionally fingerprints complete files with bounded streaming reads rather than allocating the whole executable in the Python launcher. It accepts only the fixed locally built probe. Earlier launcher-inclusive measurements remain unchanged. CPU/wall limits, full input hashing and post-write verification remain active; no cache-warming shortcut or field omission was introduced.
+
+### Reproduction
+
+From the repository root, build with `cargo +1.99.1 build --release --locked --manifest-path apps/atlas-lab/Cargo.toml --example addressed_snapshot_lab --example addressed_snapshot_crash_probe`. Run the storage example with a five-path public-input manifest and a new directory. For Linux recovery/memory checks, run `python3 experiments/content-addressed-snapshot-lab/crash_run.py` or `memory_run.py` with `--binary apps/atlas-lab/target/release/examples/addressed_snapshot_crash_probe --input PUBLIC_RESPONSE.json --output NEW_DIRECTORY`. Both runners retain evidence and refuse an existing output directory. Do not point experiments at a working application database.
+
+Raw memory receipts: [launcher-inclusive preliminary](memory-pass1.json), [self-observer pass](memory-pass2.json), [identity-bound repeat](memory-pass3.json), [streaming-fingerprint pass](memory-pass4.json), and [final compiled-source repeat](memory-pass5.json).

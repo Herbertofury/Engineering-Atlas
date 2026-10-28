@@ -21,3 +21,10 @@ Most small public-input cases tied in median retained RSS. The Lithium exact-cap
 The generated large replay showed a larger difference: final retained rollup RSS medians were 16,433,152 versus 15,007,744 bytes for exact capacity, and 16,441,344 versus 15,011,840 for spare capacity. This supports a benefit for this synthetic stress shape only, not the real small records or a browser/app-wide claim. Allocation-count reductions from the earlier ownership study remain distinct from these resident-memory observations.
 
 Two Rust fixture tests reject missing/duplicate fields, wrong units and overflow. Four Python protocol tests reject mismatched identities, incomplete parity/counts, malformed memory values and contradictory/non-finite JSON, reusing Atlas's existing strict decoder. No arbitrary executable can be selected through the runner. Local regression and final combined CI are recorded separately; archived failed or preliminary evidence is never silently replaced.
+
+
+## Shared observer extraction and regression · 2026-10-28
+
+The existing Linux observer and numeric snapshot checks are now shared in [linux_memory.rs](linux_memory.rs) and [snapshot_gate.py](snapshot_gate.py). Their measurement/validation semantics are preserved. New protocol version 2 requires the observer source fingerprint, so changing the helper cannot silently retain the old harness identity. Historical version-1 receipts above remain unchanged and belong to their original source versions.
+
+[The complete 48-process regression](shared-observer-regression.json) passed all original byte/projection/count checks with the shared observer. The addressed-snapshot experiment reuses it to separate [post-exec self observations from launcher-inclusive resource maxima](../content-addressed-snapshot-lab/README.md). No new general memory ranking follows from this refactor.

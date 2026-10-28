@@ -96,3 +96,11 @@ not a general recommendation or approval to change another project.
 ## Verified SQLite connection requirements, 2026-10-28
 
 [Actual store contract repair](../experiments/sqlite-contract-lab/README.md) retains three baseline failures, a shared fail-closed connection check, 108 Rust unit/eight integration tests and 55 real loopback HTTP checks. Existing rows and journal modes are preserved. Configured EXTRA synchronization is not a physical power-loss certification or performance claim.
+
+
+## Complete snapshots and measurement stabilization, 2026-10-28
+
+- [Addressed snapshot storage](../experiments/content-addressed-snapshot-lab/README.md): compares the actual store with an isolated deduplicated payload schema while retaining every generation and attempt. Preserves the header-write regression, its repair, all 84 timed samples, 48 process interruptions and scoped memory accounting. Small real-corpus and read regressions prevent promotion.
+- [Budgeted preparation](../experiments/budgeted-preparation-lab/README.md): full-data encoding candidate, 90 fresh Node trials, retained browser failure and local-only v15 integration. Published card harness remains v14.
+- [Native Rust app checks](../experiments/native-app-ui-lab/README.md): exact-byte download, last-good recovery and actual bounded queue execution. Failed native upstream connection is retained.
+- [Query reuse and extraction review](query-reuse-and-extraction-review.md): new papers screened against quality and completeness requirements, without prototype execution or target recommendations.

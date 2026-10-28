@@ -1,18 +1,19 @@
 """Linux-only bounded interruption of newly created, owned fixture processes."""
 import argparse,hashlib,json,pathlib,resource,select,subprocess,time
 from recovery_gate import validate
-p=argparse.ArgumentParser();p.add_argument('--binary',type=pathlib.Path,required=True);p.add_argument('--input',type=pathlib.Path,required=True);p.add_argument('--output',type=pathlib.Path,required=True);a=p.parse_args()
+from runner_io import digest,fixed_binary
+p=argparse.ArgumentParser();p.add_argument('--binary',type=pathlib.Path,required=True);p.add_argument('--input',type=pathlib.Path,required=True);p.add_argument('--output',type=pathlib.Path,required=True);a=p.parse_args();a.binary=fixed_binary(a.binary)
 a.output.mkdir(parents=True,exist_ok=False)
 root=pathlib.Path(__file__).resolve().parents[2]
-sources=[pathlib.Path(__file__),pathlib.Path(__file__).with_name('recovery_gate.py'),pathlib.Path(__file__).with_name('store.rs'),root/'apps/atlas-lab/examples/addressed_snapshot_crash_probe.rs',root/'apps/atlas-lab/src/snapshots.rs',root/'apps/atlas-lab/src/storage_connection.rs',root/'apps/atlas-lab/Cargo.lock']
-receipt={'sources':{str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sources},'schema_version':1,'complete':False,'scope':'Owned subprocess SIGKILL after first committed generation; exact transaction phase unobserved; not physical power-loss testing','binary_sha256':hashlib.sha256(a.binary.read_bytes()).hexdigest(),'samples':[]}
+sources=[pathlib.Path(__file__),pathlib.Path(__file__).with_name('recovery_gate.py'),pathlib.Path(__file__).with_name('store.rs'),root/'apps/atlas-lab/examples/addressed_snapshot_crash_probe.rs',root/'apps/atlas-lab/src/snapshots.rs',root/'apps/atlas-lab/src/storage_connection.rs',root/'apps/atlas-lab/Cargo.lock',pathlib.Path(__file__).with_name('runner_io.py')]
+receipt={'sources':{str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sources},'schema_version':1,'complete':False,'scope':'Owned subprocess SIGKILL after first committed generation; exact transaction phase unobserved; not physical power-loss testing','binary_sha256':digest(a.binary),'samples':[]}
 def limits():resource.setrlimit(resource.RLIMIT_CPU,(5,5))
 def require(v,message):
  if not v:raise ValueError(message)
 try:
  for delay in [0.005,0.01,0.02,0.05,0.1,0.2]:
   for lane in ['baseline','addressed']:
-   stem=f'{lane}-{delay}';db=a.output/(stem+'.sqlite')
+   require(digest(a.binary)==receipt['binary_sha256'],'Binary changed during run');stem=f'{lane}-{delay}';db=a.output/(stem+'.sqlite')
    child=subprocess.Popen([str(a.binary.resolve()),'write',lane,str(a.input.resolve()),str(db.resolve())],stdout=subprocess.PIPE,stderr=subprocess.PIPE,preexec_fn=limits)
    try:
     ready=select.select([child.stdout],[],[],5)[0];require(ready,'No child readiness within budget');line=child.stdout.readline();require(line==b'READY\n','Unexpected child readiness')

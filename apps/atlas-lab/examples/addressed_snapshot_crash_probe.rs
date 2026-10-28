@@ -8,6 +8,8 @@ use std::{
     io::{Read, Write},
     path::Path,
 };
+#[path = "../../../experiments/process-memory-lab/linux_memory.rs"]
+mod linux_memory;
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 fn main() -> Result<()> {
     let args: Vec<_> = std::env::args().collect();
@@ -16,9 +18,16 @@ fn main() -> Result<()> {
     }
     let action = args[1].as_str();
     let lane = args[2].as_str();
-    if !["write", "verify"].contains(&action) || !["baseline", "addressed"].contains(&lane) {
+    if !["write", "write-memory", "verify"].contains(&action)
+        || !["baseline", "addressed"].contains(&lane)
+    {
         return Err("Unknown fixed probe mode".into());
     }
+    let memory_before = if action == "write-memory" {
+        Some(linux_memory::memory()?)
+    } else {
+        None
+    };
     let mut bytes = Vec::new();
     std::fs::File::open(&args[3])?
         .take(2 * 1024 * 1024 + 1)
@@ -29,18 +38,23 @@ fn main() -> Result<()> {
     let project = atlas_lab::modrinth::parse_project(&bytes)?;
     let record = parse_project_record(&bytes, &project.id)?;
     let path = Path::new(&args[4]);
-    if action == "write" {
+    if action == "write" || action == "write-memory" {
         std::fs::OpenOptions::new()
             .write(true)
             .create_new(true)
             .open(path)?;
-        if lane == "baseline" {
+        let memory_retained = if lane == "baseline" {
             let mut store = SnapshotStore::open(path)?;
             store.save_modrinth_project_record(&project.id, &record)?;
             println!("READY");
             std::io::stdout().flush()?;
             for _ in 0..1000 {
                 store.save_modrinth_project_record(&project.id, &record)?;
+            }
+            if action == "write-memory" {
+                Some(linux_memory::memory()?)
+            } else {
+                None
             }
         } else {
             let mut store = AddressedStore::open(path)?;
@@ -50,6 +64,17 @@ fn main() -> Result<()> {
             for _ in 0..1000 {
                 store.save(&project.id, &record)?;
             }
+            if action == "write-memory" {
+                Some(linux_memory::memory()?)
+            } else {
+                None
+            }
+        };
+        if action == "write-memory" {
+            println!(
+                "{}",
+                serde_json::json!({"schema_version":1,"lane":lane,"observations":1001,"input_sha256":atlas_lab::build_identity::sha256_hex(&bytes),"before_input":memory_before,"retained_connection":memory_retained,"after_connection_drop":linux_memory::memory()?,"observer_sha256":atlas_lab::build_identity::sha256_hex(include_bytes!("../../../experiments/process-memory-lab/linux_memory.rs")),"scope":"Linux self-observation after exec; status accounting is approximate; smaps_rollup is instantaneous, not peak"})
+            );
         }
         println!("DONE");
         return Ok(());
