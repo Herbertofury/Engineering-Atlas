@@ -16,7 +16,7 @@ No full-card paint, INP, peak-memory, other-project or universal ranking is esta
 
 ## Bounded-segment stabilization lane
 
-The first candidate adds one text node per event. A second candidate keeps a segment below 64 events and 16 KiB of text, then starts another segment; an individual oversized event stays whole. It appends only to the current bounded segment, never rebuilds prior history. This addresses node growth without dropping data or reverting to full-history rewrites. Six focused tests cover exact prefixes, segment growth, oversized entries and failure preservation. The v2 browser harness retains both original alternatives, rotates three-strategy order and records environment metadata plus an explicit slow-frame-cadence flag. No variant is promoted by these code changes alone.
+The first candidate adds one text node per event. A second candidate keeps a segment below 64 events and 16,384 UTF-16 code units of text, then starts another segment; an individual oversized event stays whole. It appends only to the current bounded segment, never rebuilds prior history. This addresses node growth without dropping data or reverting to full-history rewrites. Six focused tests cover exact prefixes, segment growth, oversized entries and failure preservation. The v2 browser harness retains both original alternatives, rotates three-strategy order and records environment metadata plus an explicit slow-frame-cadence flag. No variant is promoted by these code changes alone.
 
 ## First browser evidence (v1; retained, not promoted)
 
