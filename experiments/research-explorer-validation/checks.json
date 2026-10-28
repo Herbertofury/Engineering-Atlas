@@ -89,11 +89,11 @@
     "javascript-tests.log": "66cf74d03bf531e55bd16df4b885a8d600af3bc7b96f712da85caef94fb7ad39"
   },
   "integration": {
-    "base_commit": "8dd973e0f5cc81236c23af3ce7eb3171b79d3478",
-    "source_register_records": 523,
-    "upstream_sources_preserved": 349,
+    "base_commit": "50aba7a38580924cf3df125b7ea10f97444c4af0",
+    "source_register_records": 525,
+    "upstream_sources_preserved": 351,
     "research_source_additions": 174,
-    "source_id_merge": "Preserved every upstream record; appended 174 nonconflicting research/governance records.",
+    "source_id_merge": "Preserved all upstream records, including the concurrent project-ownership update; appended 174 nonconflicting research/governance records.",
     "protected_paths_changed": [],
     "post_integration_python_tests": 166,
     "post_integration_node_test_files": 18,

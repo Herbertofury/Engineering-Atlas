@@ -3839,6 +3839,28 @@
     "evidence": "primary_documented"
   },
   {
+    "id": "OWNED01",
+    "title": "Rust String checked ownership conversions",
+    "url": "https://doc.rust-lang.org/std/string/struct.String.html#method.from_utf8",
+    "observed_version": "Rust 1.99.1 (58cf8f9c3 2026-10-13)",
+    "topic": "memory",
+    "note": "Checked from_utf8 consumes Vec without copying bytes; into_bytes is the inverse. Not a parser bypass or total-memory guarantee.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 90,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "OWNED02",
+    "title": "Rust Vec into_boxed_slice capacity contract",
+    "url": "https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice",
+    "observed_version": "Rust 1.99.1",
+    "topic": "memory",
+    "note": "Discards excess capacity; may reallocate. Distinguish requested allocation deltas from total retained memory.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 90,
+    "evidence": "primary_documented"
+  },
+  {
     "id": "RX001",
     "title": "vLLM documentation README",
     "url": "https://github.com/vllm-project/vllm/blob/main/docs/README.md",

@@ -825,6 +825,18 @@ Focus differs from active-element presence. Used as an additional controlled-run
 
 Callback scheduling ordinarily follows refresh; background content may pause. Not physical-paint or INP proof. Evidence: primary documented. Checked 2026-10-28; review after 90 days.
 
+## OWNED01
+
+[Rust String checked ownership conversions](https://doc.rust-lang.org/std/string/struct.String.html#method.from_utf8) · Rust 1.99.1
+
+Checked from_utf8 consumes Vec without copying bytes; into_bytes is the inverse. Not a parser bypass or total-memory guarantee. Evidence: primary documented. Checked 2026-10-28; review after 90 days.
+
+## OWNED02
+
+[Rust Vec into_boxed_slice capacity contract](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice) · Rust 1.99.1
+
+Discards excess capacity and may reallocate. Requested allocation deltas are not total retained memory. Evidence: primary documented. Checked 2026-10-28; review after 90 days.
+
 ## Research Explorer expansion · checked 2026-10-28 UTC
 
 This is the October 27 America/Denver research pass. Exact publications and source check dates are separate. New observations do not overwrite earlier dated reviews.
