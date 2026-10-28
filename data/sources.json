@@ -14615,5 +14615,16 @@
     "evidenceCaveat": "Primary-origin classification is not adapter acceptance. See operation-specific observations; no authenticated action, installation or playback accepted.",
     "sourceRole": "primary_observation",
     "primaryContentObserved": true
+  },
+  {
+    "id": "PROCMEM01",
+    "title": "Linux proc and smaps memory-accounting semantics",
+    "url": "https://docs.kernel.org/filesystems/proc.html",
+    "observed_version": "Kernel documentation reviewed 2026-10-28",
+    "topic": "memory-accounting",
+    "note": "Status RSS can be asynchronous and imprecise; smaps/rollup provide instantaneous page-accounting snapshots, not a jointly atomic peak measurement.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

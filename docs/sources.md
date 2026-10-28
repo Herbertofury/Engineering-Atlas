@@ -3845,3 +3845,10 @@ Opened AGPL-3.0-or-later project license, file-level Apache-2.0 notices and opti
 Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
 
 Opened Linux baseline and macOS exclusions for LTO, gcc-fast and qemu mode. Evidence: primary documented.
+
+
+## PROCMEM01
+
+[Linux proc and smaps memory-accounting semantics](https://docs.kernel.org/filesystems/proc.html) · Kernel documentation reviewed 2026-10-28
+
+Status RSS can be asynchronous and imprecise; rollup provides an instantaneous page-accounting snapshot, not an atomic peak measurement. Evidence: primary documented. Checked 2026-10-28; review after 30 days.
