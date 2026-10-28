@@ -35,3 +35,22 @@ Two fresh Node process passes retain 72 full validations in [pass 1](complete-pa
 | 200 × 64 KiB | 95.687 / 75.054 ms | 71.091 / 55.306 ms |
 
 The large-case median improves about 22% in both passes. Small-case direction changes, and the first 8 KiB candidate maximum regresses (23.129 versus 15.210 ms). Keep those regressions. This is an algorithm/allocation-shape change, not a cache setting; actual heap/RSS remains unmeasured. The encoder is scoped to already-validated JSON records, not arbitrary objects with getters, callable toJSON hooks or non-JSON values. Three new test functions include 1,024 generated Unicode cases, escape/order parity, under/oversized destinations and retained receiver corruptions. All 126 Node tests pass. Run compare-complete.mjs with either fixed pass filename in a fresh copied directory; existing receipts cannot be overwritten. The browser harness remains unchanged until browser responsiveness, worker, cancellation and memory gates are tested.
+
+## Actual foreground browser receiver pass
+
+[Isolated browser lab](../../docs/card-receiver-lab/index.html), harness `atlas-complete-receiver-v2-callback-clock`, is separate from the existing card/media applications. Full raw browser receipts live in [browser/](browser/). Seven served v2 assets matched their SHA-256 identities, and the native foreground window showed the expected harness and content-addressed script. Main/worker 200-card comparisons use 8 KiB and 64 KiB complete metadata, three alternating pairs each. All 24 samples passed returned-record equality and every empty-frame scheduling gate.
+
+| Execution / metadata | Whole / bounded request median | Whole / bounded largest observed frame gap |
+|---|---:|---:|
+| Main / 8 KiB | 19.8 / 10.4 ms | 33.4 / 16.6 ms |
+| Main / 64 KiB | 175.2 / 88.1 ms | 188.0 / 111.7 ms |
+| Worker / 8 KiB | 176.2 / 88.1 ms | 40.5 / 24.7 ms |
+| Worker / 64 KiB | 355.5 / 356.1 ms | 97.6 / 223.6 ms |
+
+Worker request timing includes startup and both full structured-clone directions. Its dense validation component improved (232.1 to 139.2 ms median), but end-to-end roundtrip did not and the worst frame gap regressed. This rules out a blanket worker promotion. Different rows are separate runs, not a randomized main-versus-worker causal comparison. The displayed input probe was not instrumented as INP; no input-latency claim is made. These are receiver tests, not card rendering, provider-media collection, peak memory or storage tests.
+
+The first v1 receipt is preserved, but its callback used the animation-frame timestamp rather than actual callback-arrival time. Code inspection identified possible undercounting after main-thread delay. V2 uses performance.now() inside the callback; only v2 frame gaps appear above. This timing repair does not imply a new performance win by itself.
+
+Actual active-worker cancellation returned an incomplete receipt with zero accepted samples. Downloaded last-good data before and after cancellation matched exactly: 5,954 bytes, SHA-256 `8093928d156209944971e188975741d53e270cf5f945400a70f41e9f8433f086`. A fresh dense worker run then completed six additional samples with full parity. Original, cancelled and recovered receipts all remain retained. Two generated tests exercise the actual worker handler for complete result identity, unknown lanes and validator failure without fallback. Final local suites: 128 Node tests and 84 Python tests. Implementation and evidence CI remain separate gates.
+
+The candidate stays isolated. No other project, adapter, working card-density harness or media player was changed. Physical paint, INP, actual heap/RSS, larger repeatability and real-card target comparison remain open acceptance gates.
