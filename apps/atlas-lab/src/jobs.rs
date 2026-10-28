@@ -6,6 +6,7 @@ use std::path::Path;
 #[serde(deny_unknown_fields)]
 pub enum Job {
     CollectModrinth { project: String },
+    CollectModrinthRaw { project: String },
     CollectModrinthBatch { projects: Vec<String> },
     CollectModrinthVersions { versions: Vec<String> },
     ReviewUpstream { source: String },
@@ -41,7 +42,7 @@ impl Queue {
             return Err("Invalid clock".into());
         }
         match job {
-            Job::CollectModrinth { project } => {
+            Job::CollectModrinth { project } | Job::CollectModrinthRaw { project } => {
                 crate::modrinth::project_url(project)?;
             }
             Job::CollectModrinthBatch { projects } => {
@@ -321,6 +322,43 @@ mod tests {
         assert!(
             serde_json::from_str::<Job>(
                 r#"{"ReviewUpstream":{"source":"hls","token":"not accepted"}}"#
+            )
+            .is_err()
+        );
+    }
+    #[test]
+    fn complete_project_job_is_bounded_and_keeps_legacy_jobs_distinct() {
+        let mut q = Queue::open(Path::new(":memory:")).unwrap();
+        let job = Job::CollectModrinthRaw {
+            project: "sodium".into(),
+        };
+        let id = q.enqueue(&job, 0).unwrap();
+        assert_eq!(q.enqueue(&job, 1).unwrap(), id);
+        assert_ne!(
+            q.enqueue(
+                &Job::CollectModrinth {
+                    project: "sodium".into()
+                },
+                1
+            )
+            .unwrap(),
+            id
+        );
+        assert_eq!(q.claim("worker", 2, 1000).unwrap().unwrap().job, job);
+        for project in ["", "../path", "https://example.invalid", "sodium,lithium"] {
+            assert!(
+                q.enqueue(
+                    &Job::CollectModrinthRaw {
+                        project: project.into()
+                    },
+                    3
+                )
+                .is_err()
+            );
+        }
+        assert!(
+            serde_json::from_str::<Job>(
+                r#"{"CollectModrinthRaw":{"project":"sodium","url":"https://example.invalid"}}"#
             )
             .is_err()
         );

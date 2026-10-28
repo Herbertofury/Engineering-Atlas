@@ -28,3 +28,9 @@ export function versionCollectionJob(input) {
 }
 
 export function upstreamReviewJob(source){if(!['rustsec','hls','serde-json'].includes(source))throw new Error('Choose one fixed public upstream source.');return {ReviewUpstream:{source}};}
+
+export function projectArchiveJob(input) {
+  const job=collectionJob(input);
+  if(!job.CollectModrinth)throw new Error('Archive one project ID or slug at a time; no batch truncation.');
+  return {CollectModrinthRaw:{project:job.CollectModrinth.project}};
+}

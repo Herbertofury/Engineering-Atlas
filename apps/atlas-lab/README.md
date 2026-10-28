@@ -135,3 +135,7 @@ The reader shares the existing bounded JSON transport with Modrinth without new 
 ## Optional complete project-response archive
 
 `cargo +1.99.1 run --release --locked -- collect-modrinth-raw ID_OR_SLUG OUTPUT.sqlite` uses the existing public client and stores complete received JSON locally, returning only a bounded ID/hash/generation receipt. It makes an official public API request; no credentials are used. Old projection and queued UI modes remain unchanged. This lane is implemented and tested with generated cases and three retained public responses; the new CLI coordinator has not been freshly network-tested in this pass. It is not full project-content or authenticated coverage. [Coverage, persistence tests and measured costs](../../experiments/project-raw-lab/README.md).
+
+### Complete-response collection form
+
+The local Collection panel now offers an explicit full-response archive form using `CollectModrinthRaw`. It reuses the CLI's validated envelope/store and the existing serial worker; Overview receives a compact hash/generation receipt instead of copying full provider JSON. Fixture-supplied public responses passed the actual queue/coordinator path, and 45 loopback HTTP/asset/security checks passed. Fresh successful provider execution through this new worker branch and native-browser interaction are not yet verified. [Measured coverage and limitations](../../experiments/project-archive-queue-lab/README.md).

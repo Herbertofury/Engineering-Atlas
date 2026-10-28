@@ -310,6 +310,10 @@ fn worker(path: PathBuf, stop: Arc<AtomicBool>, status: Arc<AtomicU8>, wake: Rec
             Ok(Some(claim)) => {
                 let result=match &claim.job {
                     Job::CollectModrinth {project}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.project(project)).map(|p|(true,serde_json::json!({"project":p,"scope":"one public metadata projection"}))).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
+                    Job::CollectModrinthRaw {project}=>crate::project_archive::collect(&path,project,|| {
+                        await_provider_slot(client.cooldown_remaining(), &stop)?;
+                        client.project_record(project)
+                    }).map(|receipt|(true,serde_json::json!({"project_archive":receipt}))),
                     Job::CollectModrinthBatch {projects}=>await_provider_slot(client.cooldown_remaining(), &stop).map_err(|e| -> Box<dyn std::error::Error> {e.into()}).and_then(|()| client.projects(projects)).map(batch_output).map_err(|e|crate::collection_failure::safe_message(e.as_ref())),
                     Job::CollectModrinthVersions {versions}=>collect_versions(&path,versions,|| {
                         await_provider_slot(client.cooldown_remaining(), &stop)?;

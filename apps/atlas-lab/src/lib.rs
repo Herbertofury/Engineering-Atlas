@@ -369,3 +369,5 @@ pub mod build_identity;
 
 pub(crate) mod public_http;
 pub mod upstream_reviews;
+
+pub mod project_archive;
