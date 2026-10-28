@@ -13,3 +13,19 @@ class ReceiverAssets(unittest.TestCase):
   verifier=next(k for k in files if k.startswith('verified-receiver.'))
   self.assertIn(verifier.encode(),worker);self.assertIn(verifier.encode(),main)
   self.assertIn(b'no silent fallback',main);self.assertIn(b'w.terminate()',main)
+ def test_stale_bundle_inputs_or_tool_identity_fail_before_asset_output(self):
+  from unittest.mock import patch
+  original=Path.read_text
+  receipt_path=ROOT/'experiments/worker-bundle-lab/build-receipt.json'
+  for change in ('input','version','output'):
+   def read(path,*args,**kwargs):
+    value=original(path,*args,**kwargs)
+    if path==receipt_path:
+     record=json.loads(value)
+     if change=='input':record['inputs'][next(iter(record['inputs']))]='0'*64
+     elif change=='version':record['tools']['esbuild']['version']='unverified'
+     else:record['tools']['esbuild']['sha256']='0'*64
+     return json.dumps(record)
+    return value
+   with patch.object(Path,'read_text',read):
+    with self.assertRaises(ValueError):build.outputs()

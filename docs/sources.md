@@ -3876,3 +3876,9 @@ Affected optional wikilink parsing can grow its event stream exponentially; defa
 [High Resolution Time](https://www.w3.org/TR/2026/WD-hr-time-3-20260901/) · W3C Working Draft dated September 1, 2026; checked October 28.
 
 Communicating contexts can align performance timestamps with timeOrigin, subject to exposed precision. Do not infer pure CPU/network costs or compare origins across browser sessions. This is draft documentation, not benchmark acceptance. Review after 30 days.
+
+## BUNDLE01 / BUNDLE02
+
+[esbuild 0.28.2](https://github.com/evanw/esbuild/releases/tag/v0.28.2), published August 8, and [Rolldown 1.2.15](https://github.com/rolldown/rolldown/releases/tag/v1.2.15), published October 21, 2026. Both reviewed October 28; review after 14 days.
+
+Pinned tool versions support an isolated worker-bundle comparison. Language, recency, bundle size and compiler timing are separate from functional parity and browser/runtime acceptance.

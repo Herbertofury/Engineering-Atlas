@@ -14670,5 +14670,27 @@
     "checked_at": "2026-10-28",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "BUNDLE01",
+    "title": "esbuild 0.28.2 official release",
+    "url": "https://github.com/evanw/esbuild/releases/tag/v0.28.2",
+    "observed_version": "0.28.2 published 2026-08-08; reviewed 2026-10-28",
+    "topic": "worker-build-evaluation",
+    "note": "Pinned recognized build tool in an isolated compiler/runtime experiment. Release currentness and small output size are not universal speed or correctness acceptance.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "BUNDLE02",
+    "title": "Rolldown 1.2.15 official release",
+    "url": "https://github.com/rolldown/rolldown/releases/tag/v1.2.15",
+    "observed_version": "1.2.15 published 2026-10-21; reviewed 2026-10-28",
+    "topic": "worker-build-evaluation",
+    "note": "Pinned recognized Rust-based build tool; stable rolldown/generate API used. Language and recency do not establish superiority; compare complete output and actual browser workload.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
   }
 ]

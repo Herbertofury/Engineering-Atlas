@@ -6,11 +6,26 @@ def outputs():
     names={};files={}
     paths=[ROOT/'docs/card-lab/lab-core.mjs',ROOT/'experiments/card-receiver-lab/baseline.mjs',ROOT/'experiments/card-receiver-lab/bounded-encoding.mjs',ROOT/'experiments/card-receiver-lab/verified-receiver.mjs',ROOT/'experiments/card-receiver-lab/receipt-protocol.mjs',ROOT/'experiments/card-receiver-lab/phase-clock.mjs',OUT/'receiver-worker.mjs',OUT/'receiver.js']
     for path in paths:
+        if path.name == 'receiver.js':
+            bundle_root=ROOT/'experiments/worker-bundle-lab'
+            receipt=json.loads((bundle_root/'build-receipt.json').read_text())
+            packages=json.loads((bundle_root/'tools/package.json').read_text())['devDependencies']
+            for relative,digest in receipt['inputs'].items():
+                source=Path(relative)
+                if source.parent.as_posix()!='docs/card-receiver-lab' or source.name not in files or hashlib.sha256(files[source.name]).hexdigest()!=digest:
+                    raise ValueError('Worker bundle input no longer matches the generated module graph: '+relative)
+            for tool in ('esbuild','rolldown'):
+                info=receipt['tools'][tool]
+                data=(bundle_root/'artifacts'/('worker-'+tool+'.mjs')).read_bytes()
+                if packages[tool]!=info['version'] or hashlib.sha256(data).hexdigest()!=info['sha256']:
+                    raise ValueError('Worker bundle tool/output identity mismatch: '+tool)
+                plain='worker-'+tool+'.mjs';name='worker-'+tool+'.'+hashlib.sha256(data).hexdigest()[:16]+'.mjs'
+                names[plain]=name;files[name]=data
         text=path.read_text().replace('../../docs/card-lab/lab-core.mjs','./lab-core.mjs')
         for old,new in names.items():text=text.replace("'./"+old+"'","'./"+new+"'")
         data=text.encode();name=path.stem+'.'+hashlib.sha256(data).hexdigest()[:16]+path.suffix;names[path.name]=name;files[name]=data
     files['index.html']=(OUT/'index.template.html').read_text().replace('src="receiver.js"','src="'+names['receiver.js']+'"').encode()
-    files['build-manifest.json']=(json.dumps({'harness':'atlas-complete-receiver-v7-phase-timeline','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}},indent=2)+'\n').encode()
+    files['build-manifest.json']=(json.dumps({'harness':'atlas-complete-receiver-v8-build-variants','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}},indent=2)+'\n').encode()
     return files
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()

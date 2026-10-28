@@ -1,5 +1,5 @@
 {
-  "harness": "atlas-complete-receiver-v7-phase-timeline",
+  "harness": "atlas-complete-receiver-v8-build-variants",
   "artifacts": {
     "lab-core.07b69b8b7583dd03.mjs": "07b69b8b7583dd038b1b034afec3b61cf1766a456674d629ded5457ecbee77b8",
     "baseline.293713d95cef8511.mjs": "293713d95cef8511a4130262daa4ccd9e86d080dfd514141fe9b125663573123",
@@ -8,7 +8,9 @@
     "receipt-protocol.b4d10c91dd34ebaa.mjs": "b4d10c91dd34ebaaa741f5b384edc39d4ebbd00d4644faa805be2273b22dc2f2",
     "phase-clock.fc24e52ce5522190.mjs": "fc24e52ce5522190b5cd64660b22447824695c4e661b5445b05dbc78707149e3",
     "receiver-worker.2ddd526f33d730b2.mjs": "2ddd526f33d730b242d18aa29ba2885218029685bda10a5b98820ec88b562757",
-    "receiver.0f51a70e310cff02.js": "0f51a70e310cff020affa78fe404281985cf33be578c6f6781b0bff861bd6693",
-    "index.html": "cbf2098cef9a333513b0a26471bf3cb6c5efc9c2da84974dc1a3a67bbba580a6"
+    "worker-esbuild.b1772614243c7c75.mjs": "b1772614243c7c75f2df147a643b32c094ab27e07ebf20286241c488abe6b328",
+    "worker-rolldown.0e9c42dd5c7472df.mjs": "0e9c42dd5c7472df20d8f61d8adc3b2110c9d587184c9f6ace0f3c337bc1cfe1",
+    "receiver.5dc114522973c617.js": "5dc114522973c617e04784f94991a829856531e60acd67a1f8b4867cf71790fc",
+    "index.html": "168e5c3d06c16413295f91f59b7aa4389150464f0d104799bc4609f9211bd2c9"
   }
 }

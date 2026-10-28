@@ -8,7 +8,7 @@ const source=await readFile(new URL('../docs/card-receiver-lab/receiver.js',impo
 const body=source.slice(source.indexOf('function workerRun('),source.indexOf("$('run').addEventListener"));
 function setup(throws=false){
  const workers=[];
- class Worker {constructor(){this.terminated=0;workers.push(this)}terminate(){this.terminated++}postMessage(value){this.sent=value;if(throws)throw Error('post failure')}}
+ class Worker {constructor(url){this.url=String(url);this.terminated=0;workers.push(this)}terminate(){this.terminated++}postMessage(value){this.sent=value;if(throws)throw Error('post failure')}}
  const context={Worker,URL,Error,ArrayBuffer,TextDecoder,JSON,acceptVerifiedInput,phaseBreakdown,performance,setTimeout,clearTimeout,sequence:0,cancelWorker:null};
  vm.runInNewContext(body.replace('import.meta.url',"'https://example.invalid/receiver.js'"),context);
  const prepared={records:[{all:'retained'}],dataset:{serialized_bytes:512,sha256:'a'.repeat(64)}};
@@ -33,4 +33,12 @@ test('actual client cancellation clears lifecycle and ignores late success',asyn
 });
 test('actual client handles synchronous post failure without leaking worker or timer',async()=>{
  const {context,workers,prepared}=setup(true);await assert.rejects(context.workerRun('receipt',prepared,2,512),/post failure/);assert.equal(workers[0].terminated,1);assert.equal(context.cancelWorker,null);
+});
+test('build comparisons change only worker artifact, retaining full bounded receipt contract',async()=>{
+ for(const lane of ['modules','esbuild','rolldown']){
+  const {context,workers,prepared,receipt}=setup();const pending=context.workerRun(lane,prepared,2,512),w=workers[0];
+  assert.equal(w.sent.lane,'bounded');assert.equal(w.sent.transport,'receipt');assert.equal(w.sent.prepared,prepared);
+  assert.ok(w.url.includes(lane==='modules'?'receiver-worker':'worker-'+lane));
+  w.onmessage({data:{id:w.sent.id,ok:true,format:'verified-input',receipt}});assert.equal((await pending).result,prepared);assert.equal(w.terminated,1);
+ }
 });
