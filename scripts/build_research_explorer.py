@@ -13,6 +13,12 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+import importlib.util
+_registry_spec = importlib.util.spec_from_file_location('atlas_source_registry', Path(__file__).with_name('source_registry.py'))
+_registry_module = importlib.util.module_from_spec(_registry_spec)
+_registry_spec.loader.exec_module(_registry_module)
+load_sources = _registry_module.load_sources
+
 KINDS = {'repository', 'paper', 'method', 'benchmark', 'platform', 'language', 'framework', 'tool'}
 ID = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*\Z')
 REPO = re.compile(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z')
@@ -242,7 +248,7 @@ def import_retained_json_lab(root, ids):
 def load_bundle(root=ROOT):
     read = lambda name: json.loads((root / name).read_text())
     catalog = read('data/research-catalog.json')
-    registry = read('data/sources.json')
+    registry = load_sources(root)
     ids = validate_catalog(catalog, registry)
     results = read('data/research-results.json')
     # Imported evidence is generated from its original source file at build time.

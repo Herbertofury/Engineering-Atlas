@@ -33,3 +33,7 @@ Keep summaries original and concise. Link sources beside the claim. Publish sani
 ## Cross-project adoption gate
 
 Keep unproven methods in the general Atlas. A result is eligible for a target project's recommendation or TODO only after a comparison against **that project's current implementation** demonstrates a meaningful benefit with its correctness, feature, security, durability and UX requirements preserved. A generated microbenchmark, vendor chart or different project's result is a research lead, not sufficient evidence for this gate. Record the actual target baseline revision, workload, environment and complete outputs before making the transfer. This rule is project-independent.
+
+## Additive source registration
+
+Use the [complete source-register layout](source-register-layout.md) for small additions without rewriting historical entries. Both repository validators load the baseline and indexed fragments; external readers must follow the index to obtain the complete register.

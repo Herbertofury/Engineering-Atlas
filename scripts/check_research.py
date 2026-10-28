@@ -4,6 +4,12 @@ from pathlib import Path
 from urllib.parse import urlsplit,unquote
 import datetime as dt,json,re,sys
 ROOT=Path(__file__).resolve().parents[1]
+import importlib.util
+_registry_spec = importlib.util.spec_from_file_location('atlas_source_registry', Path(__file__).with_name('source_registry.py'))
+_registry_module = importlib.util.module_from_spec(_registry_spec)
+_registry_spec.loader.exec_module(_registry_module)
+load_sources = _registry_module.load_sources
+
 
 def validate_sources(rows,today):
     if not isinstance(rows,list) or not rows:raise ValueError('source register must be a nonempty list')
@@ -30,7 +36,7 @@ def utc_today():
     return dt.datetime.now(dt.timezone.utc).date()
 
 def check(root=ROOT,today=None):
-    ids,stale=validate_sources(json.loads((root/'data/sources.json').read_text()),today or utc_today())
+    ids,stale=validate_sources(load_sources(root),today or utc_today())
     failures=[];files=list(root.rglob('*.md'))
     for path in files:
         text=path.read_text()
