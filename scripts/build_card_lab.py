@@ -7,14 +7,19 @@ def outputs():
     core=(ROOT/'lab-core.mjs').read_bytes();core_name=f'lab-core.{hashlib.sha256(core).hexdigest()[:16]}.mjs'
     preparation=(ROOT/'preparation-core.mjs').read_text().replace("'./lab-core.mjs'",repr('./'+core_name)).encode()
     preparation_name=f'preparation-core.{hashlib.sha256(preparation).hexdigest()[:16]}.mjs'
+    extras={};extra_names={}
+    for module in ['baseline.mjs','bounded-encoding.mjs','verified-receiver.mjs']:
+        text=(ROOT.parents[1]/'experiments/card-receiver-lab'/module).read_text().replace('../../docs/card-lab/lab-core.mjs','./'+core_name)
+        for old,new in extra_names.items():text=text.replace("'./"+old+"'",repr('./'+new))
+        data=text.encode();name=Path(module).stem+'.'+hashlib.sha256(data).hexdigest()[:16]+'.mjs';extra_names[module]=name;extras[name]=data
     worker=(ROOT/'lab-worker.mjs').read_text().replace("'./preparation-core.mjs'",repr('./'+preparation_name)).encode()
     worker_name=f'lab-worker.{hashlib.sha256(worker).hexdigest()[:16]}.mjs'
-    script=(ROOT/'lab.js').read_text().replace("'./lab-core.mjs'",repr('./'+core_name)).replace("'./preparation-core.mjs'",repr('./'+preparation_name)).replace("'./lab-worker.mjs'",repr('./'+worker_name)).encode()
+    script=(ROOT/'lab.js').read_text().replace("'../../experiments/card-receiver-lab/verified-receiver.mjs'",repr('./'+extra_names['verified-receiver.mjs'])).replace("'./lab-core.mjs'",repr('./'+core_name)).replace("'./preparation-core.mjs'",repr('./'+preparation_name)).replace("'./lab-worker.mjs'",repr('./'+worker_name)).encode()
     script_name=f'lab.{hashlib.sha256(script).hexdigest()[:16]}.js'
     css=(ROOT/'lab.css').read_bytes();css_name=f'lab.{hashlib.sha256(css).hexdigest()[:16]}.css'
     html=(ROOT/'index.template.html').read_text().replace('href="lab.css"',f'href="{css_name}"').replace('src="lab.js"',f'src="{script_name}"').encode()
-    files={core_name:core,preparation_name:preparation,worker_name:worker,script_name:script,css_name:css,'index.html':html}
-    manifest={'harness':'atlas-card-density-v11-cadence-guard','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}}
+    files={**extras,core_name:core,preparation_name:preparation,worker_name:worker,script_name:script,css_name:css,'index.html':html}
+    manifest={'harness':'atlas-card-density-v12-complete-preparation','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}}
     files['build-manifest.json']=(json.dumps(manifest,indent=2)+'\n').encode()
     return files
 if __name__=='__main__':
