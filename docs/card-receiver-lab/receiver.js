@@ -2,7 +2,7 @@ import {prepareDataset} from './baseline.mjs';
 import {verifyPrepared,verifyPreparedBounded} from './verified-receiver.mjs';
 import {createFocusGuard,calibrateFrameCadence} from './lab-core.mjs';
 const $=id=>document.getElementById(id),guard=createFocusGuard(document,window);
-const identity='atlas-complete-receiver-v3-transfer';$('build').textContent='Loaded harness: '+identity;
+const identity='atlas-complete-receiver-v4-reuse-encoding';$('build').textContent='Loaded harness: '+identity;
 let busy=false,stopped=false,hidden=false,sequence=0,cancelWorker=null,current=null,lastGood=null;
 document.addEventListener('visibilitychange',()=>{if(busy&&document.hidden)hidden=true;});
 const check=()=>{guard.check();if(stopped)throw Error('Cancelled; partial evidence retained');if(hidden||document.hidden)throw Error('Visibility lost; partial evidence retained');};
@@ -46,7 +46,7 @@ $('run').addEventListener('click',async()=>{
     await new Promise(resolve=>requestAnimationFrame(resolve));
     check();
     if(JSON.stringify(response.result.records)!==canonical||response.result.dataset.sha256!==prepared.dataset.sha256)throw Error('Full returned-record parity mismatch');
-    current.samples.push({round,lane,request_ms,validation_ms:response.validation_ms,transport_encoding_ms:response.transport_encoding_ms??null,frame_waits_ms:waits.slice(),complete_parity:true});publish();
+    current.samples.push({round,lane,request_ms,validation_ms:response.validation_ms,transport_encoding_ms:response.transport_encoding_ms??null,reused_verified_encoding:response.reused_verified_encoding===true,frame_waits_ms:waits.slice(),complete_parity:true});publish();
    }finally{active=false;cancelAnimationFrame(frameId);}
    const calibration=await calibrate();current.samples.at(-1).post_sample_calibration=calibration;if(!calibration.reliable)throw Error(calibration.reason);
   }

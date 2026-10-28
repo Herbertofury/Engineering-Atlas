@@ -7,7 +7,10 @@ export async function verifyPrepared(result,count,bytes) {
 export async function verifyPreparedBounded(result,count,bytes) {
   return verify(result,count,bytes,true);
 }
-async function verify(result,count,bytes,bounded) {
+export async function verifyPreparedForTransfer(result,count,bytes) {
+  return verify(result,count,bytes,true,true);
+}
+async function verify(result,count,bytes,bounded,retainEncoded=false) {
   validatePrepared(result,count,bytes);
   if(!globalThis.crypto?.subtle)throw new Error('Secure digest API unavailable');
   const suffix='abcdefgh01234567'.repeat(Math.ceil((bytes-12)/16)).slice(0,bytes-12);
@@ -22,5 +25,5 @@ async function verify(result,count,bytes,bounded) {
   const digest=await crypto.subtle.digest('SHA-256',encoded);
   const actual=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
   if(actual!==result.dataset.sha256)throw new Error('Complete dataset digest mismatch');
-  return result;
+  return retainEncoded?{result,encoded}:result;
 }

@@ -21,7 +21,7 @@ test('actual transfer handler preserves JSON bytes and transfers buffer ownershi
  const records=[{id:'fixture',metadata:'Unicode 💜 and all fields',extra:{keep:true}}];
  const expected=JSON.stringify(records),payload={records,dataset:{serialized_bytes:new TextEncoder().encode(expected).length},preparation_ms:1};
  let delivered,sourceBuffer;
- const context={self:{postMessage:(message,transfer)=>{sourceBuffer=message.buffer;delivered=structuredClone(message,{transfer});}},performance:{now:()=>1},verifyPrepared:async x=>x,verifyPreparedBounded:async x=>x,encodeRecordArray,Number,Error};
+ const context={self:{postMessage:(message,transfer)=>{sourceBuffer=message.buffer;delivered=structuredClone(message,{transfer});}},performance:{now:()=>1},verifyPrepared:async x=>x,verifyPreparedBounded:async x=>x,verifyPreparedForTransfer:async x=>({result:x,encoded:encodeRecordArray(x.records,x.dataset.serialized_bytes)}),Number,Error};
  vm.runInNewContext(source.replace(/^import .*;\n/gm,''),context);
  await context.self.onmessage({data:{id:7,lane:'bounded',transport:'transfer',prepared:payload,count:1,bytes:64}});
  assert.equal(delivered.ok,true);assert.equal(delivered.id,7);assert.equal(sourceBuffer.byteLength,0);assert.equal(new TextDecoder().decode(delivered.buffer),expected);assert.deepEqual(JSON.parse(new TextDecoder().decode(delivered.buffer)),records);

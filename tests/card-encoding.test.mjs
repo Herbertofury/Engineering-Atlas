@@ -19,3 +19,13 @@ test('bounded receiver preserves full data and rejects all retained corruption c
   const damaged=structuredClone(original);mutate(damaged);await assert.rejects(verifyPreparedBounded(damaged,200,65536));
  }
 });
+test('transfer envelope reuses complete verified bytes without mutating input',async()=>{
+ const {verifyPreparedForTransfer}=await import('../experiments/card-receiver-lab/verified-receiver.mjs');
+ const original=await prepareDataset(17,8192),before=JSON.stringify(original);
+ const verified=await verifyPreparedForTransfer(original,17,8192);
+ assert.equal(verified.result,original);
+ assert.deepEqual(verified.encoded,new TextEncoder().encode(JSON.stringify(original.records)));
+ assert.equal(JSON.stringify(original),before);
+ const damaged=structuredClone(original);damaged.dataset.sha256='0'.repeat(64);
+ await assert.rejects(verifyPreparedForTransfer(damaged,17,8192));
+});
