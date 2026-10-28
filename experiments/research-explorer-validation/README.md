@@ -27,3 +27,14 @@ See the [ranking and data contract](../../docs/research-explorer.md), [research 
 [Wiki verification](wiki-publication-2026-10-28.json) confirms all four research pages are published and byte-identical to their repository copies. Original Home and Sidebar content remains intact, and all 15 Site Adapters and adapter pages are unchanged. A concurrent `Experiment-Evidence.md` contribution was preserved. [Live wiki screenshot](live-wiki-2026-10-28.jpg) shows the published guide and research navigation.
 
 The live contribution link was checked without submitting an issue. After GitHub completed rendering, it prefilled `orjson` and `json-serialization` and left the rating at `None`. An early accessibility snapshot had appeared incomplete; the settled form corrected that observation, so no implementation change was needed. The two report labels are configured, and the reviewed snapshot still contains zero approved community reports.
+
+## Consolidated stack-layer extension
+
+The October 28 continuation adds **61 candidates**, updates **22 existing records**, and maintains the existing research guides and wiki pages. The Explorer now has **215 candidates across 20 stack layers**, **355 distinct primary URLs** represented by **364 catalog source records**, **173 dated public repository observations**, and **20 planned comparisons**. The original checks and publication receipts above remain historical evidence; this section records the later extension.
+
+- [Stack validation record](stack-checks-2026-10-28.json): exact counts, generated hashes, preserved source/signal history, role-map review repairs and browser outcomes.
+- [Python output](stack-python-tests-2026-10-28.log): **176 tests passed**.
+- [JavaScript case output](stack-javascript-cases-2026-10-28.log): **151 tests passed** with test isolation disabled; [standard command output](stack-javascript-tests-2026-10-28.log) confirms **19 test files passed**.
+- [Narrow layout screenshot](stack-mobile-2026-10-28.jpg): the selected layer guide uses one column inside the inspected 375-pixel content viewport without horizontal document overflow.
+
+Layer filtering, search/link intersection, observed-star ordering, reset behavior and mod ecosystem scoping were inspected in the browser. The HTTP preview correctly falls back to an address-bar instruction when clipboard access is unavailable. Saved-download verification remains limited as described above. No new candidate benchmark, community vote or target acceptance is claimed.

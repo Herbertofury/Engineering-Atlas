@@ -2,7 +2,43 @@
 
 **Snapshot date:** October 27, America/Denver. **Primary-source checks:** October 28 UTC. **Status:** research candidates and proposed tests; external observations and retained local measurements remain separate.
 
-## Outcome
+## Consolidated stack-layer extension — October 28, 2026 UTC
+
+The current catalog has **215 candidates, 22 papers, 18 research fields, 20 stack layers and 125 evaluation tracks**. This pass adds **61 records**, updates **22 existing records**, and registers **201 further primary-source observations** while preserving the first sweep and earlier measurements. The catalog now references **364 source records**; the shared Atlas register contains **726 records**. These are observation counts, not claims that every URL is unique or every technical domain is covered.
+
+The Explorer adds one stack-layer filter and a per-layer guide with reference choices, alternatives to compare, a watchlist and an adoption gate. The existing stack-selection page is generated from the same map. **No new topical wiki or guide page is created by this extension.** A tool that participates in several layers keeps one stable candidate ID. The test queue grows from 16 to **20 planned comparisons**, with full-output, compatibility, security, durability and UX gates. There are still **zero new candidate benchmarks or accepted cross-project migrations** in this pass.
+
+The added practical coverage includes MV3/native messaging, portable contracts, collection virtualization, native UI, browser graphics/physics, game asset processing, version-specific mod loaders, dependency solvers, traversal/watchers, hashing/chunking, archives, verified transfer, atomicity/recovery proposals, signed updates, reproducible environments, record/replay and concurrency checking. Fifty newly checked public GitHub repositories bring the snapshot to **173 repository observations**; all 123 previous observations retain their timestamps and earlier errors remain visible.
+
+### Findings that change the next comparison
+
+| Area | Source observation and consequence | Primary sources |
+|---|---|---|
+| Native Windows UI | Stable Windows App SDK notes list 2.6.4 on October 27. Include shutdown, lifecycle, virtualized control and native-feature behavior in the complete desktop slice. | [ST027](../docs/sources.md#st027), [ST028](../docs/sources.md#st028) |
+| Cross-host plugins | WASI 0.3 is current, but the Node jco shim is experimental and many language toolchains still target 0.2. Pin host, toolchain, interface and release together. | [ST077](../docs/sources.md#st077), [ST078](../docs/sources.md#st078) |
+| Game export and managed plugins | Godot 4 C# web export remains unsupported in reviewed stable docs. Native AOT has dynamic-loading/code-generation limits. Reject those configurations when the required contract depends on those features. | [ST070](../docs/sources.md#st070), [ST073](../docs/sources.md#st073) |
+| Browser graphics | Three.js still labels WebGPURenderer experimental and requires migration of custom shader and post-processing paths. Fallback availability alone is not feature parity. | [ST011](../docs/sources.md#st011), [ST012](../docs/sources.md#st012) |
+| Validation throughput | Zod 4.6 distinguishes boolean validation from complete parse diagnostics; JSON Schema conversion has experimental/unsupported cases. Compare only matched output and error contracts. | [ST019](../docs/sources.md#st019), [ST020](../docs/sources.md#st020) |
+| Inventory completeness | `ignore` defaults are not automatically a complete inventory contract. Disable unwanted hidden/ignore filtering; release metadata also disagreed with the API/manifest version. | [ST082](../docs/sources.md#st082), [ST083](../docs/sources.md#st083), [ST084](../docs/sources.md#st084) |
+| Peer blob transfer | iroh-blobs' current README explicitly withholds production-quality status. Keep the new line on the watchlist and test verified HTTP/range behavior first. | [ST113](../docs/sources.md#st113), [ST114](../docs/sources.md#st114) |
+| Update trust | tough's current API overview and delegation-related security advisories do not align cleanly. Conformance tests for delegation, thresholds and trusted metadata are required before acceptance. | [ST141](../docs/sources.md#st141), [ST142](../docs/sources.md#st142), [ST143](../docs/sources.md#st143) |
+| Updater channels | Velopack stable 1.2.161 and 1.3 prerelease documentation must stay separate. Do not attribute preview signing/recovery capabilities to a stable binary. | [ST145](../docs/sources.md#st145), [ST147](../docs/sources.md#st147) |
+| Native fuzzing | Current AFL++ stable licensing is AGPL-3.0-or-later with individual Apache-2.0 files, and release/dev versions differ. Inspect the actual intended tag and integration. | [ST199](../docs/sources.md#st199), [ST200](../docs/sources.md#st200) |
+
+### Deferred leads and evidence limits
+
+- jwalk's opened README marks it unmaintained. It was excluded from the active comparison list; the suggested replacement was not silently promoted without review.
+- The author-listed 2026 content-defined-chunking paper has verified metadata, but its body could not be retrieved and the linked code README still names the 2024 predecessor. It remains a deferred lead, with no imported numbers or version-matched-artifact claim.
+- Zstandard's retrieved release index and development changelog disagreed. The catalog gives no inferred latest stable release. notify's stable and release-candidate channels and date precision remain separate.
+- Blender's official source/exporter repositories opened, but release pages did not; no exact latest Blender version is asserted. The multilayer ReSTIR abstract and venue metadata opened, but the full PDF exceeded retrieval limits and no code link was established. Neural texture ES is an author testbed/method, not relabeled as a peer-reviewed paper.
+- A library API version, release publication time, paper revision, venue year and date of checking remain different fields. Missing dates and unavailable artifacts are not fabricated.
+- Conditional layer roles are editorial synthesis. Complementary tools such as a solver, a renderer and an update verifier never share a measured ranking merely because they appear in one application stack.
+
+Deferred/source-conflict evidence: [ST129](../docs/sources.md#st129) · [ST113](../docs/sources.md#st113) · [ST114](../docs/sources.md#st114) · [ST130](../docs/sources.md#st130) · [ST131](../docs/sources.md#st131) · [ST084](../docs/sources.md#st084) · [ST101](../docs/sources.md#st101) · [ST102](../docs/sources.md#st102) · [ST121](../docs/sources.md#st121) · [ST120](../docs/sources.md#st120).
+
+[Open the stack-layer map](../docs/stack-selection.md#stack-layer-comparison-map) · [Search the Explorer](https://herbertofury.github.io/Engineering-Atlas/explorer/) · [Review all 20 plans](../docs/research-test-queue.md)
+
+## Initial sweep outcome
 
 The first Explorer expansion contains **154 catalog entries across 18 fields**, including **19 papers**. It combines a broad review of languages, runtimes, build systems, application frameworks, data and storage, inference, agents, evaluation, testing, graphics and supply-chain tools. It includes **16 planned comparison cohorts**, not 16 completed benchmarks.
 
@@ -58,7 +94,7 @@ These are dated primary-source observations, not comparative wins. An announceme
 
 ## Review and conflict boundary
 
-The user reserved Site Adapters for another agent. This contribution adds an isolated Explorer and research pages. It does not modify adapter pages, adapter fixtures, collection code, media behavior or existing experiment implementations. Shared README/source-register changes are merged with the latest upstream records, preserving the other contributor’s additions.
+The user reserved Site Adapters for another agent. The initial contribution added an isolated Explorer and four research pages; the stack-layer extension maintains those existing pages in place. It does not modify adapter pages, adapter fixtures, collection code, media behavior or existing experiment implementations. Shared README/source-register changes are merged with the latest upstream records, preserving the other contributor’s additions.
 
 Validation covers source/structure checks, catalog and score integrity, deterministic builds, refresh failure behavior, ranking/export logic, and browser interaction. These checks validate the contribution, not the performance of catalog candidates. See the retained validation record for the exact executed checks and remaining limits.
 
@@ -141,3 +177,38 @@ Each link below points to the dated primary-source register. Full per-entry sour
 ### Catalog and community governance
 
 [GHS01](../docs/sources.md#ghs01) · [GHS02](../docs/sources.md#ghs02) · [GHS03](../docs/sources.md#ghs03) · [GHS04](../docs/sources.md#ghs04) · [GHS05](../docs/sources.md#ghs05) · [GHS06](../docs/sources.md#ghs06) · [GHS07](../docs/sources.md#ghs07) · [GHS08](../docs/sources.md#ghs08)
+
+## Source IDs added by the stack-layer extension
+
+All observations below were checked against public primary material. Existing source IDs and historical observations remain intact.
+
+### Browser, portable UI and validation
+
+[ST001](../docs/sources.md#st001) · [ST002](../docs/sources.md#st002) · [ST003](../docs/sources.md#st003) · [ST004](../docs/sources.md#st004) · [ST005](../docs/sources.md#st005) · [ST006](../docs/sources.md#st006) · [ST007](../docs/sources.md#st007) · [ST008](../docs/sources.md#st008) · [ST009](../docs/sources.md#st009) · [ST010](../docs/sources.md#st010) · [ST011](../docs/sources.md#st011) · [ST012](../docs/sources.md#st012) · [ST013](../docs/sources.md#st013) · [ST014](../docs/sources.md#st014) · [ST015](../docs/sources.md#st015) · [ST016](../docs/sources.md#st016) · [ST017](../docs/sources.md#st017) · [ST018](../docs/sources.md#st018) · [ST019](../docs/sources.md#st019) · [ST020](../docs/sources.md#st020) · [ST021](../docs/sources.md#st021) · [ST022](../docs/sources.md#st022) · [ST023](../docs/sources.md#st023) · [ST024](../docs/sources.md#st024) · [ST025](../docs/sources.md#st025)
+
+
+### Native UI, engines, mod compatibility and assets
+
+[ST026](../docs/sources.md#st026) · [ST027](../docs/sources.md#st027) · [ST028](../docs/sources.md#st028) · [ST029](../docs/sources.md#st029) · [ST030](../docs/sources.md#st030) · [ST031](../docs/sources.md#st031) · [ST032](../docs/sources.md#st032) · [ST033](../docs/sources.md#st033) · [ST034](../docs/sources.md#st034) · [ST035](../docs/sources.md#st035) · [ST036](../docs/sources.md#st036) · [ST037](../docs/sources.md#st037) · [ST038](../docs/sources.md#st038) · [ST039](../docs/sources.md#st039) · [ST040](../docs/sources.md#st040) · [ST041](../docs/sources.md#st041) · [ST042](../docs/sources.md#st042) · [ST043](../docs/sources.md#st043) · [ST044](../docs/sources.md#st044) · [ST045](../docs/sources.md#st045) · [ST046](../docs/sources.md#st046) · [ST047](../docs/sources.md#st047) · [ST048](../docs/sources.md#st048) · [ST049](../docs/sources.md#st049) · [ST050](../docs/sources.md#st050)
+
+[ST051](../docs/sources.md#st051) · [ST052](../docs/sources.md#st052) · [ST053](../docs/sources.md#st053) · [ST054](../docs/sources.md#st054) · [ST055](../docs/sources.md#st055) · [ST056](../docs/sources.md#st056) · [ST057](../docs/sources.md#st057) · [ST058](../docs/sources.md#st058) · [ST059](../docs/sources.md#st059) · [ST060](../docs/sources.md#st060) · [ST061](../docs/sources.md#st061) · [ST062](../docs/sources.md#st062) · [ST063](../docs/sources.md#st063) · [ST064](../docs/sources.md#st064) · [ST065](../docs/sources.md#st065) · [ST066](../docs/sources.md#st066) · [ST067](../docs/sources.md#st067) · [ST068](../docs/sources.md#st068) · [ST069](../docs/sources.md#st069) · [ST070](../docs/sources.md#st070) · [ST071](../docs/sources.md#st071) · [ST072](../docs/sources.md#st072) · [ST073](../docs/sources.md#st073) · [ST074](../docs/sources.md#st074) · [ST075](../docs/sources.md#st075)
+
+[ST076](../docs/sources.md#st076) · [ST077](../docs/sources.md#st077) · [ST078](../docs/sources.md#st078)
+
+
+### Files, storage, transfer and recovery
+
+[ST079](../docs/sources.md#st079) · [ST080](../docs/sources.md#st080) · [ST081](../docs/sources.md#st081) · [ST082](../docs/sources.md#st082) · [ST083](../docs/sources.md#st083) · [ST084](../docs/sources.md#st084) · [ST085](../docs/sources.md#st085) · [ST086](../docs/sources.md#st086) · [ST087](../docs/sources.md#st087) · [ST088](../docs/sources.md#st088) · [ST089](../docs/sources.md#st089) · [ST090](../docs/sources.md#st090) · [ST091](../docs/sources.md#st091) · [ST092](../docs/sources.md#st092) · [ST093](../docs/sources.md#st093) · [ST094](../docs/sources.md#st094) · [ST095](../docs/sources.md#st095) · [ST096](../docs/sources.md#st096) · [ST097](../docs/sources.md#st097) · [ST098](../docs/sources.md#st098) · [ST099](../docs/sources.md#st099) · [ST100](../docs/sources.md#st100) · [ST101](../docs/sources.md#st101) · [ST102](../docs/sources.md#st102) · [ST103](../docs/sources.md#st103)
+
+[ST104](../docs/sources.md#st104) · [ST105](../docs/sources.md#st105) · [ST106](../docs/sources.md#st106) · [ST107](../docs/sources.md#st107) · [ST108](../docs/sources.md#st108) · [ST109](../docs/sources.md#st109) · [ST110](../docs/sources.md#st110) · [ST111](../docs/sources.md#st111) · [ST112](../docs/sources.md#st112) · [ST113](../docs/sources.md#st113) · [ST114](../docs/sources.md#st114) · [ST115](../docs/sources.md#st115) · [ST116](../docs/sources.md#st116) · [ST117](../docs/sources.md#st117) · [ST118](../docs/sources.md#st118) · [ST119](../docs/sources.md#st119) · [ST120](../docs/sources.md#st120) · [ST121](../docs/sources.md#st121) · [ST122](../docs/sources.md#st122) · [ST123](../docs/sources.md#st123) · [ST124](../docs/sources.md#st124) · [ST125](../docs/sources.md#st125) · [ST126](../docs/sources.md#st126) · [ST127](../docs/sources.md#st127) · [ST128](../docs/sources.md#st128)
+
+[ST129](../docs/sources.md#st129) · [ST130](../docs/sources.md#st130) · [ST131](../docs/sources.md#st131)
+
+
+### Solving, distribution, reproducibility and diagnostics
+
+[ST132](../docs/sources.md#st132) · [ST133](../docs/sources.md#st133) · [ST134](../docs/sources.md#st134) · [ST135](../docs/sources.md#st135) · [ST136](../docs/sources.md#st136) · [ST137](../docs/sources.md#st137) · [ST138](../docs/sources.md#st138) · [ST139](../docs/sources.md#st139) · [ST140](../docs/sources.md#st140) · [ST141](../docs/sources.md#st141) · [ST142](../docs/sources.md#st142) · [ST143](../docs/sources.md#st143) · [ST144](../docs/sources.md#st144) · [ST145](../docs/sources.md#st145) · [ST146](../docs/sources.md#st146) · [ST147](../docs/sources.md#st147) · [ST148](../docs/sources.md#st148) · [ST149](../docs/sources.md#st149) · [ST150](../docs/sources.md#st150) · [ST151](../docs/sources.md#st151) · [ST152](../docs/sources.md#st152) · [ST153](../docs/sources.md#st153) · [ST154](../docs/sources.md#st154) · [ST155](../docs/sources.md#st155) · [ST156](../docs/sources.md#st156)
+
+[ST157](../docs/sources.md#st157) · [ST158](../docs/sources.md#st158) · [ST159](../docs/sources.md#st159) · [ST160](../docs/sources.md#st160) · [ST161](../docs/sources.md#st161) · [ST162](../docs/sources.md#st162) · [ST163](../docs/sources.md#st163) · [ST164](../docs/sources.md#st164) · [ST165](../docs/sources.md#st165) · [ST166](../docs/sources.md#st166) · [ST167](../docs/sources.md#st167) · [ST168](../docs/sources.md#st168) · [ST169](../docs/sources.md#st169) · [ST170](../docs/sources.md#st170) · [ST171](../docs/sources.md#st171) · [ST172](../docs/sources.md#st172) · [ST173](../docs/sources.md#st173) · [ST174](../docs/sources.md#st174) · [ST175](../docs/sources.md#st175) · [ST176](../docs/sources.md#st176) · [ST177](../docs/sources.md#st177) · [ST178](../docs/sources.md#st178) · [ST179](../docs/sources.md#st179) · [ST180](../docs/sources.md#st180) · [ST181](../docs/sources.md#st181)
+
+[ST182](../docs/sources.md#st182) · [ST183](../docs/sources.md#st183) · [ST184](../docs/sources.md#st184) · [ST185](../docs/sources.md#st185) · [ST186](../docs/sources.md#st186) · [ST187](../docs/sources.md#st187) · [ST188](../docs/sources.md#st188) · [ST189](../docs/sources.md#st189) · [ST190](../docs/sources.md#st190) · [ST191](../docs/sources.md#st191) · [ST192](../docs/sources.md#st192) · [ST193](../docs/sources.md#st193) · [ST194](../docs/sources.md#st194) · [ST195](../docs/sources.md#st195) · [ST196](../docs/sources.md#st196) · [ST197](../docs/sources.md#st197) · [ST198](../docs/sources.md#st198) · [ST199](../docs/sources.md#st199) · [ST200](../docs/sources.md#st200) · [ST201](../docs/sources.md#st201)

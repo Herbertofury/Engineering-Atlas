@@ -1,8 +1,8 @@
 # Research test queue
 
-**Planning snapshot: October 27, 2026. Every comparison below is planned and has not been run as part of this catalog contribution.** Priority describes the order in which a useful decision could be resolved; it is not a quality ranking or a promise to run cloud jobs.
+**Planning snapshot: October 27, 2026; stack-layer extension reviewed October 28 UTC. Every comparison below is planned and has not been run as part of this catalog contribution.** Priority describes the order in which a useful decision could be resolved; it is not a quality ranking or a promise to run cloud jobs.
 
-The [research catalog](research-catalog.md) supplies candidate descriptions and dated primary sources. The [ranking methodology](research-explorer.md), [research method](research-method.md), and [benchmark format](benchmark-format.md) define the evidence boundary. Existing measurements remain in their original cohorts. In particular, the [retained Python JSON lab](../experiments/json-lab/README.md) is an earlier run, not evidence that the expanded JSON study below has happened.
+The queue now contains **20 planned comparisons**. The [stack-layer comparison map](stack-selection.md#stack-layer-comparison-map) groups candidate roles without creating duplicate plans. The [research catalog](research-catalog.md) supplies candidate descriptions and dated primary sources. The [ranking methodology](research-explorer.md), [research method](research-method.md), and [benchmark format](benchmark-format.md) define the evidence boundary. Existing measurements remain in their original cohorts. In particular, the [retained Python JSON lab](../experiments/json-lab/README.md) is an earlier run, not evidence that the expanded JSON study below has happened.
 
 ## Admission and ranking rules
 
@@ -54,7 +54,9 @@ Compare the pinned current implementation with bounded Rust, Zig, or Go prototyp
 
 **Gates:** complete output hashes, preserved unreadable-file and malformed-input diagnostics, bounded resource use, cancellation/restart correctness, and target-platform packaging. **Measure:** cold full completion, steady-state completion, p95 UI impact, CPU, I/O, RSS, and build/deployment effort. Microkernel speed alone cannot decide the migration.
 
-Candidate sources: [RX044], [RX045], [RX046].
+Split the workload into controlled variables: WalkDir versus `ignore` traversal with all required hidden/ignore filtering explicitly disabled; fresh scan versus watcher/USN reconciliation; hash choice; chunking/delta; compression; and archive implementation. Keep the complete end-to-end run as the deciding outcome. Include symlinks/reparse points, hard links, case/Unicode collisions, unreadable entries, concurrent mutation, archive bombs and traversal attempts. Never infer multi-file durability from a single replacement primitive.
+
+Candidate sources: [RX044], [RX045], [RX046]. Extension sources: [ST079](../docs/sources.md#st079) · [ST082](../docs/sources.md#st082) · [ST085](../docs/sources.md#st085) · [ST088](../docs/sources.md#st088) · [ST090](../docs/sources.md#st090) · [ST093](../docs/sources.md#st093) · [ST099](../docs/sources.md#st099) · [ST103](../docs/sources.md#st103) · [ST105](../docs/sources.md#st105).
 
 ### 5. Portable sandboxed plugin boundary — `planned-plugin-boundary-v1`
 
@@ -64,17 +66,21 @@ Run the same parser/transform plugin natively and in Wasmtime using a fixed WASI
 
 **Gates:** output parity, declared host capabilities, bounded memory, correct cancellation and traps, and required OS/toolchain support. **Measure:** compilation cost separately from startup, boundary-copy cost, throughput, RSS, and portability failures. Host APIs are part of the security boundary and must remain fixed.
 
-Candidate sources: [RX086], [RX087], [RX088], [RX089], [RX114].
+Add Luau only as a separate embedded-language configuration with a fixed host API. Compare AppContainer/LPAC on eligible Windows systems and bubblewrap on eligible Linux systems for owned native-helper workloads. Do not treat an in-process VM, a native plugin ABI, an OS sandbox and an updater as equivalent security boundaries. Pin supported WASI/runtime/toolchain combinations; current 0.3 availability does not imply every browser or language path supports it.
+
+Candidate sources: [RX086], [RX087], [RX088], [RX089], [RX114]. Extension sources: [ST054](../docs/sources.md#st054) · [ST055](../docs/sources.md#st055) · [ST154](../docs/sources.md#st154) · [ST155](../docs/sources.md#st155) · [ST151](../docs/sources.md#st151) · [ST152](../docs/sources.md#st152) · [ST077](../docs/sources.md#st077) · [ST078](../docs/sources.md#st078).
 
 ### 6. Desktop vertical slice — `planned-desktop-slice-v1`
 
-**Decision:** does Electron or Tauri better meet this application's actual desktop requirements?
+**Decision:** which complete desktop configuration meets the application's actual platform and interaction requirements?
 
 Use the same UI and native-service contract for import, full-record search, large-card filtering, keyboard navigation, details, cancellation, durable save/reopen, update, and uninstall. Test supported Windows/macOS/Linux targets separately; include the current application's deployment and accessibility behavior.
 
 **Gates:** feature parity, safe privileged IPC, complete records, accessibility, required webview behavior, and deployment correctness. **Measure:** installed cold startup, input-to-usable and fully verified results, p95 input delay, peak process-tree memory, package size, and maintenance effort. A smaller shell is insufficient if a required workflow fails.
 
-Candidate sources: [RX081], [RX082].
+For a Windows-native cohort, add WinUI/Windows App SDK; compare Avalonia, Slint or egui only when the same required feature set can be implemented. Keep renderer, shell and language changes as separate declared variables. Virtualize presentation while retaining the complete collection and stable item identities. Include variable-height rows, media load/error, rapid filter/sort, keyboard focus, selection, screen readers, IME, high DPI and insert/delete while scrolling. TanStack Virtual and native collection virtualization are role-specific tools, not whole-app substitutes.
+
+Candidate sources: [RX081], [RX082]. Extension sources: [ST026](../docs/sources.md#st026) · [ST027](../docs/sources.md#st027) · [ST030](../docs/sources.md#st030) · [ST031](../docs/sources.md#st031) · [ST034](../docs/sources.md#st034) · [ST035](../docs/sources.md#st035) · [ST037](../docs/sources.md#st037) · [ST038](../docs/sources.md#st038) · [ST065](../docs/sources.md#st065) · [ST066](../docs/sources.md#st066) · [ST007](../docs/sources.md#st007) · [ST008](../docs/sources.md#st008).
 
 ## Priority 2: toolchain, rendering, and retrieval comparisons
 
@@ -106,7 +112,9 @@ Implement the same small interactive scene and asset-import workflow in the pinn
 
 **Gates:** visual and behavioral acceptance, import fidelity, input responsiveness, required export formats, target-device operation, and license compatibility. **Measure:** frame-time distribution, load/import time, memory/VRAM, iteration time, binary size, and implementation effort. Missing features are disqualifications, not faster frame times.
 
-Candidate sources: [RX083], [RX084].
+For browser-specific slices, compare complete Three.js or PixiJS configurations in separate 3D/2D cohorts; add Rapier only where equivalent physics is required. Separate renderer/API migration from engine replacement. Record unsupported shaders, post-processing, physics determinism assumptions, browser fallback, context loss and export restrictions as eligibility outcomes. Browser export and native rendering cannot share a frame-time ranking without equivalent hardware and visual work.
+
+Candidate sources: [RX083], [RX084]. Extension sources: [ST011](../docs/sources.md#st011) · [ST012](../docs/sources.md#st012) · [ST013](../docs/sources.md#st013) · [ST014](../docs/sources.md#st014) · [ST069](../docs/sources.md#st069) · [ST070](../docs/sources.md#st070) · [ST039](../docs/sources.md#st039) · [ST040](../docs/sources.md#st040).
 
 ### 10. Labeled catalog retrieval — `planned-catalog-retrieval-v1`
 
@@ -116,7 +124,9 @@ Compare pgvector, Qdrant, LanceDB, and Milvus using the same corpus, embedding m
 
 **Gates:** minimum declared recall/relevance, filter correctness, update visibility, and failure/recovery requirements. **Measure:** recall@k, nDCG@10, p95/p99 latency, build/update time, index size, and full-service resource cost. Report the quality/latency tradeoff; do not rank a lower-recall run as an unconditional winner.
 
-Candidate sources: [RX099], [RX100], [RX101], [RX102].
+Keep a SQLite FTS5 or Tantivy lexical baseline for exact identifiers, names and paths. Add semantic or hybrid retrieval only when held-out relevance labels show the extra system is useful. Browser IndexedDB/Dexie persistence is a separate host contract; do not compare its transaction latency to a remote vector service as one storage score.
+
+Candidate sources: [RX099], [RX100], [RX101], [RX102]. Extension sources: [ST117](../docs/sources.md#st117) · [ST122](../docs/sources.md#st122) · [ST115](../docs/sources.md#st115) · [ST116](../docs/sources.md#st116) · [ST009](../docs/sources.md#st009) · [ST010](../docs/sources.md#st010).
 
 ### 11. Local model inference — `planned-local-inference-v1`
 
@@ -178,10 +188,56 @@ Compare the existing pipeline with a pinned Dagger-based implementation of the s
 
 **Gates:** identical artifacts or explained reproducible normalization, complete warnings, correct invalidation, tamper/identity rejection, SBOM ground-truth coverage, and safe secret handling. **Measure:** clean/incremental completion, cache correctness, provenance completeness, scan precision/recall, and developer effort. Signing, repository hygiene, and runtime correctness are separate properties.
 
-Candidate sources: [RX130], [RX127], [RX123], [RX124], [RX128], [RX126], [RX125].
+Include a Nix-pinned environment as its own build configuration and use diffoscope to inspect differing artifacts, with time/space limits for hostile or very large inputs. A Dagger beta belongs in a separate preview lane. Verify actual signer/issuer/digest policy and dependency extraction against ground truth; an attached signature, provenance file or SBOM is not itself a successful verification. Keep PETRA's confidential SBOM exchange protocol as a research follow-on rather than attributing its guarantees to ordinary SBOM generation.
+
+Candidate sources: [RX130], [RX127], [RX123], [RX124], [RX128], [RX126], [RX125]. Extension sources: [ST156](../docs/sources.md#st156) · [ST161](../docs/sources.md#st161) · [ST176](../docs/sources.md#st176) · [ST179](../docs/sources.md#st179) · [ST185](../docs/sources.md#st185) · [ST181](../docs/sources.md#st181) · [ST189](../docs/sources.md#st189) · [ST169](../docs/sources.md#st169).
+
+## Stack-layer extension: focused acceptance plans
+
+### 17. Mod dependency and compatibility planning — `planned-mod-resolution-v1` — P1
+
+**Decision:** which dependency solver produces correct, understandable and reproducible plans for a pinned game/runtime/loader ecosystem?
+
+Compare the current resolver, libsolv and Resolvo on a common normalized contract for version ranges, optional dependencies, conflicts, replacements, features, preferred versions and installed state. Use publishable synthetic metadata plus a permitted real corpus; verify small cases with exhaustive enumeration. Fabric, NeoForge and BepInEx define separate compatibility fixtures for their actual ecosystems, not three interchangeable solvers. A migration primer is not proof that a specific stable loader artifact exists.
+
+**Gates:** every requested dependency satisfied, all conflicts retained, deterministic preference handling, correct unsatisfiable explanation, cancellation and no mutation before acceptance. Keep large solver output and all warning/error records. Include corrupt metadata, dependency cycles, disappearing versions and game/runtime mismatch. **Measure:** complete plan latency and tails, peak RSS, explanation accuracy/completeness, decision stability and integration complexity. Then validate selected plans by actual startup/load-order tests in isolated licensed fixtures; solver satisfiability alone does not prove mod compatibility.
+
+Candidate sources: [ST132](../docs/sources.md#st132) · [ST133](../docs/sources.md#st133) · [ST135](../docs/sources.md#st135) · [ST136](../docs/sources.md#st136) · [ST045](../docs/sources.md#st045) · [ST046](../docs/sources.md#st046) · [ST048](../docs/sources.md#st048) · [ST049](../docs/sources.md#st049) · [ST051](../docs/sources.md#st051) · [ST052](../docs/sources.md#st052).
+
+### 18. Verified transfer, installation and rollback — `planned-verified-install-v1` — P1
+
+**Decision:** can a bounded download/update pipeline preserve trusted content and recoverable installation through interruption and adversarial input?
+
+Compare the current complete flow with validator-bound HTTP resume, a separately declared bita delta-transfer configuration, and a journaled staging/commit/rollback proposal. Keep full-download and full-reinstall controls. Test TUF/reference or tough metadata verification independently from Velopack/Sparkle platform packaging; then compose only configurations that pass both contracts. Pin stable and prerelease updater channels separately. iroh-blobs is a watchlist follow-on while its current-line production warning remains unresolved.
+
+**Gates:** reject stale/expired or wrong-role metadata, threshold/signature failures, rollback/freeze attempts, untrusted destinations, path escape/reparse races and content mismatches. Never mix bytes from two origin versions after an ETag change or ignored Range. Inject disconnect, cancellation, disk full, process termination and OS restart at every durable transition. Preserve user files and owned-file boundaries; verify final trees and recovery journals. Single-file replacement is not a multi-file transaction or proof of power-loss durability. **Measure:** verified time-to-usable, transferred/written bytes, peak memory/disk, recovery time, unnecessary redownloads and complete error visibility. Publish every failed recovery.
+
+Candidate sources: [ST112](../docs/sources.md#st112) · [ST108](../docs/sources.md#st108) · [ST098](../docs/sources.md#st098) · [ST118](../docs/sources.md#st118) · [ST138](../docs/sources.md#st138) · [ST140](../docs/sources.md#st140) · [ST144](../docs/sources.md#st144) · [ST148](../docs/sources.md#st148) · [ST113](../docs/sources.md#st113).
+
+### 19. Browser worker and native-message lifecycle — `planned-extension-lifecycle-v1` — P1
+
+**Decision:** which extension/core boundary survives browser lifecycle constraints with the required security and complete outputs?
+
+Compare a minimal MV3 baseline with WXT as the build/configuration variable. Keep a versioned native-messaging protocol, origin/sender checks and capability allowlists fixed. Compare structured clone, transfer and Comlink only for the same worker contract. Keep UI framework and storage changes separate; evaluate Lit and Dexie where they fit the chosen host. Compare Ajv standalone and Zod only with the same validation, transforms, warnings and diagnostic output. A boolean-only validation fast path belongs in a separate contract from complete error reporting.
+
+**Gates:** worker termination at every step, browser restart, native disconnect/reconnect, backpressure, cancellation, duplicate delivery, upgrade/version skew, corrupt/truncated frames and oversized payloads. Persist durable state and prove idempotency; a global variable is not a checkpoint. Limit offscreen documents to supported reasons and lifecycle requirements. Include CSP-compatible builds and DOMPurify at the actual untrusted markup boundary; post-sanitization mutation must not reintroduce unsafe markup. **Measure:** correct completed tasks, recovery latency, p95 message/input delay, serialization cost, CPU/memory and full diagnostic parity.
+
+Candidate sources: [ST024](../docs/sources.md#st024) · [ST023](../docs/sources.md#st023) · [ST001](../docs/sources.md#st001) · [ST005](../docs/sources.md#st005) · [ST009](../docs/sources.md#st009) · [ST003](../docs/sources.md#st003) · [ST015](../docs/sources.md#st015) · [ST018](../docs/sources.md#st018) · [ST021](../docs/sources.md#st021).
+
+### 20. Asset fidelity, decoding and delivery — `planned-asset-pipeline-v1` — P2
+
+**Decision:** which asset transformations improve the complete import-to-frame journey without unacceptable visual or behavioral changes?
+
+Use permitted public assets and a Blender/export baseline. Evaluate glTF Transform, meshoptimizer and Basis Universal one transformation at a time: mesh layout/quantization, geometry compression, texture format/quality and packaging. Fix animations, materials, color spaces, alpha, UVs, morph targets, metadata and target devices. Include unsupported extensions, huge textures, malformed data and cancellation. Neural texture ES and the multilayer ReSTIR paper remain separate research lanes with artifact, license and full-paper review gates; a source abstract is insufficient to import reported results.
+
+**Gates:** predeclared perceptual and exact semantic checks, complete animation/material behavior, decoder/platform compatibility, retained metadata and verified asset licensing. **Measure:** network bytes, decode/transcode/upload time, first usable and complete frame, frame tails, CPU/RAM/VRAM and quality error. A smaller compressed file that increases startup or loses required visuals does not automatically win. Retain full quality metrics, per-asset failures and reference renders.
+
+Candidate sources: [ST056](../docs/sources.md#st056) · [ST058](../docs/sources.md#st058) · [ST060](../docs/sources.md#st060) · [ST062](../docs/sources.md#st062) · [ST063](../docs/sources.md#st063) · [ST064](../docs/sources.md#st064).
 
 ## Shared correctness instruments
 
 Use Hypothesis or fast-check to explore input/state properties where those language ecosystems fit; AFL++ for owned native parser fixtures; TLA+/TLC for bounded concurrency invariants; Testcontainers for disposable service dependencies; and Jepsen-style histories for distributed consistency questions. These tools address different failure classes and are not interchangeable competitors. A tool's own correctness and version matter, so retain reproduction seeds, failing inputs, and checker revisions. Candidate sources: [RX115], [RX116], [RX122], [RX117], [RX119], [RX118].
+
+For race/atomicity work, add bounded Loom models and rr replay only on supported platforms; preserve Loom's documented memory-model limits and rr's coverage/hardware limits. AtomSanitizer is a research comparison with its own artifact/license gate. Inspect the exact AFL++ tag and its current licensing before reuse. Extension sources: [ST167](../docs/sources.md#st167) · [ST168](../docs/sources.md#st168) · [ST163](../docs/sources.md#st163) · [ST164](../docs/sources.md#st164) · [ST172](../docs/sources.md#st172) · [ST173](../docs/sources.md#st173) · [ST199](../docs/sources.md#st199) · [ST200](../docs/sources.md#st200).
 
 All source identifiers above resolve through the [primary-source register](../data/sources.json). Their presence supports candidate and methodology discovery; it does not establish a result for any planned cohort. The next durable artifact for a chosen plan is a completed [experiment definition](../templates/experiment.md), followed by raw evidence and a conditional decision record.

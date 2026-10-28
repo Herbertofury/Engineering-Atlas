@@ -4,16 +4,17 @@
 
 **Canonical repository page:** [docs/research-explorer.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-explorer.md). This wiki edition preserves the documented evidence boundaries; repository commands below run from a project checkout.
 
-**Recorded snapshot:** 154 catalog entries across 18 fields, including 19 papers; [123 dated repository observations](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-signals.json); [0 approved community reports](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-community.json). The community collection completed successfully at **2026-10-28 04:53:19 UTC**. The queue contains **16 planned comparisons**, none executed by this expansion. The external benchmark observations and the retained October 26 JSON measurements keep their separate provenance. Counts describe these checked-in snapshots, not a live feed.
+**Recorded snapshot:** 215 catalog entries across 20 stack layers and 18 fields, including 22 papers; 355 distinct primary URLs; [173 dated repository observations](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-signals.json); [0 approved community reports](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-community.json). The community collection completed successfully at **2026-10-28 04:53:19 UTC**. The queue contains **20 planned comparisons**, none executed by this expansion. External benchmark observations and the retained October 26 JSON measurements keep their separate provenance. Counts describe checked-in snapshots, not a live feed.
 
 [Open the Explorer](https://herbertofury.github.io/Engineering-Atlas/explorer/) · [Full catalog](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-catalog.md) · [Test queue](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-test-queue.md) · [Community reports](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-community.md)
 
-The Explorer turns the Atlas source register into a searchable research queue. It covers repositories, languages, frameworks, tools, papers, methods, benchmarks and complete evaluated configurations. The initial expansion is dated **October 27, 2026 in America/Denver**; source checks made after midnight UTC carry **October 28** in the records. This is a substantial reviewed snapshot, not an exhaustive claim about every field or a guarantee that an upstream project has not changed.
+The Explorer turns the Atlas source register into a searchable research queue. It covers repositories, languages, frameworks, tools, papers, methods, benchmarks and complete evaluated configurations. The consolidated catalog now contains **215 candidates across 20 stack layers and 18 research fields**, including **22 papers**. The initial expansion is dated **October 27, 2026 in America/Denver**; source checks made after midnight UTC carry **October 28** in the records. This is a substantial reviewed snapshot, not an exhaustive claim about every field or a guarantee that an upstream project has not changed.
 
 ## What you can do
 
 - Search names, descriptions, tags, repository identities, source titles and evaluation tracks.
-- Filter by research field, entry type, maturity, evidence, publication year and test track.
+- Filter by stack layer, research field, entry type, maturity, evidence, publication year and test track.
+- Open a layer decision guide with reference choices, alternatives to compare, a research watchlist and a concrete adoption gate.
 - Sort by editorial test priority, name, actual publication date, observed GitHub stars, reviewed community experience, one published benchmark, or one retained Atlas experiment.
 - Compare up to four candidates and export a proposed test plan with their sources, metrics and disqualifying constraints.
 - Export the complete filtered catalog as CSV. Pagination does not truncate the export.
@@ -21,6 +22,18 @@ The Explorer turns the Atlas source register into a searchable research queue. I
 - Open the source, review the proposed experiment, or submit a public experience report from an entry.
 
 Shortlists use browser-local storage. They are not public votes. The site reads a static, validated snapshot and never asks for an API key. Submitting a rating opens GitHub's issue form; it does not silently publish a message.
+
+## One catalog, organized by the decision
+
+The **Stack layer** filter groups the same candidate records by the job they perform: languages, shared cores, browser extensions, desktop hosts, large collections, rendering, assets, mod compatibility, plugin isolation, dependency solving, file processing, local data/search, network transfer, APIs, secure updates, builds, testing, optional AI, durable work, and analytics. A candidate may serve more than one layer without becoming a duplicate record.
+
+Each layer has a compact decision guide. **Reference choices** are controls or complementary components worth establishing first. **Compare next** identifies alternatives with a tractable experiment. **Research watchlist** preserves previews, prototypes, documentation conflicts or reproduction gaps. These editorial roles do not override an entry's maturity, turn a source claim into a result, or make different roles comparable in one benchmark. The actual target's current implementation remains the first baseline.
+
+The [existing stack-selection guide](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/stack-selection.md#stack-layer-comparison-map) is generated from this same layer map. The field/category remains a discovery axis; the evaluation track remains the boundary for community or measured comparisons. Selecting a layer does not create a new evidence cohort. Layer selection is included in shared URLs, CSV membership, and exported proposed test plans.
+
+**Organization rule:** extend the existing candidate, layer map, research radar and test queue when a release or paper changes a decision. Keep dated source observations and failed comparisons. Create a separate candidate only when identity or a complete evaluated configuration requires it; do not create a new wiki page for each version, stack layer, source or repeated topic. The four existing research wiki pages mirror the canonical guides rather than becoming a second catalog.
+
+The October 28 extension adds **61 candidates**, updates **22 existing records**, and registers **201 additional primary-source observations**. It preserves the previous source records and all measured cohorts. There are **173 dated public repository observations**; older observations retain their original timestamps. The site headline counts unique primary URLs; multiple retained observations of the same URL do not inflate it. These counts describe a reviewed snapshot, not continuous monitoring or an exhaustive survey.
 
 ## Ranking contract
 
@@ -73,7 +86,7 @@ These are **existing measurements from October 26**, not new executions in this 
 
 | File | Responsibility |
 |---|---|
-| [research-catalog.json](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-catalog.json) | Stable candidate IDs, categories, kinds, source IDs, maturity, editorial priority and proposed tests |
+| [research-catalog.json](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-catalog.json) | Stable candidate IDs, stack layers/roles, categories, kinds, source IDs, maturity, editorial priority and proposed tests |
 | [sources.json](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/sources.json) | Dated primary-source register; earlier observations remain intact |
 | [research-signals.json](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-signals.json) | Dated public GitHub counts, repository state, license metadata and retrieval errors |
 | [research-community.json](https://github.com/Herbertofury/Engineering-Atlas/blob/main/data/research-community.json) | Reviewed public experience records; initially empty |
@@ -83,7 +96,7 @@ These are **existing measurements from October 26**, not new executions in this 
 
 Every candidate needs primary sources, an explicit test proposal, metrics and caveats. Publication date and check date are separate. Papers may record a primary-supported publication year when the day is unknown; year filters include these, while exact-date sorting leaves them undated. A candidate cannot acquire an accepted status through source review. Cohorts require an explicit metric, unit, direction, evaluation track, protocol, source, observation date and limitations. Candidates must match the cohort's track, and observations cannot override the cohort's evidence type. Multiple configurations require separate identities rather than silently replacing or averaging results.
 
-Validation rejects duplicate identities, unknown source references, future dates, unsupported status promotion, malformed URLs, nonfinite results, incomplete local evidence, duplicate account votes and mismatched rating tracks. The browser renders text through DOM APIs, permits HTTPS source links, and neutralizes spreadsheet formula prefixes in CSV exports.
+Layer validation requires known candidate IDs, membership in the selected layer, one role per candidate within a layer, and at least one reference choice. Validation rejects duplicate identities, unknown source references, future dates, unsupported status promotion, malformed URLs, nonfinite results, incomplete local evidence, duplicate account votes and mismatched rating tracks. The browser renders text through DOM APIs, permits HTTPS source links, and neutralizes spreadsheet formula prefixes in CSV exports.
 
 ### Rebuild and verify
 
@@ -94,6 +107,8 @@ Validation rejects duplicate identities, unknown source references, future dates
     node --test tests/*.test.mjs
 
 The static app has no package install or runtime dependency. GitHub Pages serves the existing docs directory. The build fingerprints the catalog, JavaScript and styles together, and checks generated content against its inputs before publication.
+
+The [retained implementation-validation record](https://github.com/Herbertofury/Engineering-Atlas/blob/main/experiments/research-explorer-validation/README.md) documents executable tests, inspected browser states and the remaining saved-download verification limit. These are software checks, not new candidate benchmarks. [Prepared wiki pages](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/wiki-research/README.md) preserve complete publishable wiki content alongside its canonical repository sources.
 
 ### Refresh data
 
@@ -111,4 +126,4 @@ A claimed improvement needs to clear correctness, security, feature, resource an
 
 ## Scope and coordination
 
-This contribution owns the Explorer, its data, tests and research documentation. It does not change Site Adapters, adapter pages, media fixtures, the collection engine or the existing experiment implementations. New wiki pages link the same canonical research content. Shared navigation changes are small and should be reapplied to the latest upstream text if another contributor updates them.
+This contribution owns the Explorer, its data, tests and research documentation. It does not change Site Adapters, adapter pages, media fixtures, the collection engine or the existing experiment implementations. The existing research wiki pages are updated in place from the same canonical content. This stack-layer extension creates no additional topical wiki or guide pages. Shared navigation changes are small and should be reapplied to the latest upstream text if another contributor updates them.

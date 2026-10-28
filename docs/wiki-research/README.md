@@ -1,6 +1,8 @@
 # Wiki research publication package
 
-**Status: published and verified on October 28, 2026 UTC.** All four pages below are live in the separate GitHub wiki, and their contents were verified byte for byte against these repository copies at wiki revision `85c50a22a4eb7761b144173f5b174b5b87a67be7`. The Home and Sidebar additions preserve all previous content. All 15 Site Adapters and adapter pages remain unchanged. See the [publication verification](../../experiments/research-explorer-validation/wiki-publication-2026-10-28.json) and [published wiki screenshot](../../experiments/research-explorer-validation/live-wiki-2026-10-28.jpg).
+**Initial publication verified on October 28, 2026 UTC.** All four pages below were published in the separate GitHub wiki, and the initial contents were verified byte for byte at wiki revision `85c50a22a4eb7761b144173f5b174b5b87a67be7`. The Home and Sidebar additions preserve all previous content. All 15 Site Adapters and adapter pages remain unchanged. See the [publication verification](../../experiments/research-explorer-validation/wiki-publication-2026-10-28.json) and [published wiki screenshot](../../experiments/research-explorer-validation/live-wiki-2026-10-28.jpg).
+
+**Stack-layer extension:** the existing Explorer, Test Queue and Radar copies now include 215 candidates, 20 layers and 20 plans. These updated copies require separate wiki publication and verification; the initial receipt above covers the earlier edition. No additional topical wiki page is planned.
 
 Future repository edits do not automatically update the separate wiki. Apply and verify future changes independently using the procedure below.
 

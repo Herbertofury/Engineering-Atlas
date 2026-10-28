@@ -15,6 +15,7 @@ import statistics
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -155,6 +156,68 @@ class CatalogValidationTests(unittest.TestCase):
     def test_valid_candidate_remains_a_candidate(self):
         self.assertEqual(self.validate(), {"synthetic-parser"})
         self.assertEqual(self.catalog["entries"][0]["status"], "candidate")
+
+    def add_layers(self):
+        self.catalog["layers"] = [{
+            "id": "synthetic-storage", "label": "Synthetic storage layer",
+            "decision": "Synthetic comparison role only.",
+            "gate": "Synthetic adoption gate; never real acceptance.",
+            "baseline_ids": ["synthetic-parser"], "challenger_ids": [], "watch_ids": [],
+        }]
+        self.catalog["entries"][0]["layers"] = ["synthetic-storage"]
+
+    def test_stack_role_preserves_candidate_status_and_generates_one_canonical_map(self):
+        self.add_layers()
+        self.assertEqual(self.validate(), {"synthetic-parser"})
+        text = explorer.markdown_layer_map(self.catalog)
+        self.assertIn("?layer=synthetic-storage#catalog", text)
+        self.assertIn("Synthetic adoption gate", text)
+        self.assertEqual(self.catalog["entries"][0]["status"], "candidate")
+
+    def test_stack_layers_reject_incomplete_or_unknown_entry_assignments(self):
+        for assigned in (None, [], ["unknown"], ["synthetic-storage", "synthetic-storage"]):
+            with self.subTest(assigned=assigned):
+                self.add_layers()
+                self.catalog["entries"][0]["layers"] = assigned
+                with self.assertRaisesRegex(ValueError, "stack layer"):
+                    self.validate()
+
+    def test_stack_layer_roles_reject_unknown_candidates_and_overlap(self):
+        self.add_layers()
+        self.catalog["layers"][0]["challenger_ids"] = ["missing-candidate"]
+        with self.assertRaisesRegex(ValueError, "Unknown stack layer choice"):
+            self.validate()
+        self.catalog["layers"][0]["challenger_ids"] = ["synthetic-parser"]
+        with self.assertRaisesRegex(ValueError, "conflicting stack layer roles"):
+            self.validate()
+
+    def test_stack_layer_choices_must_belong_to_the_named_layer(self):
+        self.add_layers()
+        other = copy.deepcopy(self.catalog["layers"][0])
+        other["id"] = "synthetic-other"
+        self.catalog["layers"].append(other)
+        with self.assertRaisesRegex(ValueError, "outside assigned layer"):
+            self.validate()
+
+    def test_stack_taxonomy_rejects_empty_duplicate_and_invalid_roles(self):
+        self.catalog["layers"] = []
+        with self.assertRaisesRegex(ValueError, "cannot be empty"):
+            self.validate()
+        self.add_layers()
+        self.catalog["layers"].append(copy.deepcopy(self.catalog["layers"][0]))
+        with self.assertRaisesRegex(ValueError, "duplicate stack layer"):
+            self.validate()
+        self.add_layers()
+        self.catalog["layers"][0]["baseline_ids"] = []
+        with self.assertRaisesRegex(ValueError, "needs a reference choice"):
+            self.validate()
+
+    def test_stack_taxonomy_rejects_non_object_rows_with_controlled_errors(self):
+        for row in (None, "synthetic-storage", 7, [], True):
+            with self.subTest(row=row):
+                self.catalog["layers"] = [row]
+                with self.assertRaisesRegex(ValueError, "Stack layer must be an object"):
+                    self.validate()
 
     def test_rejects_duplicate_entry_ids(self):
         self.catalog["entries"].append(copy.deepcopy(self.catalog["entries"][0]))
@@ -599,6 +662,90 @@ class RetainedJsonLabTests(unittest.TestCase):
                 explorer.import_retained_json_lab(root, self.IDS)
 
 
+class StackGuideBuildTests(unittest.TestCase):
+    """Exercise generated-guide ownership using only synthetic catalog data."""
+
+    START = "<!-- stack-layer-map:start -->"
+    END = "<!-- stack-layer-map:end -->"
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        for name in ("explorer-core.mjs", "explorer.mjs", "explorer.css", "index.template.html"):
+            target = self.root / "docs/explorer" / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / "docs/explorer" / name, target)
+        self.stack_path = self.root / "docs/stack-selection.md"
+        self.bundle, _ = catalog_fixture()
+        self.bundle.update(results={"cohorts": [], "observations": []},
+                           signals={"repositories": {}, "errors": []},
+                           community={"ratings": [], "errors": []})
+        loader = patch.object(explorer, "load_bundle", return_value=self.bundle)
+        loader.start()
+        self.addCleanup(loader.stop)
+
+    def test_legacy_build_clears_prior_map_and_check_rejects_stale_map_without_writing(self):
+        self.bundle["layers"] = [{
+            "id": "synthetic-storage", "label": "Synthetic storage layer",
+            "decision": "Synthetic comparison.", "gate": "Synthetic gate.",
+            "baseline_ids": ["synthetic-parser"], "challenger_ids": [], "watch_ids": [],
+        }]
+        self.bundle["entries"][0]["layers"] = ["synthetic-storage"]
+        before, after = "# Synthetic guide\n\n", "\n\nPreserve this authored guidance.\n"
+        self.stack_path.write_text(before + self.START + "\n" + self.END + after)
+        explorer.build(self.root)
+        layered = self.stack_path.read_bytes()
+        self.assertIn(b"Synthetic storage layer", layered)
+        self.assertIn(SOURCE_URL.encode(), layered)
+
+        del self.bundle["layers"]
+        del self.bundle["entries"][0]["layers"]
+        explorer.build(self.root)
+        cleared = (before + self.START + "\n" + self.END + after).encode()
+        self.assertEqual(self.stack_path.read_bytes(), cleared)
+        manifest_path = self.root / "docs/explorer/build-manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        self.assertEqual(manifest["files"]["docs/stack-selection.md"], hashlib.sha256(cleared).hexdigest())
+        first_manifest = manifest_path.read_bytes()
+        explorer.build(self.root)
+        self.assertEqual(self.stack_path.read_bytes(), cleared)
+        self.assertEqual(manifest_path.read_bytes(), first_manifest)
+        self.assertEqual(explorer.build(self.root, check=True)["mode"], "check")
+
+        self.stack_path.write_bytes(layered)
+        with self.assertRaisesRegex(ValueError, "docs/stack-selection.md"):
+            explorer.build(self.root, check=True)
+        self.assertEqual(self.stack_path.read_bytes(), layered, "Check mode must not erase stale evidence")
+
+    def test_legacy_guide_without_markers_is_preserved_and_not_claimed_as_output(self):
+        authored = "# Synthetic legacy guide\n\nEntirely authored content.\n"
+        self.stack_path.write_text(authored)
+        explorer.build(self.root)
+        manifest = json.loads((self.root / "docs/explorer/build-manifest.json").read_text())
+        self.assertNotIn("docs/stack-selection.md", manifest["files"])
+        self.assertEqual(self.stack_path.read_text(), authored)
+        self.assertEqual(explorer.build(self.root, check=True)["mode"], "check")
+        self.assertEqual(self.stack_path.read_text(), authored)
+
+    def test_legacy_catalog_does_not_require_a_stack_guide(self):
+        self.assertFalse(self.stack_path.exists())
+        explorer.build(self.root)
+        self.assertFalse(self.stack_path.exists())
+        self.assertEqual(explorer.build(self.root, check=True)["mode"], "check")
+
+    def test_malformed_marker_pairs_fail_before_outputs_are_written(self):
+        for text in (self.START, self.END, self.END + self.START,
+                     self.START + self.START + self.END, self.START + self.END + self.END):
+            with self.subTest(text=text):
+                self.stack_path.write_text(text)
+                for check in (False, True):
+                    with self.assertRaisesRegex(ValueError, "one ordered layer-map marker pair"):
+                        explorer.build(self.root, check=check)
+                    self.assertEqual(self.stack_path.read_text(), text)
+                    self.assertFalse((self.root / "docs/explorer/index.html").exists())
+
+
 class DeterministicBuildTests(unittest.TestCase):
     INPUTS = (
         "data/research-catalog.json", "data/research-results.json", "data/research-signals.json",
@@ -606,6 +753,7 @@ class DeterministicBuildTests(unittest.TestCase):
         "experiments/json-lab/results-2026-10-26.json",
         "docs/explorer/explorer-core.mjs", "docs/explorer/explorer.mjs",
         "docs/explorer/explorer.css", "docs/explorer/index.template.html",
+        "docs/stack-selection.md",
     )
 
     def test_actual_dataset_build_is_deterministic_and_check_does_not_write(self):

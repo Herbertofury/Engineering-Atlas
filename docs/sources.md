@@ -2235,3 +2235,1613 @@ Unauthenticated and authenticated request budgets; retrieval failures do not bec
 Current official documentation checked 2026-10-28 UTC
 
 Explicit user submission through prefilled public issue forms. Evidence: primary documented.
+
+## Stack-layer research extension — October 28, 2026 UTC
+
+### ST001
+
+[wxt-dev/wxt wxt-v0.21.5 release](https://github.com/wxt-dev/wxt/releases/tag/wxt-v0.21.5)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-26.
+
+Release lists storage metadata watchers and fixes for development reload ordering; no Atlas speed claim. Evidence: primary documented.
+
+### ST002
+
+[WXT upgrade and compatibility guide](https://wxt.dev/guide/resources/upgrading)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened the 0.20 to 0.21 requirements and the warning that 0.x minor versions can break compatibility. Evidence: primary documented.
+
+### ST003
+
+[Lit components overview](https://lit.dev/docs/components/overview/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Custom elements, reactive properties, encapsulated styles and lifecycle APIs. Evidence: primary documented.
+
+### ST004
+
+[Lit 3.3.3 release](https://github.com/lit/lit/releases/tag/lit%403.3.3)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-05-14.
+
+Patch release fixes ref directive disconnect handling; monorepo package versions are distinct. Evidence: primary documented.
+
+### ST005
+
+[Comlink README and API contract](https://github.com/GoogleChromeLabs/comlink)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened structured cloning, transferables, proxy release and allowedOrigins behavior. Evidence: primary documented.
+
+### ST006
+
+[GoogleChromeLabs/comlink v4.4.2 release](https://github.com/GoogleChromeLabs/comlink/releases/tag/v4.4.2)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2024-11-07.
+
+Observed release is historical, not relabeled as new research. CPU, message and lifecycle costs need application measurements. Evidence: primary documented.
+
+### ST007
+
+[TanStack Virtual core 3.19.8 release](https://github.com/TanStack/virtual/releases/tag/%40tanstack/virtual-core%403.19.8)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-26.
+
+Fix accounts for scrollMargin when deciding whether the viewport is at the end. Evidence: primary documented.
+
+### ST008
+
+[TanStack Virtualizer API](https://tanstack.com/virtual/latest/docs/api/virtualizer)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened item count, estimates, dynamic measurement and overscan contract; framework adapter versions differ from core. Evidence: primary documented.
+
+### ST009
+
+[dexie/Dexie.js v4.4.7 release](https://github.com/dexie/Dexie.js/releases/tag/v4.4.7)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-19.
+
+4.4.7 fixes falsy-key live-query notifications and compound-key update restrictions among other edge cases. Evidence: primary documented.
+
+### ST010
+
+[Dexie transaction and promise best practices](https://dexie.org/docs/Tutorial/Best-Practices)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened error propagation and transaction lifetime guidance; failures must remain visible. Evidence: primary documented.
+
+### ST011
+
+[mrdoob/three.js r186 release](https://github.com/mrdoob/three.js/releases/tag/r186)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-09-24.
+
+API release metadata confirms r186; fixes include stale animation bookkeeping and buffer/state lifecycle handling. Evidence: primary documented.
+
+### ST012
+
+[Three.js WebGPURenderer guide](https://threejs.org/manual/pages/webgpurenderer)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened experimental status, WebGL2 fallback, shader/material and post-processing migration limits. Evidence: primary documented.
+
+### ST013
+
+[pixijs/pixijs v8.22.0 release](https://github.com/pixijs/pixijs/releases/tag/v8.22.0)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-01.
+
+Release restores Tab activation and accessibleText behavior and documents new contextmenu/WebGPU features. Evidence: primary documented.
+
+### ST014
+
+[Rapier JavaScript determinism contract](https://rapier.rs/docs/user_guides/javascript/determinism/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened same-version, initialization-order and host-math requirements; guide heading identifies JavaScript 0.21. Evidence: primary documented.
+
+### ST015
+
+[ajv-validator/ajv v8.20.0 release](https://github.com/ajv-validator/ajv/releases/tag/v8.20.0)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-04-24.
+
+8.20.0 release updates supported Node versions. Evidence: primary documented.
+
+### ST016
+
+[Ajv standalone validation documentation](https://ajv.js.org/standalone.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Build-time validators, helper dependencies, supported formats and custom-keyword constraints. Evidence: primary documented.
+
+### ST017
+
+[Ajv security considerations](https://ajv.js.org/security.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened untrusted-schema, format-cost and CSP guidance. Evidence: primary documented.
+
+### ST018
+
+[colinhacks/zod v4.6.7 release](https://github.com/colinhacks/zod/releases/tag/v4.6.7)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-12.
+
+Observed patch release 4.6.7, separately from the September series announcement. Evidence: primary documented.
+
+### ST019
+
+[Zod 4.6 announcement](https://zod.dev/blog/zod-4-6)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-09-09.
+
+Opened boolean validation, CSP-compatible parser installation and diagnostic/output differences. Evidence: primary documented.
+
+### ST020
+
+[Zod JSON Schema conversion](https://zod.dev/json-schema)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened experimental fromJSONSchema warning and unrepresentable types. Evidence: primary documented.
+
+### ST021
+
+[cure53/DOMPurify 3.4.17 release](https://github.com/cure53/DOMPurify/releases/tag/3.4.17)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-12.
+
+Release documents security-relevant edge-case fixes, without claiming any target application is affected. Evidence: primary documented.
+
+### ST022
+
+[DOMPurify supported contexts and safe usage](https://github.com/cure53/DOMPurify/blob/main/README.md)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened post-sanitization mutation, current version and server-DOM caveats. Evidence: primary documented.
+
+### ST023
+
+[Chrome native messaging protocol](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened UTF-8 framing, host lifecycle, origin allowlist, sender validation and per-direction limits. Evidence: primary documented.
+
+### ST024
+
+[Extension service-worker lifecycle](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened idle/shutdown behavior, persistent state and minimum-version differences. Evidence: primary documented.
+
+### ST025
+
+[Chrome offscreen documents API](https://developer.chrome.com/docs/extensions/reference/api/offscreen)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened bundled-document, restricted runtime API and lifecycle requirements. Evidence: primary documented.
+
+### ST026
+
+[Windows App SDK overview](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened native desktop platform, language, integration, and Windows version requirements. Evidence: primary documented.
+
+### ST027
+
+[Windows App SDK 2.0 release notes: 2.6.4](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/release-notes/windows-app-sdk-2-0?pivots=stable)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-27.
+
+Opened the explicit release date and text-control shutdown, application-instance, and lifecycle fixes. Evidence: primary documented.
+
+### ST028
+
+[Windows App SDK release channels](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/release-channels)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened stable/preview/experimental channel support and current stable release table. Evidence: primary documented.
+
+### ST029
+
+[Windows App SDK repository](https://github.com/microsoft/WindowsAppSDK)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened official repository and MIT license. Evidence: primary documented.
+
+### ST030
+
+[Avalonia 12 announcement](https://avaloniaui.net/blog/avalonia-12/)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-04-07.
+
+Opened the dated release announcement and focus, dispatcher, virtualization, and binding changes; vendor performance claims are not local results. Evidence: primary documented.
+
+### ST031
+
+[Avalonia supported platforms](https://docs.avaloniaui.net/docs/supported-platforms)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Windows support tiers, Linux X11/Wayland conditions, and platform dependency requirements. Evidence: primary documented.
+
+### ST032
+
+[Avalonia releases](https://github.com/AvaloniaUI/Avalonia/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 12.1.4 and fixes involving Windows automation, focus, layout, DPI, and Wayland. Visible month/day omitted a year, so exact date remains null. Evidence: primary documented.
+
+### ST033
+
+[Avalonia MIT license](https://github.com/AvaloniaUI/Avalonia/blob/main/licence.md)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened the repository license; commercial companion products are not covered by this statement. Evidence: primary documented.
+
+### ST034
+
+[Slint 1.18 released](https://slint.dev/blog/slint-1.18-released)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-09-16.
+
+Opened FlexboxLayout, z-order, text, Node integration, and explicitly experimental Vello-renderer sections. Evidence: primary documented.
+
+### ST035
+
+[Slint releases](https://github.com/slint-ui/slint/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 1.18.1 and Windows compiler assets; artifact timestamps are not used as release publication dates. Evidence: primary documented.
+
+### ST036
+
+[Slint licensing options](https://slint.dev/pricing)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened GPLv3, royalty-free, and commercial options and their deployment conditions. Evidence: primary documented.
+
+### ST037
+
+[egui repository and design notes](https://github.com/emilk/egui)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened platform support, immediate-mode layout behavior, visible-item guidance, stable identity, and MIT/Apache-2.0 licensing. Evidence: primary documented.
+
+### ST038
+
+[egui 0.37.0](https://github.com/emilk/egui/releases/tag/0.37.0)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened glyph/font-provider and experimental styling changes. Exact publication year is not inferred from the month/day release heading. Evidence: primary documented.
+
+### ST039
+
+[wgpu backend and platform matrix](https://github.com/gfx-rs/wgpu)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened native/browser backend coverage, first-class versus best-effort support, bindings, and MIT/Apache-2.0 licensing. Evidence: primary documented.
+
+### ST040
+
+[wgpu releases](https://github.com/gfx-rs/wgpu/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened v30.0.1 fixes involving Vulkan synchronization, Metal colorspace, and failed browser adapter requests; exact date left null. Evidence: primary documented.
+
+### ST041
+
+[Vello renderer architecture and maturity](https://github.com/linebender/vello)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened separate CPU, GPU, and research implementations, supported rendering paths, and MIT/Apache-2.0 licensing. Evidence: primary documented.
+
+### ST042
+
+[Vello releases: Sparse Strips 0.3.0 and Research 0.11.0](https://github.com/linebender/vello/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened current release sections, Hybrid-to-GPU rename, glyph fixes, MSRV, and explicit lack of API stability. Visible month/day does not establish an exact year. Evidence: primary documented.
+
+### ST043
+
+[CXX guide](https://cxx.rs/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened paired code generation, static checking, and supported cross-language boundary model. Evidence: primary documented.
+
+### ST044
+
+[CXX repository](https://github.com/dtolnay/cxx)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened explicit C++ audit requirements, compiler prerequisites, and MIT/Apache-2.0 licensing. Evidence: primary documented.
+
+### ST045
+
+[Fabric for Minecraft 26.3](https://fabricmc.net/2026/09/15/263.html)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-09-15.
+
+Opened the dated migration announcement and release-time Loom, Gradle, loader, and API changes. Evidence: primary documented.
+
+### ST046
+
+[Fabric for Minecraft 26.1](https://fabricmc.net/2026/03/14/261.html)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-03-14.
+
+Opened Java 25 Gradle-JVM requirements and version-specific migration constraints. Evidence: primary documented.
+
+### ST047
+
+[Fabric Loader repository](https://github.com/FabricMC/fabric-loader)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened official loader repository and Apache-2.0 license. Evidence: primary documented.
+
+### ST048
+
+[NeoForge getting started, version 26.1](https://docs.neoforged.net/docs/gettingstarted/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened versioned setup guidance requiring Java 25 and a 64-bit JVM. Evidence: primary documented.
+
+### ST049
+
+[Minecraft 26.2 to 26.3 mod migration primer](https://docs.neoforged.net/primer/docs/26.3/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened the explicit vanilla-only scope and GLFW-to-SDL/input migration sections; this is not a loader release announcement. Evidence: primary documented.
+
+### ST050
+
+[NeoForge repository](https://github.com/neoforged/NeoForge)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened official repository and LGPL-2.1 license. Evidence: primary documented.
+
+### ST051
+
+[BepInEx support matrix](https://github.com/BepInEx/BepInEx)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened runtime/OS/architecture table, stable-channel limitation, and LGPL-2.1 license. Evidence: primary documented.
+
+### ST052
+
+[BepInEx releases](https://github.com/BepInEx/BepInEx/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 5.4.23.6, macOS ARM64/universal-build fixes, and 5.x/6.x channel context. Exact date left null because the rendered heading lacks a year. Evidence: primary documented.
+
+### ST053
+
+[BepInEx current installation guide](https://docs.bepinex.dev/master/articles/user_guide/installation/index.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened target-specific Mono, IL2CPP, .NET, stable, and bleeding-edge installation paths; avoids outdated default-docs blanket IL2CPP statements. Evidence: primary documented.
+
+### ST054
+
+[Luau repository](https://github.com/luau-lang/luau)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened embedding/runtime description and MIT license. Evidence: primary documented.
+
+### ST055
+
+[Embedding a sandboxed Luau virtual machine](https://luau.org/sandbox/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened removed unsafe libraries, separate-VM guidance, compiler-produced bytecode assumptions, allocator limits, and interrupt behavior. Evidence: primary documented.
+
+### ST056
+
+[Blender official source mirror](https://github.com/blender/blender)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened authoring/rendering capabilities and overall GPLv3 licensing; no exact current release was inferred. Evidence: primary documented.
+
+### ST057
+
+[Khronos glTF Blender I/O](https://github.com/KhronosGroup/glTF-Blender-IO)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened glTF 2.0 importer/exporter integration, roundtrip test approach, and Apache-2.0 exporter license; its version overview is not used as a current Blender release authority. Evidence: primary documented.
+
+### ST058
+
+[glTF Transform documentation](https://gltf-transform.dev/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened browser/Node APIs, CLI, explicit transformations, and MIT code license; documentation is CC BY 3.0. Evidence: primary documented.
+
+### ST059
+
+[glTF Transform EXT_meshopt_compression](https://gltf-transform.dev/modules/extensions/classes/EXTMeshoptCompression)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened geometry, morph, and animation compression behavior and the requirement to decode before GPU upload. Evidence: primary documented.
+
+### ST060
+
+[meshoptimizer repository](https://github.com/zeux/meshoptimizer)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened C/C++ API, related bindings/tooling, optimization scope, and MIT license. Evidence: primary documented.
+
+### ST061
+
+[meshoptimizer 1.3](https://github.com/zeux/meshoptimizer/releases/tag/v1.3)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened new experimental voxel-remeshing behavior and related limitations; exact release date left null. Evidence: primary documented.
+
+### ST062
+
+[Basis Universal v2.5 documentation](https://github.com/BinomialLLC/basis_universal)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened codec families, native/Wasm tools, Apache-2.0 license, and the explicit XUASTC KTX2 interoperability/standardization status. Evidence: primary documented.
+
+### ST063
+
+[Neural texture block compression testbed](https://github.com/richgel999/neural_tex_block_compression)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-09-05.
+
+Opened the author's September 5 disclosure, implemented testbed, optional acceleration, license exceptions, and distinction between public code and later unimplemented ideas. Evidence: primary documented.
+
+### ST064
+
+[Multi-Layer Reservoir Splatting for Temporal Reuse under Disocclusion](https://research.nvidia.com/labs/rtr/publication/hong2026multilayer/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened the authors' full project abstract and SIGGRAPH Conference Track / July 2026 metadata. No exact publication day is given; PDF retrieval exceeded the tool size limit. Evidence: primary documented.
+
+### ST065
+
+[WinUI ItemsView](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/itemsview)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened collection layout, selection-preserving switching, and constituent control model. Evidence: primary documented.
+
+### ST066
+
+[WinUI ItemsRepeater](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/items-repeater)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened virtualization behavior and explicit absence of built-in focus, selection, and interaction policies. Evidence: primary documented.
+
+### ST067
+
+[Electron security checklist](https://www.electronjs.org/docs/latest/tutorial/security)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened isolation, renderer sandbox, permission handling, IPC sender validation, navigation, and protocol guidance. Evidence: primary documented.
+
+### ST068
+
+[Tauri capability boundaries](https://v2.tauri.app/security/capabilities/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened permission union, default application-command access, remote origins, iframe limitations, and threat-model exclusions. Evidence: primary documented.
+
+### ST069
+
+[Godot official release archive](https://godotengine.org/download/archive/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 4.7.2 stable dated August 18, 2026 and 4.8 beta1 dated October 15, 2026; archive page itself has no single publication date. Evidence: primary documented.
+
+### ST070
+
+[Godot exporting for the Web](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Godot 4 C# web-export restriction, Compatibility/WebGL2 renderer requirement, threading, and cross-origin isolation constraints. Evidence: primary documented.
+
+### ST071
+
+[Bevy 0.20](https://bevy.org/news/bevy-0-20/)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-08.
+
+Opened dated release introduction, Feathers UI, scene system, texture-compression backend, automatic mipmaps, and renderer changes. Evidence: primary documented.
+
+### ST072
+
+[Bevy development setup](https://bevy.org/learn/quick-start/getting-started/setup/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened supported Rust toolchain policy and Windows MSVC/SDK/CMake setup requirements. Evidence: primary documented.
+
+### ST073
+
+[Native AOT deployment and limitations](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened dynamic loading/code-generation, trimming, C++/CLI, and built-in Windows COM restrictions. Evidence: primary documented.
+
+### ST074
+
+[Wasmtime security model](https://docs.wasmtime.dev/security.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened WebAssembly isolation and host-API responsibilities. Evidence: primary documented.
+
+### ST075
+
+[Interrupting WebAssembly execution](https://docs.wasmtime.dev/examples-interrupting-wasm.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened fuel and epoch mechanisms, trap/yield behavior, and their overhead tradeoffs. Evidence: primary documented.
+
+### ST076
+
+[Wasmtime StoreLimitsBuilder](https://docs.rs/wasmtime/latest/wasmtime/struct.StoreLimitsBuilder.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened the rendered 50.0.0 API's per-linear-memory limit and unlimited-default behavior; do not use a development-docs version as a stable API pin. Evidence: primary documented.
+
+### ST077
+
+[WASI releases](https://wasi.dev/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened current 0.3 status, native async interfaces, version-dependent toolchain coverage, and jco's experimental Node.js shim. Evidence: primary documented.
+
+### ST078
+
+[WASI roadmap](https://wasi.dev/roadmap)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened shipped 0.3.0 and 0.3.1 milestones; 0.3.2 remains marked planned on the checked page despite its listed date. Evidence: primary documented.
+
+### ST079
+
+[WalkDir API documentation](https://docs.rs/walkdir/latest/walkdir/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened traversal, descriptor-limit, symlink and error examples. Error-dropping examples are unsuitable for a complete inventory. Evidence: primary documented.
+
+### ST080
+
+[WalkDir crate releases](https://docs.rs/crate/walkdir/latest)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2024-03-01.
+
+Opened release list; 2.5.0 is dated 2024-03-01. Evidence: primary documented.
+
+### ST081
+
+[WalkDir repository](https://github.com/BurntSushi/walkdir)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened README and MIT/Unlicense licensing. Evidence: primary documented.
+
+### ST082
+
+[ignore WalkBuilder documentation](https://docs.rs/ignore/latest/ignore/struct.WalkBuilder.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened standard_filters, hidden-file defaults, parallel builder and symlink options. Full inventory must explicitly disable default ignore filters. Evidence: primary documented.
+
+### ST083
+
+[ignore crate manifest](https://github.com/BurntSushi/ripgrep/blob/master/crates/ignore/Cargo.toml)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened master manifest: 0.4.34 and Unlicense OR MIT. This proves the master version, not a release date; the crate overview and API snapshot disagreed. Evidence: primary documented.
+
+### ST084
+
+[ignore crate overview](https://docs.rs/crate/ignore/latest)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened overview showing 0.4.33 while the API page and master manifest showed 0.4.34. Pin an actually downloaded released artifact before testing. Evidence: primary documented.
+
+### ST085
+
+[notify releases](https://github.com/notify-rs/notify/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened stable 8.2.1 heading dated 2026-10-25 and pre-release 9.0.0-rc.7 heading dated 2026-10-28. The rc.7 GitHub display timestamp was Oct 27; preserve the distinction. Evidence: primary documented.
+
+### ST086
+
+[notify repository and platform documentation](https://github.com/notify-rs/notify)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Windows ReadDirectoryChangesW backend, polling fallback and licensing. notify is CC0-1.0; companion crates have MIT/Apache-2.0 licensing. Evidence: primary documented.
+
+### ST087
+
+[ReadDirectoryChangesW function](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened overflow behavior: discarded buffered events can return zero bytes, requiring enumeration to reconcile. The watched directory itself is not reported as a child change. Evidence: primary documented.
+
+### ST088
+
+[Windows change journals](https://learn.microsoft.com/en-us/windows/win32/fileio/change-journals)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened NTFS change-journal purpose and indexing/recovery use. A change record is an invalidation signal, not verified file content. Evidence: primary documented.
+
+### ST089
+
+[Using the change journal identifier](https://learn.microsoft.com/en-us/windows/win32/fileio/using-the-change-journal-identifier)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened journal-ID continuity checks and documented administrative-privilege workflow. Retain journal identity with the USN checkpoint; recover by full reconciliation when continuity fails. Evidence: primary documented.
+
+### ST090
+
+[BLAKE3 official implementation](https://github.com/BLAKE3-team/BLAKE3)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened tree hashing, parallelism and official Rust/C implementations. Upstream license choices include Apache-2.0 and CC0; review the exact vendored files. Evidence: primary documented.
+
+### ST091
+
+[BLAKE3 crate releases](https://docs.rs/crate/blake3/latest)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-08-20.
+
+Opened crate release list: 1.8.7 was published on 2026-08-20. Evidence: primary documented.
+
+### ST092
+
+[BLAKE3 1.8.7 release](https://github.com/BLAKE3-team/BLAKE3/releases/tag/1.8.7)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened release note removing the arrayref dependency after an upstream crates.io ownership compromise. No benchmark result was imported. Evidence: primary documented.
+
+### ST093
+
+[FastCDC for Rust](https://github.com/nlfiedler/fastcdc-rs)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened implementation variants and MIT licensing. Chunk boundaries depend on the selected algorithm and parameters. Evidence: primary documented.
+
+### ST094
+
+[fastcdc crate releases](https://docs.rs/crate/fastcdc/latest)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-08-22.
+
+Opened 5.0.0 release metadata dated 2026-08-22. Evidence: primary documented.
+
+### ST095
+
+[FastCDC: a Fast and Efficient Content-Defined Chunking Approach for Data Deduplication](https://www.usenix.org/conference/atc16/technical-sessions/presentation/xia)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened the original ATC 2016 abstract describing Gear-based chunking, cut-point skipping and chunk-size normalization. Historical method; no paper speedup becomes an Atlas result. Evidence: primary documented.
+
+### ST096
+
+[DedupBench repository](https://github.com/UWASL/dedup-bench)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened chunker/fingerprint scope, SIMD configurations, Apache-2.0 license and 2026 follow-up publication notices. README month/citation differences do not establish an exact publication day. Evidence: primary documented.
+
+### ST097
+
+[VectorCDC: Accelerating Data Deduplication with Vector Instructions](https://www.usenix.org/conference/fast25/presentation/udayashankar)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened FAST 2025 author abstract describing SIMD chunking. Keep vendor/paper speedups separate from unrun Atlas experiments. Evidence: primary documented.
+
+### ST098
+
+[bita and bitar](https://github.com/oll3/bita)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened HTTP range-based delta cloning, BLAKE2 chunk verification, in-place update support and MIT license. In-place support does not provide transactional installation. Evidence: primary documented.
+
+### ST099
+
+[Zstandard official site](https://facebook.github.io/zstd/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened stable-format and dictionary-compression overview. No throughput or ratio claims were imported. Evidence: primary documented.
+
+### ST100
+
+[Zstandard README](https://github.com/facebook/zstd/blob/dev/README.md)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened dictionary use and BSD/GPLv2 licensing. A trained dictionary is part of the decoding dependency and must be distributed/versioned. Evidence: primary documented.
+
+### ST101
+
+[Zstandard release index](https://github.com/facebook/zstd/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened release index showing 1.5.7 as latest in the retrieved page. Do not infer a later release from a development changelog. Evidence: primary documented.
+
+### ST102
+
+[Zstandard development changelog](https://github.com/facebook/zstd/blob/dev/CHANGELOG)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened dev heading v1.6.0 (Dec 2025) above v1.5.7 (Feb 2025); it conflicted with the retrieved release index. No latest stable version is asserted from this conflict. Evidence: primary documented.
+
+### ST103
+
+[libarchive official project site](https://www.libarchive.org/)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-14.
+
+Opened stable 3.8.10 release dated 2026-10-14, supported platforms and New BSD license reference. Evidence: primary documented.
+
+### ST104
+
+[libarchive extraction API flags](https://github.com/libarchive/libarchive/blob/master/libarchive/archive.h)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened SECURE_SYMLINKS, SECURE_NODOTDOT, SECURE_NOABSOLUTEPATHS and SAFE_WRITES definitions. Secure extraction flags are explicit options; safe individual writes do not create a multi-file transaction. Evidence: primary documented.
+
+### ST105
+
+[zip ZipArchive documentation](https://docs.rs/zip/latest/zip/read/struct.ZipArchive.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 9.1.3 extraction warnings and metadata reuse contract. Extraction is non-atomic; protection excludes concurrent changes to the destination. Evidence: primary documented.
+
+### ST106
+
+[zip-rs releases](https://github.com/zip-rs/zip2/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened v9.1.3, marked Latest, with an Oct 27 display timestamp. Its Windows extraction fix uses FILE_FLAG_OPEN_REPARSE_POINT to avoid symlink-follow truncation; no exact release date is inferred from an undated year display. Evidence: primary documented.
+
+### ST107
+
+[zip crate manifest](https://docs.rs/crate/zip/latest/source/Cargo.toml)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 9.1.3 manifest and MIT licensing. Evidence: primary documented.
+
+### ST108
+
+[reqwest API documentation](https://docs.rs/reqwest/latest/reqwest/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened async/blocking API and unstable HTTP/3 section. HTTP/3 requires opt-in and can change in patch releases. Evidence: primary documented.
+
+### ST109
+
+[reqwest crate releases](https://docs.rs/crate/reqwest/latest)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-09-08.
+
+Opened 0.13.5 release dated 2026-09-08. Evidence: primary documented.
+
+### ST110
+
+[reqwest ClientBuilder documentation](https://docs.rs/reqwest/latest/reqwest/struct.ClientBuilder.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened automatic decoding, explicit no_gzip/no_brotli/no_zstd/no_deflate controls and timeout behavior. Transparent decoding changes byte-offset and header assumptions for resumable downloads. Evidence: primary documented.
+
+### ST111
+
+[reqwest repository](https://github.com/seanmonstar/reqwest)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened MIT OR Apache-2.0 licensing. Evidence: primary documented.
+
+### ST112
+
+[RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Range and If-Range sections. If-Range cannot use a weak entity tag; a mismatched condition causes Range to be ignored. RFC publication month is June 2022; no exact day is asserted. Evidence: primary documented.
+
+### ST113
+
+[iroh-blobs repository](https://github.com/n0-computer/iroh-blobs)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened explicit warning that the current version is not production quality and recommending 0.35 for production. Also opened verified range transfer, metadata limitations and MIT/Apache-2.0 license. Evidence: primary documented.
+
+### ST114
+
+[iroh-blobs changelog](https://github.com/n0-computer/iroh-blobs/blob/main/CHANGELOG.md)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-06.
+
+Opened 0.103.1 dated 2026-10-06, including logging of previously dropped provider/store errors. Transport maturity does not supersede the blob library warning. Evidence: primary documented.
+
+### ST115
+
+[Tantivy repository](https://github.com/quickwit-oss/tantivy)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened BM25/search-library scope, commit/reload visibility model, document replacement by delete/reindex and MIT license. Evidence: primary documented.
+
+### ST116
+
+[Tantivy releases](https://github.com/quickwit-oss/tantivy/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 0.26.1, marked Latest, with May 10 display timestamp. The retrieved date did not show a year, so published_at remains null. Evidence: primary documented.
+
+### ST117
+
+[SQLite FTS5 documentation](https://www.sqlite.org/fts5.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened external-content index consistency and rebuild guidance. Adding triggers does not backfill pre-existing rows; update/delete ordering matters. Evidence: primary documented.
+
+### ST118
+
+[ReplaceFileW function](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-replacefilew)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened same-volume requirement, optional backup and attribute preservation. This is a single-file replacement primitive; it does not establish a multi-file installation transaction. Evidence: primary documented.
+
+### ST119
+
+[FlushFileBuffers function](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-flushfilebuffers)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened file-handle flush semantics and access requirements. A flush call alone does not prove end-to-end power-loss durability for a staged installation. Evidence: primary documented.
+
+### ST120
+
+[Alternatives to using Transactional NTFS](https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Microsoft guidance recommending alternatives to new reliance on TxF. Evidence: primary documented.
+
+### ST121
+
+[Naming Files, Paths, and Namespaces](https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened case sensitivity, namespace and name restrictions. Use these to define path/reparse collision tests; display-string normalization alone is not file identity. Evidence: primary documented.
+
+### ST122
+
+[SQLite 3.54.1 release log](https://www.sqlite.org/releaselog/3_54_1.html)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-16.
+
+Opened release heading dated 2026-10-16. Evidence: primary documented.
+
+### ST123
+
+[redb changelog](https://docs.rs/crate/redb/latest/source/CHANGELOG.md)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-13.
+
+Opened 4.4.0 dated 2026-10-13, including cursor API stabilization and value/type encoding changes. Do not assign unreleased top-of-file changes to this release. Evidence: primary documented.
+
+### ST124
+
+[redb Durability API](https://docs.rs/redb/latest/redb/enum.Durability.html)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Immediate versus None persistence semantics. Compare equal acknowledged-write durability rather than default settings. Evidence: primary documented.
+
+### ST125
+
+[RocksDB basic operations](https://github.com/facebook/rocksdb/wiki/Basic-Operations)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened WriteBatch atomicity, sync writes and WAL configuration. Default asynchronous acknowledgement, process failure and machine failure are different durability conditions. Evidence: primary documented.
+
+### ST126
+
+[DuckDB 2.0 concurrency documentation](https://duckdb.org/docs/2.0/connect/concurrency)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened native embedded process/thread concurrency, optimistic conflicts and Quack client/server multi-process writing. Do not generalize embedded limits to the separate service mode. Evidence: primary documented.
+
+### ST127
+
+[Polars streaming engine](https://docs.pola.rs/user-guide/concepts/streaming/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened streaming execution and fallback to in-memory operations. Validate the actual physical plan and memory use for the selected workload. Evidence: primary documented.
+
+### ST128
+
+[LanceDB full-text search](https://docs.lancedb.com/search/full-text-search)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened native FTS behavior and unindexed-tail flat scanning before optimize. Native FTS and legacy Tantivy integration have different configuration contracts. Evidence: primary documented.
+
+### ST129
+
+[jwalk repository maintenance notice](https://github.com/Byron/jwalk)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened README marked Unmaintained and no longer maintained/supported. The notice points to dua-core; that suggestion is not a completed evaluation of dua-core. Evidence: primary documented.
+
+### ST130
+
+[Marcel Gregoriadis research publications](https://marcelgregoriadis.com/research)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 2026 listing for Benchmarking Content-Defined Chunking Algorithms for Data Deduplication, with ICDE 2027 venue and linked arXiv/code. This establishes author-listed metadata only; full paper body was inaccessible. Evidence: primary documented.
+
+### ST131
+
+[cdc-bench research artifact](https://github.com/mrd0ll4r/cdc-bench)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened README and linked experiment code. The README still identifies the 2024 predecessor paper, so it is not yet a verified version-matched artifact for the author-listed 2026 paper. Evidence: primary documented.
+
+### ST132
+
+[libsolv README](https://github.com/openSUSE/libsolv)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened solver design, supported package metadata formats and decision introspection. Evidence: primary documented.
+
+### ST133
+
+[libsolv changelog](https://github.com/openSUSE/libsolv/blob/master/package/libsolv.changes)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-23.
+
+Opened dated 0.7.41 entry, including parser hardening and metadata-loading changes. Evidence: primary documented.
+
+### ST134
+
+[libsolv BSD license](https://github.com/openSUSE/libsolv/blob/master/LICENSE.BSD)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened BSD three-clause license text. Evidence: primary documented.
+
+### ST135
+
+[Resolvo README](https://github.com/prefix-dev/resolvo)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened generic SAT solver, lazy metadata, conflict reporting, bindings and BSD-3-Clause license. Evidence: primary documented.
+
+### ST136
+
+[Resolvo 0.12.2 API](https://docs.rs/resolvo/0.12.2/resolvo/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened pinned published crate documentation, including CDCL solver and provider interfaces; publication date not established. Evidence: primary documented.
+
+### ST137
+
+[Resolvo changelog](https://github.com/prefix-dev/resolvo/blob/main/CHANGELOG.md)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 0.12.0 entry dated 2026-07-24 introducing multiversion packages; this is not the date of 0.12.2. Evidence: primary documented.
+
+### ST138
+
+[The Update Framework specification](https://theupdateframework.github.io/specification/latest/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened version 1.0.37, last-modified 2026-10-08, non-goals and timestamp verification including signature uniqueness, rollback and expiry checks. Evidence: primary documented.
+
+### ST139
+
+[python-tuf reference implementation](https://github.com/theupdateframework/python-tuf)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened reference-client APIs and MIT OR Apache-2.0 licensing; repository-management API is marked unstable. Evidence: primary documented.
+
+### ST140
+
+[tough repository](https://github.com/awslabs/tough)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened client/tuftool roles and Apache-2.0 OR MIT licensing. Evidence: primary documented.
+
+### ST141
+
+[tough 0.24.0 API](https://docs.rs/tough/0.24.0/tough/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened exact crate version and overview; overview claims TUF 1.0.0 and no delegated roles, which conflicts with delegated-role advisories. Evidence: primary documented.
+
+### ST142
+
+[tough delegated metadata verification advisory](https://github.com/awslabs/tough/security/advisories/GHSA-4v58-8p28-2rq3)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-04-24.
+
+Opened maintainer advisory describing expiration/hash/length validation defects and fix in tough 0.22.0. Evidence: primary documented.
+
+### ST143
+
+[tough signature threshold advisory](https://github.com/awslabs/tough/security/advisories/GHSA-8m7c-8m39-rv4x)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-04-24.
+
+Opened duplicate-signature threshold defect and fix in tough 0.22.0. Evidence: primary documented.
+
+### ST144
+
+[Velopack README](https://github.com/velopack/velopack)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened supported desktop systems, bindings and MIT license. Evidence: primary documented.
+
+### ST145
+
+[Velopack releases](https://github.com/velopack/velopack/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened stable 1.2.161 and prerelease 1.3.39-g8d2844f; the prerelease includes Windows replacement-failure restoration and managed signing changes. Rendered dates omit years. Evidence: primary documented.
+
+### ST146
+
+[Velopack runtime and OS targeting](https://docs.velopack.io/packaging/runtime)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened RID/version/architecture targeting and distinction from cross compilation. Evidence: primary documented.
+
+### ST147
+
+[Velopack code signing](https://docs.velopack.io/packaging/signing)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened signing integration and explicit since-1.3 cross-host managed signing note; do not apply that capability to 1.2.161. Evidence: primary documented.
+
+### ST148
+
+[Sparkle 2.10.1 release](https://github.com/sparkle-project/Sparkle/releases/tag/2.10.1)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened release changes and macOS 12.0 minimum; publication year is not visible in rendered release date. Evidence: primary documented.
+
+### ST149
+
+[Sparkle documentation](https://sparkle-project.org/documentation/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened EdDSA, Developer ID/notarization, signed feeds, pre-extraction verification and key-rotation constraints. Evidence: primary documented.
+
+### ST150
+
+[Sparkle license and bundled notices](https://github.com/sparkle-project/Sparkle/blob/2.x/LICENSE)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened MIT-style main license and external BSD/MIT/zlib-style notices; preserve bundled notices. Evidence: primary documented.
+
+### ST151
+
+[bubblewrap README](https://github.com/containers/bubblewrap)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened user-namespace design and warning that security depends entirely on caller arguments. Evidence: primary documented.
+
+### ST152
+
+[bubblewrap 0.13.0 release](https://github.com/containers/bubblewrap/releases/tag/v0.13.0)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Linux build/runtime requirements, mount_setattr behavior and rejection of empty path arguments. Evidence: primary documented.
+
+### ST153
+
+[bubblewrap 0.12.0 release](https://github.com/containers/bubblewrap/releases/tag/v0.12.0)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened LGPL-2.1-or-later change, removal of setuid support and not-a-security-boundary option semantics. Evidence: primary documented.
+
+### ST154
+
+[Launch an AppContainer](https://learn.microsoft.com/en-us/windows/win32/secauthz/implementing-an-appcontainer)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Windows 8 introduction, intersecting access checks, LPAC capability differences and process creation examples. Evidence: primary documented.
+
+### ST155
+
+[Win32 app isolation overview](https://learn.microsoft.com/en-us/windows/win32/secauthz/app-isolation-overview)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened preview warning and minimum Windows 11 24H2/build 26100 plus Visual Studio 17.10.2 requirements; this wrapper is distinct from the established AppContainer APIs. Evidence: primary documented.
+
+### ST156
+
+[Nix 2.35.4 reference manual](https://nix.dev/manual/nix/2.35/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened exact current manual version and store/dependency model. Evidence: primary documented.
+
+### ST157
+
+[Nix 2.35.0 release notes](https://nix.dev/manual/nix/2.35/release-notes/rl-2.35)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-06-22.
+
+Opened 2.35.0 release date; it is not the 2.35.4 publication date. Evidence: primary documented.
+
+### ST158
+
+[Pinning Nixpkgs](https://nix.dev/tutorials/first-steps/towards-reproducibility-pinning-nixpkgs)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened exact-revision pinning guidance and navigation separating 2.35 latest, 2.34 rolling/26.05 and prerelease. Evidence: primary documented.
+
+### ST159
+
+[Install Nix](https://nix.dev/install-nix)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Linux/macOS installation guidance; native Windows builds are not established by these instructions. Evidence: primary documented.
+
+### ST160
+
+[Nix README and license](https://github.com/NixOS/nix)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Linux/Unix scope and LGPL v2.1 licensing. Evidence: primary documented.
+
+### ST161
+
+[diffoscope project documentation](https://diffoscope.org/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened supported formats, external-tool dependencies, installation options and GPL-3.0-or-later license. Evidence: primary documented.
+
+### ST162
+
+[diffoscope 335 release](https://diffoscope.org/news/diffoscope-335-released/)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-23.
+
+Opened exact release number and publication date. Evidence: primary documented.
+
+### ST163
+
+[rr README and system requirements](https://github.com/rr-debugger/rr)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened process/thread recording, GDB reverse execution, Linux kernel and CPU/performance-counter requirements. Evidence: primary documented.
+
+### ST164
+
+[rr 5.10.0 release](https://github.com/rr-debugger/rr/releases/tag/5.10.0)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened current Latest tag; rendered date is 15 Oct without a year. Evidence: primary documented.
+
+### ST165
+
+[rr releases](https://github.com/rr-debugger/rr/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 5.10.0 kernel configuration and Intel hybrid CPU notes; distinguishes it from 5.9.0. Evidence: primary documented.
+
+### ST166
+
+[rr license and third-party notices](https://github.com/rr-debugger/rr/blob/master/LICENSE)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened MIT core grant and additional component/test licenses; do not flatten the whole source tree to one license. Evidence: primary documented.
+
+### ST167
+
+[Loom 0.7.2 API and limitations](https://docs.rs/loom/0.7.2/loom/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened latest docs showing 0.7.2, deterministic modeling, replacement primitives, preemption bounds and relaxed-memory limitations; use the pinned version URL. Evidence: primary documented.
+
+### ST168
+
+[Loom README](https://github.com/tokio-rs/loom)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened MIT license and explicit SeqCst false-alarm/load-buffering soundness limitations. Evidence: primary documented.
+
+### ST169
+
+[Trustworthy and Confidential SBOM Exchange](https://www.usenix.org/conference/usenixsecurity26/presentation/abu-ishgair)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened USENIX Security 2026 paper page and bibliography identifying August 2026; exact publication day not stated. Evidence: primary documented.
+
+### ST170
+
+[PETRA prepublication paper](https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_ishgair.pdf)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened original design and open-science appendix identifying Apache-2.0 code/evaluation artifacts. Evidence: primary documented.
+
+### ST171
+
+[PETRA evaluation artifact v1](https://zenodo.org/records/17906622)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2025-12-12.
+
+Opened research prototype archive and artifact publication date, distinct from the 2026 paper venue. Evidence: primary documented.
+
+### ST172
+
+[Fast Atomicity Monitoring, arXiv v2](https://arxiv.org/abs/2604.11369)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-06.
+
+Opened submission history: first submitted 2026-04-13, revised 2026-10-06; v2 date used here. Evidence: primary documented.
+
+### ST173
+
+[PLDI 2026 Fast Atomicity Monitoring](https://pldi26.sigplan.org/details/pldi-2026-papers/5/Fast-Atomicity-Monitoring)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened conference abstract, TSAN prototype and DOI; conference session date is not treated as exact publication date. Evidence: primary documented.
+
+### ST174
+
+[Fast Atomicity Monitoring original paper](https://hcantunc.github.io/papers/pldi26/paper.pdf)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened original paper, June 2026 publication month and CC-BY-4.0 paper license. Evidence: primary documented.
+
+### ST175
+
+[Fast Atomicity Monitoring artifact v2](https://zenodo.org/records/19615809)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-04-17.
+
+Opened author-linked artifact, v2 published 2026-04-17; software license was not exposed in rendered metadata. Evidence: primary documented.
+
+### ST176
+
+[Cosign releases](https://github.com/sigstore/cosign/releases)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-20.
+
+Opened v3.1.4 release and previously established full artifact date. Evidence: primary documented.
+
+### ST177
+
+[Cosign signature verification](https://docs.sigstore.dev/cosign/verifying/verify/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened exact identity/issuer policy, blob bundles and artifact digest claims. Evidence: primary documented.
+
+### ST178
+
+[Cosign README and license](https://github.com/sigstore/cosign)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Apache-2.0 license and Linux/macOS/Windows binary distribution. Evidence: primary documented.
+
+### ST179
+
+[SLSA specification v1.2](https://slsa.dev/spec/v1.2/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Approved status and separate build/source tracks. Evidence: primary documented.
+
+### ST180
+
+[SLSA v1.2 artifact verification](https://slsa.dev/spec/v1.2/verifying-artifacts)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened digest, signature, trusted builder, buildType, externalParameters and canonical-source checks. Evidence: primary documented.
+
+### ST181
+
+[OSV-Scanner v2.7.0 release](https://github.com/google/osv-scanner/releases/tag/v2.7.0)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened current release and package URL, Dart extraction and offline/plugin changes; rendered publication year not available. Evidence: primary documented.
+
+### ST182
+
+[OSV-Scanner offline mode](https://google.github.io/osv-scanner/usage/offline-mode/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened full offline behavior and distinction from offline-vulnerabilities, which can still allow other network activity. Evidence: primary documented.
+
+### ST183
+
+[OSV-Scanner installation](https://google.github.io/osv-scanner/installation/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened official Linux/macOS/Windows binary availability. Evidence: primary documented.
+
+### ST184
+
+[OSV-Scanner repository license](https://github.com/google/osv-scanner)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Apache-2.0 licensing. Evidence: primary documented.
+
+### ST185
+
+[Syft releases](https://github.com/anchore/syft/releases)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-19.
+
+Opened v1.55.0 changes and full asset timestamps confirming 2026-10-19. Evidence: primary documented.
+
+### ST186
+
+[Syft README](https://github.com/anchore/syft/blob/main/README.md)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened filesystem/archive/container scan targets, package ecosystems and output formats. Evidence: primary documented.
+
+### ST187
+
+[Syft installation](https://oss.anchore.com/docs/installation/syft/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened official Linux/macOS/Windows builds and download verification option. Evidence: primary documented.
+
+### ST188
+
+[Syft repository license](https://github.com/anchore/syft)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Apache-2.0 license. Evidence: primary documented.
+
+### ST189
+
+[Trivy releases](https://github.com/aquasecurity/trivy/releases)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-10-21.
+
+Opened v0.76.1 and official binary/container trust-store mitigation notes; prior full artifact timestamp establishes release date. Evidence: primary documented.
+
+### ST190
+
+[Trivy installation](https://trivy.dev/docs/latest/getting-started/installation/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened official versus community distributions and Windows/macOS/Linux install paths. Evidence: primary documented.
+
+### ST191
+
+[Trivy repository license](https://github.com/aquasecurity/trivy)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Apache-2.0 license. Evidence: primary documented.
+
+### ST192
+
+[Tracy releases](https://github.com/wolfpld/tracy/releases)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened 0.14.1 latest release, pre-0.11 trace compatibility removal and instrumentation/protocol fixes; rendered year unavailable. Evidence: primary documented.
+
+### ST193
+
+[Tracy README](https://github.com/wolfpld/tracy)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened CPU/GPU instrumentation and direct versus third-party language binding distinction. Evidence: primary documented.
+
+### ST194
+
+[Tracy license](https://github.com/wolfpld/tracy/blob/master/LICENSE)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened BSD-3-Clause license text. Evidence: primary documented.
+
+### ST195
+
+[Perfetto v58 announcement](https://perfetto.dev/blog/perfetto-v58)
+
+Primary source reviewed 2026-10-28 UTC; dated publication 2026-08-24.
+
+Previously opened v58.2 announcement and 2026-08-24 date. Evidence: primary documented.
+
+### ST196
+
+[Perfetto official release blog index](https://perfetto.dev/blog/)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened current index, which still identifies v58.2 as the latest release announcement; not a proof that every rolling binary matches it. Evidence: primary documented.
+
+### ST197
+
+[Perfetto tracing SDK](https://perfetto.dev/docs/instrumentation/tracing-sdk)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened in-process versus system backends and Android/Linux/macOS/Windows in-process support. Evidence: primary documented.
+
+### ST198
+
+[Perfetto README and license](https://github.com/google/perfetto)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Apache-2.0 license and distinction between portable SDK instrumentation and Linux system/native-heap probes. Evidence: primary documented.
+
+### ST199
+
+[AFL++ current README](https://github.com/AFLplusplus/AFLplusplus)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened release 5.03c versus GitHub 5.04a and current AGPL project/Apache harness licensing distinction. Evidence: primary documented.
+
+### ST200
+
+[AFL++ current stable licensing](https://github.com/AFLplusplus/AFLplusplus/blob/stable/LICENSING.md)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened AGPL-3.0-or-later project license, file-level Apache-2.0 notices and optional commercial arrangement; observation is for the current tree. Evidence: primary documented.
+
+### ST201
+
+[AFL++ installation and platform constraints](https://github.com/AFLplusplus/AFLplusplus/blob/stable/docs/INSTALL.md)
+
+Primary source reviewed 2026-10-28 UTC; no exact publication date assigned to this source.
+
+Opened Linux baseline and macOS exclusions for LTO, gcc-fast and qemu mode. Evidence: primary documented.

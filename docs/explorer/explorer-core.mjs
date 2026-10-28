@@ -13,7 +13,7 @@ export function safeURL(value) {
 export function parseState(search = '') {
   const p = new URLSearchParams(search);
   const page = Number(p.get('page'));
-  return {q: (p.get('q') || '').slice(0, 300), category: p.get('category') || '',
+  return {q: (p.get('q') || '').slice(0, 300), category: p.get('category') || '', layer: p.get('layer') || '',
     kind: p.get('kind') || '', maturity: p.get('maturity') || '', evidence: p.get('evidence') || '',
     year: p.get('year') || '', track: p.get('track') || '', cohort: p.get('cohort') || '',
     sort: SORTS.includes(p.get('sort')) ? p.get('sort') : 'priority',
@@ -22,7 +22,7 @@ export function parseState(search = '') {
 
 export function encodeState(state) {
   const p = new URLSearchParams();
-  for (const key of ['q', 'category', 'kind', 'maturity', 'evidence', 'year', 'track', 'cohort', 'sort', 'page']) {
+  for (const key of ['q', 'category', 'layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'cohort', 'sort', 'page']) {
     const value = state[key];
     if (value && !(key === 'sort' && value === 'priority') && !(key === 'page' && value === 1)) p.set(key, String(value));
   }
@@ -80,6 +80,7 @@ export function queryCatalog(catalog, state) {
   if (state.sort === 'community' && !state.track) return {entries: [], total: 0, pages: 1, page: 1, reason: 'Choose an evaluation track to compare community experience in a shared scope.'};
   let entries = catalog.entries.filter(e => {
     if (state.category && state.category !== e.category) return false;
+    if (state.layer && !(e.layers || []).includes(state.layer)) return false;
     if (state.kind && state.kind !== e.kind) return false;
     if (state.maturity && state.maturity !== e.maturity) return false;
     if (state.track && state.track !== e.evaluation.track) return false;
@@ -87,7 +88,8 @@ export function queryCatalog(catalog, state) {
     if (state.year && !publicationYearMatches(e, state.year)) return false;
     if (needsCohort && !measurement(e, catalog, state)) return false;
     const text = [e.name, e.summary, e.category, e.kind, e.repo || '', e.latest_signal || '', ...e.tags,
-      e.evaluation.track, ...e.sources.map(s => s.title)].join(' ').toLocaleLowerCase();
+      e.evaluation.track, ...(e.layers || []).map(id => (catalog.layers || []).find(l => l.id === id)?.label || id),
+      ...e.sources.map(s => s.title)].join(' ').toLocaleLowerCase();
     return terms.every(t => text.includes(t));
   });
   const value = e => {
@@ -119,14 +121,14 @@ export function csvCell(value) {
 }
 
 export function exportCSV(entries, catalog, state = null) {
-  const fields = ['id', 'name', 'kind', 'category', 'maturity', 'evidence', 'priority', 'track', 'github_stars', 'stars_observed_at', 'url'];
+  const fields = ['id', 'name', 'kind', 'category', 'stack_layers', 'maturity', 'evidence', 'priority', 'track', 'github_stars', 'stars_observed_at', 'url'];
   if (state) fields.push('ranking_view', 'benchmark_cohort_id', 'benchmark_metric', 'benchmark_unit',
     'benchmark_direction', 'benchmark_value', 'benchmark_source_url', 'benchmark_observed_at',
     'community_track', 'community_report_count', 'community_raw_mean', 'community_adjusted_score', 'community_rank_eligible');
   const cohort = state ? cohortFor(catalog, state) : null;
   return [fields, ...entries.map(e => {
     const signal = repositorySignal(e, catalog);
-    const values = [e.id, e.name, e.kind, e.category, e.maturity, evidenceFor(e, catalog), e.priority,
+    const values = [e.id, e.name, e.kind, e.category, (e.layers || []).join('; '), e.maturity, evidenceFor(e, catalog), e.priority,
       e.evaluation.track, signal?.stars, signal?.observed_at, e.url];
     if (!state) return values;
     const result = cohort ? measurement(e, catalog, state) : null;
