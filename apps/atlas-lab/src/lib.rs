@@ -48,7 +48,57 @@ pub struct Gate {
     pub memory_budget_bytes: u64,
 }
 
+/// Versioned acceptance requirements, stored with each journal record.
+/// Decimal strings and hexadecimal float bits survive browser JSON roundtrips.
+/// Bump evaluator_version when decision semantics change.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct GatePolicy {
+    schema_version: u32,
+    evaluator_version: u32,
+    minimum_pairs_decimal: String,
+    minimum_stress_cases_decimal: String,
+    minimum_speedup_text: String,
+    minimum_speedup_bits_hex: String,
+    memory_budget_bytes_decimal: String,
+}
+impl GatePolicy {
+    pub fn evaluate(&self, evidence: &Evidence) -> Decision {
+        let restore = || -> Option<Gate> {
+            if self.schema_version != 1 || self.evaluator_version != 1 {
+                return None;
+            }
+            let gate = Gate {
+                minimum_pairs: self.minimum_pairs_decimal.parse().ok()?,
+                minimum_stress_cases: self.minimum_stress_cases_decimal.parse().ok()?,
+                minimum_speedup: f64::from_bits(
+                    u64::from_str_radix(&self.minimum_speedup_bits_hex, 16).ok()?,
+                ),
+                memory_budget_bytes: self.memory_budget_bytes_decimal.parse().ok()?,
+            };
+            (gate.snapshot() == *self).then_some(gate)
+        };
+        match restore() {
+            Some(gate) => gate.evaluate(evidence),
+            None => Decision::Incomplete(
+                "Unsupported or inconsistent acceptance policy snapshot".into(),
+            ),
+        }
+    }
+}
+
 impl Gate {
+    pub fn snapshot(&self) -> GatePolicy {
+        GatePolicy {
+            schema_version: 1,
+            evaluator_version: 1,
+            minimum_pairs_decimal: self.minimum_pairs.to_string(),
+            minimum_stress_cases_decimal: self.minimum_stress_cases.to_string(),
+            minimum_speedup_text: self.minimum_speedup.to_string(),
+            minimum_speedup_bits_hex: format!("{:016x}", self.minimum_speedup.to_bits()),
+            memory_budget_bytes_decimal: self.memory_budget_bytes.to_string(),
+        }
+    }
     pub fn evaluate(&self, e: &Evidence) -> Decision {
         if self.minimum_pairs < 5
             || self.minimum_stress_cases == 0
@@ -129,22 +179,55 @@ impl Gate {
 }
 
 pub mod journal {
-    use super::{Evidence, Gate};
+    use super::{Evidence, Gate, GatePolicy};
     use rusqlite::{Connection, params};
     /// Local append-only API. Not tamper-proof against someone editing the database itself.
     pub struct Journal(Connection);
     impl Journal {
         pub fn open(path: &std::path::Path) -> rusqlite::Result<Self> {
-            let conn = Connection::open(path)?;
+            let mut conn = Connection::open(path)?;
             conn.busy_timeout(std::time::Duration::from_secs(5))?;
             conn.execute_batch(
                 "PRAGMA foreign_keys=ON; PRAGMA synchronous=FULL;
                 CREATE TABLE IF NOT EXISTS experiments (
                   id INTEGER PRIMARY KEY, recorded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                   candidate TEXT NOT NULL, baseline TEXT NOT NULL, evidence TEXT NOT NULL,
-                  decision TEXT NOT NULL, parent INTEGER REFERENCES experiments(id));",
+                  decision TEXT NOT NULL, parent INTEGER REFERENCES experiments(id), acceptance_policy TEXT);",
             )?;
+            // Preserve legacy records as policy-unknown, never invent their thresholds.
+            if !Self::has_policy_column(&conn)? {
+                let tx =
+                    conn.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+                // Recheck under the write lock in case another opener migrated first.
+                if !Self::has_policy_column(&tx)? {
+                    tx.execute(
+                        "ALTER TABLE experiments ADD COLUMN acceptance_policy TEXT",
+                        [],
+                    )?;
+                }
+                tx.commit()?;
+            }
             Ok(Self(conn))
+        }
+        fn has_policy_column(conn: &Connection) -> rusqlite::Result<bool> {
+            let mut statement = conn.prepare("PRAGMA table_info(experiments)")?;
+            for name in statement.query_map([], |row| row.get::<_, String>(1))? {
+                if name? == "acceptance_policy" {
+                    return Ok(true);
+                }
+            }
+            Ok(false)
+        }
+        pub fn recorded_policy(
+            &self,
+            id: i64,
+        ) -> Result<Option<GatePolicy>, Box<dyn std::error::Error>> {
+            let raw: Option<String> = self.0.query_row(
+                "SELECT acceptance_policy FROM experiments WHERE id=?1",
+                [id],
+                |row| row.get(0),
+            )?;
+            Ok(raw.map(|text| serde_json::from_str(&text)).transpose()?)
         }
         /// Repairs create new records linked to the failed experiment, never overwrite it.
         pub fn record(
@@ -155,13 +238,20 @@ pub mod journal {
         ) -> Result<i64, Box<dyn std::error::Error>> {
             let evidence = serde_json::to_string(e)?;
             let decision = serde_json::to_string(&gate.evaluate(e))?;
+            let policy = gate.snapshot();
+            let policy_json = serde_json::to_string(&policy)?;
             let tx = self.0.transaction()?;
             if let Some(parent_id) = parent {
-                let previous: String = tx.query_row(
-                    "SELECT evidence FROM experiments WHERE id=?1",
+                let (previous, previous_policy): (String, Option<String>) = tx.query_row(
+                    "SELECT evidence,acceptance_policy FROM experiments WHERE id=?1",
                     [parent_id],
-                    |r| r.get(0),
+                    |r| Ok((r.get(0)?, r.get(1)?)),
                 )?;
+                let previous_policy = previous_policy.ok_or("Legacy parent has no recorded acceptance policy; use a distinct experiment rather than claim a comparable repair")?;
+                let previous_policy: GatePolicy = serde_json::from_str(&previous_policy)?;
+                if previous_policy != policy {
+                    return Err("Repair must preserve the parent's exact acceptance policy".into());
+                }
                 let previous: Evidence = serde_json::from_str(&previous)?;
                 if previous.baseline_revision != e.baseline_revision
                     || previous.workload_id != e.workload_id
@@ -171,8 +261,8 @@ pub mod journal {
                     return Err("Repair must identify a new candidate against the same baseline, workload and environment".into());
                 }
             }
-            tx.execute("INSERT INTO experiments(candidate,baseline,evidence,decision,parent) VALUES(?1,?2,?3,?4,?5)",
-                params![e.candidate_revision,e.baseline_revision,evidence,decision,parent])?;
+            tx.execute("INSERT INTO experiments(candidate,baseline,evidence,decision,parent,acceptance_policy) VALUES(?1,?2,?3,?4,?5,?6)",
+                params![e.candidate_revision,e.baseline_revision,evidence,decision,parent,policy_json])?;
             let id = tx.last_insert_rowid();
             tx.commit()?;
             Ok(id)
@@ -209,6 +299,132 @@ mod tests {
         next.environment_id = "changed-compiler-or-lock".into();
         assert!(journal.record(&next, &gate(), Some(id)).is_err());
         assert_eq!(journal.count().unwrap(), 1);
+    }
+    #[test]
+    fn repair_cannot_relax_acceptance_policy() {
+        let mut journal = journal::Journal::open(std::path::Path::new(":memory:")).unwrap();
+        let mut original = evidence();
+        for trial in &mut original.trials {
+            trial.peak_bytes = 2048;
+        }
+        assert!(matches!(gate().evaluate(&original), Decision::Stabilize(_)));
+        let parent = journal.record(&original, &gate(), None).unwrap();
+        let mut next = original.clone();
+        next.candidate_revision = "unchanged-work-with-looser-budget".into();
+        let mut relaxed = gate();
+        relaxed.memory_budget_bytes = 4096;
+        assert!(matches!(
+            relaxed.evaluate(&next),
+            Decision::EligibleForReview { .. }
+        ));
+        assert!(journal.record(&next, &relaxed, Some(parent)).is_err());
+        assert_eq!(journal.count().unwrap(), 1);
+    }
+    #[test]
+    fn policy_snapshot_roundtrips_invalid_float_bits_and_large_limits() {
+        for bits in [
+            1.1f64.to_bits(),
+            f64::INFINITY.to_bits(),
+            0x7ff8000000000042,
+            (-0.0f64).to_bits(),
+        ] {
+            let mut policy = gate();
+            policy.minimum_speedup = f64::from_bits(bits);
+            policy.memory_budget_bytes = u64::MAX;
+            let snapshot = policy.snapshot();
+            let wire = serde_json::to_string(&snapshot).unwrap();
+            let restored: GatePolicy = serde_json::from_str(&wire).unwrap();
+            assert_eq!(restored, snapshot);
+            assert_eq!(restored.evaluate(&evidence()), policy.evaluate(&evidence()));
+            assert_eq!(restored.memory_budget_bytes_decimal, u64::MAX.to_string());
+        }
+        let mut damaged = gate().snapshot();
+        damaged.minimum_speedup_text = "999".into();
+        assert!(matches!(
+            damaged.evaluate(&evidence()),
+            Decision::Incomplete(_)
+        ));
+        damaged = gate().snapshot();
+        damaged.evaluator_version = 2;
+        assert!(matches!(
+            damaged.evaluate(&evidence()),
+            Decision::Incomplete(_)
+        ));
+    }
+    #[test]
+    fn journal_policy_survives_reopen_and_legacy_rows_remain_unknown() {
+        let path = std::env::temp_dir().join(format!(
+            "atlas-policy-{}-{}.sqlite",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let db = rusqlite::Connection::open(&path).unwrap();
+        db.execute_batch("CREATE TABLE experiments(id INTEGER PRIMARY KEY, recorded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,candidate TEXT NOT NULL,baseline TEXT NOT NULL,evidence TEXT NOT NULL,decision TEXT NOT NULL,parent INTEGER REFERENCES experiments(id));").unwrap();
+        let original = evidence();
+        let wire = serde_json::to_string(&original).unwrap();
+        let decision = serde_json::to_string(&gate().evaluate(&original)).unwrap();
+        db.execute("INSERT INTO experiments(id,candidate,baseline,evidence,decision) VALUES(1,?1,?2,?3,?4)", rusqlite::params![original.candidate_revision,original.baseline_revision,wire,decision]).unwrap();
+        let before: (String, String, String) = db
+            .query_row(
+                "SELECT recorded_at,evidence,decision FROM experiments WHERE id=1",
+                [],
+                |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?)),
+            )
+            .unwrap();
+        drop(db);
+        let mut journal = journal::Journal::open(&path).unwrap();
+        assert_eq!(journal.recorded_policy(1).unwrap(), None);
+        let mut next = original.clone();
+        next.candidate_revision = "legacy-child".into();
+        assert!(journal.record(&next, &gate(), Some(1)).is_err());
+        assert_eq!(journal.count().unwrap(), 1);
+        let id = journal.record(&next, &gate(), None).unwrap();
+        drop(journal);
+        let reopened = journal::Journal::open(&path).unwrap();
+        assert_eq!(
+            reopened.recorded_policy(id).unwrap(),
+            Some(gate().snapshot())
+        );
+        assert_eq!(reopened.count().unwrap(), 2);
+        drop(reopened);
+        let db = rusqlite::Connection::open(&path).unwrap();
+        let after: (String, String, String) = db
+            .query_row(
+                "SELECT recorded_at,evidence,decision FROM experiments WHERE id=1",
+                [],
+                |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?)),
+            )
+            .unwrap();
+        assert_eq!(before, after);
+    }
+    #[test]
+    fn every_acceptance_requirement_is_bound_to_repair_lineage() {
+        let mut journal = journal::Journal::open(std::path::Path::new(":memory:")).unwrap();
+        let original = evidence();
+        let parent = journal.record(&original, &gate(), None).unwrap();
+        for field in 0..4 {
+            let mut changed = gate();
+            match field {
+                0 => changed.minimum_pairs = 6,
+                1 => changed.minimum_stress_cases = 999,
+                2 => changed.minimum_speedup = 1.01,
+                _ => changed.memory_budget_bytes = 4096,
+            }
+            let mut next = original.clone();
+            next.candidate_revision = format!("policy-change-{field}");
+            assert!(journal.record(&next, &changed, Some(parent)).is_err());
+        }
+        assert_eq!(journal.count().unwrap(), 1);
+        let mut next = original.clone();
+        next.candidate_revision = "same-policy-repair".into();
+        let id = journal.record(&next, &gate(), Some(parent)).unwrap();
+        assert_eq!(
+            journal.recorded_policy(id).unwrap(),
+            Some(gate().snapshot())
+        );
     }
     fn gate() -> Gate {
         Gate {

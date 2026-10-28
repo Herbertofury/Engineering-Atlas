@@ -212,6 +212,7 @@ fn persist_experiment(
     evidence: &crate::Evidence,
     policy: &crate::Gate,
 ) -> (bool, serde_json::Value) {
+    output["acceptance_policy"] = serde_json::json!(policy.snapshot());
     match crate::journal::Journal::open(path)
         .map_err(|_| ())
         .and_then(|mut journal| journal.record(evidence, policy, None).map_err(|_| ()))

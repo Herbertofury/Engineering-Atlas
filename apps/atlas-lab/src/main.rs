@@ -205,7 +205,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!(
         "{}",
         serde_json::to_string_pretty(
-            &serde_json::json!({"experiment_id":id,"evidence":evidence,"decision":decision,
+            &serde_json::json!({"experiment_id":id,"evidence":evidence,"decision":decision,"acceptance_policy":policy.snapshot(),
         "limitations":["No peak memory measurement","Cancellation not implemented/tested","No production acceptance","Generated IDs, not a live platform collection","Unit stress cases are not counted as this run's evidence"]})
         )?
     );

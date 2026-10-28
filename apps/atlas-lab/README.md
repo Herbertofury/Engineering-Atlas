@@ -147,3 +147,7 @@ The Collection panel implements a saved-response inspector for one canonical pro
 ### Selected native checks
 
 Cloud-desktop Chromium now verifies the saved-response dialog, exact JSON download and last-good reopening for the tested cases. Overview archive-job labels were corrected after that inspection. One fresh public collection attempt failed at connection; it was recorded as failed without losing previous data. This is not Windows/full-native, performance or live-provider success acceptance. [Evidence and remaining gates](../../experiments/job-label-lab/README.md).
+
+## Recorded acceptance policies · October 28, 2026
+
+New experiment-journal rows retain an exact versioned acceptance policy, also exposed in CLI and queued HTTP results. Linked repairs must preserve that policy, not simply raise a budget or lower an acceptance threshold. Legacy rows are preserved with policy unknown and cannot be retroactively labeled policy-equivalent repair parents. Decimal/hexadecimal strings preserve full integer and floating-point identity across browser JSON. This does not make the journal tamper-proof or authorize deployment. [Failure, migration and real HTTP/CLI evidence](../../experiments/gate-policy-lab/README.md).
