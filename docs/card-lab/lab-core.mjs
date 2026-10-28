@@ -51,3 +51,12 @@ export function retainCompleted(run,previous=null) {
   if(!Array.isArray(run.samples)||!run.samples.length||completePairs(run.samples).length*2!==run.samples.length||run.samples.some(x=>x.complete_output_equal!==true))throw new Error('Incomplete or unequal run cannot replace last completed evidence');
   return structuredClone(run);
 }
+
+// Retain only observations overlapping the measured run, including delayed delivery.
+// Idle events are not part of a benchmark and must not accumulate for the page lifetime.
+export function retainWindowObservation(entries,entry,start,end) {
+  if(!Array.isArray(entries))throw new TypeError('Observation collection must be an array');
+  if(!Number.isFinite(start)||!Number.isFinite(end)||end<start)return false;
+  if(!overlapsWindow(entry,start,end))return false;
+  entries.push(entry);return true;
+}

@@ -1,11 +1,11 @@
 {
-  "harness": "atlas-card-density-v7-worker-preparation",
+  "harness": "atlas-card-density-v8-scoped-observations",
   "artifacts": {
-    "lab-core.654213c6b07077e3.mjs": "654213c6b07077e31b21ead6a31a6ec64134aa39f07611adc44650df9acb7428",
-    "preparation-core.4599a540506a9447.mjs": "4599a540506a944735b92b9d472a2d0f21dd04e4518140ecb3c147255fe382aa",
-    "lab-worker.896f1b6d830cb8dc.mjs": "896f1b6d830cb8dcd894806d3892448a78ea35a87f540b8a945815018a1b2a13",
-    "lab.56e3b76fe0b4b39c.js": "56e3b76fe0b4b39cae043e1c5a73dfde2bb61f1febb489bb367ebb8e48950b8a",
+    "lab-core.6471f69777fb4906.mjs": "6471f69777fb4906fa6a738495af41ba726e220a21b9f0459da667990a591dd0",
+    "preparation-core.5a0a56843eb9bee5.mjs": "5a0a56843eb9bee5e906d20c18ade3af1cdd17024773fa2c2a49bb023def3852",
+    "lab-worker.89387aecf50afc57.mjs": "89387aecf50afc57a63ae8aa5ef050b14c2582cdffb6fe390670e6fd2ca7df73",
+    "lab.b1bff895fab540ee.js": "b1bff895fab540ee759d48f24a373a34ad8f3609f538145fb3cef75972a379cd",
     "lab.0c9685b839507ac7.css": "0c9685b839507ac70dab29d95da82c5b89f16a764ca8b18f337126ebc3bc4873",
-    "index.html": "d650172f7373717ac2f9b4e489fb25e58cb9a9ce31ed217b5f55c3545dd55499"
+    "index.html": "3bf842666f0006e4ea4cedb508db722c21f776450fb0522dae94dac61709e7a4"
   }
 }
