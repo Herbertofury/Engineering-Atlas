@@ -14703,5 +14703,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 90,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "IMGABORT01",
+    "title": "WHATWG image source update and abort semantics",
+    "url": "https://html.spec.whatwg.org/multipage/images.html#updating-the-image-data",
+    "observed_version": "Living Standard updated 2026-10-26; reviewed 2026-10-28",
+    "topic": "media-lifecycle",
+    "note": "No selected source aborts current and pending image requests. Browser scheduling and socket-level cancellation latency are not measured by this contract.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

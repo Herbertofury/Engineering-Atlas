@@ -3886,3 +3886,9 @@ Pinned tool versions support an isolated worker-bundle comparison. Language, rec
 ## PYASSERT01
 
 [Python assertion and optimization semantics](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement), Python 3.15.2 documentation reviewed October 28, 2026. Optimized execution omits assertions. This documents language behavior, not a performance result or complete security audit.
+
+## IMGABORT01
+
+[WHATWG image source update and abort semantics](https://html.spec.whatwg.org/multipage/images.html#updating-the-image-data) · Living Standard updated 2026-10-26
+
+No selected source aborts current and pending image requests. Socket cancellation latency is a separate measurement. Reviewed 2026-10-28.

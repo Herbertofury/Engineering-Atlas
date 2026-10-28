@@ -8,7 +8,14 @@ export function createPreviewLoader(images,{concurrency=4,timeoutMs=30000,report
   function decode(entry){return new Promise((resolve,reject)=>{
     let settled=false,timer=null;
     const finish=(ok,error)=>{if(settled)return;settled=true;if(timer!==null)clearTimer(timer);timer=null;ok?resolve():reject(error);};
-    timer=setTimer(()=>finish(false,Error('Image decode timed out')),timeoutMs);
+    timer=setTimer(()=>{
+      if(settled)return;
+      // Detach the timed-out source before releasing this logical worker slot.
+      // Keep dataset.source for explicit retry; never assign an empty src URL.
+      try{entry.image.removeAttribute('src');}
+      catch{notify('image_timeout_cleanup_failed',{source:entry.image.dataset.source,attempt:entry.attempts});}
+      finish(false,Error('Image decode timed out'));
+    },timeoutMs);
     try{entry.image.src=entry.image.dataset.source;Promise.resolve(entry.image.decode()).then(()=>finish(true),error=>finish(false,error));}catch(error){finish(false,error);}
   });}
   return {
