@@ -29,3 +29,16 @@ class ReceiverAssets(unittest.TestCase):
     return value
    with patch.object(Path,'read_text',read):
     with self.assertRaises(ValueError):build.outputs()
+ def test_staging_new_worker_graph_does_not_replace_published_entrypoints(self):
+  from unittest.mock import patch
+  original=Path.read_text
+  source=ROOT/'docs/card-receiver-lab/receiver-worker.mjs'
+  def changed(path,*args,**kwargs):
+   value=original(path,*args,**kwargs)
+   return value+'\n// generated staging-only fixture\n' if path==source else value
+  with patch.object(Path,'read_text',changed):
+   with self.assertRaises(ValueError):build.outputs()
+   staged=build.outputs(stage_worker=True)
+  self.assertNotIn('index.html',staged);self.assertNotIn('build-manifest.json',staged)
+  manifest=json.loads(staged['worker-input-manifest.json']);self.assertIn(manifest['entry'],staged)
+  for name,digest in manifest['artifacts'].items():self.assertEqual(hashlib.sha256(staged[name]).hexdigest(),digest)

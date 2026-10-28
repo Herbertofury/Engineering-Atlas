@@ -39,3 +39,9 @@ test('both pinned bundles preserve validation and request failures rather than r
   for(const kind of ['esbuild','rolldown'])compare(await execute(kind,request),structuredClone(reference));
  }
 });
+test('compiler refuses an unrecognized input manifest before importing build tools',async()=>{
+ const {spawnSync}=await import('node:child_process');const {fileURLToPath}=await import('node:url');
+ const script=fileURLToPath(new URL('../experiments/worker-bundle-lab/tools/compile.mjs',import.meta.url));
+ const result=spawnSync(process.execPath,[script,'esbuild','unused-output.mjs','not-allowed.json'],{encoding:'utf8',timeout:5000});
+ assert.notEqual(result.status,0);assert.match(result.stderr,/Only fixed worker manifests are accepted/);
+});
