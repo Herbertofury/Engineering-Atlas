@@ -21,3 +21,22 @@ export function createEventLogView(element) {
     get count() { return count; },
   };
 }
+
+// Bound each mutable text segment instead of copying all prior text or adding
+// one DOM node per event. Oversized single events remain whole and untruncated.
+export function createBlockedEventLogView(element) {
+  const doc=element.ownerDocument, opening=doc.createTextNode('['), closing=doc.createTextNode(']');
+  element.replaceChildren(opening,closing);
+  let count=0, segment=null, segmentEntries=0;
+  return {
+    append(value) {
+      const chunk=formatEventChunk(value,count);
+      if(!segment||segmentEntries===64||segment.data.length+chunk.length>16384){
+        segment=doc.createTextNode(chunk);element.insertBefore(segment,closing);segmentEntries=1;
+      }else{segment.appendData(chunk);segmentEntries+=1;}
+      if(count===0)closing.data='\n]';
+      count+=1;
+    },
+    get count(){return count;},
+  };
+}

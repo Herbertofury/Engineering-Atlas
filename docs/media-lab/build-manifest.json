@@ -1,10 +1,10 @@
 {
   "harness": "atlas-real-media-v10-video-identity",
   "artifacts": {
-    "event-log-view.650320f0005fdcf0.mjs": "650320f0005fdcf0846ff38c1847eecb2bcea0f0ba05eab7f7865100b3da2ecc",
+    "event-log-view.da5c8854c2b145b8.mjs": "da5c8854c2b145b85f2e1904b12e231ffc2a89b4f0908989968ac1eff97a244a",
     "event-log-fixture.a52b151a701afbc7.json": "a52b151a701afbc7bc3b6f32b2e79cd43b9fcd815d50da0f38b8c64268d5c7de",
-    "event-log-benchmark.4137320f52fd7de9.js": "4137320f52fd7de9af01fab5df434bc0f2f66214f473d532611de3f49fc4b65d",
-    "event-log-benchmark.html": "9054d0c0fe13f29a883744842e55a2f4fc46e614c1faf4f512e699b44e14def1",
+    "event-log-benchmark.5cee62f2bd6f90f5.js": "5cee62f2bd6f90f500b519b97d51798403ec215ca2ba22832ffcd1fce7f9cf3a",
+    "event-log-benchmark.html": "9062405da43c2cb553d6518889fd77b702ec05af8cb1c1ac1a18103bb5639a77",
     "media-events.e336b2c509ca8030.mjs": "e336b2c509ca803072cb2d56c65a0b111fa4a6402b85c69f823e6f5f117a98cf",
     "preview-loader.ad06f6926358e93f.mjs": "ad06f6926358e93fdca81c5b1cc1bf92da92f42a27970c8f0477dbf268fe2363",
     "bilibili-player.4f893473b3fc38d2.mjs": "4f893473b3fc38d20e38ee709f305137bfa3b48290dba1c42fbdb01c8f763444",
