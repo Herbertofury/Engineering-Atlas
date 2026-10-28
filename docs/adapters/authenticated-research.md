@@ -1,6 +1,6 @@
 # Login and authenticated adapter research
 
-[Adapter laboratory](README.md) · Proposed workflow, October 27, 2026 (America/Denver)
+[Adapter laboratory](README.md) · Workflow and session observations, October 27, 2026 (America/Denver) / October 28 UTC
 
 The goal is to test the same post as a guest, a logged-in nonmember and an entitled member, while keeping sign-in secrets outside chat and public research. A successful sign-in is only one prerequisite: the site must expose the requested content to that account, and the chosen integration route must support the operation.
 
@@ -63,4 +63,27 @@ A useful receipt records `guest`, `logged_in`, `entitled` and `expired` as separ
 | WCIF / Plumbdex | Verify native favorites/follows and pagination; do not assume an index's creator match is authoritative |
 | Tumblr | Verify native following and authenticated post cases alongside the documented public structured-post route |
 
-No authenticated acceptance is claimed by this research expansion. Use the catalog's evidence state and [validation gate](validation-and-adoption.md) to track subsequent tests.
+Use the catalog's evidence state and [validation gate](validation-and-adoption.md) to track subsequent tests. An observed sign-in or individual download does not establish every operation on that platform.
+
+## Observed session outcomes: October 28, 2026 UTC
+
+The [sanitized connection ledger](../../experiments/site-adapter-discovery/authentication-observations-2026-10-28.json) records these environment-specific outcomes without account identifiers or secrets.
+
+| Destination | Observed outcome | Remaining work |
+|---|---|---|
+| Mod Collective | Secure sign-in completed. The normal free-account download flow delivered one DBPF package; the rendered post yielded its author, avatar, body and three gallery images. | Reusable parser, complete creator history, GIF/video cases, follow import, expired sessions and any separately authorized member fixture. See the [exact receipt and selectors](mod-collective.md). |
+| GitHub wiki | Signed-in wiki showed Edit and New page controls. | Page publication still requires successful writes and read-back verification. This sign-in alone is not a publication receipt. |
+| LoversLab and F95zone | This research browser denied navigation under its site policy before login. | Retain `blocked_by_tool_policy`. A new password, alternate domain, browser or endpoint is not an authorized workaround. |
+| Other catalog login routes | Public sign-in routes or account controls were documented where visible. | Authentication and content extraction remain untested unless an independent receipt says otherwise. |
+
+The remote browser later stopped responding during a creator-profile read. Diagnostic and runtime-reset requests also timed out. Preserve the successful earlier observations and label subsequent operations `browser_backend_unavailable`; do not rewrite them as site failures or expired-account errors.
+
+## Connecting Opera or Google Chrome
+
+The available browser inventory in this session exposed a **remote Chrome browser**. A plugin search did not expose a connector to the user's local Opera or Chrome profile. That is a capability limit of this session; it does not establish that local browser integrations are universally unavailable.
+
+A Google sign-in is an identity-provider flow on the destination site. It does not attach the user's local Chrome profile. Likewise, opening a login URL in Opera does not transfer that authenticated session into a remote research browser.
+
+For a permitted site, use an explicitly available local-browser connector if the environment offers one, or the remote browser's secure sign-in/handoff flow. Verify the destination's signed-in state after the callback. Keep login retries attached to the exact observed sign-in screen and return URL; reissue a secure prompt only when the actual failure requires it. Do not export cookies, read browser profile databases or paste passwords/verification codes into research files.
+
+The application connection methods above are implementation candidates. They have not been installed or validated as a local Opera/Chrome connection in this session, and they cannot override an explicit tool policy restriction.

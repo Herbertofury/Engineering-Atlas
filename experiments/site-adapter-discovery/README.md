@@ -1,6 +1,16 @@
-# Public specialist-site discovery observations
+# Site discovery and scoped extraction observations
 
-This pass inspected a few publicly available pages to distinguish a feasible extraction candidate from an assumed implementation. It did not run an authenticated adapter, retrieve paid content, download files or benchmark GameSync Next.
+## Six-game expansion and authenticated fixture
+
+The [six-game manifest](game-research-2026-10-28.json) retains 179 game scope records, actual item/profile observations and 420 new source records. Of those source records, 321 represent primary observations and 99 retain failed, partial, shell or search-only retrieval attempts. The [game guides](../../docs/adapters/games/README.md) explain the extraction boundaries and source-specific identity roles. Shared domains are canonicalized in the 248-entry catalog.
+
+The [Mod Collective browser receipt](modcollective-browser-2026-10-28.json) records a separate user-authorized sign-in and one real creation: a 400-character body, linked creator, decoded creator avatar, three ordered decoded images and a 3,407,157-byte DBPF file delivered through the site's normal free-download flow. The file's hash and magic are retained; its binary, full post body and private account details are not published. This is a scoped observation, not a reusable accepted adapter.
+
+The [connection ledger](authentication-observations-2026-10-28.json) distinguishes successful sign-ins, tool-policy blocks before login and a later browser-backend outage. The [expansion validation receipt](game-expansion-validation-2026-10-28.json) records repository verification. The [wiki publication queue](wiki-publication-queue-2026-10-28.json) retains all 40 projected-page hashes and the additive sidebar navigation; it explicitly remains unpublished.
+
+## Initial public specialist-site pass
+
+The initial pass inspected a few publicly available pages to distinguish a feasible extraction candidate from an assumed implementation. That earlier pass did not run an authenticated adapter, retrieve paid content, download files or benchmark GameSync Next. Its receipts remain unchanged; the later Mod Collective observation is recorded separately above.
 
 [Sanitized receipt](public-observations-2026-10-28.json) records the observed surface, failures and fields not established. Raw HTML is deliberately not published: it can contain volatile guest-session identifiers and unnecessary third-party content.
 

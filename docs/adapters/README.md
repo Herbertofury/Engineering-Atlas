@@ -4,13 +4,14 @@
 
 Research and implementation status are separate. A platform listing is not proof that all pages, paid content or media work. Existing adapters and maintained upstream tools are baselines, not disposable scaffolding.
 
-## Expanded research: 162 service and scope entries
+## Expanded research: 248 service and scope entries
 
-Reviewed **October 28, 2026 UTC** (October 27 in America/Denver). The [coverage catalog](coverage-catalog.md) spans mod hosts, paid creator platforms, social networks, regional communities, blogs, code forges, file hosts and specialist indexes. It includes research candidates and reference-only tools; it is not a claim of 162 working adapters. All new authenticated content acceptance remains pending.
+Reviewed **October 28, 2026 UTC** (October 27 in America/Denver). The [coverage catalog](coverage-catalog.md) spans mod hosts, paid creator platforms, social networks, regional communities, blogs, code forges, file hosts and specialist indexes. Six game research passes added 86 canonical entries, 179 game scope records and 420 source records. The resulting 248 entries include research candidates and reference-only tools. One [authenticated Mod Collective fixture](mod-collective.md) establishes specific body, identity, image and free-file observations; complete platform acceptance remains pending.
 
 | Research area | Start here |
 |---|---|
 | Every entry, route, follow semantics and evidence state | [Coverage catalog](coverage-catalog.md) · [Machine-readable records and source statuses](../../data/site-adapter-catalog.json) |
+| Skyrim SE/AE, Fallout 4, Minecraft, Sims 4, Cyberpunk 2077 and Hytale | [Game community guides, actual item/profile inspections and source records](games/README.md) |
 | Mod distribution, projects, creators, releases and files | [Mod hosts: 15 deep recipes](mod-hosts.md) |
 | Membership posts, paid downloads and creator stores | [Paid platforms: 12 deep recipes](paid-platforms.md) |
 | Social posts, reblogs, videos, blogs, code and cloud files | [Social and publishing: 15 deep recipes](social-platforms.md) |
@@ -20,6 +21,7 @@ Reviewed **October 28, 2026 UTC** (October 27 in America/Denver). The [coverage 
 | Dwemer Mods | [Credited author versus uploader; structured-data limits](dwemer-mods.md) |
 | WCIF.cc | [Index versus hosted files; loading-shell handling](wcif.md) |
 | Plumbdex / Plumdex | [Creator matches, file index, avatars and account follows](plumbdex.md) |
+| Mod Collective | [Signed-in body, author/avatar, ordered gallery and actual mod-file receipt](mod-collective.md) |
 | TS4 Rebels | [Forum identities, hidden links, feeds and attachment provenance](ts4-rebels.md) |
 | Mirrors and reuploads | [Provenance and original-source relationships](mirrors-and-provenance.md) |
 
@@ -63,6 +65,7 @@ Nexus Mods groups Skyrim Special Edition, Fallout 4 and Starfield with distinct 
 - [Browser card-density lab](../card-lab/index.html)
 - [Measured storage workload](../../experiments/rust-storage-lab/README.md)
 - [Dated research decision and source register references](../../research/2026-10-28-site-adapters.md)
+- [Six-game expansion and authenticated fixture decision](../../research/2026-10-28-game-adapter-expansion.md)
 - [Public specialist-site observation receipt](../../experiments/site-adapter-discovery/README.md)
 
 ## Next proof work

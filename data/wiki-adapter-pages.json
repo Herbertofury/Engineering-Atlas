@@ -30,5 +30,13 @@
   "docs/adapters/modrinth.md": "Adapter-Modrinth",
   "docs/adapters/github.md": "Adapter-GitHub",
   "docs/adapters/contract.md": "Collection-and-Media-Contract",
-  "docs/adapters/upstream-candidates.md": "Adapter-Upstream-Candidates"
+  "docs/adapters/upstream-candidates.md": "Adapter-Upstream-Candidates",
+  "docs/adapters/games/README.md": "Game-Community-Adapters",
+  "docs/adapters/games/skyrim-se.md": "Game-Adapters-Skyrim-SE",
+  "docs/adapters/games/fallout-4.md": "Game-Adapters-Fallout-4",
+  "docs/adapters/games/minecraft.md": "Game-Adapters-Minecraft",
+  "docs/adapters/games/sims-4.md": "Game-Adapters-Sims-4",
+  "docs/adapters/games/cyberpunk-2077.md": "Game-Adapters-Cyberpunk-2077",
+  "docs/adapters/games/hytale.md": "Game-Adapters-Hytale",
+  "docs/adapters/mod-collective.md": "Adapter-Mod-Collective"
 }
