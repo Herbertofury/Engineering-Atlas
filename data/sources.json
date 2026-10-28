@@ -14659,5 +14659,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 7,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "HRCLK01",
+    "title": "W3C High Resolution Time cross-context timelines",
+    "url": "https://www.w3.org/TR/2026/WD-hr-time-3-20260901/",
+    "observed_version": "Working Draft dated 2026-09-01, reviewed 2026-10-28",
+    "topic": "browser-measurement",
+    "note": "Communicating window/worker contexts can translate performance timestamps using timeOrigin. Precision may be reduced; do not treat the draft as a final standard or combine monotonic measurements across browser sessions.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

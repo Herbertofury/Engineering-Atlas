@@ -1,9 +1,10 @@
+import {phaseBreakdown} from './phase-clock.mjs';
 import {acceptVerifiedInput} from './receipt-protocol.mjs';
 import {prepareDataset} from './baseline.mjs';
 import {verifyPrepared,verifyPreparedBounded} from './verified-receiver.mjs';
 import {createFocusGuard,calibrateFrameCadence} from './lab-core.mjs';
 const $=id=>document.getElementById(id),guard=createFocusGuard(document,window);
-const identity='atlas-complete-receiver-v6-late-guard';$('build').textContent='Loaded harness: '+identity;
+const identity='atlas-complete-receiver-v7-phase-timeline';$('build').textContent='Loaded harness: '+identity;
 let busy=false,stopped=false,hidden=false,sequence=0,cancelWorker=null,current=null,lastGood=null;
 document.addEventListener('visibilitychange',()=>{if(busy&&document.hidden)hidden=true;});
 const check=()=>{guard.check();if(stopped)throw Error('Cancelled; partial evidence retained');if(hidden||document.hidden)throw Error('Visibility lost; partial evidence retained');};
@@ -11,17 +12,18 @@ const calibrate=()=>calibrateFrameCadence({requestFrame:requestAnimationFrame,ca
 const publish=()=>{$('output').textContent=JSON.stringify(current,null,2);$('download').disabled=!current;};
 function workerRun(lane,prepared,count,bytes){
  return new Promise((resolve,reject)=>{
+  const requestStart=performance.timeOrigin+performance.now();
   const id=++sequence,w=new Worker(new URL('./receiver-worker.mjs',import.meta.url),{type:'module'});let settled=false;
   const finish=(error,result)=>{if(settled)return;settled=true;clearTimeout(timer);w.terminate();cancelWorker=null;error?reject(error):resolve(result);};
   const timer=setTimeout(()=>finish(Error('Worker exceeded 30 seconds')),30000);
   cancelWorker=()=>finish(Error('Worker cancelled; partial evidence retained'));
   w.onerror=()=>finish(Error('Worker error; no silent fallback'));
-  w.onmessage=e=>{if(settled||e.data?.id!==id)return;if(e.data.ok!==true){finish(Error(e.data.error||'Worker validation failed'));return;}try{
+  w.onmessage=e=>{if(settled||e.data?.id!==id)return;const mainReceived=performance.timeOrigin+performance.now();if(e.data.ok!==true){finish(Error(e.data.error||'Worker validation failed'));return;}try{
       const response=e.data;if(response.format==='verified-input'){response.result=acceptVerifiedInput(response.receipt,prepared,count,bytes);}
       else if(response.format==='utf8-records'){
         if(!(response.buffer instanceof ArrayBuffer)||response.buffer.byteLength!==response.dataset?.serialized_bytes)throw Error('Transferred payload size mismatch');
         response.result={records:JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(response.buffer)),dataset:response.dataset,preparation_ms:response.preparation_ms};
-      }finish(null,response);
+      }response.phase_timeline=phaseBreakdown({...response.phase,request_start:requestStart,main_received:mainReceived,main_finished:performance.timeOrigin+performance.now()});finish(null,response);
     }catch(error){finish(error);}};
   try{w.postMessage({id,lane:['clone','transfer','receipt'].includes(lane)?'bounded':lane,transport:lane==='transfer'?'transfer':lane==='receipt'?'receipt':'clone',prepared,count,bytes});}catch(error){finish(error);}
  });
@@ -49,7 +51,7 @@ $('run').addEventListener('click',async()=>{
     await new Promise(resolve=>requestAnimationFrame(resolve));
     check();
     if(JSON.stringify(response.result.records)!==canonical||response.result.dataset.sha256!==prepared.dataset.sha256)throw Error('Full returned-record parity mismatch');
-    current.samples.push({round,lane,request_ms,validation_ms:response.validation_ms,transport_encoding_ms:response.transport_encoding_ms??null,reused_verified_encoding:response.reused_verified_encoding===true,frame_waits_ms:waits.slice(),complete_parity:true});publish();
+    current.samples.push({round,lane,request_ms,validation_ms:response.validation_ms,transport_encoding_ms:response.transport_encoding_ms??null,reused_verified_encoding:response.reused_verified_encoding===true,phase_timeline:response.phase_timeline??null,frame_waits_ms:waits.slice(),complete_parity:true});publish();
    }finally{active=false;cancelAnimationFrame(frameId);}
    const calibration=await calibrate();current.samples.at(-1).post_sample_calibration=calibration;if(!calibration.reliable)throw Error(calibration.reason);
   }

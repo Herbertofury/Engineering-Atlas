@@ -1,3 +1,4 @@
+import {phaseBreakdown} from '../experiments/card-receiver-lab/phase-clock.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -8,7 +9,7 @@ const body=source.slice(source.indexOf('function workerRun('),source.indexOf("$(
 function setup(throws=false){
  const workers=[];
  class Worker {constructor(){this.terminated=0;workers.push(this)}terminate(){this.terminated++}postMessage(value){this.sent=value;if(throws)throw Error('post failure')}}
- const context={Worker,URL,Error,ArrayBuffer,TextDecoder,JSON,acceptVerifiedInput,setTimeout,clearTimeout,sequence:0,cancelWorker:null};
+ const context={Worker,URL,Error,ArrayBuffer,TextDecoder,JSON,acceptVerifiedInput,phaseBreakdown,performance,setTimeout,clearTimeout,sequence:0,cancelWorker:null};
  vm.runInNewContext(body.replace('import.meta.url',"'https://example.invalid/receiver.js'"),context);
  const prepared={records:[{all:'retained'}],dataset:{serialized_bytes:512,sha256:'a'.repeat(64)}};
  const receipt={complete:true,algorithm:'bounded-complete-v1',count:2,metadata_bytes_per_record:512,serialized_bytes:512,sha256:'a'.repeat(64)};

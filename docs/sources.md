@@ -3870,3 +3870,9 @@ Transferring changes ownership and detaches the sender. It does not eliminate ap
 [RustSec wikilink advisory](https://github.com/RustSec/advisory-db/blob/40f5be6fb12ed93fc591bf4ab23b7d793b3f2239/crates/pulldown-cmark/RUSTSEC-2026-0414.md) · Advisory date October 18; ID assigned October 28; reviewed October 28, 2026. [Fixed 0.13.5 release](https://github.com/pulldown-cmark/pulldown-cmark/releases/tag/v0.13.5) published October 21.
 
 Affected optional wikilink parsing can grow its event stream exponentially; default-disabled wikilinks are outside that trigger. Separate documented applicability from the bounded local reproduction. Review after 7 days.
+
+## HRCLK01
+
+[High Resolution Time](https://www.w3.org/TR/2026/WD-hr-time-3-20260901/) · W3C Working Draft dated September 1, 2026; checked October 28.
+
+Communicating contexts can align performance timestamps with timeOrigin, subject to exposed precision. Do not infer pure CPU/network costs or compare origins across browser sessions. This is draft documentation, not benchmark acceptance. Review after 30 days.
