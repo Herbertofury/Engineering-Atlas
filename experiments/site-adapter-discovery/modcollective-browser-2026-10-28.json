@@ -70,7 +70,7 @@
     "First uppercase exact-label selector did not match mixed-case Continue with download; no download emitted",
     "Initial passive download event wait preceded the final Continue step and timed out",
     "Customizer displayed Failed to load; file download succeeded independently",
-    "Text retriever could not display avatar; rendered browser later decoded the same .null URL",
+    "Text retriever could not display the 128-pixel avatar URL; rendered browser later decoded the same avatar asset at the observed 48-pixel .null URL variant",
     "Browser connection timed out after navigating to the creator profile; diagnostic and reset calls also timed out. Profile-wide extraction and native follows not completed."
   ],
   "nativeFollowMutationTested": false,
