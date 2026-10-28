@@ -155,3 +155,7 @@ New experiment-journal rows retain an exact versioned acceptance policy, also ex
 ## Verified connection requirements
 
 Snapshot, queue and journal connections share a fail-closed synchronization/foreign-key/journal-mode check. They request EXTRA without changing an existing safe journal mode; temporary/in-memory fixtures remain explicitly non-durable. This strengthens the DELETE-journal configuration contract, not a speed claim or power-loss certification. [Baseline failures, implementation and HTTP regression evidence](../../experiments/sqlite-contract-lab/README.md).
+
+### Fresh public archive verification · October 28, 2026
+
+The existing CLI and actual queued worker have now successfully requested and persisted selected live Modrinth project responses. Four CLI successes and one queued success retained five generations; missing-project requests failed explicitly without replacing them. Independent hashes and twelve loopback checks passed. A changed provider downloads counter remained separate evidence. Native cloud-browser navigation to the executor's localhost still failed, so this adds live provider/HTTP coverage, not GUI or universal adapter acceptance. [Receipts and exact limits](../../experiments/project-raw-live-lab/README.md).
