@@ -19,3 +19,7 @@ The CSV and JSON export controls triggered browser downloads, but the automation
 The Explorer imports 27 historical JSON observations and eight publisher-reported observations. It introduces 16 planned experiments and zero approved community ratings. None of these software checks converts a proposed experiment, external report, or popularity count into an Atlas performance win.
 
 See the [ranking and data contract](../../docs/research-explorer.md), [research review](../../research/2026-10-27-explorer-review.md), and [test queue](../../docs/research-test-queue.md).
+
+## Published deployment
+
+[Publication receipt](published-2026-10-28.json) records the merged revision, successful Linux/Windows CI and Pages jobs, and actual live-browser observations. [Live Explorer screenshot](live-explorer-2026-10-28.jpg) shows the published overview. The saved-download verification limit also occurred on the deployed HTTPS site and remains open. The separate wiki publication state is recorded independently.
