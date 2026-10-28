@@ -3892,3 +3892,9 @@ Pinned tool versions support an isolated worker-bundle comparison. Language, rec
 [WHATWG image source update and abort semantics](https://html.spec.whatwg.org/multipage/images.html#updating-the-image-data) · Living Standard updated 2026-10-26
 
 No selected source aborts current and pending image requests. Socket cancellation latency is a separate measurement. Reviewed 2026-10-28.
+
+## SCHEDY01
+
+[Prioritized Task Scheduling continuation semantics](https://wicg.github.io/scheduling-apis/) · Draft Community Group Report, 2025-05-30
+
+Prioritized continuations support cooperative main-thread yielding. This is not a W3C Standard or a preemptive execution guarantee. Feature support and workload tradeoffs require measurement. Reviewed 2026-10-28.

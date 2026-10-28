@@ -14714,5 +14714,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "SCHEDY01",
+    "title": "Prioritized Task Scheduling continuation semantics",
+    "url": "https://wicg.github.io/scheduling-apis/",
+    "observed_version": "Draft Community Group Report 2025-05-30; checked 2026-10-28",
+    "topic": "browser-responsiveness",
+    "note": "scheduler.yield resumes through prioritized task continuations. Not a W3C Standard; support must be checked, and cooperative slices cannot preempt a single long operation.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 14,
+    "evidence": "primary_documented"
   }
 ]
