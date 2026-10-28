@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "runs": [
+    {
+      "schema_version": 1,
+      "complete": true,
+      "scope": "Owned subprocess SIGKILL after first committed generation; exact transaction phase unobserved; not physical power-loss testing",
+      "binary_sha256": "3344784df3caa11805011ca6d0a61ff745f557ea50267af72ecacfa9d075be57",
+      "samples": [
+        {
+          "requested_delay_seconds": 0.005,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 6,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.005,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 2,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.01,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 5,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.01,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 5,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.02,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 7,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.02,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 7,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.05,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 24,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.05,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 15,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.1,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 12,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.1,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 24,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.2,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 72,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.2,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 109,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        }
+      ]
+    },
+    {
+      "sources": {
+        "experiments/content-addressed-snapshot-lab/crash_run.py": "14a453e1e1c28943590ebcbe891825fb7a5a1997e4736c7324c4998cd0adad3a",
+        "experiments/content-addressed-snapshot-lab/recovery_gate.py": "d353118b35e31b26b634e5426760a6694c83babd4ddff988783522c26e0c3a00",
+        "experiments/content-addressed-snapshot-lab/store.rs": "13be9b95a14dc6690d0914acd735842f09cc731f894d81684b0099c8df7f09b6",
+        "apps/atlas-lab/examples/addressed_snapshot_crash_probe.rs": "ef96a24a5eadeb9b28a9965674ae4f298c340b86068af087b89a69fc247753da",
+        "apps/atlas-lab/src/snapshots.rs": "849a4df734b1ac1856004ab74246ce3b122367f2ceb78c4cfcc8a012b2983f2c",
+        "apps/atlas-lab/src/storage_connection.rs": "9a56cfb68858623237244d15fcc85a9d601bd84dd997cde68f631bb8c7484c55",
+        "apps/atlas-lab/Cargo.lock": "4ba18f93c261a48a42ea595be3f8a37b6d9c419912d7e7875204ac0641e2dd85"
+      },
+      "schema_version": 1,
+      "complete": true,
+      "scope": "Owned subprocess SIGKILL after first committed generation; exact transaction phase unobserved; not physical power-loss testing",
+      "binary_sha256": "3344784df3caa11805011ca6d0a61ff745f557ea50267af72ecacfa9d075be57",
+      "samples": [
+        {
+          "requested_delay_seconds": 0.005,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 3,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.005,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 2,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.01,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 4,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.01,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 4,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.02,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 6,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.02,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 12,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.05,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 26,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.05,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 27,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.1,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 29,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.1,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 61,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.2,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 95,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "baseline",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        },
+        {
+          "requested_delay_seconds": 0.2,
+          "child_exit": -9,
+          "attempt_atomicity": true,
+          "committed_generations": 114,
+          "complete_payload_history_equal": true,
+          "integrity_ok": true,
+          "lane": "addressed",
+          "schema_version": 1,
+          "scope": "Process kill recovery only; not physical power-loss durability",
+          "sqlite": "3.54.1"
+        }
+      ]
+    }
+  ],
+  "scope": "24 owned process interruptions; no physical power-loss or cross-platform claim"
+}

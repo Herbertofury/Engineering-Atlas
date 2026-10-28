@@ -599,3 +599,7 @@ pub(crate) mod public_http;
 pub mod upstream_reviews;
 
 pub mod project_archive;
+
+/// Isolated experiment only; not wired to the application store or server.
+#[path = "../../../experiments/content-addressed-snapshot-lab/store.rs"]
+pub mod content_addressed_candidate;
