@@ -2,7 +2,7 @@ import {prepareDataset} from './baseline.mjs';
 import {verifyPrepared,verifyPreparedBounded} from './verified-receiver.mjs';
 import {createFocusGuard,calibrateFrameCadence} from './lab-core.mjs';
 const $=id=>document.getElementById(id),guard=createFocusGuard(document,window);
-const identity='atlas-complete-receiver-v1';$('build').textContent='Loaded harness: '+identity;
+const identity='atlas-complete-receiver-v2-callback-clock';$('build').textContent='Loaded harness: '+identity;
 let busy=false,stopped=false,hidden=false,sequence=0,cancelWorker=null,current=null,lastGood=null;
 document.addEventListener('visibilitychange',()=>{if(busy&&document.hidden)hidden=true;});
 const check=()=>{guard.check();if(stopped)throw Error('Cancelled; partial evidence retained');if(hidden||document.hidden)throw Error('Visibility lost; partial evidence retained');};
@@ -31,7 +31,7 @@ $('run').addEventListener('click',async()=>{
    check();if(performance.now()-began>90000)throw Error('90-second cooperative run budget exceeded');
    $('status').textContent=`Round ${round+1}/3: ${lane}, ${execution}`;
    const waits=[];let active=true,frameId,last=performance.now();
-   const tick=now=>{waits.push(now-last);last=now;if(active)frameId=requestAnimationFrame(tick);};frameId=requestAnimationFrame(tick);
+   const tick=()=>{const now=performance.now();waits.push(now-last);last=now;if(active)frameId=requestAnimationFrame(tick);};frameId=requestAnimationFrame(tick);
    const start=performance.now();let response;
    try{
     if(execution==='worker')response=await workerRun(lane,prepared,count,bytes);
