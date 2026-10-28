@@ -1,7 +1,7 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
-import {retainWindowObservation,eventsInWindow} from '../../docs/card-lab/lab-core.mjs';
+import {retainWindowObservation,eventsInWindow,refreshInputEvidence} from '../../docs/card-lab/lab-core.mjs';
 const old=readFileSync(new URL('./baseline-lab.js',import.meta.url),'utf8'),fixed=readFileSync(new URL('../../docs/card-lab/lab.js',import.meta.url),'utf8');
 function callback(source,kind){const suffix=kind==='longtask'?').observe({type,buffered:false})':").observe({type:'event',durationThreshold:16,buffered:false})";const end=source.indexOf(suffix);assert.ok(end>=0);const start=source.lastIndexOf('new PerformanceObserver(',end)+'new PerformanceObserver('.length;return source.slice(start,end);}
 const relevant=[{startTime:90,duration:20,name:'click',interactionId:1},{startTime:110,duration:10,name:'click',interactionId:2},{startTime:190,duration:40,name:'click',interactionId:3}];
@@ -9,7 +9,7 @@ const idle=Array.from({length:100000},(_,i)=>({startTime:1000+i,duration:20,name
 const results=[];
 for(const kind of ['longtask','event'])for(const window of [null,{performance_start_ms:100,performance_end_ms:200}]){
  const invoke=source=>{const observed={longtask:[]},inputEvents=[],evidence=window?structuredClone(window):null;
-  const fn=Function('observed','type','inputEvents','evidence','retainWindowObservation','eventsInWindow','performance','return ('+callback(source,kind)+')')(observed,'longtask',inputEvents,evidence,retainWindowObservation,eventsInWindow,{now:()=>200000});
+  const fn=Function('observed','type','inputEvents','evidence','retainWindowObservation','eventsInWindow','performance','refreshInputEvidence','lastCompletedEvidence','return ('+callback(source,kind)+')')(observed,'longtask',inputEvents,evidence,retainWindowObservation,eventsInWindow,{now:()=>200000},refreshInputEvidence,null);
   fn({getEntries:()=>idle});fn({getEntries:()=>relevant});return kind==='longtask'?observed.longtask:inputEvents;
  };
  const before=invoke(old),after=invoke(fixed),expected=window?eventsInWindow(before,100,200):[];assert.deepEqual(after,expected);

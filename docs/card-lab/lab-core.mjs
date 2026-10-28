@@ -60,3 +60,10 @@ export function retainWindowObservation(entries,entry,start,end) {
   if(!overlapsWindow(entry,start,end))return false;
   entries.push(entry);return true;
 }
+
+// A late delivered, in-window input record corrects both views of the SAME
+// completed run. A new partial/failed run must never replace its predecessor.
+export function refreshInputEvidence(run,entries,previousCompleted) {
+  run.observed_input_events=eventsInWindow(entries,run.performance_start_ms,run.performance_end_ms);
+  return run.complete?retainCompleted(run,previousCompleted):previousCompleted;
+}
