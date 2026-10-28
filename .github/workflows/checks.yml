@@ -16,6 +16,8 @@ jobs:
           python-version: '3.12'
       - name: Check source register and internal links
         run: python scripts/check_research.py
+      - name: Verify research catalog and generated Explorer
+        run: python scripts/build_research_explorer.py --check
       - name: Test benchmark and research guards
         run: python -m unittest discover -s tests -v
       - name: Verify content-addressed browser assets

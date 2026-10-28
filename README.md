@@ -6,6 +6,12 @@
 
 A practical, evolving research library for desktop apps, web services, Minecraft mods, game tooling and asset pipelines. Reviewed starting point: **October 26, 2026**. This is a curated foundation, not a claim that every technology has been exhaustively benchmarked.
 
+## Search and compare the research catalog
+
+[Research Explorer](https://herbertofury.github.io/Engineering-Atlas/explorer/) provides field/type/evidence filters, source-backed 2026 candidates, dated GitHub popularity, scoped external benchmarks, retained Atlas measurements and a reproducible test queue. Compare a shortlist and export a test plan. Community reports have a reviewable GitHub submission path; no votes are fabricated.
+
+[Complete catalog](docs/research-catalog.md) · [Ranking methodology](docs/research-explorer.md) · [Planned comparisons](docs/research-test-queue.md) · [Community reports](docs/research-community.md)
+
 ## Ranked choices and measured experiments
 
 [Best choices and avoid guidance](docs/ranked-recommendations.md) · [2026 paper and Codeberg-linked watchlist](docs/paper-watchlist-2026.md) · [Measured JSON lab](experiments/json-lab/README.md)
