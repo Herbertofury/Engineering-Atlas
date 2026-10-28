@@ -1,13 +1,14 @@
 {
   "cohorts": 11,
-  "entries": 154,
+  "entries": 215,
   "files": {
-    "docs/explorer/catalog.d0167fe3dd48d08a.json": "d0167fe3dd48d08a4796f928f2bdfaf1316aa5b3cd868a642738db5806d45717",
-    "docs/explorer/explorer-core.007ee0ee33db2820.mjs": "007ee0ee33db282024aa1425d9b990775569ace54afcd1447528c9b1a3f34926",
-    "docs/explorer/explorer.9153228d82b1b9df.css": "9153228d82b1b9df3a67fc5bf8dd9fdde19208d4589a7d63c639bad03f9ed343",
-    "docs/explorer/explorer.e1f7ce451ab9cf52.mjs": "e1f7ce451ab9cf5268a121eb57fd8939a779f4e3a0f65304d8323e9ccca9e874",
-    "docs/explorer/index.html": "261160af012e1b8271e9e0b77f88fb93b946ba3563d955f56988364d43c6b45f",
-    "docs/research-catalog.md": "92801a4dc8d6af4ef885b7e3ddd7a4f001ffb190435617b1551bed35122634e2"
+    "docs/explorer/catalog.0f5082fc1d6d1c80.json": "0f5082fc1d6d1c803bc78247bb584d8ae19a8e2ebdac2955f96d521fed7e3c41",
+    "docs/explorer/explorer-core.a375751d296ae2da.mjs": "a375751d296ae2dabe5b6bde9ed93658c7b000135b153daf480b8de84654e668",
+    "docs/explorer/explorer.11a0ce9b7a735799.css": "11a0ce9b7a7357995ae4f761b56e7aaadb2295ad4f8655335998fdbf91a7e627",
+    "docs/explorer/explorer.c1f012c2f839827c.mjs": "c1f012c2f839827ce58a86c187909569e3a22e18ec3021122f4c6cfc82a75bfa",
+    "docs/explorer/index.html": "98503f17fedbe26aa476a3174cf536738061e586140090648f005848d50ddfeb",
+    "docs/research-catalog.md": "833023fcb9c835182361c92a985aab68e4bf4199754a8b9eec61093813bd05c9",
+    "docs/stack-selection.md": "f431a2f793a09d83d13f071b436e11b3727c39712208c1109bb0f2a7da21bf2c"
   },
   "observations": 35,
   "schema_version": 1

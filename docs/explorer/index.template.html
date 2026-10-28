@@ -29,19 +29,21 @@
       <section class="hero" aria-labelledby="page-title">
         <div class="hero-top"><p class="eyebrow">CURATED DISCOVERY / REPRODUCIBLE DECISIONS</p><span class="snapshot" id="snapshot">Research snapshot</span></div>
         <h1 id="page-title">Find what’s next.<br><span>Prove what’s better.</span></h1>
-        <div class="hero-bottom"><p>Explore the tools, languages, papers and methods worth testing. Every claim has a source. Every ranking has a scope.</p><a class="text-link" href="#methodology">Read the ranking rules <span aria-hidden="true">↓</span></a></div>
-        <dl class="stats" id="stats"><div><dt>Candidates</dt><dd>—</dd></div><div><dt>Primary sources</dt><dd>—</dd></div><div><dt>2026 publications</dt><dd>—</dd></div><div><dt>Measured candidates</dt><dd>—</dd></div></dl>
+        <div class="hero-bottom"><p>Explore tools, languages, papers and methods across the stack. Choose a layer for a focused shortlist and the test it must pass.</p><a class="text-link" href="#methodology">Read the ranking rules <span aria-hidden="true">↓</span></a></div>
+        <dl class="stats" id="stats"><div><dt>Candidates</dt><dd>—</dd></div><div><dt>Primary URLs</dt><dd>—</dd></div><div><dt>2026 publications</dt><dd>—</dd></div><div><dt>Measured candidates</dt><dd>—</dd></div></dl>
       </section>
       <section id="catalog" class="catalog" aria-labelledby="catalog-heading">
         <div class="section-heading"><div><p class="eyebrow">THE RESEARCH INDEX</p><h2 id="catalog-heading">Explore the catalog</h2></div><button type="button" class="button secondary" id="compare-open">Compare shortlist <span id="shortlist-count">0</span></button></div>
         <div class="search-row"><label class="search-field"><span aria-hidden="true">⌕</span><span class="sr-only">Search research</span><input id="search" type="search" aria-label="Search research" placeholder="Search projects, papers, techniques, tags…" autocomplete="off" maxlength="300"></label><button type="button" id="reset" class="button secondary">Reset filters</button></div>
         <div class="filters">
+          <label>Stack layer<select id="layer"><option value="">All stack layers</option></select></label>
           <label>Type<select id="kind"><option value="">All types</option></select></label>
           <label>Maturity<select id="maturity"><option value="">All stages</option><option value="established">Established</option><option value="emerging">Emerging</option><option value="experimental">Experimental</option></select></label>
           <label>Evidence<select id="evidence"><option value="">All evidence</option><option value="candidate">Research candidate</option><option value="measured">Atlas measurement</option></select></label>
           <label>Publication<select id="year"><option value="">Any date / unknown</option><option value="2026">Published in 2026</option></select></label>
           <label>Evaluation track<select id="track"><option value="">All tracks</option></select></label>
         </div>
+        <section id="layer-guide" class="layer-guide" aria-label="Stack layer decision guide" hidden></section>
         <div class="sort-row"><span id="result-count" role="status" aria-live="polite">Loading the source-backed catalog…</span><div class="sort-actions"><label class="sort-label">Order by<select id="sort"><option value="priority">Test priority</option><option value="name">Name A–Z</option><option value="stars">GitHub stars ↓</option><option value="recent">Publication date ↓</option><option value="community">Community rating ↓</option><option value="external">Published benchmark</option><option value="measured">Atlas measurement</option></select></label><button type="button" id="export" class="button quiet">Export CSV <span aria-hidden="true">↓</span></button><button type="button" id="share" class="button quiet">Copy view link</button></div></div>
         <div id="cohort-control" class="cohort-control" hidden><label>Comparable benchmark cohort<select id="cohort"><option value="">Choose a cohort</option></select></label></div>
         <div class="evidence-note" id="ranking-note"><span class="note-icon" aria-hidden="true">i</span><p>Test priority is an editorial queue. It is not a performance ranking.</p></div>

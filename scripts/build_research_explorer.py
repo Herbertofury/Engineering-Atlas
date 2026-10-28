@@ -58,6 +58,23 @@ def validate_catalog(catalog, registry, today=None):
     tracks = {t['id'] for t in catalog['tracks']}
     require(len(categories) == len(catalog['categories']), 'Duplicate category')
     require(len(tracks) == len(catalog['tracks']), 'Duplicate track')
+    layers = catalog.get('layers', [])
+    require(isinstance(layers, list), 'Stack layers must be a list')
+    if 'layers' in catalog:
+        require(bool(layers), 'Stack layer taxonomy cannot be empty')
+    layer_ids = set()
+    for layer in layers:
+        require(isinstance(layer, dict), 'Stack layer must be an object')
+        text_fields(layer, ['id', 'label', 'decision', 'gate'], 'Stack layer')
+        require(ID.fullmatch(layer['id']) and layer['id'] not in layer_ids, 'Invalid or duplicate stack layer')
+        layer_ids.add(layer['id'])
+        selected = []
+        for role in ('baseline_ids', 'challenger_ids', 'watch_ids'):
+            require(isinstance(layer.get(role), list) and all(isinstance(x, str) for x in layer[role]),
+                    'Invalid stack layer comparison role')
+            selected += layer[role]
+        require(bool(layer['baseline_ids']), 'Stack layer needs a reference choice')
+        require(len(selected) == len(set(selected)), 'Candidate has conflicting stack layer roles')
     sources = {s['id']: s for s in registry}
     ids = set()
     require(isinstance(catalog['entries'], list) and catalog['entries'], 'Catalog must contain entries')
@@ -70,6 +87,12 @@ def validate_catalog(catalog, registry, today=None):
             require(e['kind'] == 'paper' and type(e['publication_year']) is int and
                     1900 <= e['publication_year'] <= today.year, 'Invalid year-only paper publication')
         require(e['category'] in categories, 'Unknown category: ' + e['id'])
+        if layers or 'layers' in e:
+            assigned = e.get('layers')
+            require(isinstance(assigned, list) and assigned and all(isinstance(x, str) for x in assigned),
+                    'Missing stack layer assignment: ' + e['id'])
+            require(len(assigned) == len(set(assigned)) and set(assigned) <= layer_ids,
+                    'Unknown or duplicate stack layer: ' + e['id'])
         require(e['status'] == 'candidate', 'Source review does not promote a candidate to accepted')
         require(e['maturity'] in {'established', 'emerging', 'experimental'}, 'Invalid maturity')
         require(type(e['priority']) is int and e['priority'] in {1, 2, 3}, 'Invalid editorial priority')
@@ -95,6 +118,12 @@ def validate_catalog(catalog, registry, today=None):
         for key in ('metrics', 'caveats'):
             require(isinstance(evaluation[key], list) and evaluation[key] and
                     all(isinstance(x, str) and x.strip() for x in evaluation[key]), 'Missing ' + key + ': ' + e['id'])
+    entries = {e['id']: e for e in catalog['entries']}
+    for layer in layers:
+        for role in ('baseline_ids', 'challenger_ids', 'watch_ids'):
+            for candidate in layer[role]:
+                require(candidate in entries, 'Unknown stack layer choice: ' + candidate)
+                require(layer['id'] in entries[candidate].get('layers', []), 'Stack layer choice outside assigned layer')
     return ids
 
 
@@ -236,12 +265,32 @@ def markdown_catalog(bundle):
         text += ['## ' + category['label'] + ' (' + str(len(entries)) + ')', '']
         for e in entries:
             text += ['### ' + e['name'], '', '**' + e['kind'] + ' · ' + e['maturity'] + ' · P' + str(e['priority']) + '** · ID: ' + e['id'], '',
-                e['summary'], '', '**Current signal:** ' + (e.get('latest_signal') or 'See the dated primary sources.'), '',
+                e['summary'], '',
+                '**Stack layers:** ' + ('; '.join(next(layer['label'] for layer in bundle.get('layers', []) if layer['id'] == layer_id)
+                                                for layer_id in e.get('layers', [])) or 'Not assigned in this legacy catalog') + '.', '',
+                '**Current signal:** ' + (e.get('latest_signal') or 'See the dated primary sources.'), '',
                 '**Test:** ' + e['evaluation']['proposal'], '', '**Measure:** ' + '; '.join(e['evaluation']['metrics']) + '.', '',
                 '**Constraints:** ' + ' '.join(e['evaluation']['caveats']), '',
                 '**Priority rationale:** ' + e['priority_reason'], '',
                 '**Sources:** ' + ' · '.join('[' + sid + '](' + s['url'] + ')' for sid, s in zip(e['source_ids'], e['sources'])), '']
     return '\n'.join(text).rstrip() + '\n'
+
+
+def markdown_layer_map(bundle):
+    """One canonical decision map shared by the explorer and the existing stack guide."""
+    entries = {e['id']: e for e in bundle['entries']}
+    def choices(ids):
+        return ', '.join('[' + entries[id]['name'] + '](' + entries[id]['url'] + ')' for id in ids) or 'None in this review'
+    lines = ['## Stack layer comparison map', '',
+        'Updated from the same catalog data as the Explorer. Reference choices establish a comparison baseline; challengers and watchlist entries require the stated adoption gate. A layer can contain complementary components: compare only the same functional role and workload, and treat adding a component separately from replacing one. These roles do not claim measured superiority. Every choice links to an upstream project; full sources and constraints are in the catalog.', '',
+        '| Stack layer | Reference choices | Compare next | Research watchlist | Decision and adoption gate |',
+        '|---|---|---|---|---|']
+    for layer in bundle.get('layers', []):
+        row = ['[' + layer['label'] + '](https://herbertofury.github.io/Engineering-Atlas/explorer/?layer=' + layer['id'] + '#catalog)',
+               choices(layer['baseline_ids']), choices(layer['challenger_ids']), choices(layer['watch_ids']),
+               layer['decision'] + ' **Gate:** ' + layer['gate']]
+        lines.append('| ' + ' | '.join(cell.replace('|', '\\|').replace('\n', ' ') for cell in row) + ' |')
+    return '\n'.join(lines) + '\n'
 
 
 def build(root=ROOT, check=False):
@@ -264,6 +313,17 @@ def build(root=ROOT, check=False):
     require('__CATALOG__' not in html and '__SCRIPT__' not in html, 'Unresolved template')
     outputs[destination / 'index.html'] = html.encode()
     outputs[root / 'docs/research-catalog.md'] = markdown_catalog(bundle).encode()
+    stack_path = root / 'docs/stack-selection.md'
+    if bundle.get('layers') or stack_path.exists():
+        stack_text = stack_path.read_text()
+        start, end = '<!-- stack-layer-map:start -->', '<!-- stack-layer-map:end -->'
+        if bundle.get('layers') or start in stack_text or end in stack_text:
+            require(stack_text.count(start) == stack_text.count(end) == 1 and stack_text.index(start) < stack_text.index(end),
+                    'Existing stack guide must contain one ordered layer-map marker pair')
+            prefix, rest = stack_text.split(start)
+            _, suffix = rest.split(end)
+            generated = '\n\n' + markdown_layer_map(bundle) + '\n' if bundle.get('layers') else '\n'
+            outputs[stack_path] = (prefix + start + generated + end + suffix).encode()
     manifest = {'schema_version': 1, 'files': {str(path.relative_to(root)): hashlib.sha256(data).hexdigest() for path, data in outputs.items()},
         'entries': len(bundle['entries']), 'cohorts': len(bundle['results']['cohorts']), 'observations': len(bundle['results']['observations'])}
     outputs[destination / 'build-manifest.json'] = (json.dumps(manifest, indent=2, sort_keys=True) + '\n').encode()

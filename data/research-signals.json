@@ -11,116 +11,6 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/AFLplusplus/AFLplusplus"
     },
-    "clickhouse/clickhouse": {
-      "stars": 50638,
-      "forks": 9176,
-      "archived": false,
-      "license": "Apache-2.0",
-      "pushed_at": "2026-10-28T04:27:00Z",
-      "url": "https://github.com/ClickHouse/ClickHouse",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/ClickHouse/ClickHouse"
-    },
-    "eleutherai/lm-evaluation-harness": {
-      "stars": 14333,
-      "forks": 3733,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2026-09-14T10:51:06Z",
-      "url": "https://github.com/EleutherAI/lm-evaluation-harness",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/EleutherAI/lm-evaluation-harness"
-    },
-    "hkuds/lightrag": {
-      "stars": 40373,
-      "forks": 5736,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2026-10-27T18:08:12Z",
-      "url": "https://github.com/HKUDS/LightRAG",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/HKUDS/LightRAG"
-    },
-    "hypothesisworks/hypothesis": {
-      "stars": 9113,
-      "forks": 694,
-      "archived": false,
-      "license": "NOASSERTION",
-      "pushed_at": "2026-10-26T17:23:29Z",
-      "url": "https://github.com/HypothesisWorks/hypothesis",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/HypothesisWorks/hypothesis"
-    },
-    "jetbrains/kotlin": {
-      "stars": 53526,
-      "forks": 6453,
-      "archived": false,
-      "license": null,
-      "pushed_at": "2026-10-28T03:32:36Z",
-      "url": "https://github.com/JetBrains/kotlin",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/JetBrains/kotlin"
-    },
-    "lmcache/lmcache": {
-      "stars": 12195,
-      "forks": 2087,
-      "archived": false,
-      "license": "Apache-2.0",
-      "pushed_at": "2026-10-28T02:37:04Z",
-      "url": "https://github.com/LMCache/LMCache",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/LMCache/LMCache"
-    },
-    "livecodebench/livecodebench": {
-      "stars": 970,
-      "forks": 208,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2025-07-16T00:58:38Z",
-      "url": "https://github.com/LiveCodeBench/LiveCodeBench",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/LiveCodeBench/LiveCodeBench"
-    },
-    "nvidia/tensorrt-llm": {
-      "stars": 14963,
-      "forks": 2872,
-      "archived": false,
-      "license": "NOASSERTION",
-      "pushed_at": "2026-10-28T04:18:00Z",
-      "url": "https://github.com/NVIDIA/TensorRT-LLM",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/NVIDIA/TensorRT-LLM"
-    },
-    "openhands/software-agent-sdk": {
-      "stars": 1312,
-      "forks": 715,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2026-10-27T23:03:05Z",
-      "url": "https://github.com/OpenHands/software-agent-sdk",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/OpenHands/software-agent-sdk"
-    },
-    "ruc-nlpir/flashrag": {
-      "stars": 3599,
-      "forks": 328,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2026-10-27T01:45:46Z",
-      "url": "https://github.com/RUC-NLPIR/FlashRAG",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/RUC-NLPIR/FlashRAG"
-    },
-    "safeailab/eagle": {
-      "stars": 2563,
-      "forks": 298,
-      "archived": false,
-      "license": "NOASSERTION",
-      "pushed_at": "2026-02-20T02:53:29Z",
-      "url": "https://github.com/SafeAILab/EAGLE",
-      "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/SafeAILab/EAGLE"
-    },
     "ai-dynamo/dynamo": {
       "stars": 8397,
       "forks": 1776,
@@ -130,6 +20,16 @@
       "url": "https://github.com/ai-dynamo/dynamo",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/ai-dynamo/dynamo"
+    },
+    "ajv-validator/ajv": {
+      "stars": 14866,
+      "forks": 1060,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-09-06T19:59:32Z",
+      "url": "https://github.com/ajv-validator/ajv",
+      "observed_at": "2026-10-28T05:42:18Z",
+      "source_url": "https://api.github.com/repos/ajv-validator/ajv"
     },
     "anchore/syft": {
       "stars": 9775,
@@ -201,6 +101,35 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/astral-sh/uv"
     },
+    "atlas-brown/incr": {
+      "stars": 12,
+      "forks": 0,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-28T03:40:43Z",
+      "url": "https://github.com/atlas-brown/incr",
+      "observed_at": "2026-10-28T04:52:40Z"
+    },
+    "avaloniaui/avalonia": {
+      "stars": 31725,
+      "forks": 2869,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T21:46:15Z",
+      "url": "https://github.com/AvaloniaUI/Avalonia",
+      "observed_at": "2026-10-28T05:42:18Z",
+      "source_url": "https://api.github.com/repos/AvaloniaUI/Avalonia"
+    },
+    "awslabs/tough": {
+      "stars": 234,
+      "forks": 73,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-09-25T14:22:41Z",
+      "url": "https://github.com/awslabs/tough",
+      "observed_at": "2026-10-28T05:42:19Z",
+      "source_url": "https://api.github.com/repos/awslabs/tough"
+    },
     "baldurk/renderdoc": {
       "stars": 11239,
       "forks": 1822,
@@ -210,6 +139,16 @@
       "url": "https://github.com/baldurk/renderdoc",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/baldurk/renderdoc"
+    },
+    "bepinex/bepinex": {
+      "stars": 8914,
+      "forks": 931,
+      "archived": false,
+      "license": "LGPL-2.1",
+      "pushed_at": "2026-10-23T23:52:27Z",
+      "url": "https://github.com/BepInEx/BepInEx",
+      "observed_at": "2026-10-28T05:42:18Z",
+      "source_url": "https://api.github.com/repos/BepInEx/BepInEx"
     },
     "bevyengine/bevy": {
       "stars": 49328,
@@ -221,6 +160,25 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/bevyengine/bevy"
     },
+    "binomialllc/basis_universal": {
+      "stars": 3138,
+      "forks": 352,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-23T22:56:08Z",
+      "url": "https://github.com/BinomialLLC/basis_universal",
+      "observed_at": "2026-10-28T05:42:18Z",
+      "source_url": "https://api.github.com/repos/BinomialLLC/basis_universal"
+    },
+    "binpash/hs": {
+      "stars": 19,
+      "forks": 0,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-05T16:05:51Z",
+      "url": "https://github.com/binpash/hs",
+      "observed_at": "2026-10-28T04:52:40Z"
+    },
     "biomejs/biome": {
       "stars": 26016,
       "forks": 1298,
@@ -230,6 +188,46 @@
       "url": "https://github.com/biomejs/biome",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/biomejs/biome"
+    },
+    "blake3-team/blake3": {
+      "stars": 6496,
+      "forks": 500,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-01T20:07:25Z",
+      "url": "https://github.com/BLAKE3-team/BLAKE3",
+      "observed_at": "2026-10-28T05:42:19Z",
+      "source_url": "https://api.github.com/repos/BLAKE3-team/BLAKE3"
+    },
+    "blender/blender": {
+      "stars": 21358,
+      "forks": 3447,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-28T05:08:50Z",
+      "url": "https://github.com/blender/blender",
+      "observed_at": "2026-10-28T05:42:19Z",
+      "source_url": "https://api.github.com/repos/blender/blender"
+    },
+    "burntsushi/ripgrep": {
+      "stars": 69517,
+      "forks": 4784,
+      "archived": false,
+      "license": "Unlicense",
+      "pushed_at": "2026-10-27T18:31:31Z",
+      "url": "https://github.com/BurntSushi/ripgrep",
+      "observed_at": "2026-10-28T05:42:19Z",
+      "source_url": "https://api.github.com/repos/BurntSushi/ripgrep"
+    },
+    "burntsushi/walkdir": {
+      "stars": 1554,
+      "forks": 133,
+      "archived": false,
+      "license": "Unlicense",
+      "pushed_at": "2026-06-23T00:21:46Z",
+      "url": "https://github.com/BurntSushi/walkdir",
+      "observed_at": "2026-10-28T05:42:19Z",
+      "source_url": "https://api.github.com/repos/BurntSushi/walkdir"
     },
     "bytecodealliance/wasmtime": {
       "stars": 18789,
@@ -241,6 +239,15 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/bytecodealliance/wasmtime"
     },
+    "bztesting/warpl": {
+      "stars": 0,
+      "forks": 0,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2025-11-19T07:12:45Z",
+      "url": "https://github.com/BZTesting/WarpL",
+      "observed_at": "2026-10-28T04:52:40Z"
+    },
     "cberner/redb": {
       "stars": 4873,
       "forks": 252,
@@ -251,6 +258,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/cberner/redb"
     },
+    "clickhouse/clickhouse": {
+      "stars": 50638,
+      "forks": 9176,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-28T04:27:00Z",
+      "url": "https://github.com/ClickHouse/ClickHouse",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/ClickHouse/ClickHouse"
+    },
+    "colinhacks/zod": {
+      "stars": 44213,
+      "forks": 2296,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-19T22:46:10Z",
+      "url": "https://github.com/colinhacks/zod",
+      "observed_at": "2026-10-28T05:42:19Z",
+      "source_url": "https://api.github.com/repos/colinhacks/zod"
+    },
     "containerd/containerd": {
       "stars": 21444,
       "forks": 4186,
@@ -260,6 +287,25 @@
       "url": "https://github.com/containerd/containerd",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/containerd/containerd"
+    },
+    "containers/bubblewrap": {
+      "stars": 9250,
+      "forks": 404,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-14T12:26:14Z",
+      "url": "https://github.com/containers/bubblewrap",
+      "observed_at": "2026-10-28T05:42:20Z",
+      "source_url": "https://api.github.com/repos/containers/bubblewrap"
+    },
+    "controllablemodel/swe-skills-bench": {
+      "stars": 0,
+      "forks": 0,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-16T16:02:39Z",
+      "url": "https://github.com/ControllableModel/SWE-Skills-Bench",
+      "observed_at": "2026-10-28T04:52:40Z"
     },
     "crewaiinc/crewai": {
       "stars": 60192,
@@ -280,6 +326,16 @@
       "url": "https://github.com/criterion-rs/criterion.rs",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/criterion-rs/criterion.rs"
+    },
+    "cure53/dompurify": {
+      "stars": 17488,
+      "forks": 880,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-24T09:44:47Z",
+      "url": "https://github.com/cure53/DOMPurify",
+      "observed_at": "2026-10-28T05:42:20Z",
+      "source_url": "https://api.github.com/repos/cure53/DOMPurify"
     },
     "dagger/dagger": {
       "stars": 16526,
@@ -311,6 +367,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/denoland/deno"
     },
+    "dexie/dexie.js": {
+      "stars": 14667,
+      "forks": 724,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-27T15:45:23Z",
+      "url": "https://github.com/dexie/Dexie.js",
+      "observed_at": "2026-10-28T05:42:20Z",
+      "source_url": "https://api.github.com/repos/dexie/Dexie.js"
+    },
+    "dimforge/rapier.js": {
+      "stars": 698,
+      "forks": 91,
+      "archived": true,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-07-12T16:55:48Z",
+      "url": "https://github.com/dimforge/rapier.js",
+      "observed_at": "2026-10-28T05:42:20Z",
+      "source_url": "https://api.github.com/repos/dimforge/rapier.js"
+    },
     "django/django": {
       "stars": 91567,
       "forks": 36511,
@@ -321,6 +397,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/django/django"
     },
+    "donmccurdy/gltf-transform": {
+      "stars": 2039,
+      "forks": 220,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-20T11:41:51Z",
+      "url": "https://github.com/donmccurdy/glTF-Transform",
+      "observed_at": "2026-10-28T05:42:20Z",
+      "source_url": "https://api.github.com/repos/donmccurdy/glTF-Transform"
+    },
     "dotnet/runtime": {
       "stars": 18395,
       "forks": 5738,
@@ -330,6 +416,16 @@
       "url": "https://github.com/dotnet/runtime",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/dotnet/runtime"
+    },
+    "dtolnay/cxx": {
+      "stars": 6852,
+      "forks": 430,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-26T04:29:40Z",
+      "url": "https://github.com/dtolnay/cxx",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/dtolnay/cxx"
     },
     "dubzzz/fast-check": {
       "stars": 5219,
@@ -361,6 +457,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/electron/electron"
     },
+    "eleutherai/lm-evaluation-harness": {
+      "stars": 14333,
+      "forks": 3733,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-09-14T10:51:06Z",
+      "url": "https://github.com/EleutherAI/lm-evaluation-harness",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/EleutherAI/lm-evaluation-harness"
+    },
     "elixir-lang/elixir": {
       "stars": 26698,
       "forks": 3672,
@@ -381,6 +487,44 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/elysiajs/elysia"
     },
+    "emilk/egui": {
+      "stars": 31814,
+      "forks": 2270,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-26T16:13:59Z",
+      "url": "https://github.com/emilk/egui",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/emilk/egui"
+    },
+    "eth-sri/testsuitebench": {
+      "stars": 4,
+      "forks": 1,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-25T15:12:37Z",
+      "url": "https://github.com/eth-sri/testsuitebench",
+      "observed_at": "2026-10-28T04:52:40Z"
+    },
+    "fabricmc/fabric-loader": {
+      "stars": 895,
+      "forks": 352,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-19T19:02:44Z",
+      "url": "https://github.com/FabricMC/fabric-loader",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/FabricMC/fabric-loader"
+    },
+    "facebook/react": {
+      "stars": 251804,
+      "forks": 51576,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T15:08:39Z",
+      "url": "https://github.com/react/react",
+      "observed_at": "2026-10-28T04:49:00Z"
+    },
     "facebook/rocksdb": {
       "stars": 32233,
       "forks": 6988,
@@ -390,6 +534,16 @@
       "url": "https://github.com/facebook/rocksdb",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/facebook/rocksdb"
+    },
+    "facebook/zstd": {
+      "stars": 28112,
+      "forks": 2658,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-06T01:11:59Z",
+      "url": "https://github.com/facebook/zstd",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/facebook/zstd"
     },
     "fastapi/fastapi": {
       "stars": 104199,
@@ -420,6 +574,16 @@
       "url": "https://github.com/gepa-ai/gepa",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/gepa-ai/gepa"
+    },
+    "gfx-rs/wgpu": {
+      "stars": 18409,
+      "forks": 1580,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-27T20:17:45Z",
+      "url": "https://github.com/gfx-rs/wgpu",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/gfx-rs/wgpu"
     },
     "ggml-org/llama.cpp": {
       "stars": 132582,
@@ -481,6 +645,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/google/perfetto"
     },
+    "googlechromelabs/comlink": {
+      "stars": 12808,
+      "forks": 437,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-14T10:44:44Z",
+      "url": "https://github.com/GoogleChromeLabs/comlink",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/GoogleChromeLabs/comlink"
+    },
     "grafana/beyla": {
       "stars": 2152,
       "forks": 205,
@@ -500,6 +674,16 @@
       "url": "https://github.com/harbor-framework/harbor",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/harbor-framework/harbor"
+    },
+    "hkuds/lightrag": {
+      "stars": 40373,
+      "forks": 5736,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T18:08:12Z",
+      "url": "https://github.com/HKUDS/LightRAG",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/HKUDS/LightRAG"
     },
     "honojs/hono": {
       "stars": 32727,
@@ -541,6 +725,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/huggingface/trl"
     },
+    "hypothesisworks/hypothesis": {
+      "stars": 9113,
+      "forks": 694,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-26T17:23:29Z",
+      "url": "https://github.com/HypothesisWorks/hypothesis",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/HypothesisWorks/hypothesis"
+    },
     "ijl/orjson": {
       "stars": 8277,
       "forks": 343,
@@ -551,6 +745,15 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/ijl/orjson"
     },
+    "isenglab/tebench": {
+      "stars": 5,
+      "forks": 0,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-05-22T08:26:52Z",
+      "url": "https://github.com/iSEngLab/TEBench",
+      "observed_at": "2026-10-28T04:52:40Z"
+    },
     "jepsen-io/jepsen": {
       "stars": 7539,
       "forks": 758,
@@ -560,6 +763,16 @@
       "url": "https://github.com/jepsen-io/jepsen",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/jepsen-io/jepsen"
+    },
+    "jetbrains/kotlin": {
+      "stars": 53526,
+      "forks": 6453,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-28T03:32:36Z",
+      "url": "https://github.com/JetBrains/kotlin",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/JetBrains/kotlin"
     },
     "lancedb/lancedb": {
       "stars": 11794,
@@ -581,6 +794,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/langchain-ai/langgraph"
     },
+    "libarchive/libarchive": {
+      "stars": 3649,
+      "forks": 1047,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-28T04:15:54Z",
+      "url": "https://github.com/libarchive/libarchive",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/libarchive/libarchive"
+    },
+    "linebender/vello": {
+      "stars": 4449,
+      "forks": 328,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-27T16:39:42Z",
+      "url": "https://github.com/linebender/vello",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/linebender/vello"
+    },
     "linkedin/liger-kernel": {
       "stars": 6676,
       "forks": 636,
@@ -591,15 +824,45 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/linkedin/Liger-Kernel"
     },
-    "microsoft/typescript": {
-      "stars": 111640,
-      "forks": 16034,
+    "lit/lit": {
+      "stars": 21868,
+      "forks": 1113,
+      "archived": false,
+      "license": "BSD-3-Clause",
+      "pushed_at": "2026-10-22T17:53:29Z",
+      "url": "https://github.com/lit/lit",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/lit/lit"
+    },
+    "livecodebench/livecodebench": {
+      "stars": 970,
+      "forks": 208,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2025-07-16T00:58:38Z",
+      "url": "https://github.com/LiveCodeBench/LiveCodeBench",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/LiveCodeBench/LiveCodeBench"
+    },
+    "lmcache/lmcache": {
+      "stars": 12195,
+      "forks": 2087,
       "archived": false,
       "license": "Apache-2.0",
-      "pushed_at": "2026-10-28T01:21:37Z",
-      "url": "https://github.com/microsoft/TypeScript",
+      "pushed_at": "2026-10-28T02:37:04Z",
+      "url": "https://github.com/LMCache/LMCache",
       "observed_at": "2026-10-28T04:42:46Z",
-      "source_url": "https://api.github.com/repos/microsoft/TypeScript"
+      "source_url": "https://api.github.com/repos/LMCache/LMCache"
+    },
+    "luau-lang/luau": {
+      "stars": 6035,
+      "forks": 687,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-23T23:25:41Z",
+      "url": "https://github.com/luau-lang/luau",
+      "observed_at": "2026-10-28T05:42:21Z",
+      "source_url": "https://api.github.com/repos/luau-lang/luau"
     },
     "microsoft/graphrag": {
       "stars": 36469,
@@ -620,6 +883,26 @@
       "url": "https://github.com/microsoft/playwright",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/microsoft/playwright"
+    },
+    "microsoft/typescript": {
+      "stars": 111640,
+      "forks": 16034,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-28T01:21:37Z",
+      "url": "https://github.com/microsoft/TypeScript",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/microsoft/TypeScript"
+    },
+    "microsoft/windowsappsdk": {
+      "stars": 4716,
+      "forks": 481,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T23:58:22Z",
+      "url": "https://github.com/microsoft/WindowsAppSDK",
+      "observed_at": "2026-10-28T05:42:22Z",
+      "source_url": "https://api.github.com/repos/microsoft/WindowsAppSDK"
     },
     "milvus-io/milvus": {
       "stars": 46507,
@@ -661,6 +944,36 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/modular/modular"
     },
+    "mrdoob/three.js": {
+      "stars": 117093,
+      "forks": 36775,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-28T04:07:10Z",
+      "url": "https://github.com/mrdoob/three.js",
+      "observed_at": "2026-10-28T05:42:22Z",
+      "source_url": "https://api.github.com/repos/mrdoob/three.js"
+    },
+    "n0-computer/iroh-blobs": {
+      "stars": 170,
+      "forks": 57,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-27T09:48:33Z",
+      "url": "https://github.com/n0-computer/iroh-blobs",
+      "observed_at": "2026-10-28T05:42:22Z",
+      "source_url": "https://api.github.com/repos/n0-computer/iroh-blobs"
+    },
+    "neoforged/neoforge": {
+      "stars": 2119,
+      "forks": 351,
+      "archived": false,
+      "license": "LGPL-2.1",
+      "pushed_at": "2026-10-27T23:07:36Z",
+      "url": "https://github.com/neoforged/NeoForge",
+      "observed_at": "2026-10-28T05:42:22Z",
+      "source_url": "https://api.github.com/repos/neoforged/NeoForge"
+    },
     "nextest-rs/nextest": {
       "stars": 3372,
       "forks": 180,
@@ -670,6 +983,26 @@
       "url": "https://github.com/nextest-rs/nextest",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/nextest-rs/nextest"
+    },
+    "nixos/nix": {
+      "stars": 17920,
+      "forks": 2055,
+      "archived": false,
+      "license": "LGPL-2.1",
+      "pushed_at": "2026-10-27T15:08:14Z",
+      "url": "https://github.com/NixOS/nix",
+      "observed_at": "2026-10-28T05:42:22Z",
+      "source_url": "https://api.github.com/repos/NixOS/nix"
+    },
+    "nlfiedler/fastcdc-rs": {
+      "stars": 220,
+      "forks": 35,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-08-30T01:23:44Z",
+      "url": "https://github.com/nlfiedler/fastcdc-rs",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/nlfiedler/fastcdc-rs"
     },
     "nodejs/node": {
       "stars": 123150,
@@ -681,6 +1014,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/nodejs/node"
     },
+    "notify-rs/notify": {
+      "stars": 3481,
+      "forks": 302,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-27T21:38:32Z",
+      "url": "https://github.com/notify-rs/notify",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/notify-rs/notify"
+    },
     "nuxt/nuxt": {
       "stars": 61001,
       "forks": 5814,
@@ -690,6 +1033,35 @@
       "url": "https://github.com/nuxt/nuxt",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/nuxt/nuxt"
+    },
+    "nvidia/tensorrt-llm": {
+      "stars": 14963,
+      "forks": 2872,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-28T04:18:00Z",
+      "url": "https://github.com/NVIDIA/TensorRT-LLM",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/NVIDIA/TensorRT-LLM"
+    },
+    "nvlabs/neuralappearance": {
+      "stars": 51,
+      "forks": 7,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-08-05T07:50:54Z",
+      "url": "https://github.com/NVlabs/neuralappearance",
+      "observed_at": "2026-10-28T04:52:40Z"
+    },
+    "oll3/bita": {
+      "stars": 293,
+      "forks": 12,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-09-02T09:48:04Z",
+      "url": "https://github.com/oll3/bita",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/oll3/bita"
     },
     "open-telemetry/opentelemetry-collector-contrib": {
       "stars": 5027,
@@ -701,6 +1073,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/open-telemetry/opentelemetry-collector-contrib"
     },
+    "openhands/software-agent-sdk": {
+      "stars": 1312,
+      "forks": 715,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T23:03:05Z",
+      "url": "https://github.com/OpenHands/software-agent-sdk",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/OpenHands/software-agent-sdk"
+    },
     "openjdk/jdk": {
       "stars": 23476,
       "forks": 6546,
@@ -711,6 +1093,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/openjdk/jdk"
     },
+    "opensuse/libsolv": {
+      "stars": 613,
+      "forks": 182,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-26T13:37:02Z",
+      "url": "https://github.com/openSUSE/libsolv",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/openSUSE/libsolv"
+    },
     "opentofu/opentofu": {
       "stars": 30647,
       "forks": 1408,
@@ -720,6 +1112,15 @@
       "url": "https://github.com/opentofu/opentofu",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/opentofu/opentofu"
+    },
+    "orion-junkins/restir-cgns": {
+      "stars": 19,
+      "forks": 3,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-06-18T17:57:12Z",
+      "url": "https://github.com/orion-junkins/ReSTIR-CGNS",
+      "observed_at": "2026-10-28T04:52:40Z"
     },
     "ossf/scorecard": {
       "stars": 5794,
@@ -771,6 +1172,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/phoenixframework/phoenix_live_view"
     },
+    "pixijs/pixijs": {
+      "stars": 48575,
+      "forks": 5120,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T09:26:04Z",
+      "url": "https://github.com/pixijs/pixijs",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/pixijs/pixijs"
+    },
     "pola-rs/polars": {
       "stars": 40220,
       "forks": 3205,
@@ -790,6 +1201,16 @@
       "url": "https://github.com/postgres/postgres",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/postgres/postgres"
+    },
+    "prefix-dev/resolvo": {
+      "stars": 228,
+      "forks": 32,
+      "archived": false,
+      "license": "BSD-3-Clause",
+      "pushed_at": "2026-10-26T12:53:40Z",
+      "url": "https://github.com/prefix-dev/resolvo",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/prefix-dev/resolvo"
     },
     "pydantic/pydantic-ai": {
       "stars": 20915,
@@ -821,6 +1242,25 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/qdrant/qdrant"
     },
+    "quickwit-oss/tantivy": {
+      "stars": 16352,
+      "forks": 1025,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T15:22:06Z",
+      "url": "https://github.com/quickwit-oss/tantivy",
+      "observed_at": "2026-10-28T05:42:24Z",
+      "source_url": "https://api.github.com/repos/quickwit-oss/tantivy"
+    },
+    "r-carissimi/wasure": {
+      "stars": 12,
+      "forks": 3,
+      "archived": false,
+      "license": "GPL-3.0",
+      "pushed_at": "2026-09-10T16:52:42Z",
+      "url": "https://github.com/r-carissimi/wasure",
+      "observed_at": "2026-10-28T04:52:40Z"
+    },
     "restatedev/restate": {
       "stars": 4614,
       "forks": 228,
@@ -830,6 +1270,16 @@
       "url": "https://github.com/restatedev/restate",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/restatedev/restate"
+    },
+    "richgel999/neural_tex_block_compression": {
+      "stars": 5,
+      "forks": 1,
+      "archived": false,
+      "license": "Unlicense",
+      "pushed_at": "2026-09-08T18:38:06Z",
+      "url": "https://github.com/richgel999/neural_tex_block_compression",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/richgel999/neural_tex_block_compression"
     },
     "roc-lang/roc": {
       "stars": 6169,
@@ -851,6 +1301,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/rolldown/rolldown"
     },
+    "rr-debugger/rr": {
+      "stars": 10721,
+      "forks": 666,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-28T03:35:58Z",
+      "url": "https://github.com/rr-debugger/rr",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/rr-debugger/rr"
+    },
+    "ruc-nlpir/flashrag": {
+      "stars": 3599,
+      "forks": 328,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-27T01:45:46Z",
+      "url": "https://github.com/RUC-NLPIR/FlashRAG",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/RUC-NLPIR/FlashRAG"
+    },
     "rust-lang/rust": {
       "stars": 120908,
       "forks": 17995,
@@ -860,6 +1330,26 @@
       "url": "https://github.com/rust-lang/rust",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/rust-lang/rust"
+    },
+    "safeailab/eagle": {
+      "stars": 2563,
+      "forks": 298,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-02-20T02:53:29Z",
+      "url": "https://github.com/SafeAILab/EAGLE",
+      "observed_at": "2026-10-28T04:42:46Z",
+      "source_url": "https://api.github.com/repos/SafeAILab/EAGLE"
+    },
+    "seanmonstar/reqwest": {
+      "stars": 11891,
+      "forks": 1437,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-19T21:47:54Z",
+      "url": "https://github.com/seanmonstar/reqwest",
+      "observed_at": "2026-10-28T05:42:23Z",
+      "source_url": "https://api.github.com/repos/seanmonstar/reqwest"
     },
     "sgl-project/sglang": {
       "stars": 38293,
@@ -890,6 +1380,26 @@
       "url": "https://github.com/sigstore/cosign",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/sigstore/cosign"
+    },
+    "slint-ui/slint": {
+      "stars": 24301,
+      "forks": 1048,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-28T04:46:23Z",
+      "url": "https://github.com/slint-ui/slint",
+      "observed_at": "2026-10-28T05:42:24Z",
+      "source_url": "https://api.github.com/repos/slint-ui/slint"
+    },
+    "sparkle-project/sparkle": {
+      "stars": 9913,
+      "forks": 1149,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-10-25T14:39:03Z",
+      "url": "https://github.com/sparkle-project/Sparkle",
+      "observed_at": "2026-10-28T05:42:24Z",
+      "source_url": "https://api.github.com/repos/sparkle-project/Sparkle"
     },
     "spinframework/spin": {
       "stars": 6559,
@@ -941,6 +1451,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/swiftlang/swift"
     },
+    "tanstack/virtual": {
+      "stars": 7172,
+      "forks": 481,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-26T22:47:45Z",
+      "url": "https://github.com/TanStack/virtual",
+      "observed_at": "2026-10-28T05:42:24Z",
+      "source_url": "https://api.github.com/repos/TanStack/virtual"
+    },
     "tauri-apps/tauri": {
       "stars": 112250,
       "forks": 4121,
@@ -971,6 +1491,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/testcontainers/testcontainers-java"
     },
+    "theupdateframework/python-tuf": {
+      "stars": 1730,
+      "forks": 306,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-19T21:44:06Z",
+      "url": "https://github.com/theupdateframework/python-tuf",
+      "observed_at": "2026-10-28T05:42:24Z",
+      "source_url": "https://api.github.com/repos/theupdateframework/python-tuf"
+    },
     "tlaplus/tlaplus": {
       "stars": 3150,
       "forks": 277,
@@ -991,6 +1521,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/tokio-rs/axum"
     },
+    "tokio-rs/loom": {
+      "stars": 2851,
+      "forks": 154,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-02-20T20:40:49Z",
+      "url": "https://github.com/tokio-rs/loom",
+      "observed_at": "2026-10-28T05:42:24Z",
+      "source_url": "https://api.github.com/repos/tokio-rs/loom"
+    },
     "ultrajson/ultrajson": {
       "stars": 4501,
       "forks": 383,
@@ -1010,6 +1550,26 @@
       "url": "https://github.com/unslothai/unsloth",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/unslothai/unsloth"
+    },
+    "uwasl/dedup-bench": {
+      "stars": 28,
+      "forks": 3,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-06-22T11:58:25Z",
+      "url": "https://github.com/UWASL/dedup-bench",
+      "observed_at": "2026-10-28T05:42:25Z",
+      "source_url": "https://api.github.com/repos/UWASL/dedup-bench"
+    },
+    "velopack/velopack": {
+      "stars": 2420,
+      "forks": 163,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-26T01:15:42Z",
+      "url": "https://github.com/velopack/velopack",
+      "observed_at": "2026-10-28T05:42:25Z",
+      "source_url": "https://api.github.com/repos/velopack/velopack"
     },
     "vercel/next.js": {
       "stars": 143175,
@@ -1121,6 +1681,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/wolfpld/tracy"
     },
+    "wxt-dev/wxt": {
+      "stars": 10664,
+      "forks": 585,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-28T04:58:01Z",
+      "url": "https://github.com/wxt-dev/wxt",
+      "observed_at": "2026-10-28T05:42:25Z",
+      "source_url": "https://api.github.com/repos/wxt-dev/wxt"
+    },
     "z-lab/dflash": {
       "stars": 6206,
       "forks": 441,
@@ -1131,95 +1701,25 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/z-lab/dflash"
     },
-    "facebook/react": {
-      "stars": 251804,
-      "forks": 51576,
+    "zeux/meshoptimizer": {
+      "stars": 8637,
+      "forks": 733,
       "archived": false,
       "license": "MIT",
-      "pushed_at": "2026-10-27T15:08:39Z",
-      "url": "https://github.com/react/react",
-      "observed_at": "2026-10-28T04:49:00Z"
+      "pushed_at": "2026-10-14T17:27:17Z",
+      "url": "https://github.com/zeux/meshoptimizer",
+      "observed_at": "2026-10-28T05:42:25Z",
+      "source_url": "https://api.github.com/repos/zeux/meshoptimizer"
     },
-    "atlas-brown/incr": {
-      "stars": 12,
-      "forks": 0,
+    "zip-rs/zip2": {
+      "stars": 379,
+      "forks": 138,
       "archived": false,
       "license": "MIT",
-      "pushed_at": "2026-10-28T03:40:43Z",
-      "url": "https://github.com/atlas-brown/incr",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "binpash/hs": {
-      "stars": 19,
-      "forks": 0,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2026-10-05T16:05:51Z",
-      "url": "https://github.com/binpash/hs",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "bztesting/warpl": {
-      "stars": 0,
-      "forks": 0,
-      "archived": false,
-      "license": null,
-      "pushed_at": "2025-11-19T07:12:45Z",
-      "url": "https://github.com/BZTesting/WarpL",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "controllablemodel/swe-skills-bench": {
-      "stars": 0,
-      "forks": 0,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2026-10-16T16:02:39Z",
-      "url": "https://github.com/ControllableModel/SWE-Skills-Bench",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "eth-sri/testsuitebench": {
-      "stars": 4,
-      "forks": 1,
-      "archived": false,
-      "license": "MIT",
-      "pushed_at": "2026-10-25T15:12:37Z",
-      "url": "https://github.com/eth-sri/testsuitebench",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "isenglab/tebench": {
-      "stars": 5,
-      "forks": 0,
-      "archived": false,
-      "license": null,
-      "pushed_at": "2026-05-22T08:26:52Z",
-      "url": "https://github.com/iSEngLab/TEBench",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "nvlabs/neuralappearance": {
-      "stars": 51,
-      "forks": 7,
-      "archived": false,
-      "license": "Apache-2.0",
-      "pushed_at": "2026-08-05T07:50:54Z",
-      "url": "https://github.com/NVlabs/neuralappearance",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "orion-junkins/restir-cgns": {
-      "stars": 19,
-      "forks": 3,
-      "archived": false,
-      "license": null,
-      "pushed_at": "2026-06-18T17:57:12Z",
-      "url": "https://github.com/orion-junkins/ReSTIR-CGNS",
-      "observed_at": "2026-10-28T04:52:40Z"
-    },
-    "r-carissimi/wasure": {
-      "stars": 12,
-      "forks": 3,
-      "archived": false,
-      "license": "GPL-3.0",
-      "pushed_at": "2026-09-10T16:52:42Z",
-      "url": "https://github.com/r-carissimi/wasure",
-      "observed_at": "2026-10-28T04:52:40Z"
+      "pushed_at": "2026-10-28T05:13:18Z",
+      "url": "https://github.com/zip-rs/zip2",
+      "observed_at": "2026-10-28T05:42:25Z",
+      "source_url": "https://api.github.com/repos/zip-rs/zip2"
     }
   },
   "errors": [
@@ -1229,5 +1729,5 @@
       "attempted_at": "2026-10-28T04:42:46Z"
     }
   ],
-  "last_attempted_at": "2026-10-28T04:52:40Z"
+  "last_attempted_at": "2026-10-28T05:42:25Z"
 }

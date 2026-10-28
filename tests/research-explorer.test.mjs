@@ -109,6 +109,43 @@ test('2026 publication filtering never substitutes the source check date or a re
   assert.equal(publishedDate(undated), '');
 });
 
+test('stack layers intersect existing filters and preserve entries assigned to multiple layers', () => {
+  const shared = entry('shared', {layers: ['synthetic-ui', 'synthetic-runtime']});
+  const ui = entry('ui', {layers: ['synthetic-ui'], kind: 'framework'});
+  const runtime = entry('runtime', {layers: ['synthetic-runtime']});
+  const legacy = entry('legacy');
+  const data = catalog([shared, ui, runtime, legacy], {layers: [
+    {id: 'synthetic-ui', label: 'Synthetic portable interface'},
+    {id: 'synthetic-runtime', label: 'Synthetic execution runtime'},
+  ]});
+  const before = structuredClone(data);
+  assert.deepEqual(ids(queryCatalog(data, state({layer: 'synthetic-ui', sort: 'name'}))), [shared.id, ui.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({layer: 'synthetic-ui', kind: 'tool'}))), [shared.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({layer: 'synthetic-runtime', q: 'shared'}))), [shared.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({layer: 'unknown-layer'}))), []);
+  assert.equal(queryCatalog(data, state()).total, 4, 'Legacy entries remain discoverable without a layer filter');
+  assert.deepEqual(data, before);
+});
+
+test('stack layer labels are searchable and layer scope survives share URL round trips', () => {
+  const selected = entry('selected', {layers: ['synthetic-ui']});
+  const data = catalog([selected, entry('other')], {layers: [{id: 'synthetic-ui', label: 'Portable interface'}]});
+  const view = state({layer: 'synthetic-ui', q: 'portable interface', kind: 'tool', page: 3});
+  assert.deepEqual(parseState('?' + encodeState(view)), view);
+  assert.deepEqual(ids(queryCatalog(data, view)), [selected.id]);
+  assert.equal(parseState('').layer, '');
+});
+
+test('CSV retains every stack layer without converting editorial roles into benchmark scores', () => {
+  const selected = entry('selected', {layers: ['synthetic-ui', 'synthetic-runtime']});
+  const data = catalog([selected]);
+  const row = csvRecords(exportCSV([selected], data, state({layer: 'synthetic-ui'})))[0];
+  assert.equal(row.stack_layers, 'synthetic-ui; synthetic-runtime');
+  assert.equal(row.benchmark_value, '');
+  assert.equal(row.community_adjusted_score, '');
+  assert.equal(row.ranking_view, 'priority');
+});
+
 test('a verified paper publication year includes undated papers without replacing dated-source matching', () => {
   const yearOnly = entry('year-only', {kind: 'paper', publication_year: 2026, sources: [source(null)]});
   const dated = entry('dated', {sources: [source('2026-02-01')]});
@@ -384,9 +421,9 @@ test('CSV export preserves unknown versus zero popularity and does not invent me
   }}});
   const exported = exportCSV([zero, missing], data);
   const expected = [
-    '"id","name","kind","category","maturity","evidence","priority","track","github_stars","stars_observed_at","url"',
-    '"synthetic-zero","\'=SUM(1,2)","tool","synthetic-tools","experimental","candidate","1","synthetic-build","0","2026-10-27T12:00:00Z","https://example.invalid/synthetic-zero"',
-    '"synthetic-missing","Synthetic Missing","tool","synthetic-tools","experimental","candidate","1","synthetic-build","","","https://example.invalid/synthetic-missing"',
+    '"id","name","kind","category","stack_layers","maturity","evidence","priority","track","github_stars","stars_observed_at","url"',
+    '"synthetic-zero","\'=SUM(1,2)","tool","synthetic-tools","","experimental","candidate","1","synthetic-build","0","2026-10-27T12:00:00Z","https://example.invalid/synthetic-zero"',
+    '"synthetic-missing","Synthetic Missing","tool","synthetic-tools","","experimental","candidate","1","synthetic-build","","","https://example.invalid/synthetic-missing"',
   ].join('\r\n');
   assert.equal(exported, expected);
   assert.equal(exportCSV([], data), expected.split('\r\n')[0]);

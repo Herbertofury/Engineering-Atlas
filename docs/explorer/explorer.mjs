@@ -36,6 +36,7 @@ function compact(number) { return new Intl.NumberFormat('en', {notation: 'compac
 function title(text) { return text.replaceAll('-', ' ').replace(/\b\w/g, c => c.toUpperCase()); }
 function trackLabel(id) { return catalog.tracks.find(t => t.id === id)?.label || title(id); }
 function categoryLabel(id) { return catalog.categories.find(t => t.id === id)?.label || title(id); }
+function layerLabel(id) { return (catalog.layers || []).find(layer => layer.id === id)?.label || title(id); }
 
 function notify(message) {
   $('toast').textContent = message;
@@ -92,11 +93,30 @@ function renderNavigation() {
 function renderStats() {
   const measured = catalog.entries.filter(e => evidenceFor(e, catalog) === 'measured').length;
   const recent = catalog.entries.filter(e => publicationYearMatches(e, '2026')).length;
-  const sources = new Set(catalog.entries.flatMap(e => e.source_ids));
-  const stats = [[catalog.entries.length, 'Candidates'], [sources.size, 'Primary sources'], [recent, '2026 publications'], [measured, 'Measured candidates']];
+  const sources = new Set(catalog.entries.flatMap(e => e.sources.map(source => source.url)));
+  const stats = [[catalog.entries.length, 'Candidates'], [sources.size, 'Primary URLs'], [recent, '2026 publications'], [measured, 'Measured candidates']];
   $('stats').replaceChildren(...stats.map(([value, label]) => element('div', {}, element('dt', {}, label), element('dd', {}, String(value)))));
   $('snapshot').textContent = 'SNAPSHOT / ' + dateLabel(catalog.snapshot_date).toUpperCase();
   $('snapshot').title = catalog.snapshot_timezone + '; source check timestamps are UTC.';
+}
+
+function renderLayerGuide() {
+  const layer = (catalog.layers || []).find(item => item.id === state.layer);
+  const guide = $('layer-guide');
+  guide.hidden = !layer;
+  if (!layer) { guide.replaceChildren(); return; }
+  const choices = [['Reference choices', 'baseline_ids'], ['Compare next', 'challenger_ids'], ['Research watchlist', 'watch_ids']];
+  const groups = choices.map(([label, key]) => element('div', {}, element('h4', {}, label),
+    layer[key].length ? element('ul', {}, layer[key].map(id => {
+      const entry = catalog.entries.find(item => item.id === id);
+      const view = encodeState({...parseState(''), layer: layer.id, q: entry.name});
+      return element('li', {}, element('a', {href: '?' + view + '#catalog'}, entry.name));
+    })) : element('p', {}, 'None selected for this role.')));
+  guide.replaceChildren(element('p', {class: 'eyebrow'}, 'A STARTING POINT FOR THIS LAYER'),
+    element('h3', {}, layer.label), element('p', {class: 'layer-decision'}, layer.decision),
+    element('div', {class: 'layer-choices'}, groups),
+    element('p', {class: 'layer-gate'}, element('strong', {}, 'Adoption gate: '), layer.gate),
+    element('p', {class: 'layer-scope'}, 'Editorial roles, not measured winners. A layer can contain complementary components. Compare only the same functional role and workload; adding a component is a separate variable from replacing one.'));
 }
 
 function signal(entry) {
@@ -132,6 +152,7 @@ function detail(entry) {
     element('p', {}, entry.latest_signal || entry.summary), element('h4', {}, 'Proposed test · ' + trackLabel(entry.evaluation.track)),
     element('p', {}, entry.evaluation.proposal), element('h4', {}, 'Measure'), bulletList(entry.evaluation.metrics),
     element('h4', {}, 'Constraints and possible disqualifiers'), bulletList(entry.evaluation.caveats));
+  if (entry.layers?.length) column1.append(element('h4', {}, 'Stack layers'), element('p', {}, entry.layers.map(layerLabel).join(' · ')));
   const column2 = element('div', {}, element('h4', {}, 'Primary sources'), sources,
     element('h4', {}, 'Test priority rationale'), element('p', {}, entry.priority_reason),
     element('h4', {}, 'Repository snapshot'), element('p', {}, s ?
@@ -201,8 +222,9 @@ function renderRankingNote() {
 }
 
 function render() {
+  if (state.layer && !(catalog.layers || []).some(layer => layer.id === state.layer)) state.layer = '';
   renderNavigation();
-  for (const key of ['kind', 'maturity', 'evidence', 'year', 'track', 'sort']) $(key).value = state[key];
+  for (const key of ['layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'sort']) $(key).value = state[key];
   if ($('search').value !== state.q) $('search').value = state.q;
   const isBenchmark = ['external', 'measured'].includes(state.sort);
   $('cohort-control').hidden = !isBenchmark;
@@ -213,13 +235,15 @@ function render() {
   state.page = visibleQuery.page;
   const query = encodeState(state);
   history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
-  $('result-count').textContent = visibleQuery.total + ' of ' + catalog.entries.length + ' candidates' + (state.category ? ' · ' + categoryLabel(state.category) : '');
+  $('result-count').textContent = visibleQuery.total + ' of ' + catalog.entries.length + ' candidates' +
+    (state.layer ? ' · ' + layerLabel(state.layer) : '') + (state.category ? ' · ' + categoryLabel(state.category) : '');
   if (!visibleQuery.total) $('results').replaceChildren(element('div', {class: 'empty'}, element('h3', {}, visibleQuery.reason ? 'Choose a comparison scope' : 'No matching candidates'),
     element('p', {}, visibleQuery.reason || 'Try fewer filters or a broader search. Missing results are not evidence that a project is unsuitable.')));
   else $('results').replaceChildren(...visibleQuery.visible.map((entry, index) => card(entry, (visibleQuery.page - 1) * 24 + index)));
   $('previous').disabled = state.page <= 1; $('next').disabled = state.page >= visibleQuery.pages;
   $('page-label').textContent = 'Page ' + state.page + ' of ' + visibleQuery.pages;
   renderRankingNote();
+  renderLayerGuide();
 }
 
 function showComparison() {
@@ -242,12 +266,12 @@ function showComparison() {
 
 function bindEvents() {
   $('search').addEventListener('input', e => setState({q: e.target.value}));
-  for (const key of ['kind', 'maturity', 'evidence', 'year', 'track', 'cohort']) $(key).addEventListener('change', e => setState({[key]: e.target.value}));
+  for (const key of ['layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'cohort']) $(key).addEventListener('change', e => setState({[key]: e.target.value}));
   $('sort').addEventListener('change', e => {
     const sort = e.target.value;
     const type = sort === 'measured' ? 'atlas_measured' : sort === 'external' ? 'external_reported' : null;
     setState({sort, cohort: type ? catalog.results.cohorts.find(c => c.evidence === type)?.id || '' : '',
-      ...(type ? {category: '', kind: '', maturity: '', evidence: '', year: '', track: ''} : {})});
+      ...(type ? {category: '', layer: '', kind: '', maturity: '', evidence: '', year: '', track: ''} : {})});
   });
   $('all-categories').addEventListener('click', () => setState({category: ''}));
   $('reset').addEventListener('click', () => { state = parseState(''); render(); });
@@ -266,7 +290,8 @@ function bindEvents() {
       exported_at: new Date().toISOString(), catalog_snapshot: catalog.snapshot_date,
       required_before_execution: ['Exact baseline and candidate revisions', 'Workload and expected complete-output hashes',
         'Hardware, OS and toolchain', 'Quality, security and resource gates', 'Trial order and retained raw evidence'],
-      candidates: entries.map(e => ({id: e.id, name: e.name, url: e.url, evaluation: e.evaluation, source_ids: e.source_ids}))}, null, 2));
+      selected_layer: state.layer || null,
+      candidates: entries.map(e => ({id: e.id, name: e.name, url: e.url, layers: e.layers || [], evaluation: e.evaluation, source_ids: e.source_ids}))}, null, 2));
   });
   window.addEventListener('popstate', () => { state = parseState(location.search); render(); });
 }
@@ -280,6 +305,7 @@ async function main() {
     for (const key of ['category', 'track']) if (state[key] && !catalog[key === 'category' ? 'categories' : 'tracks'].some(x => x.id === state[key])) state[key] = '';
     populateSelect('kind', [...new Set(catalog.entries.map(e => e.kind))].sort().map(id => ({id, label: title(id)})));
     populateSelect('track', catalog.tracks);
+    populateSelect('layer', catalog.layers || []);
     try { const saved = JSON.parse(localStorage.getItem('engineering-atlas-shortlist-v1') || '[]');
       if (Array.isArray(saved)) shortlist = [...new Set(saved)].filter(id => catalog.entries.some(e => e.id === id)).slice(0, 4);
     } catch { shortlist = []; }
