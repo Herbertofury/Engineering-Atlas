@@ -21,3 +21,13 @@ The v11 harness supplements focus/visibility with eight empty-frame scheduling o
 Five additional fixture tests cover normal cadence, the observed slow-cadence pattern, partial timeout cleanup, interruption and invalid clocks. Full Node regression: 117 tests. [Generated focus fixtures](fixture-results.json) remain separate from the native counterexample. Live v11 rejection, foreground recovery and last-good retention still require verification.
 
 Primary source FRAME01: [requestAnimationFrame scheduling](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame), checked 2026-10-28. Callback cadence is ordinarily related to display refresh and may pause for background content; this does not make double-rAF a physical-paint measurement.
+
+## Actual deployed v11 outcome
+
+The deployed `lab.6e97319b65f25a4e.js` / v11 harness was exercised in cloud Chromium. [Initial background calibration](v11-background-rejected.json) timed out with seven retained roughly one-second waits and zero render samples despite reported focus. This closes the observed slow-context acceptance gap without trusting the focus signal alone.
+
+After native foreground selection, [all six complete-output samples](v11-foreground-complete.json) passed pre/post calibration. A subsequent attempted Terminal-switch setup did not establish background state: the browser remained in front and produced a second valid run, preserved as [the pre-interruption receipt](v11-before-interruption.json). The later explicit native tab switch produced [one retained measured sample and rejected post-sample cadence](v11-interrupted.json). Its [last-good download](v11-after-interruption-last-good.json) matched the pre-interruption receipt byte-for-byte, SHA-256 `a7d5ec48d4eb9e3559c2139f043f6dfc29661addb7195d8038d56e8f64ad330d`.
+
+A new foreground [200-card × 64 KiB metadata run](v11-density-200-64k.json) then passed all six complete-output samples and every scheduling check. The exact last card exposed all 65,536 metadata characters. Paired frame-ready proxy medians were 4,871.0 ms full DOM versus 265.2 ms metadata containment; synchronous insertion medians were 20.1 versus 74.0 ms. Full layout/scheduling costs matter more than insertion alone here. This is a small three-pair generated-data comparison, not a real-media, memory, INP or universal ranking. [Verification and raw hashes](live-verification.json).
+
+The focus-only native failure remains a failure, not reclassified by the later repair. Calibration acceptance says the specified empty-frame checks passed, not that browser-reported focus became trustworthy or that every native interruption is detected. No security setting, browser flag, private data or external project was changed.
