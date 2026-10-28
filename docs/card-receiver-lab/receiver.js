@@ -3,7 +3,7 @@ import {prepareDataset} from './baseline.mjs';
 import {verifyPrepared,verifyPreparedBounded} from './verified-receiver.mjs';
 import {createFocusGuard,calibrateFrameCadence} from './lab-core.mjs';
 const $=id=>document.getElementById(id),guard=createFocusGuard(document,window);
-const identity='atlas-complete-receiver-v5-input-receipt';$('build').textContent='Loaded harness: '+identity;
+const identity='atlas-complete-receiver-v6-late-guard';$('build').textContent='Loaded harness: '+identity;
 let busy=false,stopped=false,hidden=false,sequence=0,cancelWorker=null,current=null,lastGood=null;
 document.addEventListener('visibilitychange',()=>{if(busy&&document.hidden)hidden=true;});
 const check=()=>{guard.check();if(stopped)throw Error('Cancelled; partial evidence retained');if(hidden||document.hidden)throw Error('Visibility lost; partial evidence retained');};
@@ -16,7 +16,7 @@ function workerRun(lane,prepared,count,bytes){
   const timer=setTimeout(()=>finish(Error('Worker exceeded 30 seconds')),30000);
   cancelWorker=()=>finish(Error('Worker cancelled; partial evidence retained'));
   w.onerror=()=>finish(Error('Worker error; no silent fallback'));
-  w.onmessage=e=>{if(e.data?.id!==id)return;if(e.data.ok!==true){finish(Error(e.data.error||'Worker validation failed'));return;}try{
+  w.onmessage=e=>{if(settled||e.data?.id!==id)return;if(e.data.ok!==true){finish(Error(e.data.error||'Worker validation failed'));return;}try{
       const response=e.data;if(response.format==='verified-input'){response.result=acceptVerifiedInput(response.receipt,prepared,count,bytes);}
       else if(response.format==='utf8-records'){
         if(!(response.buffer instanceof ArrayBuffer)||response.buffer.byteLength!==response.dataset?.serialized_bytes)throw Error('Transferred payload size mismatch');

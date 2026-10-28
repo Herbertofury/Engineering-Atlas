@@ -10,7 +10,7 @@ def outputs():
         for old,new in names.items():text=text.replace("'./"+old+"'","'./"+new+"'")
         data=text.encode();name=path.stem+'.'+hashlib.sha256(data).hexdigest()[:16]+path.suffix;names[path.name]=name;files[name]=data
     files['index.html']=(OUT/'index.template.html').read_text().replace('src="receiver.js"','src="'+names['receiver.js']+'"').encode()
-    files['build-manifest.json']=(json.dumps({'harness':'atlas-complete-receiver-v5-input-receipt','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}},indent=2)+'\n').encode()
+    files['build-manifest.json']=(json.dumps({'harness':'atlas-complete-receiver-v6-late-guard','artifacts':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}},indent=2)+'\n').encode()
     return files
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
