@@ -99,3 +99,15 @@ byte-identical afterward, and its final 8 KiB record remained inspectable.
 No browser timeout, hidden-tab transition, preparation input-latency comparison
 or peak-memory result is claimed. See the retained `*-v7-2026-10-27.json` files.
 The worker remains optional, not the default and not recommended to other apps.
+
+## Foreground-controlled v9 recheck (2026-10-28)
+
+The exact deployed v9 harness was selected in native foreground Chromium, verified by desktop screenshot, after the event-log investigation found that DOM visibility alone had not established native foreground state. No benchmark/browser flags or implementation changed for this recheck. Three seven-pair comparisons used 1,000 generated cards, 8 KiB complete metadata per card and identical canonical dataset SHA-256 `987660c9b6b8fce029829d5c69632667bd41e173860c2e00e747ba237ad8655e`. All 42 samples retained 1,000 cards and all expected fields. The exact final record `card-000999` was inspected with all 8,192 metadata characters. Original limited/failed observations are retained.
+
+[Initial card containment](foreground-initial-1000-8k-v9-2026-10-28.json): median frame-ready proxy 3,181.3 ms full DOM versus 193.8 ms card containment. However, median per-sample worst scroll-frame wait increased from 98.8 to 192.8 ms. Faster initial scheduling does not establish smooth scrolling.
+
+[Metadata-only containment](foreground-metadata-1000-8k-v9-2026-10-28.json): paired frame-ready proxy 2,892.2 versus 285.2 ms, with median per-sample worst scroll wait 83.2 versus 68.0 ms. The differing baseline medians are retained; do not compare independent runs as if interleaved or claim an overall best strategy. Both approaches preserve all fields in the DOM; neither is virtualization or a proven memory reduction.
+
+[One-percent keyed updates](foreground-update-1000-8k-v9-2026-10-28.json): complete replacement versus keyed update median synchronous work 128.6 versus 1.4 ms; frame-ready proxy 2,541.9 versus 76.8 ms. Median per-sample worst scroll waits were 61.2 versus 76.2 ms. Per-sample baseline setup is outside that update timer, as declared by the harness. This is not total refresh pipeline latency or an INP score.
+
+[Machine-readable scoped summary and raw receipt hashes](foreground-v9-summary-2026-10-28.json). An initial status-read timed out while heavy synchronous work was running; the action was not resubmitted, and the original run completed. This is evidence of a responsiveness concern, not a hidden successful cancellation test. These generated, image-free measurements do not establish real-media card time-to-visible, peak memory, physical paint or acceptance for another project. Keep candidates isolated and preserve the working baseline. Local regression remains 106 Node and 74 Python checks passed.
