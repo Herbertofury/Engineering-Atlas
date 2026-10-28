@@ -22,4 +22,8 @@ See the [ranking and data contract](../../docs/research-explorer.md), [research 
 
 ## Published deployment
 
-[Publication receipt](published-2026-10-28.json) records the merged revision, successful Linux/Windows CI and Pages jobs, and actual live-browser observations. [Live Explorer screenshot](live-explorer-2026-10-28.jpg) shows the published overview. The saved-download verification limit also occurred on the deployed HTTPS site and remains open. The separate wiki publication state is recorded independently.
+[Publication receipt](published-2026-10-28.json) records the merged revision, successful Linux/Windows CI and Pages jobs, and actual live-browser observations. [Live Explorer screenshot](live-explorer-2026-10-28.jpg) shows the published overview. The saved-download verification limit also occurred on the deployed HTTPS site and remains open.
+
+[Wiki verification](wiki-publication-2026-10-28.json) confirms all four research pages are published and byte-identical to their repository copies. Original Home and Sidebar content remains intact, and all 15 Site Adapters and adapter pages are unchanged. A concurrent `Experiment-Evidence.md` contribution was preserved. [Live wiki screenshot](live-wiki-2026-10-28.jpg) shows the published guide and research navigation.
+
+The live contribution link was checked without submitting an issue. After GitHub completed rendering, it prefilled `orjson` and `json-serialization` and left the rating at `None`. An early accessibility snapshot had appeared incomplete; the settled form corrected that observation, so no implementation change was needed. The two report labels are configured, and the reviewed snapshot still contains zero approved community reports.

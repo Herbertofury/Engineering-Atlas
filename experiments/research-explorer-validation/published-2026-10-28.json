@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verified_at": "2026-10-28T05:13:01.122772Z",
+  "verified_at": "2026-10-28T05:25:12.000858Z",
   "published_url": "https://herbertofury.github.io/Engineering-Atlas/explorer/",
   "pull_request": "https://github.com/Herbertofury/Engineering-Atlas/pull/1",
   "merged_commit": "efe9e99ead9ba31d85c2656e255c87631dce4e6a",
@@ -42,7 +42,15 @@
       }
     ],
     "measurement_provenance": "Retained October 26 experiment; not newly executed",
-    "csv_saved_file_verification": "Unverified: browser download interface reported failure on the deployed HTTPS site as well as local preview; no saved artifact was claimed."
+    "csv_saved_file_verification": "Unverified: browser download interface reported failure on the deployed HTTPS site as well as local preview; no saved artifact was claimed.",
+    "community_report_form": {
+      "candidate_id": "orjson",
+      "evaluation_track": "json-serialization",
+      "candidate_and_track_prefilled": true,
+      "rating_initial_selection": "None",
+      "issue_submitted": false,
+      "observation_note": "An initial snapshot taken during GitHub rendering appeared incomplete. Settled UI values confirmed the candidate, track and unselected rating. No implementation change was needed."
+    }
   },
   "screenshot": {
     "path": "live-explorer-2026-10-28.jpg",
@@ -53,11 +61,34 @@
     "upstream_source_records_preserved": 351,
     "research_source_records_added": 174,
     "source_register_records": 525,
-    "adapter_paths_changed_by_contribution": []
+    "adapter_paths_changed_by_contribution": [],
+    "latest_concurrent_main_preserved": "0564c34532df49ba806d852b7f3493e8a18edc5f"
   },
   "wiki": {
-    "status": "prepared_not_published",
+    "status": "published",
+    "verified_at": "2026-10-28T05:25:12.000858Z",
+    "wiki_commit": "85c50a22a4eb7761b144173f5b174b5b87a67be7",
     "package": "docs/wiki-research/",
-    "reason": "GitHub connector has no wiki write operation; browser wiki editor requires a separate authenticated session."
+    "receipt": "wiki-publication-2026-10-28.json",
+    "pages": [
+      "https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Explorer",
+      "https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Test-Queue",
+      "https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Radar-2026",
+      "https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Community"
+    ],
+    "home_and_sidebar_updated": true,
+    "protected_adapter_files_unchanged": 15,
+    "screenshot": {
+      "path": "live-wiki-2026-10-28.jpg",
+      "sha256": "616f0480a2d377a8bef51073d7dd19f6078aa4539b027fb715a72ce2190d5ee2"
+    }
+  },
+  "community_labels": {
+    "created": [
+      "research-rating",
+      "research-rating-approved"
+    ],
+    "reports_created": 0,
+    "approval_requirements_unchanged": true
   }
 }
