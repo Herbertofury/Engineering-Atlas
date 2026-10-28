@@ -44,3 +44,7 @@ The local Collection form and queue now reuse the version CLI's official client 
 ## Single-project request binding · 2026-10-27
 
 The Rust single-project client and snapshot store now bind the returned canonical ID/current slug to the requested identity before accepting data. Three generated mismatches formerly created successful stored attempts; all now fail before writes. Canonical IDs retain exact case, slugs accept ASCII case differences, and eight-character slugs still work. Three retained public responses preserve the complete existing typed projection across canonical and slug request forms. This is offline correctness evidence, not new live collection or a performance claim. [Reproducer, primary lookup source and limitations](../../experiments/project-identity-lab/README.md).
+
+## Complete received project response · 2026-10-28
+
+An optional Rust CLI lane now preserves original public project JSON in a separate namespace of the existing snapshot store. It reuses transport, identity checks, size limits and atomic FULL-policy writes; old projection/queue behavior is unchanged. Three retained public responses gained all 29 previously unprojected top-level fields while preserving every earlier typed field and exact reopened source bytes. Database size and write costs are recorded rather than hidden. Fixture/retained-data tests pass; fresh network execution of the new coordinator and queued/native UI coverage are not established. [Implementation, raw measurements and scope](../../experiments/project-raw-lab/README.md).

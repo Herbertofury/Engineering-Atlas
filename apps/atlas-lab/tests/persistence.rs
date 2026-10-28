@@ -169,3 +169,31 @@ fn version_payloads_survive_reopen_missing_refresh_and_failed_transaction() {
         );
     }
 }
+
+#[test]
+fn complete_project_json_survives_reopen_without_projection_loss() {
+    let scratch = Scratch::new();
+    let body=br#" {"id":"AANobbMI","slug":"sodium","title":"Fixture","description":"generated","project_type":"mod","versions":[],"future":{"integer":18446744073709551617,"empty":[],"nullable":null}} "#;
+    {
+        let mut store = SnapshotStore::open(&scratch.0).unwrap();
+        let record = atlas_lab::modrinth::parse_project_record(body, "SODIUM").unwrap();
+        store
+            .save_modrinth_project_record("sodium", &record)
+            .unwrap();
+    }
+    {
+        let store = SnapshotStore::open(&scratch.0).unwrap();
+        store.record_project_raw_failure("sodium").unwrap();
+        assert_eq!(
+            store
+                .latest_modrinth_project_record("AANobbMI")
+                .unwrap()
+                .unwrap()
+                .raw_json()
+                .as_bytes(),
+            body
+        );
+        assert!(store.latest_modrinth("AANobbMI").unwrap().is_none());
+        assert_eq!(store.attempts().unwrap(), 2);
+    }
+}

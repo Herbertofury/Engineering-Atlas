@@ -92,6 +92,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
             });
     }
+    if args.len() == 4 && args[1] == "collect-modrinth-raw" {
+        atlas_lab::modrinth::project_url(&args[2])?;
+        let mut store = atlas_lab::snapshots::SnapshotStore::open(Path::new(&args[3]))?;
+        match atlas_lab::modrinth::PublicClient::new()?.project_record(&args[2]) {
+            Ok(record) => {
+                let generation = store.save_modrinth_project_record(&args[2], &record)?;
+                println!(
+                    "{}",
+                    serde_json::to_string_pretty(
+                        &serde_json::json!({"generation":generation.to_string(),"project_id":record.project().id,"payload_bytes":record.raw_json().len(),"payload_sha256":atlas_lab::build_identity::sha256_hex(record.raw_json().as_bytes()),"scope":"Complete received single public project JSON retained locally; not all project content. Optional CLI lane, no queued UI or account coverage."})
+                    )?
+                );
+                return Ok(());
+            }
+            Err(error) => {
+                store.record_project_raw_failure(&args[2])?;
+                return Err(error);
+            }
+        }
+    }
     if args.len() == 4 && args[1] == "collect-modrinth" {
         atlas_lab::modrinth::project_url(&args[2])?;
         let mut store = atlas_lab::snapshots::SnapshotStore::open(Path::new(&args[3]))?;
@@ -119,7 +139,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     if args.len() != 3 || args[1] != "dedup-lab" {
         eprintln!(
-            "Usage: atlas-lab review-upstream OUTPUT.sqlite rustsec|hls|serde-json\n       atlas-lab collect-modrinth-versions OUTPUT.sqlite CANONICAL_VERSION_ID...\n       atlas-lab serve OUTPUT.sqlite\n       atlas-lab serve-candidate OUTPUT.sqlite (isolated validated-raw overview)\n       atlas-lab storage-lab NEW_DIRECTORY\n       atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
+            "Usage: atlas-lab review-upstream OUTPUT.sqlite rustsec|hls|serde-json\n       atlas-lab collect-modrinth-versions OUTPUT.sqlite CANONICAL_VERSION_ID...\n       atlas-lab serve OUTPUT.sqlite\n       atlas-lab serve-candidate OUTPUT.sqlite (isolated validated-raw overview)\n       atlas-lab storage-lab NEW_DIRECTORY\n       atlas-lab collect-modrinth-batch OUTPUT.sqlite CANONICAL_ID...\n       atlas-lab modrinth-project ID_OR_SLUG\n       atlas-lab collect-modrinth ID_OR_SLUG OUTPUT.sqlite\n       atlas-lab collect-modrinth-raw ID_OR_SLUG OUTPUT.sqlite (complete received public JSON)\n       atlas-lab dedup-lab OUTPUT.sqlite\nRuns a built-in generated-workload experiment only. No downloads or deployment."
         );
         std::process::exit(2);
     }

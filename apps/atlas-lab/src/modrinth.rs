@@ -80,6 +80,40 @@ fn validate_project(project: &Project) -> Result<(), Box<dyn std::error::Error>>
     Ok(())
 }
 
+/// Validated, immutable single-project envelope. Complete received JSON stays
+/// private to local storage; this is not all project content or a download grant.
+#[derive(Debug)]
+pub struct ProjectRecord {
+    project: Project,
+    payload: String,
+}
+impl ProjectRecord {
+    pub fn project(&self) -> &Project {
+        &self.project
+    }
+    pub fn raw_json(&self) -> &str {
+        &self.payload
+    }
+    pub(crate) fn bind_request(&self, requested: &str) -> Result<(), Box<dyn std::error::Error>> {
+        project_url(requested)?;
+        if requested != self.project.id && !requested.eq_ignore_ascii_case(&self.project.slug) {
+            return Err("Project response identity does not match request".into());
+        }
+        Ok(())
+    }
+}
+
+pub fn parse_project_record(
+    body: &[u8],
+    requested: &str,
+) -> Result<ProjectRecord, Box<dyn std::error::Error>> {
+    let project = parse_requested_project(body, requested)?;
+    Ok(ProjectRecord {
+        project,
+        payload: String::from_utf8(body.to_vec())?,
+    })
+}
+
 /// Bounded canonical-ID lane. Missing projects are explicit, never successful empty snapshots.
 #[derive(Debug, Serialize)]
 pub struct ProjectBatch {
@@ -151,6 +185,13 @@ impl PublicClient {
     pub fn project(&mut self, id: &str) -> Result<Project, Box<dyn std::error::Error>> {
         let url = project_url(id)?;
         parse_requested_project(&self.request_json(&url)?, id)
+    }
+    pub fn project_record(
+        &mut self,
+        id: &str,
+    ) -> Result<ProjectRecord, Box<dyn std::error::Error>> {
+        let url = project_url(id)?;
+        parse_project_record(&self.request_json(&url)?, id)
     }
     pub fn projects(&mut self, ids: &[String]) -> Result<ProjectBatch, Box<dyn std::error::Error>> {
         let url = projects_url(ids)?;
@@ -416,6 +457,24 @@ mod tests {
             parse_requested_project(&bytes, "ABCDEFGH").unwrap().id,
             "AANobbMI"
         );
+    }
+    #[test]
+    fn complete_project_record_preserves_unknown_fields_and_wire_whitespace() {
+        let body = br#"  {"id":"AANobbMI","slug":"sodium","title":"Fixture","description":"fixture","project_type":"mod","versions":[],"future":{"integer":18446744073709551617,"nullable":null,"empty":[]},"license":{"id":"LGPL-3.0-only"}}  "#;
+        let record = parse_project_record(body, "SODIUM").unwrap();
+        assert_eq!(record.raw_json().as_bytes(), body);
+        assert_eq!(
+            serde_json::to_value(record.project()).unwrap(),
+            serde_json::to_value(parse_project(body).unwrap()).unwrap()
+        );
+        assert!(record.bind_request("othermod").is_err());
+    }
+    #[test]
+    fn complete_project_record_keeps_existing_bounds_and_identity_rejections() {
+        let body = serde_json::to_vec(&batch_fixture("AANobbMI")).unwrap();
+        assert!(parse_project_record(&body, "unrelated").is_err());
+        assert!(parse_project_record(b"{", "sodium").is_err());
+        assert!(parse_project_record(&vec![b' '; MAX_BODY as usize + 1], "sodium").is_err());
     }
     #[test]
     fn accepts_id_or_slug() {

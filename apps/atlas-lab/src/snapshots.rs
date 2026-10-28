@@ -149,6 +149,39 @@ impl SnapshotStore {
     ) -> rusqlite::Result<Option<String>> {
         self.0.query_row("SELECT payload FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r|r.get(0)).optional()
     }
+    pub fn save_modrinth_project_record(
+        &mut self,
+        requested: &str,
+        record: &crate::modrinth::ProjectRecord,
+    ) -> Result<i64, Box<dyn std::error::Error>> {
+        // Private immutable envelope was parsed once; rebind the current request.
+        // No unchecked constructor or mutable payload accessor is exposed.
+        record.bind_request(requested)?;
+        let tx = self.0.transaction()?;
+        tx.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth-project-raw',?1,?2)",params![record.project().id,record.raw_json()])?;
+        let generation = tx.last_insert_rowid();
+        tx.execute("INSERT INTO collection_attempts(requested_id,outcome,generation) VALUES(?1,'success',?2)",params![format!("modrinth-project-raw:{requested}"),generation])?;
+        tx.commit()?;
+        Ok(generation)
+    }
+    pub fn latest_modrinth_project_record(
+        &self,
+        id: &str,
+    ) -> Result<Option<crate::modrinth::ProjectRecord>, Box<dyn std::error::Error>> {
+        crate::modrinth::projects_url(&[id.to_owned()])?;
+        let payload:Option<String>=self.0.query_row("SELECT payload FROM snapshots WHERE provider='modrinth-project-raw' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|r.get(0)).optional()?;
+        payload
+            .map(|text| crate::modrinth::parse_project_record(text.as_bytes(), id))
+            .transpose()
+    }
+    pub fn record_project_raw_failure(
+        &self,
+        requested: &str,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        crate::modrinth::project_url(requested)?;
+        self.record_failure(&format!("modrinth-project-raw:{requested}"))?;
+        Ok(())
+    }
     pub fn save_modrinth(
         &mut self,
         requested_id: &str,
@@ -548,6 +581,52 @@ mod tests {
         }
         s.save_modrinth("SODIUM", &project()).unwrap();
         assert_eq!(s.attempts().unwrap(), 2);
+    }
+    #[test]
+    fn complete_project_storage_retains_raw_bytes_and_last_good_separately() {
+        let mut s = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let body=serde_json::to_vec(&serde_json::json!({"id":"AANobbMI","slug":"sodium","title":"Fixture","description":"fixture","project_type":"mod","versions":[],"future":{"items":[1,null,"x"]}})).unwrap();
+        let record = crate::modrinth::parse_project_record(&body, "sodium").unwrap();
+        s.save_modrinth_project_record("SODIUM", &record).unwrap();
+        assert!(s.save_modrinth_project_record("othermod", &record).is_err());
+        s.record_project_raw_failure("sodium").unwrap();
+        assert_eq!(
+            s.latest_modrinth_project_record("AANobbMI")
+                .unwrap()
+                .unwrap()
+                .raw_json()
+                .as_bytes(),
+            body
+        );
+        assert_eq!(s.attempts().unwrap(), 2);
+        assert!(s.latest_modrinth("AANobbMI").unwrap().is_none());
+    }
+    #[test]
+    fn complete_project_attempt_failure_rolls_back_the_snapshot() {
+        let mut s = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let body = serde_json::to_vec(&project()).unwrap();
+        let record = crate::modrinth::parse_project_record(&body, "sodium").unwrap();
+        s.0.execute_batch("CREATE TRIGGER fail_raw_attempt BEFORE INSERT ON collection_attempts BEGIN SELECT RAISE(ABORT,'generated transaction failure'); END;").unwrap();
+        assert!(s.save_modrinth_project_record("sodium", &record).is_err());
+        assert!(
+            s.latest_modrinth_project_record("AANobbMI")
+                .unwrap()
+                .is_none()
+        );
+        assert_eq!(s.attempts().unwrap(), 0);
+    }
+    #[test]
+    fn complete_project_lookup_rejects_corrupt_identity() {
+        let mut s = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let body = serde_json::to_vec(&project()).unwrap();
+        let record = crate::modrinth::parse_project_record(&body, "sodium").unwrap();
+        s.save_modrinth_project_record("sodium", &record).unwrap();
+        s.0.execute(
+            "UPDATE snapshots SET canonical_id='ZZZZZZZZ' WHERE provider='modrinth-project-raw'",
+            [],
+        )
+        .unwrap();
+        assert!(s.latest_modrinth_project_record("ZZZZZZZZ").is_err());
     }
     #[test]
     fn invalid_snapshot_does_not_replace_good_one() {
