@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Compare equivalent paired complete workloads. Does not certify input truth."""
-import argparse,json,math,re,statistics
+import argparse,importlib.util,json,math,re,statistics
 from pathlib import Path
+_spec=importlib.util.spec_from_file_location('atlas_benchmark_wire',Path(__file__).resolve().parents[1]/'experiments/upstream-validation-lab/receipt_gate.py')
+_decoder=importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_decoder)
+decode_record=_decoder.decode_receipt
 HASH=re.compile(r'^[0-9a-f]{64}$')
 
 def validate(record):
@@ -55,7 +59,7 @@ def compare(baseline,candidate):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('baseline',type=Path);p.add_argument('candidate',type=Path);args=p.parse_args()
-    try: result=compare(json.loads(args.baseline.read_text()),json.loads(args.candidate.read_text()))
+    try: result=compare(decode_record(args.baseline.read_text()),decode_record(args.candidate.read_text()))
     except (ValueError,KeyError,TypeError) as exc:p.exit(2,f'Not comparable: {exc}\n')
     print(json.dumps(result,indent=2,allow_nan=False))
 if __name__=='__main__':main()

@@ -5,7 +5,7 @@ import json
 import math
 import statistics
 from pathlib import Path
-from compare_benchmarks import compare, validate
+from compare_benchmarks import compare, validate, decode_record
 
 COUNTS = (4, 8, 16, 32, 64)
 METRICS = ('peak_memory_mb', 'peak_handles', 'ui_latency_ms', 'cancel_latency_ms')
@@ -95,7 +95,7 @@ def main():
     parser.add_argument('sweep', type=Path)
     args = parser.parse_args()
     try:
-        result = evaluate(json.loads(args.sweep.read_text()))
+        result = evaluate(decode_record(args.sweep.read_text()))
     except (ValueError, KeyError, TypeError) as exc:
         parser.exit(2, f'Invalid sweep: {exc}\n')
     print(json.dumps(result, indent=2, allow_nan=False))
