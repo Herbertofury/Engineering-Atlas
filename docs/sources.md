@@ -3864,3 +3864,9 @@ The destination is supplied by the caller. Read progress counts UTF-16 code unit
 [WHATWG transferable objects](https://html.spec.whatwg.org/multipage/structured-data.html#transferable-objects) · HTML Living Standard last updated 2026-10-26; checked 2026-10-28.
 
 Transferring changes ownership and detaches the sender. It does not eliminate application encoding, decoding or correctness checks, or guarantee an end-to-end speedup. Review after 30 days.
+
+## RSEC0414
+
+[RustSec wikilink advisory](https://github.com/RustSec/advisory-db/blob/40f5be6fb12ed93fc591bf4ab23b7d793b3f2239/crates/pulldown-cmark/RUSTSEC-2026-0414.md) · Advisory date October 18; ID assigned October 28; reviewed October 28, 2026. [Fixed 0.13.5 release](https://github.com/pulldown-cmark/pulldown-cmark/releases/tag/v0.13.5) published October 21.
+
+Affected optional wikilink parsing can grow its event stream exponentially; default-disabled wikilinks are outside that trigger. Separate documented applicability from the bounded local reproduction. Review after 7 days.

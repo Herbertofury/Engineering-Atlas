@@ -14648,5 +14648,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "RSEC0414",
+    "title": "RustSec RUSTSEC-2026-0414 pulldown-cmark wikilink event growth",
+    "url": "https://github.com/RustSec/advisory-db/blob/40f5be6fb12ed93fc591bf4ab23b7d793b3f2239/crates/pulldown-cmark/RUSTSEC-2026-0414.md",
+    "observed_version": "Advisory dated 2026-10-18, assigned 2026-10-28; patched release 0.13.5 published 2026-10-21",
+    "topic": "parser-security",
+    "note": "Optional wikilinks in affected 0.13.x before 0.13.5 can produce exponential event growth; option off by default. Atlas fixed lockfiles do not contain this crate. Bounded local event-count reproduction is separate from general parser correctness.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 7,
+    "evidence": "primary_documented"
   }
 ]
