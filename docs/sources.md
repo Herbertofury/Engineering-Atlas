@@ -3858,3 +3858,9 @@ Status RSS can be asynchronous and imprecise; rollup provides an instantaneous p
 [WHATWG TextEncoder encodeInto](https://encoding.spec.whatwg.org/#dom-textencoder-encodeinto) · Living Standard last updated 2026-10-19; checked 2026-10-28.
 
 The destination is supplied by the caller. Read progress counts UTF-16 code units; written progress counts UTF-8 bytes. Partial progress must be checked. No standard-level speed guarantee. Review after 30 days.
+
+## ENCODE02
+
+[WHATWG transferable objects](https://html.spec.whatwg.org/multipage/structured-data.html#transferable-objects) · HTML Living Standard last updated 2026-10-26; checked 2026-10-28.
+
+Transferring changes ownership and detaches the sender. It does not eliminate application encoding, decoding or correctness checks, or guarantee an end-to-end speedup. Review after 30 days.

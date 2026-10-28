@@ -14637,5 +14637,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "ENCODE02",
+    "title": "WHATWG transferable object ownership semantics",
+    "url": "https://html.spec.whatwg.org/multipage/structured-data.html#transferable-objects",
+    "observed_version": "HTML Living Standard last updated 2026-10-26; reviewed 2026-10-28",
+    "topic": "complete-record-transport",
+    "note": "Transfer changes ownership and detaches the sending object; complete serialization/deserialization and application checks remain separate work. No end-to-end speed guarantee.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]
