@@ -812,3 +812,9 @@ Hardware-specific persistent-memory study; not a SQLite replacement result. Evid
 [Padding to k: schema minimums and extraction lists](https://arxiv.org/html/2610.30997v1) · v1, submitted 2026-10-22
 
 Model-extraction completeness risk; not replicated or promoted. Evidence: primary documented. Checked 2026-10-27; review after 30 days or before a version-sensitive decision.
+
+## FOCUS01
+
+[Document.hasFocus and active-element distinction](https://developer.mozilla.org/en-US/docs/Web/API/Document/hasFocus) · Documentation modified 2025-09-25
+
+Focus differs from active-element presence. Used as an additional controlled-run guard, not physical-paint proof. Evidence: primary documented. Checked 2026-10-28; review after 90 days.

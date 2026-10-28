@@ -1,11 +1,11 @@
 {
-  "harness": "atlas-card-density-v9-late-evidence",
+  "harness": "atlas-card-density-v10-focus-guard",
   "artifacts": {
-    "lab-core.b7c188622867f9b8.mjs": "b7c188622867f9b80e3fef73494e7010333cee95ca6523a1dc2c56319095f7fc",
-    "preparation-core.6b1799c76ca57b9f.mjs": "6b1799c76ca57b9f240d566151f454b557b130441d36fe37f55d7fc2204e3cd4",
-    "lab-worker.0d24111e648d7f05.mjs": "0d24111e648d7f05e1480c4602915a2b613e01a7bf558bdf9e8163b4b0b34243",
-    "lab.8f03d20c9b72c340.js": "8f03d20c9b72c34034fb08de425b3bc51e23bfb6558881025d1541e9d959dd69",
+    "lab-core.db0af492f4512268.mjs": "db0af492f45122683473d12c8dcb9aa308614c3d144b903b9b96b5a201ec0d7b",
+    "preparation-core.73a5d32597584c19.mjs": "73a5d32597584c1979d36bb8f2c08d5938ec56c3fb9daf301d3006ed12eed8ee",
+    "lab-worker.46da3219d4e6cfeb.mjs": "46da3219d4e6cfeb9f4907c62f765f96927cbe6a5d08845bf86a29260f6d4e3c",
+    "lab.81737edf159f5a7c.js": "81737edf159f5a7caf8177526c59a0617dc5164ab5fce7c7d2e879e96f27142a",
     "lab.0c9685b839507ac7.css": "0c9685b839507ac70dab29d95da82c5b89f16a764ca8b18f337126ebc3bc4873",
-    "index.html": "2915f199be3852804df79525930dfd73b8a5add464a4e5c500e4ce9733caba24"
+    "index.html": "545dadbe72cb24dffa0ca34c242d96a09f0bec3db71874a08f9abc0d3e643286"
   }
 }

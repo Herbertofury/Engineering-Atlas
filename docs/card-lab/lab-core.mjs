@@ -67,3 +67,17 @@ export function refreshInputEvidence(run,entries,previousCompleted) {
   run.observed_input_events=eventsInWindow(entries,run.performance_start_ms,run.performance_end_ms);
   return run.complete?retainCompleted(run,previousCompleted):previousCompleted;
 }
+
+// Visibility alone does not establish that the browser window has focus.
+// Latch a blur until the run ends, even if focus returns before the next frame.
+export function createFocusGuard(doc, target) {
+  let active=false, lost=false, startedFocused=false;
+  const focused=()=>typeof doc.hasFocus==='function' && doc.hasFocus()===true;
+  target.addEventListener('blur',()=>{if(active)lost=true;});
+  return {
+    begin(){startedFocused=focused();lost=!startedFocused;active=true;},
+    check(){if(!active||lost||!focused()){if(active)lost=true;throw Error('Browser focus was absent or lost; foreground the workload and start a new run. Partial evidence is retained.');}},
+    snapshot(){return {started_focused:startedFocused,focus_lost:lost,focused_now:focused()};},
+    finish(){active=false;}
+  };
+}
