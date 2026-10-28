@@ -143,3 +143,7 @@ The local Collection panel now offers an explicit full-response archive form usi
 ### Inspect exact saved JSON
 
 The Collection panel implements a saved-response inspector for one canonical project ID, with strict identity/hash/UTF-8 checks, a bounded stream, cancellation, last-good retention and an original-byte download. It reads local snapshots only; no provider request or sign-in occurs. The local read route and actual JavaScript reader passed 73 HTTP and eight reader checks. Native-browser dialog/download interaction remains unverified. [Read boundaries and reproduction](../../experiments/project-archive-view-lab/README.md).
+
+### Selected native checks
+
+Cloud-desktop Chromium now verifies the saved-response dialog, exact JSON download and last-good reopening for the tested cases. Overview archive-job labels were corrected after that inspection. One fresh public collection attempt failed at connection; it was recorded as failed without losing previous data. This is not Windows/full-native, performance or live-provider success acceptance. [Evidence and remaining gates](../../experiments/job-label-lab/README.md).

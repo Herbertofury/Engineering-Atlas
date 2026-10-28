@@ -56,3 +56,7 @@ The Collection panel and serial worker now expose the same complete-response arc
 ## Exact saved-response inspection · 2026-10-28
 
 The local app now implements an explicit saved-response reader and export dialog. The backend binds canonical identity/generation and returns exact stored bytes; the client verifies a bounded UTF-8 stream and hash without converting JSON numbers. Stale, failed or cancelled loads cannot replace last-good selection. Seventy-three actual loopback checks and eight actual JavaScript-reader checks passed on retained public/generated data. Native-browser dialog/file-save interactions and full UI performance remain unverified. [Implementation, raw tests and security/memory boundaries](../../experiments/project-archive-view-lab/README.md).
+
+## Selected native verification and live failure · 2026-10-28
+
+Actual cloud-desktop Chromium verified saved-response dialog/download behavior, exact large-number text and last-good reopening after a corrupt-record error. A retained public Sodium download matched its original 12,840 bytes. This inspection exposed and repaired an Overview label that incorrectly called archive jobs deduplication experiments. One live form submission attempted the official public request but failed to connect; the job stayed failed and the prior response remained intact. No successful fresh collection or Windows/full-native/performance acceptance is claimed. [Failure, repair and native evidence](../../experiments/job-label-lab/README.md).

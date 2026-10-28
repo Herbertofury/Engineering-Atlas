@@ -34,3 +34,17 @@ export function projectArchiveJob(input) {
   if(!job.CollectModrinth)throw new Error('Archive one project ID or slug at a time; no batch truncation.');
   return {CollectModrinthRaw:{project:job.CollectModrinth.project}};
 }
+
+export function jobLabel(job) {
+  if(job==='DedupExperiment')return 'Identifier deduplication';
+  if(!job||typeof job!=='object'||Array.isArray(job)||Object.keys(job).length!==1)return 'Unrecognized recorded operation';
+  const text=value=>typeof value==='string'?value:'[invalid identity]';
+  const count=value=>Array.isArray(value)?String(value.length):'[invalid list]';
+  if(Object.hasOwn(job,'CollectModrinthRaw'))return 'Complete project archive · '+text(job.CollectModrinthRaw?.project);
+  if(Object.hasOwn(job,'CollectModrinth'))return 'Modrinth · '+text(job.CollectModrinth?.project);
+  if(Object.hasOwn(job,'CollectModrinthBatch'))return 'Modrinth batch · '+count(job.CollectModrinthBatch?.projects)+' projects';
+  if(Object.hasOwn(job,'CollectModrinthVersions'))return 'Modrinth versions · '+count(job.CollectModrinthVersions?.versions)+' records';
+  if(Object.hasOwn(job,'ReviewUpstream'))return 'Upstream review · '+text(job.ReviewUpstream?.source);
+  if(Object.hasOwn(job,'VersionValidationExperiment'))return 'Version validation · '+text(job.VersionValidationExperiment?.version);
+  return 'Unrecognized recorded operation';
+}

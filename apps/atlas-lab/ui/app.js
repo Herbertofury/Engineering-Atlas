@@ -1,5 +1,5 @@
 'use strict';
-import {collectionJob,versionExperimentJob,versionCollectionJob,upstreamReviewJob,projectArchiveJob} from './collection-input.mjs';
+import {collectionJob,versionExperimentJob,versionCollectionJob,upstreamReviewJob,projectArchiveJob,jobLabel} from './collection-input.mjs';
 import {createArchiveSelection} from './archive-view.mjs';
 const $ = id => document.getElementById(id);
 const renderedJobs = new Map();
@@ -19,10 +19,11 @@ function render(data) {
   if(!data.jobs.length){if(!emptyNode){emptyNode=text('div','','empty');emptyNode.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));}nodes.push(emptyNode);}
   const present = new Set();
   for(const job of data.jobs){present.add(job.id);const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(job.id);if(prior&&prior.signature===signature){nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
-    const name=job.job.ReviewUpstream?'Upstream review · '+job.job.ReviewUpstream.source:job.job.CollectModrinthVersions?'Modrinth versions · '+job.job.CollectModrinthVersions.versions.length+' records':job.job.CollectModrinth?'Modrinth · '+job.job.CollectModrinth.project:job.job.CollectModrinthBatch?'Modrinth batch · '+job.job.CollectModrinthBatch.projects.length+' projects':job.job.VersionValidationExperiment?'Version validation · '+job.job.VersionValidationExperiment.version:'Identifier deduplication';
+    const name=jobLabel(job.job);
     top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+job.id+' · attempt '+job.attempt));
     if(job.result?.project){const p=job.result.project;e.append(text('p',p.title+' · '+p.id+' · '+p.versions.length+' version IDs'));}
     if(job.result?.batch){const b=job.result.batch;e.append(text('p',b.projects.length+' retrieved · '+b.missing_ids.length+' missing from response'));if(b.missing_ids.length)e.append(text('p','Partial result. Missing IDs: '+b.missing_ids.join(', '),'error'));}
+    if(job.result?.project_archive){const a=job.result.project_archive;e.append(text('p','Complete project archive · '+a.canonical_id+' · generation '+a.generation+' · '+a.payload_bytes+' bytes retained locally'));}
     if(job.result?.version_collection){const v=job.result.version_collection;e.append(text('p',v.records.length+' versions saved · '+v.missing_ids.length+' missing · complete JSON retained locally'));if(v.missing_ids.length)e.append(text('p','Partial result. Missing version IDs: '+v.missing_ids.join(', '),'error'));}
     if(job.result?.upstream_review){const u=job.result.upstream_review;e.append(text('p',u.repository+' · '+(u.revision||u.state||'No new observation')),text('p',u.comparison?'Comparison: '+u.comparison+' · observed '+u.observed_at_utc+' UTC':(u.error||'No new observation')),text('p','Observation only, not an upgrade or security clearance.'));}
     if(job.result?.experiment){const run=job.result.experiment;const decision=typeof run.decision==='string'?run.decision:Object.keys(run.decision)[0];e.append(text('p',run.evidence.trials.length+' timed pairs · '+run.evidence.stress_cases+' stress cases · '+run.reason),text('p','Gate: '+decision+' · execution is not promotion.'));}
