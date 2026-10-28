@@ -27,3 +27,9 @@ Content-addressed app/data assets and a pinned player integrity check prevent st
 ## Event identity repair
 
 Harness v9 keeps the observation name separate from the provider’s error category (`error_type`) and rejects attempts to overwrite the envelope timestamp/type. [Failure and regression evidence](../../experiments/media-event-identity-lab/README.md) distinguishes generated fatal-error fixtures from actual browser playback. Existing v8 receipts are retained unchanged. This correctness repair is not a measured speedup.
+
+## Real-card event integration lane
+
+Harness v11 retains the full-history renderer as the default and exposes an explicit `?event_view=bounded` comparison lane. Both run the same real public cards, media controls, complete event snapshots and preview loader. The bounded lane reuses the repaired segmented renderer rather than introducing a replacement parser or dropping old observations. It is an isolated integration candidate, not an accepted speedup.
+
+The recorder detaches each JSON observation from caller-owned nested data. Display errors do not remove events from the export: the page marks the display incomplete and offers explicit recovery. Recovery prepares all retained events in a detached element before replacing the display, preserving the previous visible log if preparation fails. No automatic network retries or autoplay are introduced. Ten focused tests cover retained public event prefixes, nested mutation, insertion failure, failed recovery, subsequent recovery, invalid serialization and a 1,088-event generated stress sequence. Actual browser media verification is a separate acceptance step.

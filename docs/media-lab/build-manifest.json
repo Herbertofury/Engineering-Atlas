@@ -1,6 +1,7 @@
 {
-  "harness": "atlas-real-media-v10-video-identity",
+  "harness": "atlas-real-media-v11-event-integration",
   "artifacts": {
+    "media-event-recorder.9f2d0087c78ee632.mjs": "9f2d0087c78ee632512dabe77b0159bf718ce57d00e93a16ca622445c4116f65",
     "event-log-recovery.b9f6a770f0d29c39.mjs": "b9f6a770f0d29c3963549427c9189100829d87b227cd886a6915340fc38759a9",
     "event-log-baseline.da5c8854c2b145b8.mjs": "da5c8854c2b145b85f2e1904b12e231ffc2a89b4f0908989968ac1eff97a244a",
     "event-log-view.8da785a48d10552f.mjs": "8da785a48d10552f8920214f4c83067a3de646eb6228549b138d8e4d9b383ecd",
@@ -13,9 +14,9 @@
     "media-core.b0bba33ec8a5b5c5.mjs": "b0bba33ec8a5b5c5c7b1743dcd587d3cd5b497c702f533c378a707a1601a6d79",
     "resource-loader.f95053a1d56a8533.mjs": "f95053a1d56a85330314efe88ca6c26b45ac1c3abb530639b770601e03608c06",
     "public-fixtures.2aa0668aba0eb29c.json": "2aa0668aba0eb29c69faf368fab206369718335be7f47bc0c6592236e79d1aba",
-    "media.5f1ec9fd5b356a5d.js": "5f1ec9fd5b356a5d99273b29bc2caa12bc55c14345fca7c7b8b407333e614dbe",
+    "media.fa63434918664058.js": "fa63434918664058b99de849100b705d6647cf641f5f11ef6a242e34e17c2cc8",
     "media.6d66277c4a909ad6.css": "6d66277c4a909ad66dd32dfd66659fcb00de143ce2f4bc535a5a182e3916cd02",
-    "index.html": "c6de228de9a30f3bcc7b67c84e77b587e95639e505eec481b3b0bd74a019a17e"
+    "index.html": "39d666c790b2c6e4251cfc43cc7fe7e56d4ef75c15e00842ddc936fed1d42c13"
   },
   "vendor_sha256": "a12e7ee1cd64a69dcdb314157e45dafcba705bfb0b1440b7935cb265d374423e",
   "vendor_sri": "sha384-cciJ0zi8d1uMKC2zJd7jvPY4HQt7W4ByUI/FlMkltvBi31aW61rcpVBhpmW8/NwX"

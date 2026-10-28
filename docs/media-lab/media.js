@@ -1,13 +1,19 @@
+import {createMediaEventRecorder} from './media-event-recorder.mjs';
 import {createMediaEvent} from './media-events.mjs';
 import {createPreviewLoader} from './preview-loader.mjs';
 import {createBilibiliController} from './bilibili-player.mjs';
 import {createRetryableLoader} from './resource-loader.mjs';
 import {validateFixture,mediaCounts,safeMediaUrl,nativePlaybackLabel} from './media-core.mjs';
 const $=id=>document.getElementById(id);
-const receipt={schema_version:1,harness:'atlas-real-media-v10-video-identity',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
+const receipt={schema_version:1,harness:'atlas-real-media-v11-event-integration',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
 let dataset=null,decoded=0,previewLoader=null,previewBusy=false;
 const pendingImages=[];
-function event(type,details={}){receipt.events.push(createMediaEvent(type,performance.now(),details));$('events').textContent=JSON.stringify(receipt.events,null,2);$('export').disabled=false;}
+const eventMode=new URL(location.href).searchParams.get('event_view')==='bounded'?'bounded':'baseline';
+const eventRecorder=createMediaEventRecorder($('events'),receipt.events,eventMode);
+receipt.event_view=eventRecorder.state;
+$('event-mode').textContent=eventMode==='bounded'?'Bounded event renderer: isolated integration candidate.':'Full-history event renderer: baseline.';
+function event(type,details={}){const current=eventRecorder.record(createMediaEvent(type,performance.now(),details));$('recover-log').disabled=current;$('log-status').textContent=current?'Complete event display.':'Event display interrupted. Export retains all events; retry display explicitly.';$('export').disabled=false;}
+$('recover-log').addEventListener('click',()=>{const current=eventRecorder.recover();$('recover-log').disabled=current;$('log-status').textContent=current?'Complete event display recovered.':'Display still unavailable. Export retains all events.';});
 function node(tag,text,cls){const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e;}
 function image(url,alt,cls){const img=node('img','',cls);img.alt=alt;img.decoding='async';img.dataset.source=safeMediaUrl(url);pendingImages.push(img);return img;}
 function addBilibili(card,content){
