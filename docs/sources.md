@@ -3882,3 +3882,7 @@ Communicating contexts can align performance timestamps with timeOrigin, subject
 [esbuild 0.28.2](https://github.com/evanw/esbuild/releases/tag/v0.28.2), published August 8, and [Rolldown 1.2.15](https://github.com/rolldown/rolldown/releases/tag/v1.2.15), published October 21, 2026. Both reviewed October 28; review after 14 days.
 
 Pinned tool versions support an isolated worker-bundle comparison. Language, recency, bundle size and compiler timing are separate from functional parity and browser/runtime acceptance.
+
+## PYASSERT01
+
+[Python assertion and optimization semantics](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement), Python 3.15.2 documentation reviewed October 28, 2026. Optimized execution omits assertions. This documents language behavior, not a performance result or complete security audit.

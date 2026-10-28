@@ -14692,5 +14692,16 @@
     "checked_at": "2026-10-28",
     "review_after_days": 14,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "PYASSERT01",
+    "title": "Python assert statement and optimization",
+    "url": "https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement",
+    "observed_version": "Python 3.15.2 documentation reviewed 2026-10-28",
+    "topic": "testing-evidence-integrity",
+    "note": "Assertions are omitted under optimized execution; fixed acceptance gates must not depend on debug assertions. Local normal and optimized receipts tested separately.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 90,
+    "evidence": "primary_documented"
   }
 ]

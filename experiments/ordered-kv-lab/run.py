@@ -1,11 +1,17 @@
 """Bounded isolated KV comparison; retains every process result and database."""
 import argparse,hashlib,json,pathlib,resource,subprocess,time
+from receipt_gate import validate
 a=argparse.ArgumentParser();a.add_argument("--inputs",type=pathlib.Path,required=True);a.add_argument("--output",type=pathlib.Path,required=True);a.add_argument("--file-budget-mib",type=int,choices=[64,128],default=64);args=a.parse_args()
 root=pathlib.Path(__file__).resolve().parent
 binary=root/'target/release/atlas-ordered-kv'
 inputs=args.inputs
 out=args.output;out.mkdir(exist_ok=False)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+input_lengths=[]
+for name in ['AANobbMI','YL57xq9U','gvQqBUqZ']:
+ with (inputs/(name+'.json')).open('rb') as handle:raw=handle.read(65537)
+ if not 0<len(raw)<=65536:raise ValueError('Input file budget exceeded')
+ input_lengths.append(len(raw))
 receipt={'schema_version':1,'scope':'ordered KV replay, not relational SnapshotStore acceptance','binary_sha256':sha(binary),'harness_sha256':sha(root/'src/main.rs'),'lock_sha256':sha(root/'Cargo.lock'),'inputs':{n:sha(inputs/(n+'.json')) for n in ['AANobbMI','YL57xq9U','gvQqBUqZ']},'samples':[],'completed':False,'file_budget_bytes':args.file_budget_mib*1024*1024,'diagnostic_only':args.file_budget_mib==128}
 def limits():
  resource.setrlimit(resource.RLIMIT_AS,(512*1024*1024,)*2)
@@ -31,12 +37,10 @@ try:
      receipt['failure']={'sample':stem,'returncode':p.returncode}
      raise RuntimeError(f'{stem} exit {p.returncode}')
     if len(p.stdout)>65536 or len(p.stderr)>65536:raise ValueError('output budget')
-    data=json.loads(p.stdout)
-    assert data['lane']==lane and data['workload']==case and type(data['rows']) is int and data['rows']==256
-    for key in ['write_commit_ns','commit_ns','read_materialize_ns','database_bytes','payload_bytes']:
-     if type(data.get(key)) is not int or data[key]<=0:raise ValueError('invalid measurement')
-    if data['commit_ns']>data['write_commit_ns']:raise ValueError('invalid commit subset')
-    assert all(data[k] is True for k in ['complete_output_equal','rollback_preserved','integrity'])
+    expected_bytes=sum(length*(256//3+(i<256%3)) for i,length in enumerate(input_lengths)) if case=='public' else 256*65536
+    data=validate(p.stdout,lane,case,expected_bytes,args.file_budget_mib*1024*1024)
+    for name,digest in receipt['inputs'].items():
+     if sha(inputs/(name+'.json'))!=digest:raise ValueError('Input changed during pass')
     receipt['samples'].append({'round':rnd,**data})
  receipt['completed']=len(receipt['samples'])==32
 finally:
