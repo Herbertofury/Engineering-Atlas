@@ -19,3 +19,16 @@ Two differential test functions cover 29 generated protocol cases across origina
 The browser's build-comparison mode uses the same full validation-only receipt contract in all three lanes. Each sample creates a new worker; three rounds rotate lane order so each tool occupies each position. The original records stay fully owned by the caller. Preparation and independent full-parity verification remain outside the sample timer in all lanes. Initial fetches and caching are not concealed or described as cold-cache testing. Actual runtime evidence is required separately before making any startup claim.
 
 Reproduction: copy tools/package.json, tools/package-lock.json and tools/compile.mjs to a separate private tool directory, install locked dependencies there with npm ci --ignore-scripts, set ATLAS_BUNDLE_REPO to the Atlas checkout, and invoke the fixed compiler with esbuild or rolldown and a new output path. The output file cannot overwrite prior evidence. The compiler uses the stable rolldown/generate API, closes native resources, and uses esbuild's bundled browser ESM API without dropping checks or console output. No third-party plugins or arbitrary downloaded prototypes execute.
+
+## First actual browser comparison, v8
+
+[All raw browser samples and limitations](evidence/browser/summary.json) retain 36 complete-data samples in four runs, with the same validator and Latin-square tool order. Native modules / esbuild / Rolldown request medians:
+
+| Workload | Pass 1 | Pass 2 |
+|---|---:|---:|
+| 200 × 8 KiB | 91.3 / 52.0 / 41.9 ms | 51.2 / 30.1 / 32.9 ms |
+| 200 × 64 KiB | 187.4 / 97.2 / 97.6 ms | 117.8 / 97.6 / 97.1 ms |
+
+Both bundles improved these limited request medians; neither compiler consistently led. Rolldown's first dense maximum frame gap regressed to 42.0 ms versus 36.1 ms native, so a favorable median is not blanket UX acceptance. Eleven served assets matched exact hashes; loaded v8 script receiver.5dc114522973c617.js. These are source-build changes, not lowered fidelity or a cache-configuration tweak, but browser/OS caches were not controlled as cold and no target-project recommendation follows.
+
+Three cross-context phase timelines were rejected, one for each tool. All observed reversals were -0.000244140625 ms between send-start and main-receive. Their cause is not established; they are not clamped into zero or included in phase attribution. Parent-local request timing, complete data and frame observations remain separate evidence. The v9 UI clarification reports complete-data count separately from valid/rejected/uncollected phase counts and prevents running before its verification module is ready. It does not retroactively convert the v8 rejected traces into valid measurements. Browser rechecking of that clarification is recorded separately.

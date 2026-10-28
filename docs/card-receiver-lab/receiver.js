@@ -1,10 +1,10 @@
-import {phaseBreakdown} from './phase-clock.mjs';
+import {phaseBreakdown,completeDataSummary} from './phase-clock.mjs';
 import {acceptVerifiedInput} from './receipt-protocol.mjs';
 import {prepareDataset} from './baseline.mjs';
 import {verifyPrepared,verifyPreparedBounded} from './verified-receiver.mjs';
 import {createFocusGuard,calibrateFrameCadence} from './lab-core.mjs';
 const $=id=>document.getElementById(id),guard=createFocusGuard(document,window);
-const identity='atlas-complete-receiver-v8-build-variants';$('build').textContent='Loaded harness: '+identity;
+const identity='atlas-complete-receiver-v9-explicit-phase-status';$('build').textContent='Loaded harness: '+identity;
 let busy=false,stopped=false,hidden=false,sequence=0,cancelWorker=null,current=null,lastGood=null;
 document.addEventListener('visibilitychange',()=>{if(busy&&document.hidden)hidden=true;});
 const check=()=>{guard.check();if(stopped)throw Error('Cancelled; partial evidence retained');if(hidden||document.hidden)throw Error('Visibility lost; partial evidence retained');};
@@ -57,7 +57,7 @@ $('run').addEventListener('click',async()=>{
    }finally{active=false;cancelAnimationFrame(frameId);}
    const calibration=await calibrate();current.samples.at(-1).post_sample_calibration=calibration;if(!calibration.reliable)throw Error(calibration.reason);
   }
-  check();current.complete=true;current.focus_state=guard.snapshot();current.finished_at=new Date().toISOString();lastGood=JSON.stringify(current,null,2);$('last').disabled=false;$('summary').textContent=current.samples.length+' complete samples retained. No production or target-project promotion.';$('status').textContent='Complete. Full data and scheduling observations retained.';
+  check();const completedSummary=completeDataSummary(current.samples);current.complete=true;current.focus_state=guard.snapshot();current.finished_at=new Date().toISOString();lastGood=JSON.stringify(current,null,2);$('last').disabled=false;$('summary').textContent=completedSummary.text;$('status').textContent=completedSummary.rejected?'Complete data comparison; rejected phase timelines are retained, not accepted.':'Complete data comparison. Inspect the scope and retained measurements.';
  }catch(error){current.error=error.message;current.complete=false;$('status').textContent=error.message;}
  finally{current.focus_state=guard.snapshot();guard.finish();publish();busy=false;$('run').disabled=false;$('cancel').disabled=true;$('bytes').disabled=false;$('execution').disabled=false;}
 });
@@ -65,3 +65,5 @@ $('cancel').addEventListener('click',()=>{stopped=true;if(cancelWorker)cancelWor
 function download(text,name){const url=URL.createObjectURL(new Blob([text],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 $('download').addEventListener('click',()=>download(JSON.stringify(current,null,2),'receiver-current.json'));
 $('last').addEventListener('click',()=>{if(lastGood)download(lastGood,'receiver-last-good.json');});
+
+$('run').disabled=false;$('status').textContent='Ready. Keep this window in the foreground.';
