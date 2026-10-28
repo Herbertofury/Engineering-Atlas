@@ -836,3 +836,1402 @@ Checked from_utf8 consumes Vec without copying bytes; into_bytes is the inverse.
 [Rust Vec into_boxed_slice capacity contract](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.into_boxed_slice) · Rust 1.99.1
 
 Discards excess capacity and may reallocate. Requested allocation deltas are not total retained memory. Evidence: primary documented. Checked 2026-10-28; review after 90 days.
+
+## Research Explorer expansion · checked 2026-10-28 UTC
+
+This is the October 27 America/Denver research pass. Exact publications and source check dates are separate. New observations do not overwrite earlier dated reviews.
+
+### RX001
+
+[vLLM documentation README](https://github.com/vllm-project/vllm/blob/main/docs/README.md)
+
+Current docs list DFlash speculation and separated prefill/decode alongside multiple hardware plugins.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX002
+
+[SGLang official releases](https://github.com/sgl-project/sglang/releases)
+
+Opened release notes describe Rust-backed prefix caching and live switching between prefill and decode roles.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX003
+
+[FlashInfer official releases](https://github.com/flashinfer-ai/flashinfer/releases)
+
+v0.7.2.post1 was released on October 23, 2026; release notes cover newer GPU backends and fused operations.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX004
+
+[NVIDIA TensorRT LLM overview](https://developer.nvidia.com/tensorrt-llm)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX005
+
+[llama.cpp README: Description](https://github.com/ggml-org/llama.cpp)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX006
+
+[MLX LM README: Features](https://github.com/ml-explore/mlx-lm)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX007
+
+[MLC LLM README: About](https://github.com/mlc-ai/mlc-llm/blob/main/README.md)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX008
+
+[FlashAttention-4: Algorithm and Kernel Pipelining Co-Design for Asymmetric Hardware Scaling](https://arxiv.org/abs/2603.05451)
+
+2026 paper; authors target asymmetric scaling on Blackwell.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX009
+
+[Announcing New vLLM and SGLang Inference Engines on TPU](https://developers.googleblog.com/announcing-new-vllm-and-sglang-inference-engines-on-tpu/)
+
+Google announced native PyTorch TPU serving backends on October 20, 2026.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX010
+
+[DFlash: Block Diffusion for Flash Speculative Decoding](https://arxiv.org/abs/2602.06036)
+
+The ICML 2026 camera-ready paper was revised May 28, 2026.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX011
+
+[DSPy official overview](https://dspy.ai/current/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX012
+
+[LangGraph README: Why use LangGraph](https://github.com/langchain-ai/langgraph/blob/main/README.md)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX013
+
+[OpenHands Software Agent SDK README](https://github.com/OpenHands/software-agent-sdk)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX014
+
+[smolagents official documentation](https://huggingface.co/docs/smolagents/main/index)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX015
+
+[CrewAI README: Framework overview](https://github.com/crewAIInc/crewAI/blob/main/README.md)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX016
+
+[Pydantic AI: Durable Execution](https://pydantic.dev/docs/ai/capabilities/durable_execution/overview/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX017
+
+[GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning](https://proceedings.iclr.cc/paper_files/paper/2026/hash/0e9e708b6f48e14fd0ac29e167413f76-Abstract-Conference.html)
+
+Published in the ICLR 2026 proceedings.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX018
+
+[SWE-bench official leaderboards](https://www.swebench.com/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX019
+
+[SWE-bench-Live official leaderboard and news](https://swe-bench-live.github.io/)
+
+2026 updates add language/OS tracks and require trajectories for verified submissions.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX020
+
+[SWE-Bench Pro V2 official methodology and leaderboard](https://labs.scale.com/leaderboard/swe_bench_pro_public_v2?tab=full)
+
+V2 changes tasks and evaluation protocol; preserve its version with every external observation.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX021
+
+[Terminal-Bench 4.0 release explanation](https://www.tbench.ai/news/terminal-bench-4-0)
+
+Current official family page identifies 4.0; opened release notes explain resource and task changes.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX022
+
+[τ-bench 2.0.0 official release notes](https://github.com/sierra-research/tau2-bench/releases)
+
+October 19 release changes communication checks, judging, prompts, and benchmark manifests.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX023
+
+[Berkeley Function Calling Leaderboard V4](https://gorilla.cs.berkeley.edu/leaderboard)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX024
+
+[LiveCodeBench README: Dataset Versions and Evaluation](https://github.com/LiveCodeBench/LiveCodeBench)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX025
+
+[Harbor README: Overview](https://github.com/harbor-framework/harbor)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX026
+
+[Inspect official documentation: Welcome](https://inspect.aisi.org.uk/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX027
+
+[LM Evaluation Harness v0.4.13 release notes](https://github.com/EleutherAI/lm-evaluation-harness/releases)
+
+v0.4.13 notes fixes for few-shot leakage, answer filtering, and grouped uncertainty estimates.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX028
+
+[GraphRAG official documentation](https://microsoft.github.io/graphrag/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX029
+
+[LightRAG README: News and installation](https://github.com/HKUDS/LightRAG)
+
+2026 project updates document selectable chunking and role-specific model configurations.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX030
+
+[ColBERT README: Model description](https://github.com/stanford-futuredata/ColBERT/blob/main/README.md)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX031
+
+[Ragas official available-metrics documentation](https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX032
+
+[FlashRAG README: Introduction and Features](https://github.com/RUC-NLPIR/FlashRAG/blob/main/README.md)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX033
+
+[TRL README: Overview and Highlights](https://github.com/huggingface/trl/blob/main/README.md)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX034
+
+[verl README: Overview and News](https://github.com/verl-project/verl)
+
+2026 project news includes observability and speculative-decoding co-training work; current repository is verl-project/verl.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX035
+
+[Unsloth official documentation](https://unsloth.ai/docs)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX036
+
+[LMCache multiprocess overview](https://docs.lmcache.ai/mp/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX037
+
+[NVIDIA Dynamo architecture overview](https://github.com/ai-dynamo/dynamo/blob/main/docs/fern/pages/developer-guide/knowledge-base/overview.md)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX038
+
+[EAGLE-3 Microsoft Research publication](https://www.microsoft.com/en-us/research/publication/eagle-3-scaling-up-inference-acceleration-of-large-language-models-via-training-time-test/)
+
+NeurIPS 2025 baseline remains relevant to 2026 serving comparisons.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX039
+
+[Liger Kernel official documentation](https://linkedin.github.io/Liger-Kernel/)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX040
+
+[PEFT official overview](https://huggingface.co/docs/peft/index)
+
+Current primary-source page; publication date unknown unless recorded in catalog
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX041
+
+[Quantifying infrastructure noise in agentic coding evals](https://www.anthropic.com/research/infrastructure-noise)
+
+2026 primary study motivates explicit allocation and enforcement metadata for agent rankings.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX042
+
+[ProgramBench official methodology and leaderboard](https://programbench.com/)
+
+Official leaderboard snapshot was updated October 22, 2026.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX043
+
+[CodeClash official project and methodology](https://codeclash.ai/)
+
+Relevant game-oriented baseline; official displayed leaderboard date is November 3, 2025.
+
+Opened the relevant official documentation or project section. Evidence: primary documented; not Atlas reproduction.
+
+### RX044
+
+[Rust Release Notes](https://doc.rust-lang.org/releases.html)
+
+Release notes list Rust 1.99.1 on 2026-10-15 and 1.99.0 on 2026-10-01.
+
+Opened release sections 1.99.1 and 1.99.0; release dates differ from page publication date. Evidence: primary documented; not Atlas reproduction.
+
+### RX045
+
+[Go Release History](https://go.dev/doc/devel/release)
+
+Release history lists Go 1.27.3 on 2026-10-19.
+
+Opened current release history through go1.27.3. Evidence: primary documented; not Atlas reproduction.
+
+### RX046
+
+[Zig 0.17.0 announcement](https://ziglang.org/news/0.17.0-released/)
+
+Official 0.17.0 announcement is dated 2026-10-02; do not infer the binary publication timestamp.
+
+Full announcement explicitly says October 02; linked release notes contain no date. This is the announcement publication date. Evidence: primary documented; not Atlas reproduction.
+
+### RX047
+
+[Swift 6.4 Released](https://www.swift.org/blog/swift-6.4-released/)
+
+Swift 6.4 announcement describes Swift Build becoming the default in Swift Package Manager.
+
+Opened release introduction and feature sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX048
+
+[Python 3.15.0 release](https://www.python.org/downloads/release/python-3150/)
+
+Python 3.15.0 launched 2026-10-09; its page now points to a newer patch release.
+
+Opened release page including interpreter, C API, and supersession notice. Evidence: primary documented; not Atlas reproduction.
+
+### RX049
+
+[Kotlin release process](https://kotlinlang.org/docs/releases.html)
+
+The official release history lists Kotlin 2.4.21 on 2026-10-08.
+
+Opened release-history table and update instructions. Evidence: primary documented; not Atlas reproduction.
+
+### RX050
+
+[Announcing TypeScript 7.0](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)
+
+TypeScript 7.0 was announced 2026-07-08 as the native compiler release.
+
+Opened native-port introduction; vendor speedup tables are not imported as Atlas results. Evidence: primary documented; not Atlas reproduction.
+
+### RX051
+
+[Mojo v1.2.0](https://mojolang.static.modular.com/releases/v1.2.0/)
+
+Mojo v1.2.0 announcement adds pattern matching and additional GPU math implementations.
+
+Opened release highlights and pattern matching section; official homepage linked modular/modular/Mojo. Evidence: primary documented; not Atlas reproduction.
+
+### RX052
+
+[Gleam does not compile to Erlang source anymore](https://gleam.run/news/gleam-doesnt-compile-to-erlang-source-anymore/)
+
+Gleam 1.19.0 changes Erlang-target output to Erlang abstract forms.
+
+Opened new compilation target and benchmark caveats sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX053
+
+[Roc repository README](https://github.com/roc-lang/roc)
+
+Upstream README still says Roc is not ready for a 0.1 release.
+
+Opened README work-in-progress section and official language overview. Evidence: primary documented; not Atlas reproduction.
+
+### RX054
+
+[Consolidated JDK 27 Release Notes](https://www.oracle.com/java/technologies/javase/27all-relnotes.html)
+
+Oracle's current release notes include JDK 27 and October 2026 updates.
+
+Opened Oracle GA release notes; OpenJDK project-page fetch returned 403. Evidence: primary documented; not Atlas reproduction.
+
+### RX055
+
+[Elixir v1.20 released](https://elixir-lang.org/blog/2026/06/03/elixir-v1-20-0-released/)
+
+Elixir 1.20 announcement describes type inference across language constructs without requiring type annotations.
+
+Opened gradual typing and narrowing explanation. Evidence: primary documented; not Atlas reproduction.
+
+### RX056
+
+[Node.js Blog](https://nodejs.org/en/blog)
+
+Release index lists 26.12.1 Current and 24.22.1 LTS on 2026-10-21.
+
+Opened latest release index; current and LTS are explicitly distinguished. Evidence: primary documented; not Atlas reproduction.
+
+### RX057
+
+[Bun v1.4.4](https://bun.sh/blog/bun-v1.4.4)
+
+Bun v1.4.4 introduces the built-in bun fmt formatter.
+
+Opened release date, formatter description, and benchmark reproduction section. Evidence: primary documented; not Atlas reproduction.
+
+### RX058
+
+[Deno 2.9](https://deno.com/blog/v2.9)
+
+Deno 2.9 introduces experimental deno desktop and expanded lockfile migration support.
+
+Opened release introduction and desktop section including experimental status. Evidence: primary documented; not Atlas reproduction.
+
+### RX059
+
+[Vite 8.0 is out](https://vite.dev/blog/announcing-vite8)
+
+Vite 8 replaces the earlier dual-bundler pipeline with Rolldown.
+
+Opened stable-release introduction and bundler architecture sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX060
+
+[Announcing Rolldown 1.0](https://voidzero.dev/posts/announcing-rolldown-1-0)
+
+Rolldown 1.0 stable was announced 2026-05-07.
+
+Opened stability contract, output-behavior caveat, and architecture. Evidence: primary documented; not Atlas reproduction.
+
+### RX061
+
+[Oxc releases](https://github.com/oxc-project/oxc/releases)
+
+Upstream lists Oxlint 1.90.0 and Oxfmt 0.75.0 releases on 2026-10-27.
+
+Opened current Oxlint release and specific change list. Evidence: primary documented; not Atlas reproduction.
+
+### RX062
+
+[Announcing Rspack 2.0](https://www.rspack.dev/blog/announcing-2-0)
+
+Rspack 2.0 announcement introduces updated defaults and APIs while targeting webpack ecosystem compatibility.
+
+Opened 2.0 announcement and compatibility rationale. Evidence: primary documented; not Atlas reproduction.
+
+### RX063
+
+[Biome Blog](https://biomejs.dev/blog/)
+
+Biome 2.6 announcement dated 2026-10-15 adds Markdown, YAML, and SCSS support; JavaScript plugins are preview.
+
+Opened 2.6 release summary with developer-preview plugin labeling. Evidence: primary documented; not Atlas reproduction.
+
+### RX064
+
+[uv documentation](https://docs.astral.sh/uv/)
+
+Experimental uv and ty integration was announced 2026-10-13.
+
+Opened project, lockfile, script, and environment-management sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX065
+
+[Bringing uv and ty together](https://astral.sh/blog/uv-ty-integration)
+
+Experimental uv and ty integration was announced 2026-10-13.
+
+Opened preview-status and unified-check sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX066
+
+[Ruff documentation](https://docs.astral.sh/ruff/)
+
+Current documentation lists Python 3.15 compatibility.
+
+Opened overview and feature list; no speedup number imported. Evidence: primary documented; not Atlas reproduction.
+
+### RX067
+
+[ty documentation](https://docs.astral.sh/ty/)
+
+The 2026-10-13 uv integration announcement still describes work toward ty's stable release.
+
+Opened highlights, type-system, and editor capability overview. Evidence: primary documented; not Atlas reproduction.
+
+### RX068
+
+[Next.js 16.4](https://nextjs.org/blog/next-16-4)
+
+Next.js 16.4 introduces updated Cache Components defaults and development/build improvements.
+
+Opened Cache Components and release overview; future Next.js 17 is not claimed as released. Evidence: primary documented; not Atlas reproduction.
+
+### RX069
+
+[SvelteKit 3 is here](https://svelte.dev/blog/sveltekit-3-is-here)
+
+SvelteKit 3.0 released 2026-10-01; remote functions still require experimental Async Svelte in the announcement.
+
+Opened full release announcement and remote-functions experimental caveat. Evidence: primary documented; not Atlas reproduction.
+
+### RX070
+
+[Astro 7.4](https://astro.build/blog/astro-740/)
+
+Astro 7.4 adds build timings; parallel prerendering is explicitly experimental.
+
+Opened release introduction and build-timing explanation. Evidence: primary documented; not Atlas reproduction.
+
+### RX071
+
+[React 19.3](https://react.dev/blog/2026/09/09/react-19-3)
+
+React 19.3 stabilizes View Transitions and Fragment Refs.
+
+Opened feature overview and View Transitions section. Evidence: primary documented; not Atlas reproduction.
+
+### RX072
+
+[Vue releases](https://github.com/vuejs/core/releases)
+
+Upstream lists Vue 3.6.0-rc.13 as prerelease and keeps stable 3.5 releases distinct.
+
+Opened release list showing stable 3.5 and explicitly prerelease 3.6 entries; no unverified Vapor performance claim included. Evidence: primary documented; not Atlas reproduction.
+
+### RX073
+
+[Nuxt releases](https://github.com/nuxt/nuxt/releases)
+
+Nuxt 4.6.3 is listed on 2026-10-27 with security and performance fixes.
+
+Opened v4.6.3 release details and security-fix list. Evidence: primary documented; not Atlas reproduction.
+
+### RX074
+
+[TanStack Start 1.0 is Stable](https://tanstack.com/blog/tanstack-start-1-0)
+
+TanStack Start's stable 1.0 milestone was announced 2026-10-13.
+
+Opened stable-release announcement; package version numbering differs from product milestone. Evidence: primary documented; not Atlas reproduction.
+
+### RX075
+
+[Hono official overview](https://hono.dev/)
+
+Official overview describes a shared Web Standards API across multiple runtime targets.
+
+Opened features and supported-runtime sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX076
+
+[Elysia 2 RC](https://next.elysiajs.com/blog/elysia-20-rc/)
+
+Elysia 2 RC was announced 2026-10-19 and remains a prerelease candidate.
+
+Opened RC announcement, architecture, and memory discussion; external performance claims not imported. Evidence: primary documented; not Atlas reproduction.
+
+### RX077
+
+[FastAPI Release Notes](https://fastapi.tiangolo.com/release-notes/)
+
+FastAPI 0.162.0 on 2026-10-23 changes omitted boolean form-field handling.
+
+Opened 0.162.0 entry and its breaking form-field semantics. Evidence: primary documented; not Atlas reproduction.
+
+### RX078
+
+[Django October 2026 security releases](https://www.djangoproject.com/weblog/2026/oct/06/security-releases/)
+
+Django issued 6.1.2, 6.0.9, and 5.2.18 security releases on 2026-10-06.
+
+Opened release notice and affected-version section. Evidence: primary documented; not Atlas reproduction.
+
+### RX079
+
+[Phoenix LiveView 1.2 released](https://www.phoenixframework.org/blog/phoenix-liveview-1-2-released)
+
+LiveView 1.2 adds colocated CSS in HEEx templates.
+
+Opened 1.2 introduction and colocated CSS explanation. Evidence: primary documented; not Atlas reproduction.
+
+### RX080
+
+[Axum documentation](https://docs.rs/axum/latest/axum/)
+
+Current documentation shows Axum 0.8.9 and explicitly targets Tokio and Hyper.
+
+Opened high-level features and compatibility sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX081
+
+[Announcing Tauri 2.12](https://v2.tauri.app/blog/tauri-2.12/)
+
+Tauri 2.12 adds a webview permission request handler and changes supported platform/toolchain requirements.
+
+Opened release, supported-platform, permission-handler, and MSRV sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX082
+
+[Electron 45](https://www.electronjs.org/blog/electron-45-0)
+
+Electron 45 released 2026-10-21 with updated Chromium, V8, Node.js, and preload behavior.
+
+Opened version, startup, and preload migration sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX083
+
+[Bevy 0.20](https://bevy.org/news/bevy-0-20/)
+
+Bevy 0.20 announcement includes Solari rendering and scene-system improvements.
+
+Opened release introduction, scene-system, and renderer highlights. Evidence: primary documented; not Atlas reproduction.
+
+### RX084
+
+[Godot official release archive](https://godotengine.org/download/archive/)
+
+Archive lists 4.7.2 stable on 2026-08-18 and 4.8 beta1 on 2026-10-15.
+
+Opened stable and beta archive entries. Evidence: primary documented; not Atlas reproduction.
+
+### RX085
+
+[.NET October 2026 out-of-band updates](https://devblogs.microsoft.com/dotnet/dotnet-october-2026-oob-security-updates/)
+
+Microsoft released .NET 10.0.14 and .NET 11 RC3 on 2026-10-25; RC3 remains prerelease.
+
+Opened release table and preview labeling. Evidence: primary documented; not Atlas reproduction.
+
+### RX086
+
+[WASI 0.3 Launched](https://bytecodealliance.org/articles/WASI-0.3)
+
+WASI 0.3.0 ratification was announced 2026-06-11.
+
+Opened ratification and async-ABI sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX087
+
+[WASI releases](https://wasi.dev/releases)
+
+WASI 0.3.0 ratification was announced 2026-06-11.
+
+Opened version/status table and toolchain caveats. Evidence: primary documented; not Atlas reproduction.
+
+### RX088
+
+[Wasmtime official overview](https://wasmtime.dev/)
+
+Current overview documents JIT/AOT execution, WASI, and multiple host-language embeddings.
+
+Opened code-generation, resource-configuration, standards, and embedding sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX089
+
+[Wasmtime releases](https://github.com/bytecodealliance/wasmtime/releases)
+
+Current overview documents JIT/AOT execution, WASI, and multiple host-language embeddings.
+
+Opened release version and date; experimental proposals remain opt-in. Evidence: primary documented; not Atlas reproduction.
+
+### RX090
+
+[Vitest 5.0 is out](https://vitest.dev/blog/vitest-5)
+
+Vitest 5 announcement includes a reference-app benchmark matrix across worker pools and environments.
+
+Opened release and benchmark methodology sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX091
+
+[Playwright release notes](https://playwright.dev/docs/release-notes)
+
+The release notes describe Playwright 1.64 WebMCP APIs and test-order shuffling.
+
+Opened 1.64 WebMCP and runner sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX092
+
+[SQLite release history](https://www.sqlite.org/changes.html)
+
+Release history lists SQLite 3.54.1 on 2026-10-16.
+
+Opened the 3.54.1 and 3.54.0 release sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX093
+
+[PostgreSQL release notes](https://www.postgresql.org/docs/release/)
+
+Official release page announces PostgreSQL 19 RC1 dated 2026-10-15; do not treat it as GA.
+
+Opened release archive header; PostgreSQL 19 is labeled RC1. Evidence: primary documented; not Atlas reproduction.
+
+### RX094
+
+[Announcing DuckDB 2.0.0 LTS](https://duckdb.org/2026/10/21/announcing-duckdb-200)
+
+DuckDB 2.0.0 LTS was announced on 2026-10-21 with asynchronous I/O and other major features.
+
+Opened release introduction; upgrade changes require explicit compatibility tests. Evidence: primary documented; not Atlas reproduction.
+
+### RX095
+
+[Announcing Polars 2.1](https://pola.rs/posts/polars-2-1-changelog/)
+
+Polars 2.1 was announced on 2026-10-27; out-of-core group-by and recursive CTE support are documented.
+
+Opened out-of-core and SQL sections; source states Python 3.10 support was dropped. Evidence: primary documented; not Atlas reproduction.
+
+### RX096
+
+[Apache DataFusion 55.0.0 Released](https://datafusion.apache.org/blog/output/2026/08/25/datafusion-55.0.0/)
+
+DataFusion 55.0.0 release documents range partitioning, MERGE INTO planning, and runtime pruning.
+
+Opened release introduction and range partitioning section. Evidence: primary documented; not Atlas reproduction.
+
+### RX097
+
+[ClickHouse release 26.9](https://clickhouse.com/blog/clickhouse-release-26-09)
+
+ClickHouse 26.9 release highlights incremental materialized-view refreshes and DISTINCT spilling.
+
+Opened release summary; vendor performance claims are not imported as scores. Evidence: primary documented; not Atlas reproduction.
+
+### RX098
+
+[Apache Iceberg releases](https://iceberg.apache.org/releases/)
+
+Official release notes list Iceberg 1.12.0 released on 2026-09-29.
+
+Opened 1.12.0 release section and compatibility removals. Evidence: primary documented; not Atlas reproduction.
+
+### RX099
+
+[LanceDB September 2026 newsletter](https://www.lancedb.com/blog/newsletter-september-2026)
+
+September ecosystem update reports Lance SDK 12.0.0 with file format 2.2; these are not LanceDB version numbers.
+
+Opened community release section; version layers are explicitly distinguished. Evidence: primary documented; not Atlas reproduction.
+
+### RX100
+
+[pgvector README](https://github.com/pgvector/pgvector)
+
+Current README documents exact and approximate search plus dense, half-precision, binary, and sparse vectors.
+
+Opened supported search and vector-type section. Evidence: primary documented; not Atlas reproduction.
+
+### RX101
+
+[Qdrant 1.20: Full-Text Search Improvements](https://qdrant.tech/blog/qdrant-1.20.x/)
+
+Qdrant 1.20 release announced on 2026-10-22 adds BM25 on text indexes and a code tokenizer.
+
+Opened release feature summary and BM25 section. Evidence: primary documented; not Atlas reproduction.
+
+### RX102
+
+[Milvus release notes](https://milvus.io/docs/release_notes.md)
+
+Milvus 3.0.3 release notes dated 2026-10-14 document Function Chain support for hybrid search.
+
+Opened v3.0.3 release section; track listed compatibility changes before testing. Evidence: primary documented; not Atlas reproduction.
+
+### RX103
+
+[RocksDB releases](https://github.com/facebook/rocksdb/releases)
+
+Opened current releases documenting asynchronous filesystem-read controls in the 11.8 series.
+
+Opened asynchronous-read API change; release-header dates differ, so no exact publication date is asserted. Evidence: primary documented; not Atlas reproduction.
+
+### RX104
+
+[redb README](https://github.com/cberner/redb)
+
+Current README describes a pure Rust ACID store with copy-on-write B-trees and savepoints.
+
+Opened design and transactional example section. Evidence: primary documented; not Atlas reproduction.
+
+### RX105
+
+[Temporal platform changelog](https://temporal.io/changelog)
+
+Official changelog lists Standalone Activities GA on 2026-09-15.
+
+Opened Standalone Activities entry and lifecycle capabilities. Evidence: primary documented; not Atlas reproduction.
+
+### RX106
+
+[Every System is a Log](https://restate.dev/blog/every-system-is-a-log-avoiding-coordination-in-distributed-applications)
+
+Shared-log architecture reviewed against the primary article; no unverified 2026 release number is asserted.
+
+Opened article; primary page date overrides conflicting search-index date. Evidence: primary documented; not Atlas reproduction.
+
+### RX107
+
+[What's New in DBOS: September 2026](https://www.dbos.dev/blog/whats-new-in-dbos-september-2026)
+
+September update announces Python v3.0, TypeScript v5.0, and improved fair queueing.
+
+Opened major-version and workflow compatibility sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX108
+
+[OpenTelemetry Transformation Language reaches v1](https://opentelemetry.io/blog/2026/ottl-v1/)
+
+OTTL v1 was announced on 2026-10-27; stable traces, metrics, and logs support begins with contrib v0.164.0.
+
+Opened v1 compatibility scope and exclusions. Evidence: primary documented; not Atlas reproduction.
+
+### RX109
+
+[Grafana Beyla documentation](https://grafana.com/docs/beyla/latest/)
+
+Opened documentation distinguishes RED metrics coverage from tracing limitations and SDK coexistence.
+
+Opened eBPF capture description and instrumentation comparison. Evidence: primary documented; not Atlas reproduction.
+
+### RX110
+
+[Tracy Profiler README](https://github.com/wolfpld/tracy/blob/master/README.md)
+
+Current README lists CPU/GPU, allocation, lock, and context-switch profiling support.
+
+Opened supported instrumentation surfaces and bindings. Evidence: primary documented; not Atlas reproduction.
+
+### RX111
+
+[Perfetto v58](https://perfetto.dev/blog/perfetto-v58)
+
+Perfetto v58.2 announcement on 2026-08-24 describes merged timelines and memory investigation tooling.
+
+Opened release introduction and trace-merging capability. Evidence: primary documented; not Atlas reproduction.
+
+### RX112
+
+[RenderDoc README](https://github.com/baldurk/renderdoc)
+
+Opened canonical README documenting frame capture and supported graphics APIs.
+
+Opened canonical repository description rather than a third-party fork. Evidence: primary documented; not Atlas reproduction.
+
+### RX113
+
+[containerd versioning and release policy](https://containerd.io/releases/)
+
+Official release policy documents a four-month minor-release cadence starting with v2.3 in April 2026.
+
+Opened 2026 release cadence and support policy. Evidence: primary documented; not Atlas reproduction.
+
+### RX114
+
+[Announcing Spin v4.1](https://spinframework.dev/blog/announcing-spin-4-1)
+
+Spin 4.1 announcement dated 2026-08-26 documents final WASI 0.3 support and composable HTTP middleware.
+
+Opened release foundation and middleware descriptions. Evidence: primary documented; not Atlas reproduction.
+
+### RX115
+
+[Hypothesis documentation](https://hypothesis.readthedocs.io/en/latest/)
+
+Opened current documentation describing generated inputs and edge-case exploration.
+
+Opened introduction to property-based testing. Evidence: primary documented; not Atlas reproduction.
+
+### RX116
+
+[fast-check release blog](https://fast-check.dev/blog/)
+
+Maintainer blog documents fast-check 4.10.0 on 2026-09-13 and migration work toward v5.
+
+Opened 4.10.0 announcement; v5 is future migration context, not a released-version claim. Evidence: primary documented; not Atlas reproduction.
+
+### RX117
+
+[TLC Model Checker documentation](https://www.docs.tlapl.us/using:tlc:start)
+
+Opened TLC documentation describing explicit-state verification of TLA+ models.
+
+Opened model-checker scope and runtime guidance. Evidence: primary documented; not Atlas reproduction.
+
+### RX118
+
+[Jepsen distributed systems safety research](https://jepsen.io/)
+
+Jepsen news records 0.3.15 on 2026-10-16 and a checker-correctness fix.
+
+Opened project scope and release news; checker validation is part of the proposed test design. Evidence: primary documented; not Atlas reproduction.
+
+### RX119
+
+[Introducing Testcontainers](https://testcontainers.com/guides/introducing-testcontainers/)
+
+Opened official guide explaining lifecycle-managed real-service containers for integration testing.
+
+Opened definition and lifecycle description; Java repository is a representative implementation. Evidence: primary documented; not Atlas reproduction.
+
+### RX120
+
+[cargo-nextest changelog](https://www.nexte.st/changelog/)
+
+Current changelog lists 0.9.150 on 2026-10-26, including a portable-recording security fix.
+
+Opened 0.9.150 security and version sections. Evidence: primary documented; not Atlas reproduction.
+
+### RX121
+
+[Criterion.rs README](https://github.com/criterion-rs/criterion.rs)
+
+Opened canonical repository documenting statistical regression detection and stable Rust support.
+
+Opened statistics-driven benchmarking description. Evidence: primary documented; not Atlas reproduction.
+
+### RX122
+
+[AFL++ README](https://github.com/AFLplusplus/AFLplusplus)
+
+Opened current repository distinguishing release 5.03c from development version 5.04a.
+
+Opened release/development version distinction and fuzzing workflow. Evidence: primary documented; not Atlas reproduction.
+
+### RX123
+
+[Cosign releases](https://github.com/sigstore/cosign/releases)
+
+Opened Cosign v3.1.4 release dated 2026-10-20.
+
+Opened latest release header and artifact timestamps. Evidence: primary documented; not Atlas reproduction.
+
+### RX124
+
+[SLSA specification v1.2](https://slsa.dev/spec/v1.2/)
+
+Opened approved SLSA v1.2 specification; it includes source and build tracks.
+
+Opened approved status and track definitions; no fabricated 2026 release date. Evidence: primary documented; not Atlas reproduction.
+
+### RX125
+
+[OpenSSF Scorecard overview](https://openssf.org/scorecard/)
+
+Opened official project overview describing automated repository security assessment.
+
+Opened foundation description and intended scoring scope. Evidence: primary documented; not Atlas reproduction.
+
+### RX126
+
+[Trivy releases](https://github.com/aquasecurity/trivy/releases)
+
+Opened Trivy v0.76.1 release and its 2026-10-21 artifact timestamps.
+
+Opened current release section; use patched binaries for tests. Evidence: primary documented; not Atlas reproduction.
+
+### RX127
+
+[Syft README](https://github.com/anchore/syft/blob/main/README.md)
+
+Opened README documenting SBOM output and supported scan targets.
+
+Opened tool purpose and inventory features. Evidence: primary documented; not Atlas reproduction.
+
+### RX128
+
+[OSV-Scanner documentation](https://google.github.io/osv-scanner/)
+
+Opened official documentation for CLI and Go-library usage against the OSV database.
+
+Opened dependency-to-advisory matching description. Evidence: primary documented; not Atlas reproduction.
+
+### RX129
+
+[OpenTofu v1.13.0](https://opentofu.org/blog/opentofu-1-13-0/)
+
+OpenTofu 1.13.0 release on 2026-09-29 labels built-in linting and Symbol Libraries experimental.
+
+Opened stable release and explicit experimental-feature labels. Evidence: primary documented; not Atlas reproduction.
+
+### RX130
+
+[Dagger 1.0 beta](https://dagger.io/blog/dagger-10-beta/)
+
+Official 2026-10-23 announcement introduces Dagger 1.0 beta.
+
+Opened release status; marketing performance claims are excluded from scoring. Evidence: primary documented; not Atlas reproduction.
+
+### RX131
+
+[Faster DuckDB Queries with Vortex](https://spiraldb.com/blog/duckdb-and-vortex)
+
+Official 2026-10-21 integration post documents Vortex as a DuckDB core extension on Linux and macOS.
+
+Opened integration details; vendor speedup claims are hypotheses for testing. Evidence: primary documented; not Atlas reproduction.
+
+### RX132
+
+[Vortex file-format specification](https://docs.vortex.dev/specs/file-format)
+
+Official 2026-10-21 integration post documents Vortex as a DuckDB core extension on Linux and macOS.
+
+Opened frozen-edition stability guarantee. Evidence: primary documented; not Atlas reproduction.
+
+### RX133
+
+[VS-Flash: Harnessing Vector Search with Computational Memory-Semantic Flash](https://arxiv.org/html/2610.26960v1)
+
+arXiv v1 is dated 2026-10-18; the paper describes mixed-workload vector search.
+
+Opened abstract, design, and evaluation sections; no numerical speedup is imported. Evidence: primary documented; not Atlas reproduction.
+
+### RX134
+
+[Sharpen the Spec, Cut the Code: A Case for Generative File System with SYSSPEC](https://www.usenix.org/conference/fast26/presentation/liu-qingyuan)
+
+FAST '26 publisher page lists Best Paper and Distinguished Artifact awards.
+
+Opened publisher abstract and award labels; no exact publication day is asserted. Evidence: primary documented; not Atlas reproduction.
+
+### RX135
+
+[Python standard-library json official reference](https://docs.python.org/3.12/library/json.html)
+
+Existing Atlas experiment used CPython 3.12.14. Versioned 3.12 documentation is the compatibility reference; this is not a current-runtime benchmark.
+
+Existing Atlas experiment used CPython 3.12.14. Versioned 3.12 documentation is the compatibility reference; this is not a current-runtime benchmark. Evidence: primary documented; not Atlas reproduction.
+
+### RX136
+
+[orjson official reference](https://github.com/ijl/orjson)
+
+Existing Atlas experiment used orjson 3.13.0. Numeric policy and duplicate-key behavior remain adoption gates despite lower timings in that workload.
+
+Existing Atlas experiment used orjson 3.13.0. Numeric policy and duplicate-key behavior remain adoption gates despite lower timings in that workload. Evidence: primary documented; not Atlas reproduction.
+
+### RX137
+
+[UltraJSON (ujson) official reference](https://github.com/ultrajson/ultrajson)
+
+Existing Atlas experiment used ujson 6.0.0. Upstream describes a maintenance-only policy; evaluate that lifecycle before selecting it for new work.
+
+Existing Atlas experiment used ujson 6.0.0. Upstream describes a maintenance-only policy; evaluate that lifecycle before selecting it for new work. Evidence: primary documented; not Atlas reproduction.
+
+
+## Paper expansion and catalog governance
+
+### RX138
+
+[Wasure: A Modular Toolkit for Comprehensive WebAssembly Benchmarking](https://arxiv.org/html/2602.05488v1)
+
+2026-02-05 preprint; a public Python toolkit and benchmark-management source were checked.
+
+Opened v1, especially approach, execution, feature tracking, and portability. Date is the arXiv v1 submission/publication, not a software release. Evidence: primary documented.
+
+### RX139
+
+[Wasure upstream repository](https://github.com/r-carissimi/wasure)
+
+2026-02-05 preprint; a public Python toolkit and benchmark-management source were checked.
+
+Opened README, setup and artifact-output guidance; source is available and marked work in progress. No artifact was executed. Evidence: primary documented.
+
+### RX140
+
+[Debugging Performance Issues in WebAssembly Runtimes via Mutation-based Inference](https://arxiv.org/html/2604.13693v1)
+
+ICSE 2026 paper with arXiv v1 published 2026-04-15; public research artifact checked.
+
+Opened ICSE 2026 paper methods and discussion/limitations. Date is arXiv v1 publication; venue receipt and conference dates are different events. Evidence: primary documented.
+
+### RX141
+
+[WarpL source code and experiment data](https://github.com/BZTesting/WarpL)
+
+ICSE 2026 paper with arXiv v1 published 2026-04-15; public research artifact checked.
+
+Opened repository file listing and README area; source_code and experiment_data are public. A reuse license was not established. Evidence: primary documented.
+
+### RX142
+
+[Maintaining Queries under Updates Using Heavy-Light Partitioning of the Input Relations](https://arxiv.org/html/2605.08397v1)
+
+Original arXiv v1 published 2026-05-08; theory candidate with no local performance reproduction.
+
+Opened definitions, adaptive IVM overview, maintenance assumptions and conclusion. The paper supplies theoretical methods; no implementation artifact was identified in the checked paper. Evidence: primary documented.
+
+### RX143
+
+[GenWasym OOPSLA 2026 official paper page](https://2026.splashcon.org/details/oopsla-2026/124/Compiling-WebAssembly-Concolic-Execution-with-Staging-Continuations-and-Snapshots)
+
+OOPSLA 2026 paper; current artifact record is v9 published 2026-09-22.
+
+Opened the official abstract and presentation record. Conference date is not used as a publication date. Direct arXiv retrieval failed in this pass. Evidence: primary documented.
+
+### RX144
+
+[GenWasym OOPSLA 2026 artifact v9](https://zenodo.org/records/22886998)
+
+OOPSLA 2026 paper; current artifact record is v9 published 2026-09-22.
+
+Followed the older artifact to the current v9 record. This is the artifact publication date, not the paper publication date. Evidence: primary documented.
+
+### RX145
+
+[GenWasym v9 artifact evaluation README](https://zenodo.org/records/22886998/files/Readme.md?download=1)
+
+OOPSLA 2026 paper; current artifact record is v9 published 2026-09-22.
+
+Opened current artifact instructions: source, WASP baseline, benchmark suites, and container environment. Archive was not downloaded or executed. Evidence: primary documented.
+
+### RX146
+
+[SWE-Skills-Bench, revised v2](https://arxiv.org/html/2603.15401v2)
+
+v2 published 2026-10-27; use the revised 98-skill protocol and current ControllableModel artifact.
+
+Opened revised paper methods, paired assessment and discussion. v2 expands the benchmark to 98 skills; older v1 snippets describe a different experimental set. Evidence: primary documented.
+
+### RX147
+
+[SWE-Skills-Bench current upstream artifact](https://github.com/ControllableModel/SWE-Skills-Bench)
+
+v2 published 2026-10-27; use the revised 98-skill protocol and current ControllableModel artifact.
+
+Opened the repository linked by v2 and its paired-run setup. The older paper linked a different repository namespace. Evidence: primary documented.
+
+### RX148
+
+[Breaking, Stale, or Missing? Benchmarking Coding Agents on Project-Level Test Evolution](https://arxiv.org/html/2605.06125v1)
+
+2026-05-07 preprint with public dataset and evaluation pipeline; explicitly includes tests that pass while becoming stale.
+
+Opened task construction, version design, evaluation and limitations. The corpus is derived from Maven-based Java projects in the Defects4J ecosystem. Evidence: primary documented.
+
+### RX149
+
+[TEBench benchmark and evaluation artifact](https://github.com/iSEngLab/TEBench)
+
+2026-05-07 preprint with public dataset and evaluation pipeline; explicitly includes tests that pass while becoming stale.
+
+Opened dataset overview, task types and update-evaluation instructions. Public source and pipeline are available; not executed. Evidence: primary documented.
+
+### RX150
+
+[TestSuiteBench: Coding Agents Struggle to Generate Strong Test Suites from Specifications](https://arxiv.org/html/2610.13065v1)
+
+Original preprint published 2026-10-09; code, specifications and dataset pointers checked.
+
+Opened benchmark construction, mutation method, evaluation metrics and limitations. Published results are external evidence, not Atlas scores. Evidence: primary documented.
+
+### RX151
+
+[TestSuiteBench evaluation code and dataset pointers](https://github.com/eth-sri/testsuitebench)
+
+Original preprint published 2026-10-09; code, specifications and dataset pointers checked.
+
+Opened setup and evaluation instructions. Reference tests, mutants and executables are separately hosted; task images target Linux amd64. Evidence: primary documented.
+
+### RX152
+
+[Incr, OSDI 2026 official paper page](https://www.usenix.org/conference/osdi26/presentation/xie-yizheng)
+
+OSDI 2026 paper, dated July in the venue record; public source and retained evaluation tooling checked.
+
+Opened venue record; it gives July 2026 but no exact publication day. Evidence: primary documented.
+
+### RX153
+
+[Incr full OSDI 2026 paper](https://www.usenix.org/system/files/osdi26-xie-yizheng.pdf)
+
+OSDI 2026 paper, dated July in the venue record; public source and retained evaluation tooling checked.
+
+Opened full paper including behavioral-equivalence methodology and limitations. Corner-case divergences and excluded parser-error cases are retained as constraints. Evidence: primary documented.
+
+### RX154
+
+[Incr source and reproduction instructions](https://github.com/atlas-brown/incr)
+
+OSDI 2026 paper, dated July in the venue record; public source and retained evaluation tooling checked.
+
+Opened README: MIT-licensed source, evaluation harness, Docker wrapper and optional Ubuntu-native setup are available. Evidence: primary documented.
+
+### RX155
+
+[hS, OSDI 2026 official paper page](https://www.usenix.org/conference/osdi26/presentation/liargkovas)
+
+OSDI 2026 paper; public prototype and dated 2026-07-10 author explanation checked.
+
+Opened official abstract and venue record. The venue supplies July 2026, not an exact publication day; full PDF retrieval timed out. Evidence: primary documented.
+
+### RX156
+
+[hS speculative shell prototype](https://github.com/binpash/hs)
+
+OSDI 2026 paper; public prototype and dated 2026-07-10 author explanation checked.
+
+Opened source structure, setup and explicit security warning. Prototype code is available; no installation was performed. Evidence: primary documented.
+
+### RX157
+
+[Author explanation of try and hS at OSDI 2026](https://blog.greenberg.science/posts/osdi2026/)
+
+OSDI 2026 paper; public prototype and dated 2026-07-10 author explanation checked.
+
+Opened a paper coauthor explanation linking the prototype and describing selective effect handling. Date belongs to this article, not the venue paper. Evidence: primary documented.
+
+### RX158
+
+[Cache-Centric Multi-Resource Allocation for Storage Services, FAST 2026](https://www.usenix.org/conference/fast26/presentation/ye)
+
+FAST 2026 paper (February venue record); full method and artifact references checked, code retrieval unresolved.
+
+Opened venue record. February 2026 is supplied; no exact publication day was available. Evidence: primary documented.
+
+### RX159
+
+[HARE full FAST 2026 paper](https://www.usenix.org/system/files/fast26-ye.pdf)
+
+FAST 2026 paper (February venue record); full method and artifact references checked, code retrieval unresolved.
+
+Opened allocation model, fairness goal, evaluations and artifact references. Paper links WiscADSL/bunnyfs and WiscADSL/hopperkv, but direct repository retrieval failed. Evidence: primary documented.
+
+### RX160
+
+[Real-Time Level-of-Detail Rendering with ReSTIR, official project page](https://research.nvidia.com/labs/rtr/publication/wang2026levelofdetail/)
+
+SIGGRAPH 2026 paper; official page dated July 2026, exact publication day unverified.
+
+Opened author/lab abstract and artifact links. Page is dated July 2026, without an exact day. Evidence: primary documented.
+
+### RX161
+
+[Real-Time Level-of-Detail Rendering with ReSTIR, full paper](https://research.nvidia.com/labs/rtr/publication/wang2026levelOfDetail/wang2026levelOfDetail.pdf)
+
+SIGGRAPH 2026 paper; official page dated July 2026, exact publication day unverified.
+
+Opened experiment scenes and limitations: consistent texture mapping is required across LoD levels; current implementation uses one LoD per object per frame. Evidence: primary documented.
+
+### RX162
+
+[Compatibility-Guided Neighbor Selection for ReSTIR, official project page](https://research.nvidia.com/labs/rtr/publication/junkins2026compatibility/)
+
+HPG 2026 paper; official implementation and method documentation checked, paper page dated July 2026.
+
+Opened the author/lab abstract and code link; HPG 2026, page dated July. Full PDF exceeded retrieval size limits, so no numeric result is imported. Evidence: primary documented.
+
+### RX163
+
+[ReSTIR-CGNS author implementation](https://github.com/orion-junkins/ReSTIR-CGNS)
+
+HPG 2026 paper; official implementation and method documentation checked, paper page dated July 2026.
+
+Opened method and code layout: geometry compatibility, weighted reservoir selection, and Falcor 8.0 integration are documented. Evidence: primary documented.
+
+### RX164
+
+[Taming Optimization Variance in Compact Neural Shading Networks, official project page](https://research.nvidia.com/labs/rtr/publication/bitterli2026taming/)
+
+SIGGRAPH 2026 paper; official page dated July 2026 and current training artifact checked.
+
+Opened author/lab abstract. SIGGRAPH 2026 paper; page supplies July 2026 without an exact publication day. Evidence: primary documented.
+
+### RX165
+
+[Compact neural shading optimization variance full paper](https://research.nvidia.com/labs/rtr/publication/bitterli2026taming/bitterli2026taming.pdf)
+
+SIGGRAPH 2026 paper; official page dated July 2026 and current training artifact checked.
+
+Opened training-method discussion, loss/activation refinements and conclusion; no published speedup is treated as Atlas evidence. Evidence: primary documented.
+
+### RX166
+
+[Neural Appearance training and rendering artifact](https://github.com/NVlabs/neuralappearance)
+
+SIGGRAPH 2026 paper; official page dated July 2026 and current training artifact checked.
+
+Opened prerequisites and paper configurations. Public source includes single-instance and multi-instance configs and requires a supported NVIDIA Cooperative Vector GPU. Evidence: primary documented.
+
+### GHS01
+
+[GitHub REST issues](https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28)
+
+Current official documentation checked 2026-10-28 UTC
+
+Paginated public issue retrieval and issue metadata. Evidence: primary documented.
+
+### GHS02
+
+[GitHub REST issue comments](https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28)
+
+Current official documentation checked 2026-10-28 UTC
+
+Paginated approval comment retrieval and author metadata. Evidence: primary documented.
+
+### GHS03
+
+[GitHub collaborator permission API](https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28)
+
+Current official documentation checked 2026-10-28 UTC
+
+Current repository permission checks for non-owner approval authors. Evidence: primary documented.
+
+### GHS04
+
+[GitHub REST best practices](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
+
+Current official documentation checked 2026-10-28 UTC
+
+Bounded serial requests, rate-limit handling and trusted redirects. Evidence: primary documented.
+
+### GHS05
+
+[GitHub issue form syntax](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)
+
+Current official documentation checked 2026-10-28 UTC
+
+Repository issue forms and explicit field definitions. Evidence: primary documented.
+
+### GHS06
+
+[GitHub form schema](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema)
+
+Current official documentation checked 2026-10-28 UTC
+
+Field IDs support URL prefills; rating choice is not preselected. Evidence: primary documented.
+
+### GHS07
+
+[GitHub REST rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
+
+Current official documentation checked 2026-10-28 UTC
+
+Unauthenticated and authenticated request budgets; retrieval failures do not become zero counts. Evidence: primary documented.
+
+### GHS08
+
+[GitHub issue creation URL parameters](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue)
+
+Current official documentation checked 2026-10-28 UTC
+
+Explicit user submission through prefilled public issue forms. Evidence: primary documented.

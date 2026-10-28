@@ -1,0 +1,643 @@
+"""Evidence-boundary tests for the research explorer; all fixtures are synthetic.
+
+The retained JSON-lab checks only read an existing measured artifact. They do
+not execute a benchmark, manufacture observations, or promote any candidate.
+"""
+
+import copy
+import datetime as dt
+import hashlib
+import importlib.util
+import json
+import math
+import shutil
+import statistics
+import tempfile
+import unittest
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location(
+    "research_explorer_builder", ROOT / "scripts/build_research_explorer.py"
+)
+explorer = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(explorer)
+TODAY = dt.date(2026, 10, 27)
+SOURCE_URL = "https://example.org/synthetic-explorer-source"
+
+
+def catalog_fixture():
+    """A contract fixture, never a real candidate or source record."""
+    source = {
+        "url": SOURCE_URL,
+        "title": "Synthetic source fixture only",
+        "checked_at": "2026-10-27",
+        "published_at": "2026-10-26",
+        "note": "Synthetic evidence-boundary test, not research evidence.",
+    }
+    entry = {
+        "id": "synthetic-parser",
+        "name": "Synthetic parser fixture",
+        "kind": "repository",
+        "category": "synthetic-tools",
+        "summary": "Synthetic fixture; makes no claim about real software.",
+        "tags": ["synthetic"],
+        "url": SOURCE_URL,
+        "repo": "Example/Synthetic",
+        "paper_url": None,
+        "source_ids": ["SYNTHETIC001"],
+        "sources": [source],
+        "status": "candidate",
+        "maturity": "experimental",
+        "priority": 1,
+        "priority_reason": "Exercise validation only.",
+        "evaluation": {
+            "track": "json-serialization",
+            "proposal": "Use a synthetic fixture to test rejection rules.",
+            "metrics": ["fixture failures detected"],
+            "caveats": ["Synthetic; never a measured performance result."],
+        },
+    }
+    catalog = {
+        "schema_version": 1,
+        "snapshot_date": "2026-10-27",
+        "snapshot_timezone": "America/Denver",
+        "categories": [{"id": "synthetic-tools", "label": "Synthetic tools"}],
+        "tracks": [
+            {"id": "json-serialization", "label": "Synthetic JSON track"},
+            {"id": "local-storage", "label": "Synthetic storage track"},
+        ],
+        "entries": [entry],
+    }
+    registry = [{
+        "id": "SYNTHETIC001", "url": SOURCE_URL,
+        "title": "Synthetic source fixture only", "observed_version": "fixture",
+        "topic": "synthetic", "note": "Test fixture, not research evidence.",
+        "checked_at": "2026-10-27", "review_after_days": 30,
+        "evidence": "primary_documented",
+    }]
+    return catalog, registry
+
+
+def results_fixture(evidence="external_reported"):
+    result = {
+        "schema_version": 1,
+        "cohorts": [{
+            "id": "synthetic-json-cohort",
+            "label": "Synthetic result-validation fixture",
+            "track": "json-serialization",
+            "metric": "synthetic_elapsed_ms",
+            "unit": "ms",
+            "direction": "lower",
+            "evidence": evidence,
+            "description": "Synthetic; not a measured or reported result.",
+            "protocol": "Synthetic fixture; no benchmark is executed.",
+            "caveats": ["Do not publish this fixture as evidence."],
+            "source_url": SOURCE_URL,
+            "observed_at": "2026-10-27",
+        }],
+        "observations": [{
+            "candidate_id": "synthetic-parser",
+            "cohort_id": "synthetic-json-cohort",
+            "value": 2.5,
+            "subject": "Synthetic configuration",
+            "note": "Synthetic value used only to validate the schema.",
+            "source_url": SOURCE_URL,
+            "observed_at": "2026-10-27",
+        }],
+    }
+    if evidence == "atlas_measured":
+        result["observations"][0].update({
+            "sample_count": 15,
+            "raw_sha256": "a" * 64,
+            "workload_sha256": "b" * 64,
+        })
+    return result
+
+
+def signal_fixture():
+    return {
+        "schema_version": 1,
+        "repositories": {
+            "example/synthetic": {
+                "stars": 0, "forks": 0, "archived": False,
+                "observed_at": "2026-10-27T18:00:00Z",
+                "url": "https://github.com/Example/Synthetic",
+            }
+        },
+        "errors": [],
+    }
+
+
+def community_fixture():
+    return {
+        "schema_version": 1,
+        "ratings": [{
+            "candidate_id": "synthetic-parser", "track": "json-serialization",
+            "score": 4, "author_id": 123456, "author": "synthetic-account",
+            "experience": "Synthetic fixture, not a real user report.",
+            "version": "synthetic-1", "review_state": "approved",
+            "issue_url": "https://github.com/Herbertofury/Engineering-Atlas/issues/1",
+            "updated_at": "2026-10-27T18:00:00Z",
+        }],
+        "errors": [],
+    }
+
+
+class CatalogValidationTests(unittest.TestCase):
+    def setUp(self):
+        self.catalog, self.registry = catalog_fixture()
+
+    def validate(self):
+        return explorer.validate_catalog(self.catalog, self.registry, TODAY)
+
+    def test_valid_candidate_remains_a_candidate(self):
+        self.assertEqual(self.validate(), {"synthetic-parser"})
+        self.assertEqual(self.catalog["entries"][0]["status"], "candidate")
+
+    def test_rejects_duplicate_entry_ids(self):
+        self.catalog["entries"].append(copy.deepcopy(self.catalog["entries"][0]))
+        with self.assertRaisesRegex(ValueError, "duplicate entry ID"):
+            self.validate()
+
+    def test_rejects_unknown_source_ids(self):
+        self.catalog["entries"][0]["source_ids"] = ["SYNTHETIC999"]
+        with self.assertRaisesRegex(ValueError, "Unregistered source"):
+            self.validate()
+
+    def test_rejects_mismatched_source_register_url(self):
+        self.registry[0]["url"] = "https://example.org/different-synthetic-source"
+        with self.assertRaisesRegex(ValueError, "URL mismatch"):
+            self.validate()
+
+    def test_rejects_source_ids_without_corresponding_details(self):
+        self.catalog["entries"][0]["sources"] = []
+        with self.assertRaisesRegex(ValueError, "detail count"):
+            self.validate()
+
+    def test_rejects_future_snapshot_check_and_publication_dates(self):
+        mutations = [
+            lambda c: c.update(snapshot_date="2026-10-28"),
+            lambda c: c["entries"][0]["sources"][0].update(checked_at="2026-10-28"),
+            lambda c: c["entries"][0]["sources"][0].update(published_at="2026-10-28"),
+        ]
+        for mutate in mutations:
+            with self.subTest(mutation=mutate):
+                self.catalog, self.registry = catalog_fixture()
+                mutate(self.catalog)
+                with self.assertRaisesRegex(ValueError, "Future"):
+                    self.validate()
+
+    def test_rejects_publication_after_source_was_checked(self):
+        self.catalog["entries"][0]["sources"][0].update(
+            checked_at="2026-10-25", published_at="2026-10-26"
+        )
+        with self.assertRaisesRegex(ValueError, "Publication after"):
+            self.validate()
+
+    def test_unknown_publication_date_is_preserved(self):
+        self.catalog["entries"][0]["sources"][0]["published_at"] = None
+        self.validate()
+        self.assertIsNone(self.catalog["entries"][0]["sources"][0]["published_at"])
+
+    def test_paper_publication_year_does_not_fabricate_an_exact_date(self):
+        entry = self.catalog["entries"][0]
+        entry["kind"] = "paper"
+        entry["publication_year"] = 2026
+        entry["sources"][0]["published_at"] = None
+        self.validate()
+        self.assertEqual(entry["publication_year"], 2026)
+        self.assertIsNone(entry["sources"][0]["published_at"])
+
+    def test_rejects_future_or_invalid_paper_publication_year(self):
+        for year in (2027, 1899, True, False, 2026.0, "2026"):
+            with self.subTest(publication_year=year):
+                self.catalog, self.registry = catalog_fixture()
+                entry = self.catalog["entries"][0]
+                entry["kind"] = "paper"
+                entry["publication_year"] = year
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_rejects_publication_year_on_nonpaper_entry(self):
+        self.catalog["entries"][0]["publication_year"] = 2026
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_rejects_unsupported_status_promotion(self):
+        for status in ("accepted", "measured", "production_proven", "best"):
+            with self.subTest(status=status):
+                self.catalog["entries"][0]["status"] = status
+                with self.assertRaisesRegex(ValueError, "promote"):
+                    self.validate()
+
+    def test_rejects_missing_or_blank_proposal(self):
+        for value in (None, "", "   "):
+            with self.subTest(proposal=value):
+                self.catalog["entries"][0]["evaluation"]["proposal"] = value
+                with self.assertRaisesRegex(ValueError, "proposal"):
+                    self.validate()
+        del self.catalog["entries"][0]["evaluation"]["proposal"]
+        with self.assertRaisesRegex(ValueError, "proposal"):
+            self.validate()
+
+    def test_rejects_empty_or_meaningless_metrics_and_caveats(self):
+        for field in ("metrics", "caveats"):
+            for value in ([], [""], ["  "], [None], "not a list"):
+                with self.subTest(field=field, value=value):
+                    self.catalog, self.registry = catalog_fixture()
+                    self.catalog["entries"][0]["evaluation"][field] = value
+                    with self.assertRaisesRegex(ValueError, field):
+                        self.validate()
+
+    def test_rejects_unknown_track(self):
+        self.catalog["entries"][0]["evaluation"]["track"] = "unregistered-track"
+        with self.assertRaisesRegex(ValueError, "track"):
+            self.validate()
+
+    def test_rejects_noninteger_schema_and_priority(self):
+        for value in (True, 1.0, "1"):
+            with self.subTest(schema=value):
+                self.catalog, self.registry = catalog_fixture()
+                self.catalog["schema_version"] = value
+                with self.assertRaises(ValueError):
+                    self.validate()
+            with self.subTest(priority=value):
+                self.catalog, self.registry = catalog_fixture()
+                self.catalog["entries"][0]["priority"] = value
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_rejects_credentials_and_active_url_schemes(self):
+        for value in ("http://example.org", "javascript:alert(1)",
+                      "https://secret@example.org", "https://example.org/\nprivate"):
+            with self.subTest(url=value):
+                self.catalog["entries"][0]["url"] = value
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+
+class ResultValidationTests(unittest.TestCase):
+    def setUp(self):
+        self.results = results_fixture()
+        self.candidate_tracks = {
+            "synthetic-parser": "json-serialization", "synthetic-database": "local-storage"
+        }
+
+    def validate(self):
+        return explorer.validate_results(self.results, self.candidate_tracks, TODAY)
+
+    def test_keeps_external_report_in_its_own_lane(self):
+        cohorts = self.validate()
+        self.assertEqual(cohorts["synthetic-json-cohort"]["evidence"], "external_reported")
+
+    def test_rejects_unknown_candidate_and_cohort(self):
+        for field, value in (("candidate_id", "unknown"), ("cohort_id", "unknown")):
+            with self.subTest(field=field):
+                self.results = results_fixture()
+                self.results["observations"][0][field] = value
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_rejects_candidate_in_incompatible_track(self):
+        self.results["observations"][0]["candidate_id"] = "synthetic-database"
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_rejects_unknown_cohort_track(self):
+        self.results["cohorts"][0]["track"] = "nonexistent-track"
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_rejects_observation_evidence_conflicting_with_cohort(self):
+        self.results["observations"][0]["evidence"] = "atlas_measured"
+        with self.assertRaises(ValueError):
+            self.validate()
+
+    def test_rejects_unsupported_evidence_promotion(self):
+        for evidence in ("accepted", "production_proven", "community", "synthetic"):
+            with self.subTest(evidence=evidence):
+                self.results["cohorts"][0]["evidence"] = evidence
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_rejects_invalid_and_nonfinite_measurements(self):
+        for value in (None, True, "2.5", math.nan, math.inf, -math.inf):
+            with self.subTest(value=value):
+                self.results["observations"][0]["value"] = value
+                with self.assertRaisesRegex(ValueError, "measurement"):
+                    self.validate()
+
+    def test_duplicate_configuration_requires_distinct_identity(self):
+        duplicate = copy.deepcopy(self.results["observations"][0])
+        duplicate["subject"] = "A different label does not create a different configuration"
+        self.results["observations"].append(duplicate)
+        with self.assertRaisesRegex(ValueError, "configurations"):
+            self.validate()
+
+    def test_rejects_duplicate_cohort_identity(self):
+        self.results["cohorts"].append(copy.deepcopy(self.results["cohorts"][0]))
+        with self.assertRaisesRegex(ValueError, "cohort"):
+            self.validate()
+
+    def test_rejects_future_cohort_and_observation_dates(self):
+        for collection in ("cohorts", "observations"):
+            with self.subTest(collection=collection):
+                self.results = results_fixture()
+                self.results[collection][0]["observed_at"] = "2026-10-28"
+                with self.assertRaisesRegex(ValueError, "Future"):
+                    self.validate()
+
+    def test_local_evidence_requires_repetition_and_artifact_hashes(self):
+        for field, value in (("sample_count", 4), ("raw_sha256", ""),
+                             ("raw_sha256", "g" * 64), ("workload_sha256", None)):
+            with self.subTest(field=field, value=value):
+                self.results = results_fixture("atlas_measured")
+                self.results["observations"][0][field] = value
+                with self.assertRaises((ValueError, TypeError)):
+                    self.validate()
+
+    def test_local_sample_count_must_be_an_integer(self):
+        for count in (5.5, 15.0, "15", True, None, math.nan, math.inf):
+            with self.subTest(sample_count=count):
+                self.results = results_fixture("atlas_measured")
+                self.results["observations"][0]["sample_count"] = count
+                with self.assertRaisesRegex(ValueError, "repeated samples"):
+                    self.validate()
+
+    def test_cohort_caveats_must_contain_meaningful_text(self):
+        for caveats in ([], [""], ["   "], [None], [False], "not a list"):
+            with self.subTest(caveats=caveats):
+                self.results["cohorts"][0]["caveats"] = caveats
+                with self.assertRaisesRegex(ValueError, "caveats"):
+                    self.validate()
+
+    def test_rejects_noninteger_result_schema(self):
+        for schema in (True, 1.0, "1"):
+            with self.subTest(schema=schema):
+                self.results["schema_version"] = schema
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+
+class SignalAndCommunityTests(unittest.TestCase):
+    def setUp(self):
+        self.catalog, _ = catalog_fixture()
+        self.signals = signal_fixture()
+        self.community = community_fixture()
+
+    def validate(self):
+        return explorer.validate_signals(self.signals, self.community, self.catalog, TODAY)
+
+    def test_zero_stars_and_missing_observation_are_distinct_valid_states(self):
+        self.validate()
+        self.assertEqual(self.signals["repositories"]["example/synthetic"]["stars"], 0)
+        self.signals["repositories"] = {}
+        self.validate()
+        self.assertNotIn("example/synthetic", self.signals["repositories"])
+
+    def test_rejects_invalid_popularity_values(self):
+        for field in ("stars", "forks"):
+            for value in (-1, True, 0.5, "0", None):
+                with self.subTest(field=field, value=value):
+                    self.signals = signal_fixture()
+                    self.signals["repositories"]["example/synthetic"][field] = value
+                    with self.assertRaisesRegex(ValueError, "popularity"):
+                        self.validate()
+
+    def test_rejects_unknown_repository_signal(self):
+        record = self.signals["repositories"].pop("example/synthetic")
+        self.signals["repositories"]["example/unknown"] = record
+        with self.assertRaisesRegex(ValueError, "repository"):
+            self.validate()
+
+    def test_rejects_malformed_snapshot_error_history(self):
+        for collection in ("signals", "community"):
+            for value in (None, {}, "", False, 0):
+                with self.subTest(collection=collection, errors=value):
+                    self.signals, self.community = signal_fixture(), community_fixture()
+                    getattr(self, collection)["errors"] = value
+                    with self.assertRaisesRegex(ValueError, "errors"):
+                        self.validate()
+
+    def test_rejects_missing_community_error_history(self):
+        del self.community["errors"]
+        with self.assertRaisesRegex(ValueError, "Community errors"):
+            self.validate()
+
+    def test_requires_timezone_for_snapshot_refresh_timestamps(self):
+        for collection in ("signals", "community"):
+            for field in ("last_attempted_at", "last_completed_at"):
+                with self.subTest(collection=collection, field=field):
+                    self.signals, self.community = signal_fixture(), community_fixture()
+                    getattr(self, collection)[field] = "2026-10-27T18:00:00"
+                    with self.assertRaisesRegex(ValueError, "timezone"):
+                        self.validate()
+
+    def test_rejects_future_snapshot_refresh_timestamps(self):
+        for collection in ("signals", "community"):
+            for field in ("last_attempted_at", "last_completed_at"):
+                for stamp in ("2026-10-28T00:00:00Z", "2026-10-27T23:00:00-02:00"):
+                    with self.subTest(collection=collection, field=field, timestamp=stamp):
+                        self.signals, self.community = signal_fixture(), community_fixture()
+                        getattr(self, collection)[field] = stamp
+                        with self.assertRaisesRegex(ValueError, "Future"):
+                            self.validate()
+
+    def test_snapshot_refresh_timestamps_accept_null_or_valid_utc_date(self):
+        for collection in ("signals", "community"):
+            for field in ("last_attempted_at", "last_completed_at"):
+                for stamp in (None, "2026-10-27T18:00:00Z", "2026-10-28T01:00:00+02:00"):
+                    with self.subTest(collection=collection, field=field, timestamp=stamp):
+                        self.signals, self.community = signal_fixture(), community_fixture()
+                        getattr(self, collection)[field] = stamp
+                        self.validate()
+
+    def test_requires_timezone_and_rejects_future_observations(self):
+        for stamp in ("2026-10-27T18:00:00", "2026-10-28T00:00:00Z"):
+            with self.subTest(timestamp=stamp):
+                self.signals["repositories"]["example/synthetic"]["observed_at"] = stamp
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_timestamp_dates_are_checked_in_utc(self):
+        self.signals["repositories"]["example/synthetic"]["observed_at"] = "2026-10-28T01:00:00+02:00"
+        self.validate()  # Still 2026-10-27 in UTC.
+
+    def test_one_account_cannot_vote_twice_under_different_display_names(self):
+        duplicate = copy.deepcopy(self.community["ratings"][0])
+        duplicate["author"] = "renamed-synthetic-account"
+        duplicate["issue_url"] = "https://github.com/Herbertofury/Engineering-Atlas/issues/2"
+        self.community["ratings"].append(duplicate)
+        with self.assertRaisesRegex(ValueError, "Duplicate account"):
+            self.validate()
+
+    def test_same_account_can_review_a_different_candidate(self):
+        other = copy.deepcopy(self.catalog["entries"][0])
+        other["id"] = "synthetic-other-parser"
+        self.catalog["entries"].append(other)
+        review = copy.deepcopy(self.community["ratings"][0])
+        review["candidate_id"] = other["id"]
+        review["issue_url"] = "https://github.com/Herbertofury/Engineering-Atlas/issues/2"
+        self.community["ratings"].append(review)
+        self.validate()
+
+    def test_rejects_rating_track_mismatch(self):
+        self.community["ratings"][0]["track"] = "local-storage"
+        with self.assertRaisesRegex(ValueError, "track"):
+            self.validate()
+
+    def test_rejects_invalid_ratings(self):
+        for score in (0, 6, True, 4.0, "4", None, math.nan, math.inf):
+            with self.subTest(score=score):
+                self.community["ratings"][0]["score"] = score
+                with self.assertRaisesRegex(ValueError, "Rating"):
+                    self.validate()
+
+    def test_rejects_unreviewed_community_reports(self):
+        for state in ("pending", "rejected", None):
+            with self.subTest(review_state=state):
+                self.community["ratings"][0]["review_state"] = state
+                with self.assertRaisesRegex(ValueError, "Unreviewed"):
+                    self.validate()
+
+    def test_requires_stable_public_account_id(self):
+        for account_id in (0, -1, True, "123456", 123456.0):
+            with self.subTest(account_id=account_id):
+                self.community["ratings"][0]["author_id"] = account_id
+                with self.assertRaisesRegex(ValueError, "account ID"):
+                    self.validate()
+
+    def test_rejects_unrelated_issue_and_future_review(self):
+        self.community["ratings"][0]["issue_url"] = "https://github.com/other/repo/issues/1"
+        with self.assertRaisesRegex(ValueError, "this repository"):
+            self.validate()
+        self.community = community_fixture()
+        self.community["ratings"][0]["updated_at"] = "2026-10-28T00:00:00Z"
+        with self.assertRaisesRegex(ValueError, "Future"):
+            self.validate()
+
+    def test_rejects_noninteger_signal_and_community_schema(self):
+        for collection in ("signals", "community"):
+            for schema in (True, 1.0, "1"):
+                with self.subTest(collection=collection, schema=schema):
+                    self.signals, self.community = signal_fixture(), community_fixture()
+                    getattr(self, collection)["schema_version"] = schema
+                    with self.assertRaises(ValueError):
+                        self.validate()
+
+
+class RetainedJsonLabTests(unittest.TestCase):
+    IDS = {"python-stdlib-json", "orjson", "ultrajson"}
+    PATH = Path("experiments/json-lab/results-2026-10-26.json")
+
+    def test_imports_existing_samples_medians_and_hashes_without_running_a_lab(self):
+        raw_bytes = (ROOT / self.PATH).read_bytes()
+        raw = json.loads(raw_bytes)
+        cohorts, observations = explorer.import_retained_json_lab(ROOT, self.IDS)
+        self.assertEqual(len(cohorts), 9)
+        self.assertEqual(len(observations), 27)
+        self.assertEqual({c["evidence"] for c in cohorts}, {"atlas_measured"})
+        self.assertEqual({c["track"] for c in cohorts}, {"json-serialization"})
+        expected_digest = hashlib.sha256(raw_bytes).hexdigest()
+        actual = {(o["candidate_id"], o["cohort_id"]): o for o in observations}
+        library_ids = {"stdlib": "python-stdlib-json", "orjson": "orjson", "ujson": "ultrajson"}
+        for workload, record in raw["workloads"].items():
+            for operation, result in record["operations"].items():
+                cohort_id = "json-" + workload.replace("_", "-") + "-" + operation.replace("_", "-")
+                for library, measured in result["libraries"].items():
+                    with self.subTest(workload=workload, operation=operation, library=library):
+                        observation = actual[(library_ids[library], cohort_id)]
+                        self.assertEqual(observation["value"], statistics.median(measured["samples_ms"]))
+                        self.assertEqual(observation["sample_count"], len(measured["samples_ms"]))
+                        self.assertEqual(observation["raw_sha256"], expected_digest)
+                        self.assertEqual(observation["workload_sha256"], record["input_sha256"])
+                        self.assertEqual(observation["observed_at"], raw["date"])
+                        self.assertIn("/blob/4ed47c5c324231d65b81c3c846bd8fa3f880bee8/", observation["source_url"])
+        self.assertTrue(all("not a new run" in c["caveats"][0] for c in cohorts))
+        self.assertTrue(all("duplicate keys" in o["note"] for o in observations))
+        self.assertTrue(all("above u64" in o["note"] for o in observations))
+
+    def test_rejects_missing_catalog_candidates(self):
+        with self.assertRaisesRegex(ValueError, "candidates missing"):
+            explorer.import_retained_json_lab(ROOT, {"orjson"})
+
+    def test_rejects_altered_samples_medians_and_provenance_in_retained_artifact(self):
+        original = json.loads((ROOT / self.PATH).read_text())
+
+        def samples(data):
+            return data["workloads"]["catalog_2000"]["operations"]["decode"]["libraries"]["orjson"]
+
+        mutations = [
+            lambda d: samples(d)["samples_ms"].pop(),
+            lambda d: samples(d)["samples_ms"].__setitem__(0, math.nan),
+            lambda d: samples(d)["samples_ms"].__setitem__(0, 0),
+            lambda d: samples(d).update(median_ms=999.0),
+            lambda d: d.update(evidence="production_proven"),
+        ]
+        for index, mutate in enumerate(mutations):
+            with self.subTest(mutation=index), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                path = root / self.PATH
+                path.parent.mkdir(parents=True)
+                synthetic_mutation = copy.deepcopy(original)
+                mutate(synthetic_mutation)
+                path.write_text(json.dumps(synthetic_mutation))
+                with self.assertRaises(ValueError):
+                    explorer.import_retained_json_lab(root, self.IDS)
+
+    def test_retained_immutable_source_requires_byte_identity(self):
+        original = (ROOT / self.PATH).read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / self.PATH
+            path.parent.mkdir(parents=True)
+            path.write_bytes(original + b"\n")
+            self.assertEqual(json.loads(path.read_bytes()), json.loads(original))
+            with self.assertRaisesRegex(ValueError, "immutable source"):
+                explorer.import_retained_json_lab(root, self.IDS)
+
+
+class DeterministicBuildTests(unittest.TestCase):
+    INPUTS = (
+        "data/research-catalog.json", "data/research-results.json", "data/research-signals.json",
+        "data/research-community.json", "data/sources.json",
+        "experiments/json-lab/results-2026-10-26.json",
+        "docs/explorer/explorer-core.mjs", "docs/explorer/explorer.mjs",
+        "docs/explorer/explorer.css", "docs/explorer/index.template.html",
+    )
+
+    def test_actual_dataset_build_is_deterministic_and_check_does_not_write(self):
+        missing = [name for name in self.INPUTS if not (ROOT / name).is_file()]
+        self.assertFalse(missing, "Required explorer inputs missing: " + ", ".join(missing))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in self.INPUTS:
+                target = root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / name, target)
+            original_inputs = {name: (root / name).read_bytes() for name in self.INPUTS}
+            first = explorer.build(root)
+            manifest_path = root / "docs/explorer/build-manifest.json"
+            manifest = json.loads(manifest_path.read_text())
+            generated = {name: (root / name).read_bytes() for name in manifest["files"]}
+            generated["docs/explorer/build-manifest.json"] = manifest_path.read_bytes()
+            self.assertGreater(first["entries"], 3)
+            self.assertGreaterEqual(first["observations"], 27)
+            for name, expected_hash in manifest["files"].items():
+                self.assertEqual(hashlib.sha256((root / name).read_bytes()).hexdigest(), expected_hash)
+            self.assertEqual(explorer.build(root), first)
+            self.assertEqual({name: (root / name).read_bytes() for name in generated}, generated)
+            self.assertEqual(explorer.build(root, check=True)["mode"], "check")
+            self.assertEqual({name: (root / name).read_bytes() for name in self.INPUTS}, original_inputs)
+            index_path = root / "docs/explorer/index.html"
+            index_path.write_bytes(index_path.read_bytes() + b"\n<!-- synthetic stale-output fixture -->\n")
+            before_check = {name: (root / name).read_bytes() for name in generated}
+            with self.assertRaisesRegex(ValueError, "stale"):
+                explorer.build(root, check=True)
+            self.assertEqual({name: (root / name).read_bytes() for name in generated}, before_check)
+
+
+if __name__ == "__main__":
+    unittest.main()
