@@ -32,7 +32,10 @@ export function createBlockedEventLogView(element) {
     append(value) {
       const chunk=formatEventChunk(value,count);
       if(!segment||segmentEntries===64||segment.data.length+chunk.length>16384){
-        segment=doc.createTextNode(chunk);element.insertBefore(segment,closing);segmentEntries=1;
+        const nextSegment=doc.createTextNode(chunk);
+        // Commit internal state only after the DOM insertion succeeds. Otherwise
+        // a retry could append to an orphan node and silently omit an event.
+        element.insertBefore(nextSegment,closing);segment=nextSegment;segmentEntries=1;
       }else{segment.appendData(chunk);segmentEntries+=1;}
       if(count===0)closing.data='\n]';
       count+=1;

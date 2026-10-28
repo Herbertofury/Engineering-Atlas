@@ -1,10 +1,12 @@
 {
   "harness": "atlas-real-media-v10-video-identity",
   "artifacts": {
-    "event-log-view.da5c8854c2b145b8.mjs": "da5c8854c2b145b85f2e1904b12e231ffc2a89b4f0908989968ac1eff97a244a",
+    "event-log-recovery.b9f6a770f0d29c39.mjs": "b9f6a770f0d29c3963549427c9189100829d87b227cd886a6915340fc38759a9",
+    "event-log-baseline.da5c8854c2b145b8.mjs": "da5c8854c2b145b85f2e1904b12e231ffc2a89b4f0908989968ac1eff97a244a",
+    "event-log-view.8da785a48d10552f.mjs": "8da785a48d10552f8920214f4c83067a3de646eb6228549b138d8e4d9b383ecd",
     "event-log-fixture.a52b151a701afbc7.json": "a52b151a701afbc7bc3b6f32b2e79cd43b9fcd815d50da0f38b8c64268d5c7de",
-    "event-log-benchmark.5cee62f2bd6f90f5.js": "5cee62f2bd6f90f500b519b97d51798403ec215ca2ba22832ffcd1fce7f9cf3a",
-    "event-log-benchmark.html": "9062405da43c2cb553d6518889fd77b702ec05af8cb1c1ac1a18103bb5639a77",
+    "event-log-benchmark.6b7f61be3311a983.js": "6b7f61be3311a9831b83aced6d3504df0f1326e0eff5cd3e9aee2e40377c322b",
+    "event-log-benchmark.html": "2b114bcb3469364c49b80a5ab6ce059a2599fa22e9a2f8d2f503055a0d03ed1f",
     "media-events.e336b2c509ca8030.mjs": "e336b2c509ca803072cb2d56c65a0b111fa4a6402b85c69f823e6f5f117a98cf",
     "preview-loader.ad06f6926358e93f.mjs": "ad06f6926358e93fdca81c5b1cc1bf92da92f42a27970c8f0477dbf268fe2363",
     "bilibili-player.4f893473b3fc38d2.mjs": "4f893473b3fc38d20e38ee709f305137bfa3b48290dba1c42fbdb01c8f763444",

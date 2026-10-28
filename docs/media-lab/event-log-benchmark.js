@@ -1,11 +1,13 @@
+import {runEventLogRecoveryChecks} from './event-log-recovery.mjs';
+import {createBlockedEventLogView as createBaselineBlocked} from './event-log-baseline.mjs';
 import {createEventLogView,createBlockedEventLogView} from './event-log-view.mjs';
 const $=id=>document.getElementById(id),frame=()=>new Promise(resolve=>requestAnimationFrame(resolve));
-const harness='atlas-event-log-render-v2-blocked';$('identity').textContent='Loaded harness: '+harness;
+const harness='atlas-event-log-render-v3-recovery';$('identity').textContent='Loaded harness: '+harness;
 let source,busy=false,receipt=null,hidden=false;
 document.addEventListener('visibilitychange',()=>{if(busy&&document.hidden)hidden=true;});
 const heap=()=>Number.isFinite(performance.memory?.usedJSHeapSize)?performance.memory.usedJSHeapSize:null;
 $('run').addEventListener('click',async()=>{
- if(busy)return;busy=true;hidden=false;$('run').disabled=true;$('repeat').disabled=true;$('export').disabled=true;
+ if(busy)return;busy=true;hidden=false;$('run').disabled=true;$('recover').disabled=true;$('repeat').disabled=true;$('export').disabled=true;
  const repeat=Number($('repeat').value),records=Array.from({length:repeat},()=>source.events).flat(),expected=JSON.stringify(records,null,2);
  receipt={harness,source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),environment:{user_agent:navigator.userAgent,viewport:[innerWidth,innerHeight],device_pixel_ratio:devicePixelRatio,visibility:document.visibilityState},scope:repeat===1?'original retained public event sequence':'generated stress replay of retained public events',repeat,event_count:records.length,complete_json_bytes:new TextEncoder().encode(expected).length,complete:false,samples:[],limitations:['Event-log component only; not full card/media loading or target-project acceptance','Double-rAF is a scheduling proxy, not physical paint','Heap snapshots when exposed are not peak memory and can be coarse or GC-dependent','Same immutable records and full visible JSON; no truncation, sampling or omitted events','One browser/environment; no general best-method ranking']};
  try{
@@ -25,7 +27,22 @@ $('run').addEventListener('click',async()=>{
   }
   receipt.complete=true;receipt.frame_cadence_unreliable=receipt.samples.some(s=>s.scroll_frame_wait_ms.filter(x=>x>=200).length>=4);$('status').textContent='All 21 complete-output comparisons passed.'+(receipt.frame_cadence_unreliable?' Frame cadence was slow; no interaction-latency acceptance.':'')+' Export raw evidence; no automatic promotion.';
  }catch(error){receipt.error=String(error.message);$('status').textContent=receipt.error;}
- finally{receipt.finished_at=new Date().toISOString();$('results').textContent=JSON.stringify(receipt,null,2);$('export').disabled=false;$('repeat').disabled=false;$('run').disabled=false;busy=false;}
+ finally{receipt.finished_at=new Date().toISOString();$('results').textContent=JSON.stringify(receipt,null,2);$('export').disabled=false;$('repeat').disabled=false;$('run').disabled=false;$('recover').disabled=false;busy=false;}
 });
 $('export').addEventListener('click',()=>{if(!receipt)return;const url=URL.createObjectURL(new Blob([JSON.stringify(receipt,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='atlas-event-log-render.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
 try{const response=await fetch('./event-log-fixture.json');if(!response.ok)throw Error('Fixture unavailable');source=await response.json();if(!Array.isArray(source.events)||!source.events.length||source.events.length>64)throw Error('Invalid fixture');$('run').disabled=false;$('status').textContent=`Ready: ${source.events.length} original events. Keep the workload visible.`;}catch(error){$('status').textContent=error.message;}
+
+let recoveryReceipt=null;
+$('recover').addEventListener('click',()=>{
+ if(busy)return;
+ recoveryReceipt={harness:'atlas-event-log-recovery-v1',source_module:new URL(import.meta.url).pathname,checked_at:new Date().toISOString(),scope:'generated structural faults on actual browser DOM; no provider requests',complete:false};
+ try{
+  const baseline=runEventLogRecoveryChecks(document,createBaselineBlocked),repaired=runEventLogRecoveryChecks(document,createBlockedEventLogView),control=runEventLogRecoveryChecks(document,createEventLogView);
+  Object.assign(recoveryReceipt,{baseline,repaired,control,baseline_failure_reproduced:JSON.stringify(baseline.map(x=>x.passed))===JSON.stringify([false,true,false]),repaired_all_passed:repaired.every(x=>x.passed),control_all_passed:control.every(x=>x.passed)});
+  recoveryReceipt.complete=recoveryReceipt.baseline_failure_reproduced&&recoveryReceipt.repaired_all_passed&&recoveryReceipt.control_all_passed;
+ }catch(error){recoveryReceipt.error=String(error.message||error);}
+ $('recovery-results').textContent=JSON.stringify(recoveryReceipt,null,2);$('export-recovery').disabled=false;
+});
+$('export-recovery').addEventListener('click',()=>{
+ if(!recoveryReceipt)return;const url=URL.createObjectURL(new Blob([JSON.stringify(recoveryReceipt,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='atlas-event-log-recovery.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
