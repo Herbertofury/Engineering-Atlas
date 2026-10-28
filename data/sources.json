@@ -1527,5 +1527,38 @@
     "checked_at": "2026-10-28",
     "review_after_days": 30,
     "evidence": "primary_documented"
+  },
+  {
+    "id": "TEXTDECODER01",
+    "title": "TextDecoder exact BOM behavior",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/ignoreBOM",
+    "observed_version": "Encoding API reference, reviewed 2026-10-28",
+    "topic": "collection",
+    "note": "Strict UTF-8 text view can retain BOM characters; exports keep original bytes.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "SQLBYTES01",
+    "title": "SQLite stored byte-length inspection",
+    "url": "https://www.sqlite.org/lang_corefunc.html#octet_length",
+    "observed_version": "Current core-function reference, reviewed 2026-10-28",
+    "topic": "collection",
+    "note": "Stored byte count depends on database encoding; column metadata avoids reading full content.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
+  },
+  {
+    "id": "JSONWIRE01",
+    "title": "JSON numeric interoperability",
+    "url": "https://www.rfc-editor.org/rfc/rfc8259.html#section-6",
+    "observed_version": "RFC 8259 (2017), reviewed 2026-10-28",
+    "topic": "collection",
+    "note": "Raw preservation avoids silently rounding large numbers; not arbitrary-field semantic certification.",
+    "checked_at": "2026-10-28",
+    "review_after_days": 30,
+    "evidence": "primary_documented"
   }
 ]

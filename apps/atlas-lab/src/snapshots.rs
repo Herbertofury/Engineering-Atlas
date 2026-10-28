@@ -168,10 +168,29 @@ impl SnapshotStore {
         &self,
         id: &str,
     ) -> Result<Option<crate::modrinth::ProjectRecord>, Box<dyn std::error::Error>> {
+        Ok(self
+            .latest_modrinth_project_snapshot(id)?
+            .map(|(_, record)| record))
+    }
+    pub fn latest_modrinth_project_snapshot(
+        &self,
+        id: &str,
+    ) -> Result<Option<(i64, crate::modrinth::ProjectRecord)>, Box<dyn std::error::Error>> {
         crate::modrinth::projects_url(&[id.to_owned()])?;
-        let payload:Option<String>=self.0.query_row("SELECT payload FROM snapshots WHERE provider='modrinth-project-raw' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|r.get(0)).optional()?;
-        payload
-            .map(|text| crate::modrinth::parse_project_record(text.as_bytes(), id))
+        // Four MiB in the database encoding admits every valid two-MiB UTF-8
+        // record even in a UTF-16 database. Parsing still enforces two MiB UTF-8.
+        // Reject grossly oversized stored values before copying TEXT into Rust.
+        let stored:Option<(i64,Option<String>)>=self.0.query_row("SELECT generation,CASE WHEN octet_length(payload)<=4194304 THEN payload ELSE NULL END FROM snapshots WHERE provider='modrinth-project-raw' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|Ok((r.get(0)?,r.get(1)?))).optional()?;
+        stored
+            .map(|(generation, text)| {
+                if generation < 1 {
+                    return Err("Invalid archive generation".into());
+                }
+                let text =
+                    text.ok_or("Stored project payload is missing or exceeds bounded read budget")?;
+                let record = crate::modrinth::parse_project_record(text.as_bytes(), id)?;
+                Ok((generation, record))
+            })
             .transpose()
     }
     pub fn record_project_raw_failure(
@@ -614,6 +633,63 @@ mod tests {
                 .is_none()
         );
         assert_eq!(s.attempts().unwrap(), 0);
+    }
+    #[test]
+    fn project_read_rejects_oversized_stored_text_before_raw_parse() {
+        let s = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        s.0.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth-project-raw','BIG00001',?1)",["x".repeat(5*1024*1024)]).unwrap();
+        let error = s
+            .latest_modrinth_project_snapshot("BIG00001")
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("bounded read budget"));
+    }
+    #[test]
+    fn encoded_size_guard_keeps_valid_utf16_database_records() {
+        let path = std::env::temp_dir().join(format!(
+            "atlas-utf16-{}-{}.sqlite",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&path)
+            .unwrap();
+        {
+            let c = Connection::open(&path).unwrap();
+            c.execute_batch(
+                "PRAGMA encoding='UTF-16le'; CREATE TABLE encoding_anchor(id INTEGER);",
+            )
+            .unwrap();
+        }
+        let mut s = SnapshotStore::open(&path).unwrap();
+        let mut value = serde_json::to_value(project()).unwrap();
+        value["padding"] = "x".repeat(1100000).into();
+        let bytes = serde_json::to_vec(&value).unwrap();
+        let record = crate::modrinth::parse_project_record(&bytes, "sodium").unwrap();
+        s.save_modrinth_project_record("sodium", &record).unwrap();
+        let stored_size: i64 =
+            s.0.query_row(
+                "SELECT octet_length(payload) FROM snapshots LIMIT 1",
+                [],
+                |r| r.get(0),
+            )
+            .unwrap();
+        assert!(stored_size > 2 * 1024 * 1024);
+        assert_eq!(
+            s.latest_modrinth_project_record("AANobbMI")
+                .unwrap()
+                .unwrap()
+                .raw_json()
+                .as_bytes(),
+            bytes
+        );
+        drop(s);
+        std::fs::remove_file(path).unwrap();
     }
     #[test]
     fn complete_project_lookup_rejects_corrupt_identity() {

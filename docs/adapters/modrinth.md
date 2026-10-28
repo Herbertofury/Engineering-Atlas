@@ -52,3 +52,7 @@ An optional Rust CLI lane now preserves original public project JSON in a separa
 ## Queued complete-response workflow · 2026-10-28
 
 The Collection panel and serial worker now expose the same complete-response archive through a fixed single-project job. Unknown fields, URLs and accidental batches are rejected; original JSON stays in local snapshots and Overview receives a 468–469 byte receipt in the retained-data test. Three fixture-supplied public responses passed full queue/coordinator persistence and failed-refresh checks. Forty-five real loopback checks verified exact served UI assets and security/negative-request behavior without making provider requests. Fresh successful worker-to-provider execution and native-browser clicks remain unverified. [Evidence, compatibility and crash limits](../../experiments/project-archive-queue-lab/README.md).
+
+## Exact saved-response inspection · 2026-10-28
+
+The local app now implements an explicit saved-response reader and export dialog. The backend binds canonical identity/generation and returns exact stored bytes; the client verifies a bounded UTF-8 stream and hash without converting JSON numbers. Stale, failed or cancelled loads cannot replace last-good selection. Seventy-three actual loopback checks and eight actual JavaScript-reader checks passed on retained public/generated data. Native-browser dialog/file-save interactions and full UI performance remain unverified. [Implementation, raw tests and security/memory boundaries](../../experiments/project-archive-view-lab/README.md).

@@ -2,7 +2,7 @@
 use crate::jobs::{Job, Queue};
 use axum::{
     Json, Router,
-    extract::{DefaultBodyLimit, Request, State},
+    extract::{DefaultBodyLimit, Path as RoutePath, Request, State},
     http::{HeaderMap, StatusCode, header},
     middleware::{self, Next},
     response::{Html, IntoResponse, Response},
@@ -102,6 +102,47 @@ async fn index(State(app): State<App>) -> Html<String> {
     } else {
         html.to_owned()
     })
+}
+async fn saved_project_response(
+    State(app): State<App>,
+    RoutePath(id): RoutePath<String>,
+) -> Result<Response, StatusCode> {
+    crate::modrinth::projects_url(std::slice::from_ref(&id))
+        .map_err(|_| StatusCode::BAD_REQUEST)?;
+    let permit = app
+        .db_slots
+        .try_acquire_owned()
+        .map_err(|_| StatusCode::TOO_MANY_REQUESTS)?;
+    tokio::task::spawn_blocking(move || {
+        let _permit = permit;
+        let store = crate::snapshots::SnapshotStore::open(&app.path)
+            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        let (generation, record) = store
+            .latest_modrinth_project_snapshot(&id)
+            .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?
+            .ok_or(StatusCode::NOT_FOUND)?;
+        let hash = crate::build_identity::sha256_hex(record.raw_json().as_bytes());
+        let mut response = (
+            [(header::CONTENT_TYPE, "application/json")],
+            record.raw_json().to_owned(),
+        )
+            .into_response();
+        for (key, value) in [
+            ("x-atlas-canonical-id", id),
+            ("x-atlas-generation", generation.to_string()),
+            ("x-atlas-payload-sha256", hash),
+        ] {
+            response.headers_mut().insert(
+                key,
+                value
+                    .parse()
+                    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
+            );
+        }
+        Ok(response)
+    })
+    .await
+    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
 }
 async fn enqueue(
     State(app): State<App>,
@@ -396,6 +437,16 @@ async fn serve_strategy(
                 )
             }),
         )
+        .route(
+            "/archive-view.mjs",
+            get(|| async {
+                (
+                    [(header::CONTENT_TYPE, "text/javascript")],
+                    include_str!("../ui/archive-view.mjs"),
+                )
+            }),
+        )
+        .route("/api/project-archive/{id}", get(saved_project_response))
         .route("/api/overview", get(overview))
         .route("/api/jobs", post(enqueue))
         .layer(DefaultBodyLimit::max(4096))

@@ -139,3 +139,7 @@ The reader shares the existing bounded JSON transport with Modrinth without new 
 ### Complete-response collection form
 
 The local Collection panel now offers an explicit full-response archive form using `CollectModrinthRaw`. It reuses the CLI's validated envelope/store and the existing serial worker; Overview receives a compact hash/generation receipt instead of copying full provider JSON. Fixture-supplied public responses passed the actual queue/coordinator path, and 45 loopback HTTP/asset/security checks passed. Fresh successful provider execution through this new worker branch and native-browser interaction are not yet verified. [Measured coverage and limitations](../../experiments/project-archive-queue-lab/README.md).
+
+### Inspect exact saved JSON
+
+The Collection panel implements a saved-response inspector for one canonical project ID, with strict identity/hash/UTF-8 checks, a bounded stream, cancellation, last-good retention and an original-byte download. It reads local snapshots only; no provider request or sign-in occurs. The local read route and actual JavaScript reader passed 73 HTTP and eight reader checks. Native-browser dialog/download interaction remains unverified. [Read boundaries and reproduction](../../experiments/project-archive-view-lab/README.md).
