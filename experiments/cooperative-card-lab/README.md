@@ -22,4 +22,13 @@ The failed acceptance result remains retained. Creation slices alone do not boun
 
 V14 adds a separate operation, preserving the original cooperative candidate. It constructs the same complete fragment and replaces the unmanaged `#cards` container instead of replacing its children. The outer scroll viewport remains unchanged. [DOMREPL01](../../docs/source-dom-replacement.md) establishes the distinct algorithms, not a performance advantage. This is a hypothesis targeting the measured commit stage.
 
-The change is restricted to this listener-free experimental host. Arbitrary application event listeners, object references and state on a container do not survive cloning, so it is not a generic recommendation. Card attributes, text, identities, complete metadata, pairing and last-good evidence still require exact checks. Failed insertion retains the old host; no partial fragment is published. The default operation stays unchanged. Native comparison results are pending.
+The change is restricted to this listener-free experimental host. Arbitrary application event listeners, object references and state on a container do not survive cloning, so it is not a generic recommendation. Card attributes, text, identities, complete metadata, pairing and last-good evidence still require exact checks. Failed insertion retains the old host; no partial fragment is published. The default operation stays unchanged. Native comparison results are recorded below; the earlier candidate failure remains retained.
+
+
+## Container-commit browser results
+
+[Sanitized v14 summary](root-browser-summary.json). Seven pairs per workload retained all fields in all 28 samples. At 1,000 × 8-KiB records, frame-ready proxy medians were 246.9 / 230.4 ms and construction elapsed medians 28.1 / 24.5 ms. At 1,000 × 64-KiB records, frame-ready medians were 412.3 / 375.6 ms, but candidate construction elapsed increased from 26.0 to 30.6 ms. Candidate final-commit maxima were 23.5 / 22.5 ms within these runs.
+
+Scrolling is mixed: the moderate workload's median maximum scroll wait regressed from 74.0 to 94.8 ms; the dense workload improved from 453.0 to 358.9 ms. These runs are not a direct randomized v13-versus-v14 comparison. No memory, complete INP, physical-paint or target-project acceptance follows.
+
+A separate six-sample keyboard attempt completed correctly, but its status wait timed out during dense work and no keyboard Event Timing entry was retained inside the run window. Zero retained entries is **not** zero input latency. That acceptance gate remains open. Inspecting card-000999 after replacement exposed its exact 65,536-byte metadata and the dialog closed normally. All 12 served assets and the loaded v14 identity were verified; implementation CI passed. Full traces remain private, and the default operation is unchanged.
