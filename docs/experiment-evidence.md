@@ -114,3 +114,8 @@ not a general recommendation or approval to change another project.
 ## Snapshot uniqueness control, 2026-10-29
 
 [All-unique negative control](../experiments/content-addressed-snapshot-lab/README.md#all-unique-negative-control-2026-10-29) adds 126 verified samples. The isolated addressed schema grows about 3.3% versus the actual store when every payload is unique. Repeated write-speed results are inconsistent. Duplicate-heavy space savings remain scoped; no migration is accepted.
+
+
+## Response-body timeout classification, 2026-10-29
+
+[Actual collector diagnostic repair](../experiments/collection-timeout-lab/README.md) reproduces a stalled-body timeout previously mislabeled as validation failure. Bounded typed-cause inspection preserves fixed safe messages and does not change provider access, timeouts or last-good storage.

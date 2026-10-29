@@ -1,8 +1,26 @@
 //! Safe collection diagnostics: categories only, never raw URLs, headers or response bodies.
 use std::error::Error;
 
+// Blocking response reads wrap reqwest errors in io::Error. Inspect typed
+// causes without formatting them. Bound traversal even for cyclic errors.
+fn transport_error<'a>(error: &'a (dyn Error + 'static)) -> Option<&'a reqwest::Error> {
+    let mut current = Some(error);
+    for _ in 0..16 {
+        let cause = current?;
+        if let Some(transport) = cause.downcast_ref::<reqwest::Error>() {
+            return Some(transport);
+        }
+        current = if let Some(io) = cause.downcast_ref::<std::io::Error>() {
+            io.get_ref().map(|inner| inner as &(dyn Error + 'static))
+        } else {
+            cause.source()
+        };
+    }
+    None
+}
+
 pub fn safe_message(error: &(dyn Error + 'static)) -> &'static str {
-    if let Some(e) = error.downcast_ref::<reqwest::Error>() {
+    if let Some(e) = transport_error(error) {
         if e.is_timeout() {
             return "Collection request timed out; previous results are retained";
         }
@@ -44,6 +62,51 @@ pub fn safe_message(error: &(dyn Error + 'static)) -> &'static str {
 mod tests {
     use super::*;
     #[test]
+    fn body_read_timeout_keeps_safe_timeout_category() {
+        use std::{
+            io::Write,
+            net::TcpListener,
+            time::{Duration, Instant},
+        };
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let address = listener.local_addr().unwrap();
+        listener.set_nonblocking(true).unwrap();
+        let server = std::thread::spawn(move || {
+            let start = Instant::now();
+            loop {
+                match listener.accept() {
+                    Ok((mut socket, _)) => {
+                        socket
+                            .set_write_timeout(Some(Duration::from_secs(1)))
+                            .unwrap();
+                        socket.write_all(b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 100\r\nConnection: close\r\n\r\n{").unwrap();
+                        std::thread::sleep(Duration::from_millis(500));
+                        return;
+                    }
+                    Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => {
+                        assert!(start.elapsed() < Duration::from_secs(2));
+                        std::thread::sleep(Duration::from_millis(5));
+                    }
+                    Err(e) => panic!("Fixture listener failed: {e}"),
+                }
+            }
+        });
+        let response = reqwest::blocking::Client::builder()
+            .no_proxy()
+            .timeout(Duration::from_millis(200))
+            .build()
+            .unwrap()
+            .get(format!("http://{address}/?private=DO_NOT_DISCLOSE"))
+            .send()
+            .unwrap();
+        let error = crate::public_http::read_json_response(response, 1024).unwrap_err();
+        server.join().unwrap();
+        assert_eq!(
+            safe_message(error.as_ref()),
+            "Collection request timed out; previous results are retained"
+        );
+    }
+    #[test]
     fn transport_error_does_not_expose_attached_url() {
         let error = reqwest::blocking::Client::new()
             .get("not a URL")
@@ -59,6 +122,38 @@ mod tests {
         );
         assert!(!message.contains("DO_NOT_DISCLOSE"));
         assert!(!message.contains("example.invalid"));
+    }
+    #[test]
+    fn wrapped_transport_and_cyclic_causes_are_bounded_and_private() {
+        let error = reqwest::blocking::Client::new()
+            .get("not a URL")
+            .build()
+            .unwrap_err()
+            .with_url(
+                reqwest::Url::parse("https://example.invalid/?secret=DO_NOT_DISCLOSE").unwrap(),
+            );
+        let wrapped = std::io::Error::other(std::io::Error::other(error));
+        assert_eq!(
+            safe_message(&wrapped),
+            "Collection transport failed; previous results are retained"
+        );
+        #[derive(Debug)]
+        struct Cycle;
+        impl std::fmt::Display for Cycle {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                f.write_str("private=DO_NOT_DISCLOSE")
+            }
+        }
+        impl Error for Cycle {
+            fn source(&self) -> Option<&(dyn Error + 'static)> {
+                Some(self)
+            }
+        }
+        assert!(transport_error(&Cycle).is_none());
+        assert_eq!(
+            safe_message(&Cycle),
+            "Collection failed validation or provider checks; previous results are retained"
+        );
     }
     #[test]
     fn malformed_json_and_unknown_details_are_not_echoed() {
