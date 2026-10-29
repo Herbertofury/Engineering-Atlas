@@ -124,3 +124,7 @@ not a general recommendation or approval to change another project.
 ## Borrowed payload comparison, 2026-10-29
 
 [Experimental store stabilization](../experiments/content-addressed-snapshot-lab/README.md#remove-the-comparison-copy-2026-10-29) removes the owned payload copy from exact equality checking. Reused allocation instrumentation confirms one payload allocation versus zero in that comparison step, while 126 additional full-store samples preserve all data. Native allocations and whole-app speed are not inferred.
+
+## Structured evidence delivery review, 2026-10-29
+
+[Tessera paper and source review](../research/2026-10-29-structured-evidence-review.md) separates aggregate QA gains from individual losses, component processing time from total cost, and selected text from complete media collection. Source reuse terms remain unverified; no prototype was executed or promoted.
