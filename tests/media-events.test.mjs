@@ -31,7 +31,7 @@ test('actual HLS callback: generated fatal fixture preserves both names and igno
  const fixture={fatal:true,type:'networkError',details:'manifestLoadError'};
  function invoke(code,record,current=1,generation=1,data=fixture){
   const records=[],state={};const event=(type,details)=>records.push(record(type,1,details));
-  const fn=Function('generation','current','state','event','card','return ('+code+')')(generation,current,state,event,{id:'steam:620'});
+  const fn=Function('generation','current','state','event','card','readyTimer','clearTimeout','return ('+code+')')(generation,current,state,event,{id:'steam:620'},null,()=>{});
   fn(null,data);return {records,state};
  }
  const old=invoke(baseline,(type,time,details)=>({type,at_ms:time,...details}));

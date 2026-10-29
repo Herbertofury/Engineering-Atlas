@@ -35,5 +35,5 @@ test('all retained public fields and media counts remain unchanged',()=>{
 test('served manifest and source receipt agree on the exact harness identity',()=>{
  const source=readFileSync(new URL('../docs/media-lab/media.js',import.meta.url),'utf8');
  const manifest=JSON.parse(readFileSync(new URL('../docs/media-lab/build-manifest.json',import.meta.url)));
- const match=/harness:'([^']+)'/.exec(source);assert.ok(match);assert.equal(manifest.harness,match[1]);assert.equal(match[1],'atlas-real-media-v12-preview-timeout-detach');
+ const match=/harness:'([^']+)'/.exec(source);assert.ok(match);assert.equal(manifest.harness,match[1]);assert.equal(match[1],'atlas-real-media-v13-player-ready-deadline');
 });

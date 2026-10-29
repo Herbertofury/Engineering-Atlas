@@ -1,5 +1,5 @@
 {
-  "harness": "atlas-real-media-v12-preview-timeout-detach",
+  "harness": "atlas-real-media-v13-player-ready-deadline",
   "artifacts": {
     "preview-timeout-check.143bcbd493e6bd6a.js": "143bcbd493e6bd6a3923e2d5e2adf74193f841722598756037753ce59609f5f2",
     "preview-timeout-check.html": "56f073d2c454b16aba24ed202403d68835992a3aba17b8a29e92719f58f74419",
@@ -16,9 +16,9 @@
     "media-core.b0bba33ec8a5b5c5.mjs": "b0bba33ec8a5b5c5c7b1743dcd587d3cd5b497c702f533c378a707a1601a6d79",
     "resource-loader.f95053a1d56a8533.mjs": "f95053a1d56a85330314efe88ca6c26b45ac1c3abb530639b770601e03608c06",
     "public-fixtures.2aa0668aba0eb29c.json": "2aa0668aba0eb29c69faf368fab206369718335be7f47bc0c6592236e79d1aba",
-    "media.98166e5bfb5a0ba9.js": "98166e5bfb5a0ba935e7f2bdbbf1274570ed42cb97eef1056a397da078dca43f",
+    "media.53bc37a3202ab35e.js": "53bc37a3202ab35eeccdf1d848eef83a3e808066adb75dc30ed1022143b09a69",
     "media.6d66277c4a909ad6.css": "6d66277c4a909ad66dd32dfd66659fcb00de143ce2f4bc535a5a182e3916cd02",
-    "index.html": "accc2e0b0560e810e040283ae84804e18ce90b08f7e48d8848fabea93cbb043c"
+    "index.html": "38e41f469554c15ab4469de282d28c1de3f43dd975b163c6e119599bb539726b"
   },
   "vendor_sha256": "a12e7ee1cd64a69dcdb314157e45dafcba705bfb0b1440b7935cb265d374423e",
   "vendor_sri": "sha384-cciJ0zi8d1uMKC2zJd7jvPY4HQt7W4ByUI/FlMkltvBi31aW61rcpVBhpmW8/NwX"

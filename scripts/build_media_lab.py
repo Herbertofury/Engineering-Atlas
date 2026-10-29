@@ -27,7 +27,7 @@ def outputs():
  script=script.replace(b'__HLS_SRI__',sri.encode());script_name='media.'+hashlib.sha256(script).hexdigest()[:16]+'.js'
  html=(ROOT/'index.template.html').read_text().replace('href="media.css"',f'href="{css_name}"').replace('src="media.js"',f'src="{script_name}"').replace('src="vendor/hls-1.7.3.min.js"',f'src="vendor/hls-1.7.3.min.js" integrity="{sri}" crossorigin="anonymous"').encode()
  files={timeout_name:timeout_check,'preview-timeout-check.html':timeout_html,recorder_name:recorder,recovery_name:recovery,baseline_name:baseline,log_name:log,log_fixture_name:log_fixture,log_script_name:log_script,'event-log-benchmark.html':log_html,events_name:events,preview_name:preview,bili_name:bili,core_name:core,loader_name:loader,fixture_name:fixture,script_name:script,css_name:css,'index.html':html}
- manifest={'harness':'atlas-real-media-v12-preview-timeout-detach','artifacts':{n:hashlib.sha256(b).hexdigest() for n,b in files.items()},'vendor_sha256':provenance['bundle_sha256'],'vendor_sri':sri}
+ manifest={'harness':'atlas-real-media-v13-player-ready-deadline','artifacts':{n:hashlib.sha256(b).hexdigest() for n,b in files.items()},'vendor_sha256':provenance['bundle_sha256'],'vendor_sri':sri}
  files['build-manifest.json']=(json.dumps(manifest,indent=2)+'\n').encode();return files
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--check',action='store_true');args=p.parse_args()
