@@ -135,6 +135,8 @@ mod tests {
             loop {
                 match listener.accept() {
                     Ok((mut socket, _)) => {
+                        // Do not inherit the polling listener's nonblocking mode.
+                        socket.set_nonblocking(false).unwrap();
                         socket
                             .set_read_timeout(Some(Duration::from_secs(1)))
                             .unwrap();

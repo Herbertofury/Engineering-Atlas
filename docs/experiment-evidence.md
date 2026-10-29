@@ -162,3 +162,7 @@ not a general recommendation or approval to change another project.
 ## rusqlite patch screening, 2026-10-29
 
 [Isolated 0.41.1 evaluation](../experiments/rusqlite-patch-lab/README.md) passes the current Linux application and example correctness checks but confirms changed default handling of unknown PRAGMA names. The working 0.41.0 pin stays unchanged; no performance improvement or candidate Windows acceptance is inferred.
+
+## Windows HTTP fixture portability, 2026-10-29
+
+[Accepted-socket mode repair](../experiments/windows-http-fixture-lab/README.md) retains a Windows WouldBlock/reset failure, reproduces the nonblocking assumption locally, and explicitly configures both affected fixture streams. Original client deadlines and rejection assertions remain intact; this is fixture code, not a production dependency or reader change.

@@ -7,10 +7,17 @@ use atlas_lab::{build_identity::sha256_hex, collection_failure::safe_message};
 use public_http::read_json_response;
 use std::{
     io::{Read, Write},
-    net::TcpListener,
+    net::{TcpListener, TcpStream},
     time::{Duration, Instant},
 };
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+fn configure_fixture_socket(socket: &TcpStream) -> std::io::Result<()> {
+    // Accepted socket mode is platform-dependent; timeouts need blocking I/O.
+    socket.set_nonblocking(false)?;
+    socket.set_write_timeout(Some(Duration::from_secs(1)))?;
+    socket.set_read_timeout(Some(Duration::from_secs(1)))
+}
+
 fn fixture(
     body: &[u8],
     mode: &'static str,
@@ -31,14 +38,9 @@ fn fixture(
                 Err(e) => panic!("Fixture listener: {e}"),
             }
         };
-        socket
-            .set_write_timeout(Some(Duration::from_secs(1)))
-            .unwrap();
+        configure_fixture_socket(&socket).unwrap();
         // Consume the bounded fixture request before closing the response.
         // Closing with unread request bytes can reset chunked responses.
-        socket
-            .set_read_timeout(Some(Duration::from_secs(1)))
-            .unwrap();
         let mut request = Vec::new();
         while !request.ends_with(b"\r\n\r\n") {
             assert!(request.len() < 8192, "Fixture request budget");
@@ -177,6 +179,30 @@ fn main() -> Result<()> {
 #[cfg(test)]
 mod budget_tests {
     use super::*;
+    #[test]
+    fn accepted_nonblocking_socket_waits_for_delayed_request_bytes() {
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let mut client = TcpStream::connect(listener.local_addr().unwrap()).unwrap();
+        let (mut server, _) = listener.accept().unwrap();
+        // Model platforms where accept inherits nonblocking mode explicitly.
+        server.set_nonblocking(true).unwrap();
+        configure_fixture_socket(&server).unwrap();
+        let worker = std::thread::spawn(move || {
+            std::thread::sleep(Duration::from_millis(50));
+            client.write_all(b"G").unwrap();
+        });
+        let mut byte = [0];
+        let result = server.read_exact(&mut byte);
+        worker.join().unwrap();
+        result.unwrap();
+        assert_eq!(&byte, b"G");
+        assert_eq!(server.read_timeout().unwrap(), Some(Duration::from_secs(1)));
+        assert_eq!(
+            server.write_timeout().unwrap(),
+            Some(Duration::from_secs(1))
+        );
+    }
+
     #[test]
     fn impossible_budget_is_rejected_without_empty_success() {
         let (response, worker) = fixture(b"{}", "known").unwrap();
