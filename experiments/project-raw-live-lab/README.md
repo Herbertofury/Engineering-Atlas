@@ -19,3 +19,7 @@ The newer Sodium response had a different hash because its public downloads coun
 Raw bodies stay in the local database; only sanitized hashes, sizes, IDs and results are published. Binary SHA-256 matches the previously tested SQLite-connection repair build. No code or database replacement was required for this coverage verification.
 
 The cloud browser could not reach the executor's loopback address (`ERR_CONNECTION_REFUSED`); GUI interaction is not reported as passed. The owned test server was stopped. This pass does not establish power-loss recovery, native Windows behavior, image/video playback, creator-team membership resolution, or another project's acceptance. Prior failed native collection evidence remains unchanged.
+
+## October 29 refresh failure retained
+
+Two bounded actual Rust CLI requests for Sodium timed out while connecting. The first fresh database recorded a failure and no snapshot. The second used an isolated copy of six retained public/generated test snapshots: every prior row remained byte-identical, the failed attempt was recorded, integrity_check returned ok, and the source database was unchanged. [Receipt](refresh-2026-10-29.json). This is real failed-network retention evidence, not fresh provider success or diagnosis of the network cause. The earlier successful October 28 observations remain historical; no third retry or alternative credential route was attempted.
