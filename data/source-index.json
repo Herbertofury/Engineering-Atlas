@@ -12,6 +12,7 @@
     "data/sources.d/query-reuse-and-extraction.json",
     "data/sources.d/security-20261029-evening.json",
     "data/sources.d/sqlite-addressed-storage.json",
-    "data/sources.d/structured-evidence.json"
+    "data/sources.d/structured-evidence.json",
+    "data/sources.d/wikimedia-audio-20261029.json"
   ]
 }
