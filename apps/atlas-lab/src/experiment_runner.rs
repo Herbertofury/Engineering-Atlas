@@ -113,6 +113,15 @@ fn measure(strategy: Strategy, input: &[String]) -> (u64, Vec<&str>) {
         result,
     )
 }
+/// Shared bounded input for the actual runner and isolated process measurements.
+pub fn generated_input(count: usize, modulus: usize) -> Result<Vec<String>, &'static str> {
+    if count == 0 || count > 6000 || modulus == 0 || modulus > 4001 {
+        return Err("Built-in input bounds rejected");
+    }
+    Ok((0..count)
+        .map(|i| format!("provider:item-{:05}", (i * 37) % modulus))
+        .collect())
+}
 pub fn run_builtin(should_stop: impl FnMut() -> bool) -> Result<RunOutput, &'static str> {
     run_with(Budget::default(), indexed_unique, should_stop)
 }
@@ -175,9 +184,7 @@ fn run_with(
         };
     }
     checkpoint!();
-    let input: Vec<String> = (0..budget.input_count)
-        .map(|i| format!("provider:item-{:05}", (i * 37) % budget.modulus))
-        .collect();
+    let input = generated_input(budget.input_count, budget.modulus)?;
     for round in 0..budget.warmups + budget.pairs {
         checkpoint!();
         let (a, b) = if round % 2 == 0 {
@@ -264,6 +271,17 @@ fn run_with(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn shared_input_keeps_complete_original_fixture_and_bounds() {
+        let input = generated_input(6000, 4001).unwrap();
+        assert_eq!(
+            crate::build_identity::sha256_hex(&serde_json::to_vec(&input).unwrap()),
+            "2e5f76f3033afcac857586b31035db5cebb5cd721c4678987ba77b87cfd51b11"
+        );
+        for (count, modulus) in [(0, 1), (6001, 1), (1, 0), (1, 4002)] {
+            assert!(generated_input(count, modulus).is_err());
+        }
+    }
     fn small() -> Budget {
         Budget {
             input_count: 64,

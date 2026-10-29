@@ -142,3 +142,8 @@ not a general recommendation or approval to change another project.
 ## Current compiled service check, 2026-10-29
 
 [Native service regression](../experiments/native-app-ui-lab/README.md#current-native-service-regression-2026-10-29) verifies the rebuilt executable with 66 checks across empty and historical queue fixtures, preserving complete archives and prior failure history. Browser/input/media acceptance is separate; the built-in comparison still cannot promote itself without its missing memory evidence.
+
+
+## Isolated built-in strategy measurements, 2026-10-29
+
+[Fresh-process deduplication evidence](../experiments/dedup-process-lab/README.md) shares the actual bounded workload generator, verifies complete identifier outputs and captures separate Linux memory observations. Four completed passes and the initial controller failure are retained. Cancellation and whole-app acceptance remain unestablished; the shared runner's review gate is unchanged.
