@@ -61,6 +61,65 @@ pub fn safe_message(error: &(dyn Error + 'static)) -> &'static str {
 #[cfg(test)]
 mod tests {
     use super::*;
+    // A timeout fixture must first receive a complete request. Sending an
+    // unsolicited response can race Hyper's idle-connection checks before
+    // the client has registered the request, testing the wrong failure stage.
+    fn read_fixture_headers(reader: &mut impl std::io::Read) -> std::io::Result<()> {
+        let mut header = Vec::with_capacity(512);
+        let mut chunk = [0_u8; 512];
+        loop {
+            let limit = (8192 - header.len()).min(chunk.len());
+            if limit == 0 {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "Fixture header budget exceeded",
+                ));
+            }
+            let count = reader.read(&mut chunk[..limit])?;
+            if count == 0 {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::UnexpectedEof,
+                    "Incomplete fixture request",
+                ));
+            }
+            header.extend_from_slice(&chunk[..count]);
+            if header.windows(4).any(|bytes| bytes == b"\r\n\r\n") {
+                return Ok(());
+            }
+        }
+    }
+    #[test]
+    fn fixture_headers_require_terminator_and_bounded_input() {
+        let mut incomplete = std::io::Cursor::new(b"GET / HTTP/1.1\r\nHost: fixture");
+        assert_eq!(
+            read_fixture_headers(&mut incomplete).unwrap_err().kind(),
+            std::io::ErrorKind::UnexpectedEof
+        );
+        let mut oversized = std::io::Cursor::new(vec![b'x'; 8193]);
+        assert_eq!(
+            read_fixture_headers(&mut oversized).unwrap_err().kind(),
+            std::io::ErrorKind::InvalidData
+        );
+        assert_eq!(
+            oversized.position(),
+            8192,
+            "Do not read past the fixture budget"
+        );
+    }
+    #[test]
+    fn fixture_headers_accept_fragmented_complete_request() {
+        struct Fragmented(std::io::Cursor<Vec<u8>>);
+        impl std::io::Read for Fragmented {
+            fn read(&mut self, buffer: &mut [u8]) -> std::io::Result<usize> {
+                let limit = buffer.len().min(1);
+                std::io::Read::read(&mut self.0, &mut buffer[..limit])
+            }
+        }
+        let mut request = Fragmented(std::io::Cursor::new(
+            b"GET / HTTP/1.1\r\nHost: fixture\r\n\r\n".to_vec(),
+        ));
+        read_fixture_headers(&mut request).unwrap();
+    }
     #[test]
     fn body_read_timeout_keeps_safe_timeout_category() {
         use std::{
@@ -76,6 +135,10 @@ mod tests {
             loop {
                 match listener.accept() {
                     Ok((mut socket, _)) => {
+                        socket
+                            .set_read_timeout(Some(Duration::from_secs(1)))
+                            .unwrap();
+                        read_fixture_headers(&mut socket).unwrap();
                         socket
                             .set_write_timeout(Some(Duration::from_secs(1)))
                             .unwrap();

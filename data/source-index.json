@@ -7,6 +7,7 @@
     "data/sources.d/dom-replacement.json",
     "data/sources.d/hls-fragment-20261029.json",
     "data/sources.d/hls-release-174.json",
+    "data/sources.d/http-fixture-order-20261029.json",
     "data/sources.d/node-resource-usage.json",
     "data/sources.d/process-memory-accounting.json",
     "data/sources.d/query-reuse-and-extraction.json",
