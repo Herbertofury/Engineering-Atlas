@@ -355,9 +355,16 @@ impl SnapshotStore {
         id: &str,
     ) -> Result<Option<(i64, crate::modrinth_versions::VersionRecord)>, Box<dyn std::error::Error>>
     {
-        let stored:Option<(i64,String)>=self.0.query_row("SELECT generation,payload FROM snapshots WHERE provider='modrinth-version' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|Ok((r.get(0)?,r.get(1)?))).optional()?;
+        // Reuse the project archive's encoded-size bound before copying TEXT.
+        // Four MiB admits valid two-MiB UTF-8 payloads in UTF-16 databases.
+        let stored:Option<(i64,Option<String>)>=self.0.query_row("SELECT generation,CASE WHEN octet_length(payload)<=4194304 THEN payload ELSE NULL END FROM snapshots WHERE provider='modrinth-version' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[id],|r|Ok((r.get(0)?,r.get(1)?))).optional()?;
         stored
             .map(|(generation, body)| {
+                if generation < 1 {
+                    return Err("Invalid version archive generation".into());
+                }
+                let body =
+                    body.ok_or("Stored version payload is missing or exceeds bounded read budget")?;
                 let record = crate::modrinth_versions::parse_version(body.as_bytes())?;
                 if record.canonical_id != id {
                     return Err("Stored version identity does not match its lookup key".into());
@@ -743,5 +750,92 @@ mod durability_contract_regression {
                 .unwrap(),
             3
         );
+    }
+}
+
+#[cfg(test)]
+mod version_read_boundary_regression {
+    use super::*;
+    fn version_body() -> String {
+        r#"{"id":"abcdefgh","project_id":"AANobbMI","name":"fixture","version_number":"1","date_published":"2026-10-29","game_versions":[],"loaders":[],"files":[],"dependencies":[]}"#.into()
+    }
+    #[test]
+    fn oversized_version_is_rejected_by_storage_read_guard() {
+        let s = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        s.0.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth-version','abcdefgh',?1)", [version_body()]).unwrap();
+        s.0.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth-version','abcdefgh',?1)", ["x".repeat(5*1024*1024)]).unwrap();
+        assert!(
+            s.latest_modrinth_version_snapshot("abcdefgh")
+                .unwrap_err()
+                .to_string()
+                .contains("bounded read budget")
+        );
+        let count: i64 =
+            s.0.query_row("SELECT count(*) FROM snapshots", [], |r| r.get(0))
+                .unwrap();
+        let prior: String =
+            s.0.query_row(
+                "SELECT payload FROM snapshots WHERE generation=1",
+                [],
+                |r| r.get(0),
+            )
+            .unwrap();
+        assert_eq!(count, 2);
+        assert_eq!(prior, version_body());
+    }
+    #[test]
+    fn nonpositive_version_generation_is_not_accepted() {
+        for generation in [0, -1] {
+            let s = SnapshotStore::open(Path::new(":memory:")).unwrap();
+            s.0.execute("INSERT INTO snapshots(generation,provider,canonical_id,payload) VALUES(?1,'modrinth-version','abcdefgh',?2)", params![generation,version_body()]).unwrap();
+            assert!(s.latest_modrinth_version_snapshot("abcdefgh").is_err());
+        }
+    }
+    #[test]
+    fn utf16_version_storage_retains_exact_utf8_payload_after_reopen() {
+        let path = std::env::temp_dir().join(format!(
+            "atlas-version-utf16-{}-{}.sqlite",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&path)
+            .unwrap();
+        {
+            let c = Connection::open(&path).unwrap();
+            c.execute_batch(
+                "PRAGMA encoding='UTF-16le'; CREATE TABLE encoding_anchor(id INTEGER);",
+            )
+            .unwrap();
+        }
+        let mut body: serde_json::Value = serde_json::from_str(&version_body()).unwrap();
+        body["padding"] = "x".repeat(1100000).into();
+        let payload = serde_json::to_string(&body).unwrap();
+        {
+            let s = SnapshotStore::open(&path).unwrap();
+            s.0.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth-version','abcdefgh',?1)",[&payload]).unwrap();
+            let size: i64 =
+                s.0.query_row(
+                    "SELECT octet_length(payload) FROM snapshots LIMIT 1",
+                    [],
+                    |r| r.get(0),
+                )
+                .unwrap();
+            assert!(size > 2 * 1024 * 1024);
+        }
+        let s = SnapshotStore::open(&path).unwrap();
+        let (generation, record) = s
+            .latest_modrinth_version_snapshot("abcdefgh")
+            .unwrap()
+            .unwrap();
+        assert!(generation > 0);
+        assert_eq!(record.payload.get(), payload);
+        drop(s);
+        // Retain test databases for inspection rather than remove backups.
     }
 }
