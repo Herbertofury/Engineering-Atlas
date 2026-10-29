@@ -13,13 +13,15 @@ async function readSavedProject(id,{signal,fetchImpl}) {
  const length=response.headers.get('content-length');
  if(length!==null&&(!/^[0-9]+$/.test(length)||BigInt(length)>BigInt(MAX_ARCHIVE_BYTES)))return reject('Saved response exceeds the size budget.');
  if(!response.body)return reject('Saved response has no readable body.');
- const reader=response.body.getReader(),chunks=[];let size=0;
- try{for(;;){const {done,value}=await reader.read();if(done)break;if(!(value instanceof Uint8Array))throw new Error('Unexpected response byte stream.');size+=value.byteLength;if(size>MAX_ARCHIVE_BYTES)throw new Error('Saved response exceeds the size budget.');chunks.push(value);}}
+ // Retain bytes, not one object per transport chunk. Empty/tiny chunks must
+ // not turn the two-MiB byte budget into unbounded retained chunk metadata.
+ const reader=response.body.getReader();let buffer=new Uint8Array(0),size=0;
+ try{for(;;){const {done,value}=await reader.read();if(done)break;if(!(value instanceof Uint8Array))throw new Error('Unexpected response byte stream.');const next=size+value.byteLength;if(next>MAX_ARCHIVE_BYTES)throw new Error('Saved response exceeds the size budget.');if(next>buffer.length){const grown=new Uint8Array(Math.min(MAX_ARCHIVE_BYTES,Math.max(next,16384,buffer.length*2)));grown.set(buffer.subarray(0,size));buffer=grown;}buffer.set(value,size);size=next;}}
  catch(error){try{await reader.cancel();}catch{}throw error;}
  finally{reader.releaseLock();}
  if(size===0)throw new Error('An empty saved response is not accepted.');
  if(length!==null&&BigInt(size)!==BigInt(length))throw new Error('Saved-response length mismatch.');
- const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.byteLength;}
+ const bytes=buffer.length===size?buffer:buffer.slice(0,size);
  const digest=await crypto.subtle.digest('SHA-256',bytes),hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
  if(hash!==expected)throw new Error('Saved-response hash mismatch.');
  const text=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);
