@@ -197,3 +197,91 @@ fn complete_project_json_survives_reopen_without_projection_loss() {
         assert_eq!(store.attempts().unwrap(), 2);
     }
 }
+
+#[test]
+fn concurrent_snapshot_writers_preserve_complete_history_and_attempt_pairing() {
+    use std::sync::{Arc, Barrier};
+    for mode in ["DELETE", "WAL"] {
+        let scratch = Scratch::new();
+        let connection = rusqlite::Connection::open(&scratch.0).unwrap();
+        connection
+            .pragma_update(None, "journal_mode", mode)
+            .unwrap();
+        drop(connection);
+        // Open serially so the concurrent phase tests writes, not schema setup.
+        let stores: Vec<_> = (0..4)
+            .map(|_| SnapshotStore::open(&scratch.0).unwrap())
+            .collect();
+        let start = Arc::new(Barrier::new(stores.len()));
+        let mut expected = std::thread::scope(|scope| {
+            let handles: Vec<_> = stores.into_iter().enumerate().map(|(writer, mut store)| {
+                let start = Arc::clone(&start);
+                scope.spawn(move || {
+                    start.wait();
+                    let mut committed = Vec::new();
+                    for observation in 0..16 {
+                        // Generated content: preserve whitespace, Unicode and a number
+                        // that cannot be represented exactly by an IEEE-754 double.
+                        let raw = format!(r#" {{"id":"AANobbMI","slug":"sodium","title":"Generated concurrent fixture","description":"not live data","project_type":"mod","versions":[],"future":{{"writer":{writer},"observation":{observation},"integer":18446744073709551617,"text":"雪🔥","empty":[],"nullable":null}}}} "#);
+                        let record = atlas_lab::modrinth::parse_project_record(raw.as_bytes(), "sodium").unwrap();
+                        let generation = store.save_modrinth_project_record("sodium", &record).unwrap();
+                        if let Some((previous, _)) = committed.last() {
+                            assert!(generation > *previous);
+                        }
+                        committed.push((generation, raw));
+                    }
+                    store.record_project_raw_failure("sodium").unwrap();
+                    committed
+                })
+            }).collect();
+            handles
+                .into_iter()
+                .flat_map(|handle| handle.join().unwrap())
+                .collect::<Vec<_>>()
+        });
+        expected.sort_by_key(|(generation, _)| *generation);
+        assert_eq!(expected.len(), 64);
+        let store = SnapshotStore::open(&scratch.0).unwrap();
+        assert_eq!(store.attempts().unwrap(), 68);
+        assert_eq!(
+            store
+                .latest_modrinth_project_record("AANobbMI")
+                .unwrap()
+                .unwrap()
+                .raw_json(),
+            expected.last().unwrap().1
+        );
+        drop(store);
+        let connection = rusqlite::Connection::open(&scratch.0).unwrap();
+        let actual: Vec<(i64, String)> = connection.prepare("SELECT generation,payload FROM snapshots WHERE provider='modrinth-project-raw' AND canonical_id='AANobbMI' ORDER BY generation").unwrap()
+            .query_map([], |r| Ok((r.get(0)?, r.get(1)?))).unwrap()
+            .collect::<Result<_,_>>().unwrap();
+        assert_eq!(actual, expected);
+        let paired: i64 = connection.query_row("SELECT count(*) FROM snapshots s WHERE (SELECT count(*) FROM collection_attempts a WHERE a.generation=s.generation AND a.outcome='success')=1", [], |r| r.get(0)).unwrap();
+        assert_eq!(paired, 64);
+        let failures: i64 = connection.query_row("SELECT count(*) FROM collection_attempts WHERE outcome='failure' AND generation IS NULL", [], |r| r.get(0)).unwrap();
+        assert_eq!(failures, 4);
+        assert_eq!(
+            connection
+                .query_row("PRAGMA integrity_check", [], |r| r.get::<_, String>(0))
+                .unwrap(),
+            "ok"
+        );
+        assert!(
+            connection
+                .prepare("PRAGMA foreign_key_check")
+                .unwrap()
+                .query([])
+                .unwrap()
+                .next()
+                .unwrap()
+                .is_none()
+        );
+        assert_eq!(
+            connection
+                .query_row("PRAGMA journal_mode", [], |r| r.get::<_, String>(0))
+                .unwrap(),
+            mode.to_lowercase()
+        );
+    }
+}

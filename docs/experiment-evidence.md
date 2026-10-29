@@ -1,6 +1,6 @@
 # Experiment evidence directory
 
-Updated 2026-10-27. Follow each study's source commit, harness identity, raw
+Updated 2026-10-29. Follow each study's source commit, harness identity, raw
 results and limitations. A working demo, upstream claim or passing fixture is
 not a general recommendation or approval to change another project.
 
@@ -8,6 +8,7 @@ not a general recommendation or approval to change another project.
 
 - [Card density laboratory](https://herbertofury.github.io/Engineering-Atlas/card-lab/): generated records, complete-field comparisons and separately measured preparation/rendering. Not a target application's performance test.
 - [Real media laboratory](https://herbertofury.github.io/Engineering-Atlas/media-lab/): dated public-source cards, explicit image/player loading, autoplay off. Player-ready and actually playing are separate evidence states.
+- [Verified-byte audio laboratory](https://herbertofury.github.io/Engineering-Atlas/audio-lab/): one public Commons clip, manual full-file verification, native controls and autoplay off. Served assets are verified; actual browser playing and UI acceptance remain open.
 - [Rust application prototype](../apps/atlas-lab/README.md): local-only collection queue, durable snapshots and bounded experiments. This link is source/documentation, not a hosted authenticated service or finished installer.
 
 ## Collection and complete records
@@ -147,3 +148,13 @@ not a general recommendation or approval to change another project.
 ## Isolated built-in strategy measurements, 2026-10-29
 
 [Fresh-process deduplication evidence](../experiments/dedup-process-lab/README.md) shares the actual bounded workload generator, verifies complete identifier outputs and captures separate Linux memory observations. Four completed passes and the initial controller failure are retained. Cancellation and whole-app acceptance remain unestablished; the shared runner's review gate is unchanged.
+
+## Application recovery and retained data, 2026-10-29
+
+- [Bounded archive streaming](../experiments/archive-stream-lab/README.md): actual reader repair prevents tiny chunks from accumulating unbounded retained objects. Real-body timing is mixed; the length-hint candidate was not promoted.
+- [Overview request recovery](../experiments/overview-timeout-lab/README.md): the actual UI polling deadline covers headers and body, preserves previous results, and allows a later poll. Controlled and loopback checks are not native input-latency acceptance.
+- [Saved-version read bounds](../experiments/version-read-bound-lab/README.md): bounds checked before large SQLite text materialization, preserving valid complete records.
+- [Initial player readiness](../experiments/player-ready-deadline-lab/README.md): missing readiness becomes explicitly unverified rather than silently waiting. Native playback remains a separate gate.
+- [Commons audio metadata](../experiments/commons-audio-lab/README.md) and [isolated audio player](../experiments/audio-player-lab/README.md): strict complete metadata, real bytes and decoder observations are distinguished from browser playing.
+- [HTTP timeout fixture repair](../experiments/body-timeout-fixture-lab/README.md): retains the original CI failure and non-reproduction limits; request headers are consumed before the fixture sends its response. Production timeout behavior and the original assertion are unchanged.
+- [Concurrent complete snapshots](../experiments/concurrent-snapshot-lab/README.md): four actual-store writers, both journal modes, exact history and attempt pairing after reopen. Generated regression, not a performance or power-loss claim.
