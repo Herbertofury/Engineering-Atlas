@@ -4,6 +4,7 @@
     "data/sources.json",
     "data/sources.d/compact-layout.json",
     "data/sources.d/dom-replacement.json",
+    "data/sources.d/hls-fragment-20261029.json",
     "data/sources.d/hls-release-174.json",
     "data/sources.d/node-resource-usage.json",
     "data/sources.d/process-memory-accounting.json",

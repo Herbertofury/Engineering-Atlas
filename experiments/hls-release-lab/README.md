@@ -29,3 +29,7 @@ Install esbuild 0.28.2 into a separate trusted tool directory. Install url-toolk
 Acceptance still requires real browser loading/playback, stop/reload and recovery checks with Atlas's current complete-card dataset, exact vendor identity/SRI, autoplay off and permitted sources. Keep 1.7.4 isolated until that evidence exists. Sources: HLS174, HLSPARSE174, HLSBUILD174.
 
 A fresh source-stage extraction and rebuild, reusing the pinned compiler/helper installation, reproduced both expected parser artifact hashes and all 63 fixture outcomes. Wrong artifacts and invalid archives have separate fail-closed checks; these do not imply security certification of the entire library.
+
+## Separate fragment-selection follow-up
+
+[The quality-switch matrix](fragment-selection.md) compares 128 generated source selections across both releases and preserves the distinction between repeated selection and a verified playback defect. It does not replace the parser evidence or browser acceptance gates.
