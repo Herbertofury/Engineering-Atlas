@@ -54,6 +54,8 @@ jobs:
           cargo +1.99.1 test --locked --example upstream_validation_lab
           cargo +1.99.1 test --locked --example project_process_memory_lab
           cargo +1.99.1 test --locked --example addressed_snapshot_lab
+          cargo +1.99.1 test --locked --example body_reader_allocations
+          cargo +1.99.1 test --locked --example body_reader_http
       - name: Isolated lossless storage candidate checks
         working-directory: experiments/compressed-snapshot-lab
         run: |

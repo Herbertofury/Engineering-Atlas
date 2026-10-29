@@ -21,8 +21,9 @@ pub fn read_json_response(
     if response.content_length().is_some_and(|n| n > max) {
         return Err("Response exceeds size budget".into());
     }
+    let limit = max.checked_add(1).ok_or("Invalid body budget")?;
     let mut bytes = Vec::new();
-    response.take(max + 1).read_to_end(&mut bytes)?;
+    response.take(limit).read_to_end(&mut bytes)?;
     if bytes.len() as u64 > max {
         return Err("Response exceeds size budget".into());
     }

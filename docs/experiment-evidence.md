@@ -128,3 +128,8 @@ not a general recommendation or approval to change another project.
 ## Structured evidence delivery review, 2026-10-29
 
 [Tessera paper and source review](../research/2026-10-29-structured-evidence-review.md) separates aggregate QA gains from individual losses, component processing time from total cost, and selected text from complete media collection. Source reuse terms remain unverified; no prototype was executed or promoted.
+
+
+## Bounded response buffering, 2026-10-29
+
+[Body-reader experiment](../experiments/body-reader-lab/README.md) reuses the working reader and allocation counter. Honest-length buffering improves allocation counts, but misleading hints still expose a memory tradeoff. Sixty actual loopback HTTP checks preserve complete bytes and safe rejections. Buffer allocation remains unchanged in the working collector; a separately reproduced impossible-budget overflow is repaired with checked arithmetic.
