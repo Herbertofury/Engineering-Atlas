@@ -6,7 +6,7 @@ FIELDS={'schema_version','lane','committed_generations','complete_payload_histor
 def validate(raw,lane):
  v=wire.decode_receipt(raw)
  if not isinstance(v,dict) or set(v)!=FIELDS:raise ValueError('Unexpected recovery receipt fields')
- if type(v['schema_version']) is not int or v['schema_version']!=1 or v['lane']!=lane or lane not in ('baseline','addressed'):raise ValueError('Recovery identity mismatch')
+ if type(v['schema_version']) is not int or v['schema_version']!=1 or v['lane']!=lane or lane not in ('baseline','addressed','compact'):raise ValueError('Recovery identity mismatch')
  if type(v['committed_generations']) is not int or not 1<=v['committed_generations']<=1001:raise ValueError('Invalid committed count')
  if any(v[k] is not True for k in ['complete_payload_history_equal','attempt_atomicity','integrity_ok']):raise ValueError('Incomplete recovery verification')
  if not isinstance(v['sqlite'],str) or not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',v['sqlite']):raise ValueError('Invalid SQLite identity')

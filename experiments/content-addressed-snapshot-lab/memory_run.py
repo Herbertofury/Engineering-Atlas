@@ -5,15 +5,15 @@ from runner_io import digest,fixed_binary
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location("shared_memory_gate",ROOT/"experiments/process-memory-lab/snapshot_gate.py");memory_gate=importlib.util.module_from_spec(spec);spec.loader.exec_module(memory_gate)
 OBSERVER_SHA=hashlib.sha256((ROOT/"experiments/process-memory-lab/linux_memory.rs").read_bytes()).hexdigest()
-p=argparse.ArgumentParser();p.add_argument('--binary',type=pathlib.Path,required=True);p.add_argument('--input',type=pathlib.Path,required=True);p.add_argument('--output',type=pathlib.Path,required=True);a=p.parse_args();a.binary=fixed_binary(a.binary);a.output.mkdir(parents=True,exist_ok=False)
-receipt={'schema_version':2,'complete':False,'scope':'Fresh Linux child writes 1001 repeated public-response observations; wait4 peak includes launcher overhead; use separately labeled post-exec self VmHWM/rollup observations; not browser, whole-app or cold-cache evidence','binary_sha256':digest(a.binary),'input_sha256':digest(a.input,2*1024*1024),'sources':{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for f in [ROOT/'apps/atlas-lab/examples/addressed_snapshot_crash_probe.rs',ROOT/'apps/atlas-lab/Cargo.lock',ROOT/'experiments/content-addressed-snapshot-lab/store.rs',ROOT/'experiments/process-memory-lab/snapshot_gate.py',pathlib.Path(__file__).with_name('runner_io.py')]},'observer_sha256':OBSERVER_SHA,'runner_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'samples':[]};deadline=time.monotonic()+120
+p=argparse.ArgumentParser();p.add_argument('--binary',type=pathlib.Path,required=True);p.add_argument('--input',type=pathlib.Path,required=True);p.add_argument('--output',type=pathlib.Path,required=True);p.add_argument('--candidate',choices=['addressed','compact'],default='addressed');a=p.parse_args();a.binary=fixed_binary(a.binary);a.output.mkdir(parents=True,exist_ok=False)
+receipt={'schema_version':2,'complete':False,'candidate_lane':a.candidate,'scope':'Fresh Linux child writes 1001 repeated public-response observations; wait4 peak includes launcher overhead; use separately labeled post-exec self VmHWM/rollup observations; not browser, whole-app or cold-cache evidence','binary_sha256':digest(a.binary),'input_sha256':digest(a.input,2*1024*1024),'sources':{str(f.relative_to(ROOT)):hashlib.sha256(f.read_bytes()).hexdigest() for f in [ROOT/'apps/atlas-lab/examples/addressed_snapshot_crash_probe.rs',ROOT/'apps/atlas-lab/Cargo.lock',ROOT/('experiments/content-addressed-snapshot-lab/compact_store.rs' if a.candidate=='compact' else 'experiments/content-addressed-snapshot-lab/store.rs'),ROOT/'experiments/process-memory-lab/snapshot_gate.py',pathlib.Path(__file__).with_name('runner_io.py')]},'observer_sha256':OBSERVER_SHA,'runner_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'samples':[]};deadline=time.monotonic()+120
 
 def limits():resource.setrlimit(resource.RLIMIT_CPU,(8,8))
 def require(v,message):
  if not v:raise ValueError(message)
 try:
  for round in range(4):
-  for lane in (['baseline','addressed'] if round%2==0 else ['addressed','baseline']):
+  for lane in (['baseline',a.candidate] if round%2==0 else [a.candidate,'baseline']):
    require(digest(a.binary)==receipt['binary_sha256'],'Binary changed during run');stem=f'{round}-{lane}';db=a.output/(stem+'.sqlite');require(time.monotonic()<deadline,'Overall memory experiment budget')
    with (a.output/(stem+'.stdout')).open('wb') as out,(a.output/(stem+'.stderr')).open('wb') as err:
     child=subprocess.Popen([str(a.binary.resolve()),'write-memory',lane,str(a.input.resolve()),str(db.resolve())],stdout=out,stderr=err,preexec_fn=limits);reaped=False;started=time.monotonic()

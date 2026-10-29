@@ -85,3 +85,8 @@ The stabilization lane now compares SQLite's borrowed text bytes while the row i
 Three additional full-store passes retain 126 samples and complete history/integrity parity. Write timing remains workload- and run-dependent, particularly for all-unique payloads. The comparison-copy removal is directly measured; a general latency improvement or production migration is still not established. Database size remains governed by payload uniqueness. Prior owned-comparison sources/binary and all prior results are retained for rollback and comparison.
 
 The revised candidate also passed [12 fresh process interruptions](borrowed-interruptions.json) and [eight fresh-child memory checks](borrowed-memory.json), each with complete committed history verified. The separately retained Rust self observations remain distinct from launcher-inclusive wait4 peaks. These checks establish no physical power-loss guarantee or independent memory-speed ranking. [Verification](borrowed-verification.json).
+
+
+## Compact reference layout
+
+[Binary addresses and integer payload references](compact-layout.md) reuse this candidate in a separate format and reduce its measured metadata overhead. The 324-sample comparison retains all-unique and read/write regressions, plus separate recovery/memory checks. The actual store remains the default.

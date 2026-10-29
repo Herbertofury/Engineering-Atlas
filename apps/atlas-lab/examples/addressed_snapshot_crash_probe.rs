@@ -1,7 +1,7 @@
 //! Owned-fixture process interruption probe. Never accepts network input.
 use atlas_lab::{
-    content_addressed_candidate::AddressedStore, modrinth::parse_project_record,
-    snapshots::SnapshotStore,
+    compact_addressed_candidate::CompactStore, content_addressed_candidate::AddressedStore,
+    modrinth::parse_project_record, snapshots::SnapshotStore,
 };
 use rusqlite::Connection;
 use std::{
@@ -14,12 +14,14 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 fn main() -> Result<()> {
     let args: Vec<_> = std::env::args().collect();
     if args.len() != 5 {
-        return Err("Usage: probe write|verify baseline|addressed PUBLIC_JSON OWNED_DB".into());
+        return Err(
+            "Usage: probe write|verify baseline|addressed|compact PUBLIC_JSON OWNED_DB".into(),
+        );
     }
     let action = args[1].as_str();
     let lane = args[2].as_str();
     if !["write", "write-memory", "verify"].contains(&action)
-        || !["baseline", "addressed"].contains(&lane)
+        || !["baseline", "addressed", "compact"].contains(&lane)
     {
         return Err("Unknown fixed probe mode".into());
     }
@@ -50,6 +52,19 @@ fn main() -> Result<()> {
             std::io::stdout().flush()?;
             for _ in 0..1000 {
                 store.save_modrinth_project_record(&project.id, &record)?;
+            }
+            if action == "write-memory" {
+                Some(linux_memory::memory()?)
+            } else {
+                None
+            }
+        } else if lane == "compact" {
+            let mut store = CompactStore::open(path)?;
+            store.save(&project.id, &record)?;
+            println!("READY");
+            std::io::stdout().flush()?;
+            for _ in 0..1000 {
+                store.save(&project.id, &record)?;
             }
             if action == "write-memory" {
                 Some(linux_memory::memory()?)
@@ -89,6 +104,14 @@ fn main() -> Result<()> {
             .raw_json()
             .as_bytes()
             .to_vec()
+    } else if lane == "compact" {
+        CompactStore::open(path)?
+            .latest(&project.id)?
+            .ok_or("Missing compact snapshot")?
+            .1
+            .raw_json()
+            .as_bytes()
+            .to_vec()
     } else {
         AddressedStore::open(path)?
             .latest(&project.id)?
@@ -104,6 +127,8 @@ fn main() -> Result<()> {
     let c = Connection::open(path)?;
     let sql = if lane == "baseline" {
         "SELECT generation,canonical_id,payload FROM snapshots ORDER BY generation"
+    } else if lane == "compact" {
+        "SELECT s.generation,s.canonical_id,p.payload FROM snapshots s JOIN payloads p ON p.id=s.payload_id ORDER BY s.generation"
     } else {
         "SELECT s.generation,s.canonical_id,p.payload FROM snapshots s JOIN payloads p ON p.hash=s.payload_hash ORDER BY s.generation"
     };
@@ -145,7 +170,7 @@ fn main() -> Result<()> {
     if all_attempts != count || matching_attempts != count || provider_rows != count {
         return Err("Extra or misidentified history".into());
     }
-    if lane == "addressed" {
+    if lane != "baseline" {
         let payloads: i64 = c.query_row("SELECT count(*) FROM payloads", [], |r| r.get(0))?;
         if payloads != 1 {
             return Err("Unexpected orphan or duplicate payload".into());

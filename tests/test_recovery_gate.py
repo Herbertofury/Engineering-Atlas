@@ -5,6 +5,11 @@ class RecoveryGateTests(unittest.TestCase):
  def sample(self):return dict(schema_version=1,lane='baseline',committed_generations=4,complete_payload_history_equal=True,attempt_atomicity=True,integrity_ok=True,sqlite='3.54.1',scope='Process kill recovery only; not physical power-loss durability')
  def test_complete_receipt(self):
   v=self.sample();self.assertEqual(gate.validate(json.dumps(v).encode(),'baseline'),v)
+ def test_explicit_compact_identity_and_unknown_lane_rejected(self):
+  v=self.sample();v['lane']='compact';self.assertEqual(gate.validate(json.dumps(v).encode(),'compact'),v)
+  with self.assertRaises(ValueError):gate.validate(json.dumps(v).encode(),'addressed')
+  v['lane']='external'
+  with self.assertRaises(ValueError):gate.validate(json.dumps(v).encode(),'external')
  def test_bad_fields_and_identity(self):
   for key,value in [('schema_version',True),('lane','addressed'),('committed_generations',True),('committed_generations',0),('committed_generations',1002),('committed_generations',4.0),('complete_payload_history_equal',1),('attempt_atomicity',False),('integrity_ok',False),('sqlite',None),('scope','power loss proven'),('extra',1)]:
    v=self.sample();v[key]=value

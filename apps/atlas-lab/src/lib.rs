@@ -603,3 +603,7 @@ pub mod project_archive;
 /// Isolated experiment only; not wired to the application store or server.
 #[path = "../../../experiments/content-addressed-snapshot-lab/store.rs"]
 pub mod content_addressed_candidate;
+
+// Isolated binary-address/integer-reference study; not used by application storage.
+#[path = "../../../experiments/content-addressed-snapshot-lab/compact_store.rs"]
+pub mod compact_addressed_candidate;

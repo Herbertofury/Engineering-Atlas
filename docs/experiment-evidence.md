@@ -133,3 +133,8 @@ not a general recommendation or approval to change another project.
 ## Bounded response buffering, 2026-10-29
 
 [Body-reader experiment](../experiments/body-reader-lab/README.md) reuses the working reader and allocation counter. Honest-length buffering improves allocation counts, but misleading hints still expose a memory tradeoff. Sixty actual loopback HTTP checks preserve complete bytes and safe rejections. Buffer allocation remains unchanged in the working collector; a separately reproduced impossible-budget overflow is repaired with checked arithmetic.
+
+
+## Compact snapshot references, 2026-10-29
+
+[Three-lane layout comparison](../experiments/content-addressed-snapshot-lab/compact-layout.md) diagnoses and reduces candidate metadata overhead with binary hashes and integer references. It preserves all 324 samples, 24 process interruptions and 16 memory-child checks, with no universal performance or migration claim.
