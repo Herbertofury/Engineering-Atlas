@@ -109,3 +109,8 @@ not a general recommendation or approval to change another project.
 ## HLS.js 1.7.4 candidate, 2026-10-28
 
 [Exact upstream parser comparison](../experiments/hls-release-lab/README.md) reproduces wrong segment identities hidden by a correct aggregate duration in 1.7.3. The 1.7.4 source passes 50 targeted fixtures and 13 full-data parity controls. Browser loading, playback, DRM and other release changes remain unverified; the live 1.7.3 vendor is unchanged. A native upstream-request timeout is retained separately from the verified GitHub release lookup.
+
+
+## Snapshot uniqueness control, 2026-10-29
+
+[All-unique negative control](../experiments/content-addressed-snapshot-lab/README.md#all-unique-negative-control-2026-10-29) adds 126 verified samples. The isolated addressed schema grows about 3.3% versus the actual store when every payload is unique. Repeated write-speed results are inconsistent. Duplicate-heavy space savings remain scoped; no migration is accepted.
