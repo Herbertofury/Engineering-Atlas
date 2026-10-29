@@ -22,3 +22,5 @@ Inventory found no existing Commons/audio adapter in Atlas; the existing author/
 - Resource and latency comparisons against a target's current implementation before any adoption recommendation.
 
 Run `python3 -m unittest discover -s tests -p test_commons_audio.py` from the repository root. No upstream executable was installed, no codec was replaced, and no broad platform-completeness claim is made. See [dedicated provider research](../../docs/adapters/wikimedia-commons.md).
+
+An [isolated verified-byte browser test page](../audio-player-lab/README.md) is now implemented separately. It does not close the browser-playing or main-application integration gates above.

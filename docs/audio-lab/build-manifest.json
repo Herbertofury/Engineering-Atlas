@@ -1,0 +1,13 @@
+{
+  "harness": "atlas-public-audio-v1-verified-bytes",
+  "artifacts": {
+    "audio-core.98726eb5efb4ec5b.mjs": "98726eb5efb4ec5bdfb2b169fb56b3cce1bbf27f78e95e40fe5eb5dbe784053e",
+    "archive-selection.64a177caba0e3bbc.mjs": "64a177caba0e3bbc89733769fa5755460a95a79b1686770270d94fb0e36a3057",
+    "media-events.e336b2c509ca8030.mjs": "e336b2c509ca803072cb2d56c65a0b111fa4a6402b85c69f823e6f5f117a98cf",
+    "audio.ff576341de73304a.css": "ff576341de73304ada7ac888a2143eb76349f80f4e172831047900ef766066e0",
+    "audio.e6296eee6580e862.js": "e6296eee6580e862cfa092a8d039cd464d43f7a185552c3479e08854dc91d6c0",
+    "index.html": "311201850c3bdd2357c1623416ebd9def909b33c827d797f886ff06ee98a13b9"
+  },
+  "fixture_sha256": "8d73341ec31c3deda189c01e6d2971b5ae3a8eb3fc5880c56c2b39c63cc831b3",
+  "selection_source": "apps/atlas-lab/ui/archive-view.mjs"
+}
