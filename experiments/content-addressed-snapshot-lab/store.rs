@@ -37,8 +37,12 @@ impl AddressedStore {
             params![hash, record.raw_json()],
         )?;
         // Never treat a matching hash alone as complete-data equality.
-        let stored: Option<String> = tx.query_row("SELECT CASE WHEN octet_length(payload)<=4194304 THEN payload ELSE NULL END FROM payloads WHERE hash=?1", [&hash], |r|r.get(0))?;
-        if stored.as_deref() != Some(record.raw_json()) {
+        // Compare SQLite's borrowed value while the row is live. Every byte
+        // is still checked; no duplicate owned payload allocation is needed.
+        let equal = tx.query_row("SELECT CASE WHEN octet_length(payload)<=4194304 THEN payload ELSE NULL END FROM payloads WHERE hash=?1", [&hash], |r| {
+            Ok(matches!(r.get_ref(0)?, rusqlite::types::ValueRef::Text(stored) if stored == record.raw_json().as_bytes()))
+        })?;
+        if !equal {
             return Err(
                 "Payload hash collision or damaged payload; transaction rolled back".into(),
             );
@@ -139,6 +143,31 @@ mod tests {
         for table in ["payloads", "snapshots", "collection_attempts"] {
             assert_eq!(
                 s.0.query_row(&format!("SELECT count(*) FROM {table}"), [], |r| r
+                    .get::<_, i64>(0))
+                    .unwrap(),
+                0
+            );
+        }
+    }
+    #[test]
+    fn borrowed_comparison_rejects_wrong_types_and_oversized_values() {
+        for value in [
+            rusqlite::types::Value::Blob(b"different".to_vec()),
+            rusqlite::types::Value::Text("x".repeat(4 * 1024 * 1024 + 1)),
+        ] {
+            let mut s = AddressedStore::open(Path::new(":memory:")).unwrap();
+            let a = fixture("one");
+            let hash = sha256_hex(a.raw_json().as_bytes());
+            s.0.execute("INSERT INTO payloads VALUES(?1,?2)", params![hash, value])
+                .unwrap();
+            assert!(s.save("sodium", &a).is_err());
+            assert_eq!(
+                s.0.query_row("SELECT count(*) FROM snapshots", [], |r| r.get::<_, i64>(0))
+                    .unwrap(),
+                0
+            );
+            assert_eq!(
+                s.0.query_row("SELECT count(*) FROM collection_attempts", [], |r| r
                     .get::<_, i64>(0))
                     .unwrap(),
                 0

@@ -119,3 +119,8 @@ not a general recommendation or approval to change another project.
 ## Response-body timeout classification, 2026-10-29
 
 [Actual collector diagnostic repair](../experiments/collection-timeout-lab/README.md) reproduces a stalled-body timeout previously mislabeled as validation failure. Bounded typed-cause inspection preserves fixed safe messages and does not change provider access, timeouts or last-good storage.
+
+
+## Borrowed payload comparison, 2026-10-29
+
+[Experimental store stabilization](../experiments/content-addressed-snapshot-lab/README.md#remove-the-comparison-copy-2026-10-29) removes the owned payload copy from exact equality checking. Reused allocation instrumentation confirms one payload allocation versus zero in that comparison step, while 126 additional full-store samples preserve all data. Native allocations and whole-app speed are not inferred.
