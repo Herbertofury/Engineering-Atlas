@@ -138,3 +138,7 @@ not a general recommendation or approval to change another project.
 ## Compact snapshot references, 2026-10-29
 
 [Three-lane layout comparison](../experiments/content-addressed-snapshot-lab/compact-layout.md) diagnoses and reduces candidate metadata overhead with binary hashes and integer references. It preserves all 324 samples, 24 process interruptions and 16 memory-child checks, with no universal performance or migration claim.
+
+## Current compiled service check, 2026-10-29
+
+[Native service regression](../experiments/native-app-ui-lab/README.md#current-native-service-regression-2026-10-29) verifies the rebuilt executable with 66 checks across empty and historical queue fixtures, preserving complete archives and prior failure history. Browser/input/media acceptance is separate; the built-in comparison still cannot promote itself without its missing memory evidence.
