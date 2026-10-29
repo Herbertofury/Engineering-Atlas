@@ -158,3 +158,7 @@ not a general recommendation or approval to change another project.
 - [Commons audio metadata](../experiments/commons-audio-lab/README.md) and [isolated audio player](../experiments/audio-player-lab/README.md): strict complete metadata, real bytes and decoder observations are distinguished from browser playing.
 - [HTTP timeout fixture repair](../experiments/body-timeout-fixture-lab/README.md): retains the original CI failure and non-reproduction limits; request headers are consumed before the fixture sends its response. Production timeout behavior and the original assertion are unchanged.
 - [Concurrent complete snapshots](../experiments/concurrent-snapshot-lab/README.md): four actual-store writers, both journal modes, exact history and attempt pairing after reopen. Generated regression, not a performance or power-loss claim.
+
+## rusqlite patch screening, 2026-10-29
+
+[Isolated 0.41.1 evaluation](../experiments/rusqlite-patch-lab/README.md) passes the current Linux application and example correctness checks but confirms changed default handling of unknown PRAGMA names. The working 0.41.0 pin stays unchanged; no performance improvement or candidate Windows acceptance is inferred.
