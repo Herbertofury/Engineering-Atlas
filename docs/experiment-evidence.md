@@ -104,3 +104,8 @@ not a general recommendation or approval to change another project.
 - [Budgeted preparation](../experiments/budgeted-preparation-lab/README.md): full-data encoding candidate, 90 fresh Node trials, retained browser failure and local-only v15 integration. Published card harness remains v14.
 - [Native Rust app checks](../experiments/native-app-ui-lab/README.md): exact-byte download, last-good recovery and actual bounded queue execution. Failed native upstream connection is retained.
 - [Query reuse and extraction review](query-reuse-and-extraction-review.md): new papers screened against quality and completeness requirements, without prototype execution or target recommendations.
+
+
+## HLS.js 1.7.4 candidate, 2026-10-28
+
+[Exact upstream parser comparison](../experiments/hls-release-lab/README.md) reproduces wrong segment identities hidden by a correct aggregate duration in 1.7.3. The 1.7.4 source passes 50 targeted fixtures and 13 full-data parity controls. Browser loading, playback, DRM and other release changes remain unverified; the live 1.7.3 vendor is unchanged. A native upstream-request timeout is retained separately from the verified GitHub release lookup.
