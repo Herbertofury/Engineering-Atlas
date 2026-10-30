@@ -1,6 +1,6 @@
 # Experiment evidence directory
 
-Updated 2026-10-29. Follow each study's source commit, harness identity, raw
+Updated 2026-10-30. Follow each study's source commit, harness identity, raw
 results and limitations. A working demo, upstream claim or passing fixture is
 not a general recommendation or approval to change another project.
 
@@ -166,3 +166,7 @@ not a general recommendation or approval to change another project.
 ## Windows HTTP fixture portability, 2026-10-29
 
 [Accepted-socket mode repair](../experiments/windows-http-fixture-lab/README.md) retains a Windows WouldBlock/reset failure, reproduces the nonblocking assumption locally, and explicitly configures both affected fixture streams. Original client deadlines and rejection assertions remain intact; this is fixture code, not a production dependency or reader change.
+
+## Provenance screening, 2026-10-30
+
+[GraphRAGProv review](../research/2026-10-30-provenance-review.md) separates exact source-span traceability from correct interpretation and query intent. The evaluation is supervised; paper-linked source repositories returned 404. Research-only, with no executed candidate or target adoption.
