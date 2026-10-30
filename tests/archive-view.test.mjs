@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {loadSavedProject,createArchiveSelection,MAX_ARCHIVE_BYTES} from '../apps/atlas-lab/ui/archive-view.mjs';
 const id='AANobbMI',text=' {"id":"AANobbMI","future":18446744073709551617,"text":"☃ <script>not executed</script>"} ',bytes=new TextEncoder().encode(text);
-function response(body=bytes,extra={}){return new Response(body,{headers:{'content-type':'application/json','x-atlas-canonical-id':id,'x-atlas-generation':'9007199254740993','x-atlas-payload-sha256':createHash('sha256').update(body).digest('hex'),...extra}});}
+function response(body=bytes,extra={}){return new Response(body,{headers:{'content-type':'application/json','x-atlas-archive-kind':'project','x-atlas-canonical-id':id,'x-atlas-generation':'9007199254740993','x-atlas-payload-sha256':createHash('sha256').update(body).digest('hex'),...extra}});}
 test('exact text, UTF-8 bytes and large generation survive without JSON-number conversion',async()=>{
  let request;const result=await loadSavedProject(id,{fetchImpl:async(url,options)=>{request={url,options};return response();}});
  assert.equal(result.text,text);assert.deepEqual(result.bytes,bytes);assert.equal(result.generation,'9007199254740993');assert.equal(request.url,'/api/project-archive/'+id);assert.equal(request.options.redirect,'error');assert.equal(request.options.cache,'no-store');
@@ -44,7 +44,7 @@ test('tiny and empty transport chunks preserve exact bytes without chunk aliases
   if(empty){empty=false;controller.enqueue(new Uint8Array(0));return;}
   empty=true;shared[0]=payload[position++];controller.enqueue(shared);
  }},{highWaterMark:0});
- const headers={'content-type':'application/json','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':createHash('sha256').update(payload).digest('hex')};
+ const headers={'content-type':'application/json','x-atlas-archive-kind':'project','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':createHash('sha256').update(payload).digest('hex')};
  const result=await loadSavedProject(id,{fetchImpl:async()=>new Response(stream,{headers})});
  assert.deepEqual(result.bytes,payload);assert.equal(result.bytes.buffer.byteLength,payload.length);
 });
@@ -52,7 +52,7 @@ test('fragmented stream accepts exact byte limit and cancels overflow',async()=>
  for(const extra of [0,1]){
   const payload=new Uint8Array(MAX_ARCHIVE_BYTES+extra).fill(32);let position=0,cancelled=false;
   const stream=new ReadableStream({pull(controller){if(position===payload.length){controller.close();return;}const end=Math.min(position+8191,payload.length);controller.enqueue(payload.slice(position,end));position=end;},cancel(){cancelled=true;}},{highWaterMark:0});
-  const headers={'content-type':'application/json','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':createHash('sha256').update(payload).digest('hex')};
+  const headers={'content-type':'application/json','x-atlas-archive-kind':'project','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':createHash('sha256').update(payload).digest('hex')};
   const pending=loadSavedProject(id,{fetchImpl:async()=>new Response(stream,{headers})});
   if(extra){await assert.rejects(pending,/size budget/);assert.equal(cancelled,true);}else{const result=await pending;assert.deepEqual(result.bytes,payload);assert.equal(result.bytes.buffer.byteLength,MAX_ARCHIVE_BYTES);}
  }

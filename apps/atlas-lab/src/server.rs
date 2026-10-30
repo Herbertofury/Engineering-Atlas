@@ -103,12 +103,41 @@ async fn index(State(app): State<App>) -> Html<String> {
         html.to_owned()
     })
 }
+#[derive(Clone, Copy)]
+enum ArchiveKind {
+    Project,
+    Version,
+}
+impl ArchiveKind {
+    fn label(self) -> &'static str {
+        match self {
+            Self::Project => "project",
+            Self::Version => "version",
+        }
+    }
+}
 async fn saved_project_response(
     State(app): State<App>,
     RoutePath(id): RoutePath<String>,
 ) -> Result<Response, StatusCode> {
-    crate::modrinth::projects_url(std::slice::from_ref(&id))
-        .map_err(|_| StatusCode::BAD_REQUEST)?;
+    saved_archive_response(app, id, ArchiveKind::Project).await
+}
+async fn saved_version_response(
+    State(app): State<App>,
+    RoutePath(id): RoutePath<String>,
+) -> Result<Response, StatusCode> {
+    saved_archive_response(app, id, ArchiveKind::Version).await
+}
+async fn saved_archive_response(
+    app: App,
+    id: String,
+    kind: ArchiveKind,
+) -> Result<Response, StatusCode> {
+    match kind {
+        ArchiveKind::Project => crate::modrinth::projects_url(std::slice::from_ref(&id)),
+        ArchiveKind::Version => crate::modrinth_versions::versions_url(std::slice::from_ref(&id)),
+    }
+    .map_err(|_| StatusCode::BAD_REQUEST)?;
     let permit = app
         .db_slots
         .try_acquire_owned()
@@ -117,17 +146,21 @@ async fn saved_project_response(
         let _permit = permit;
         let store = crate::snapshots::SnapshotStore::open(&app.path)
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-        let (generation, record) = store
-            .latest_modrinth_project_snapshot(&id)
+        let stored = match kind {
+            ArchiveKind::Project => store.latest_modrinth_project_snapshot(&id).map(|snapshot| {
+                snapshot.map(|(generation, record)| (generation, record.raw_json().to_owned()))
+            }),
+            ArchiveKind::Version => store.latest_modrinth_version_snapshot(&id).map(|snapshot| {
+                snapshot.map(|(generation, record)| (generation, record.payload.get().to_owned()))
+            }),
+        };
+        let (generation, payload) = stored
             .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?
             .ok_or(StatusCode::NOT_FOUND)?;
-        let hash = crate::build_identity::sha256_hex(record.raw_json().as_bytes());
-        let mut response = (
-            [(header::CONTENT_TYPE, "application/json")],
-            record.raw_json().to_owned(),
-        )
-            .into_response();
+        let hash = crate::build_identity::sha256_hex(payload.as_bytes());
+        let mut response = ([(header::CONTENT_TYPE, "application/json")], payload).into_response();
         for (key, value) in [
+            ("x-atlas-archive-kind", kind.label().to_owned()),
             ("x-atlas-canonical-id", id),
             ("x-atlas-generation", generation.to_string()),
             ("x-atlas-payload-sha256", hash),
@@ -448,6 +481,7 @@ async fn serve_strategy(
             }),
         )
         .route("/api/project-archive/{id}", get(saved_project_response))
+        .route("/api/version-archive/{id}", get(saved_version_response))
         .route("/api/overview", get(overview))
         .route("/api/jobs", post(enqueue))
         .layer(DefaultBodyLimit::max(4096))
@@ -476,6 +510,86 @@ async fn serve_strategy(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn saved_archive_routes_keep_namespaces_and_exact_bytes() {
+        let directory = std::env::temp_dir().join(format!(
+            "atlas-archive-kinds-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&directory).unwrap();
+        let path = directory.join("fixture.sqlite");
+        let id = "abcdefgh".to_owned();
+        let project = " {\"id\":\"abcdefgh\",\"slug\":\"fixture\",\"title\":\"Generated\",\"description\":\"Not live\",\"project_type\":\"mod\",\"versions\":[],\"unknown\":18446744073709551617} ";
+        let version = r#"{"id":"abcdefgh","project_id":"AANobbMI","name":"Generated","version_number":"1","date_published":"2026-10-30","game_versions":[],"loaders":[],"files":[],"dependencies":[],"unknown":18446744073709551617,"changelog":"雪 <script>inert</script>"}"#;
+        let mut store = crate::snapshots::SnapshotStore::open(&path).unwrap();
+        let project_generation = store
+            .save_modrinth_project_record(
+                &id,
+                &crate::modrinth::parse_project_record(project.as_bytes(), &id).unwrap(),
+            )
+            .unwrap();
+        let batch = crate::modrinth_versions::parse_versions(
+            format!("[{version}]").as_bytes(),
+            std::slice::from_ref(&id),
+        )
+        .unwrap();
+        let version_generation = store.save_modrinth_versions(&batch).unwrap()[0].1;
+        store.record_project_raw_failure(&id).unwrap();
+        store
+            .record_version_failure(std::slice::from_ref(&id))
+            .unwrap();
+        drop(store);
+        let (wake, _receiver) = std::sync::mpsc::sync_channel(1);
+        let app = App {
+            path: path.clone(),
+            worker_status: Arc::new(AtomicU8::new(1)),
+            wake,
+            overview_candidate: false,
+            db_slots: Arc::new(tokio::sync::Semaphore::new(4)),
+        };
+        tokio::runtime::Builder::new_multi_thread().worker_threads(2).enable_all().build().unwrap().block_on(async {
+            for (kind, expected, generation) in [(ArchiveKind::Project, project, project_generation),(ArchiveKind::Version, version, version_generation)] {
+                let response = saved_archive_response(app.clone(), id.clone(), kind).await.unwrap();
+                assert_eq!(response.headers()["x-atlas-archive-kind"], kind.label());
+                assert_eq!(response.headers()["x-atlas-canonical-id"], id);
+                assert_eq!(response.headers()["x-atlas-generation"], generation.to_string());
+                assert_eq!(response.headers()["x-atlas-payload-sha256"], crate::build_identity::sha256_hex(expected.as_bytes()));
+                assert_eq!(axum::body::to_bytes(response.into_body(), 2*1024*1024).await.unwrap().as_ref(), expected.as_bytes());
+                assert_eq!(app.db_slots.available_permits(), 4);
+            }
+            assert_eq!(saved_archive_response(app.clone(), "sodium".into(), ArchiveKind::Version).await.unwrap_err(), StatusCode::BAD_REQUEST);
+            assert_eq!(saved_archive_response(app.clone(), "MISSING1".into(), ArchiveKind::Version).await.unwrap_err(), StatusCode::NOT_FOUND);
+            let mut busy=app.clone();busy.db_slots=Arc::new(tokio::sync::Semaphore::new(0));
+            assert_eq!(saved_archive_response(busy, id.clone(), ArchiveKind::Version).await.unwrap_err(), StatusCode::TOO_MANY_REQUESTS);
+            let c=rusqlite::Connection::open(&path).unwrap();
+            c.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('modrinth-version','CORRUPT1',?1)",[version]).unwrap();drop(c);
+            assert_eq!(saved_archive_response(app.clone(), "CORRUPT1".into(), ArchiveKind::Version).await.unwrap_err(), StatusCode::UNPROCESSABLE_ENTITY);
+        });
+        let store = crate::snapshots::SnapshotStore::open(&path).unwrap();
+        assert_eq!(store.attempts().unwrap(), 4);
+        assert_eq!(
+            store
+                .latest_modrinth_version(&id)
+                .unwrap()
+                .unwrap()
+                .payload
+                .get(),
+            version
+        );
+        assert_eq!(
+            store
+                .latest_modrinth_project_record(&id)
+                .unwrap()
+                .unwrap()
+                .raw_json(),
+            project
+        );
+    }
+
     #[test]
     fn queued_version_receipts_preserve_full_bytes_and_last_good() {
         let dir = std::env::temp_dir().join(format!(

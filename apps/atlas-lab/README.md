@@ -159,3 +159,7 @@ Snapshot, queue and journal connections share a fail-closed synchronization/fore
 ### Fresh public archive verification · October 28, 2026
 
 The existing CLI and actual queued worker have now successfully requested and persisted selected live Modrinth project responses. Four CLI successes and one queued success retained five generations; missing-project requests failed explicitly without replacing them. Independent hashes and twelve loopback checks passed. A changed provider downloads counter remained separate evidence. Native cloud-browser navigation to the executor's localhost still failed, so this adds live provider/HTTP coverage, not GUI or universal adapter acceptance. [Receipts and exact limits](../../experiments/project-raw-live-lab/README.md).
+
+### Inspect saved version objects · October 30, 2026
+
+The same saved-response inspector now reads complete individual version JSON objects. Select Project response or Version object and enter the matching canonical ID. Type-bound headers and hashes prevent cross-namespace substitution, and the original bytes can be downloaded with a type-specific filename. Changing type or closing a viewer with a pending load cancels that load while retaining previous verified data. File URLs remain inert metadata; no binary file is fetched. [Implementation and actual HTTP regression evidence](../../experiments/version-archive-view-lab/README.md) distinguish controlled UI tests from still-unverified native browser interaction.

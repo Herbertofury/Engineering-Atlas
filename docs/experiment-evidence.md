@@ -170,3 +170,7 @@ not a general recommendation or approval to change another project.
 ## Provenance screening, 2026-10-30
 
 [GraphRAGProv review](../research/2026-10-30-provenance-review.md) separates exact source-span traceability from correct interpretation and query intent. The evaluation is supervised; paper-linked source repositories returned 404. Research-only, with no executed candidate or target adoption.
+
+## Saved version inspection, 2026-10-30
+
+[Complete version-object inspector](../experiments/version-archive-view-lab/README.md) extends the actual app by reusing its project archive path, strict byte verifier and cancellation state. It preserves full JSON and namespace identity, fixes late reopening after viewer closure, and retains real HTTP plus controlled UI evidence. Browser interaction and performance acceptance remain separate.
