@@ -17,11 +17,10 @@ function text(tag,value,className) {const e=document.createElement(tag);e.textCo
 function render(data) {
   const identities=data.jobs.map(jobIdentity);
   if(new Set(identities).size!==identities.length)throw new Error('Repeated job identities; previous results are retained.');
-  $('pending').textContent=(data.counts.queued||0)+(data.counts.running||0);$('completed').textContent=data.counts.succeeded||0;$('failed').textContent=data.counts.failed||0;
-  const nodes=[];
+  const metrics={pending:(data.counts.queued||0)+(data.counts.running||0),completed:data.counts.succeeded||0,failed:data.counts.failed||0};
+  const nodes=[],nextRenderedJobs=new Map();
   if(!data.jobs.length){if(!emptyNode){emptyNode=text('div','','empty');emptyNode.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));}nodes.push(emptyNode);}
-  const present = new Set();
-  for(const [index,job] of data.jobs.entries()){const identity=identities[index];present.add(identity);const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(identity);if(prior&&prior.signature===signature){nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
+  for(const [index,job] of data.jobs.entries()){const identity=identities[index];const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(identity);if(prior&&prior.signature===signature){nextRenderedJobs.set(identity,prior);nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
     const name=jobLabel(job.job);
     top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+identity+' · attempt '+job.attempt));
     if(job.result?.project){const p=job.result.project;e.append(text('p',p.title+' · '+p.id+' · '+p.versions.length+' version IDs'));}
@@ -32,12 +31,15 @@ function render(data) {
     if(job.result?.experiment){const run=job.result.experiment;const decision=typeof run.decision==='string'?run.decision:Object.keys(run.decision)[0];e.append(text('p',run.evidence.trials.length+' timed pairs · '+run.evidence.stress_cases+' stress cases · '+run.reason),text('p','Gate: '+decision+' · execution is not promotion.'));}
     if(job.result?.error)e.append(text('p',job.result.error,'error'));
     if(job.result){const d=document.createElement('details');d.append(text('summary','Inspect recorded result'),text('pre',JSON.stringify(job.result,null,2)));e.append(d);}
-    renderedJobs.set(identity,{signature,node:e});nodes.push(e);
+    nextRenderedJobs.set(identity,{signature,node:e});nodes.push(e);
   }
-  for(const id of renderedJobs.keys())if(!present.has(id))renderedJobs.delete(id);
+  // Prepare every card before committing metrics or keyed reuse state.
+  // A later malformed record must not poison the next successful refresh.
   const container=$('jobs');let cursor=container.firstChild;
   for(const node of nodes){if(node===cursor){cursor=cursor.nextSibling;}else{container.insertBefore(node,cursor);}}
   while(cursor){const next=cursor.nextSibling;cursor.remove();cursor=next;}
+  renderedJobs.clear();for(const [identity,record] of nextRenderedJobs)renderedJobs.set(identity,record);
+  $('pending').textContent=metrics.pending;$('completed').textContent=metrics.completed;$('failed').textContent=metrics.failed;
 }
 let fetching=false;
 async function refresh(){if(fetching||document.hidden)return;fetching=true;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(new DOMException('Local overview request timed out','TimeoutError')),15000);try{const r=await fetch('/api/overview',{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error('Local engine unavailable ('+r.status+').');const data=await r.json();render(data);$('connection').textContent='Connected · worker '+data.worker_status+' · refreshed '+new Date().toLocaleTimeString();$('connection').classList.remove('error');}catch(e){$('connection').textContent=e.message+' Previous results remain visible.';$('connection').classList.add('error');}finally{clearTimeout(timer);fetching=false;}}

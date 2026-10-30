@@ -175,3 +175,7 @@ Overview adds an exact decimal `id_text` field while preserving the numeric `id`
 ### Inspect saved fixed upstream responses · October 30, 2026
 
 The saved-data inspector also accepts RustSec, HLS.js and serde_json snapshots. Choose Saved upstream response and enter `rustsec`, `hls` or `serde-json`. This reads previously stored data, not a new provider checkpoint, and does not reset request budgets or interrupted reservations. Source-bound validation and exact-byte downloads reuse the existing archive path. [Evidence and remaining browser gates](../../experiments/upstream-archive-view-lab/README.md).
+
+### Preserve Overview after a malformed result · October 30, 2026
+
+Overview prepares every card before committing its keyed cache and summary metrics. A late preparation failure no longer mixes new counts with old cards or leaks an uncommitted card into the next successful refresh. [Actual renderer and loopback evidence](../../experiments/overview-last-good-lab/README.md) distinguishes this correctness repair from unverified native-browser performance.

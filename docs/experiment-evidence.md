@@ -194,3 +194,7 @@ not a general recommendation or approval to change another project.
 ## Visual guidance and remote request planning · October 30
 
 [WebViSE and WaRP review](../research/2026-10-30-visual-and-request-planning-review.md) preserves functional regressions, retrieval-cost scope, overfetch and cross-region cost limits. Sources are research leads only: no model calls, paid storage runs, installed candidate or target-project recommendation.
+
+## Overview last-good preparation boundary · October 30
+
+[Reproduced renderer repair](../experiments/overview-last-good-lab/README.md) retains previous metrics and prevents failed card preparation from poisoning keyed reuse. Generated malformed results were exercised through the actual HTTP server and served JavaScript; no native-browser or performance acceptance is inferred.
