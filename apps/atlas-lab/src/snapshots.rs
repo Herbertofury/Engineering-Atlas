@@ -113,15 +113,20 @@ impl SnapshotStore {
         let tx = self
             .0
             .transaction_with_behavior(TransactionBehavior::Immediate)?;
-        let previous:Option<(i64,String)>=tx.query_row("SELECT generation,payload FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r|Ok((r.get(0)?,r.get(1)?))).optional()?;
+        // Reuse the archive encoded-size ceiling before copying a prior TEXT value.
+        // Preserve wrong-type errors; oversized text is an invalid prior record.
+        let previous:Option<(i64,Option<String>)>=tx.query_row("SELECT generation,CASE WHEN typeof(payload)='text' AND octet_length(payload)>4194304 THEN NULL ELSE payload END FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r|Ok((r.get(0)?,r.get(1)?))).optional()?;
         let comparison = match &previous {
             None => "first_observation",
-            Some((_, old)) => match crate::upstream_reviews::parse_record(source, old.as_bytes()) {
-                Err(_) => "previous_record_invalid",
-                Ok(p) if p.revision != record.revision => "revision_changed",
-                Ok(_) if old.as_bytes() != bytes => "raw_metadata_changed",
-                Ok(_) => "unchanged",
-            },
+            Some((_, None)) => "previous_record_invalid",
+            Some((_, Some(old))) => {
+                match crate::upstream_reviews::parse_record(source, old.as_bytes()) {
+                    Err(_) => "previous_record_invalid",
+                    Ok(p) if p.revision != record.revision => "revision_changed",
+                    Ok(_) if old.as_bytes() != bytes => "raw_metadata_changed",
+                    Ok(_) => "unchanged",
+                }
+            }
         };
         tx.execute(
             "INSERT INTO snapshots(provider,canonical_id,payload) VALUES('github-upstream',?1,?2)",
@@ -146,7 +151,13 @@ impl SnapshotStore {
         &self,
         source: crate::upstream_reviews::Source,
     ) -> rusqlite::Result<Option<String>> {
-        self.0.query_row("SELECT payload FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r|r.get(0)).optional()
+        self.0.query_row("SELECT CASE WHEN typeof(payload)='text' AND octet_length(payload)>4194304 THEN NULL ELSE payload END FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r| {
+            let body:String=r.get(0)?;
+            if body.len()>crate::upstream_reviews::MAX_BODY as usize {
+                return Err(rusqlite::Error::FromSqlConversionFailure(0,rusqlite::types::Type::Text,Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData,"Stored upstream payload exceeds read budget"))));
+            }
+            Ok(body)
+        }).optional()
     }
     pub fn save_modrinth_project_record(
         &mut self,
@@ -377,6 +388,100 @@ impl SnapshotStore {
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn upstream_over_budget_read_is_rejected(size: usize) {
+        use crate::upstream_reviews::Source;
+        let store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let payload = "x".repeat(size);
+        store.0.execute("INSERT INTO snapshots(provider,canonical_id,payload) VALUES('github-upstream','hls',?1)",[&payload]).unwrap();
+        assert!(
+            store.latest_upstream_payload(Source::Hls).is_err(),
+            "Oversized stored upstream text must not be returned"
+        );
+        assert_eq!(
+            store
+                .0
+                .query_row("SELECT payload FROM snapshots", [], |r| r
+                    .get::<_, String>(0))
+                .unwrap(),
+            payload
+        );
+    }
+    #[test]
+    fn upstream_read_enforces_utf8_payload_limit() {
+        upstream_over_budget_read_is_rejected(2 * 1024 * 1024 + 1);
+    }
+    #[test]
+    fn upstream_read_rejects_grossly_oversized_stored_text() {
+        upstream_over_budget_read_is_rejected(5 * 1024 * 1024);
+    }
+    #[test]
+    fn upstream_refresh_keeps_wrong_type_failure_and_prior_rows() {
+        use crate::upstream_reviews::{Source, tests::fixture};
+        for size in [3, 5 * 1024 * 1024] {
+            let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+            store
+                .save_upstream(Source::Hls, &fixture("v1.7.4"), &upstream_meta(10000))
+                .unwrap();
+            let blob = vec![0_u8; size];
+            store
+                .0
+                .execute("UPDATE snapshots SET payload=?1", [&blob])
+                .unwrap();
+            assert!(store.latest_upstream_payload(Source::Hls).is_err());
+            assert!(
+                store
+                    .save_upstream(Source::Hls, &fixture("v1.7.5"), &upstream_meta(10002))
+                    .is_err()
+            );
+            assert_eq!(store.attempts().unwrap(), 1);
+            assert_eq!(
+                store
+                    .0
+                    .query_row("SELECT payload FROM snapshots", [], |r| r
+                        .get::<_, Vec<u8>>(0))
+                    .unwrap(),
+                blob
+            );
+        }
+    }
+    #[test]
+    fn upstream_utf16_storage_keeps_complete_valid_utf8_payload() {
+        use crate::upstream_reviews::{Source, tests::fixture};
+        let path = std::env::temp_dir().join(format!(
+            "atlas-upstream-utf16-{}-{}.sqlite",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let c = Connection::open(&path).unwrap();
+        c.execute_batch("PRAGMA encoding='UTF-16le'; CREATE TABLE fixture_seed(v INTEGER);")
+            .unwrap();
+        drop(c);
+        let mut body = String::from_utf8(fixture("v1.7.4")).unwrap();
+        let end = body.rfind('}').unwrap();
+        body.insert_str(end, &format!(",\"padding\":\"{}\"", "x".repeat(1200000)));
+        let mut store = SnapshotStore::open(&path).unwrap();
+        store
+            .save_upstream(Source::Hls, body.as_bytes(), &upstream_meta(10000))
+            .unwrap();
+        drop(store);
+        let store = SnapshotStore::open(&path).unwrap();
+        assert_eq!(
+            store.latest_upstream_payload(Source::Hls).unwrap().unwrap(),
+            body
+        );
+        assert!(
+            store
+                .0
+                .query_row("SELECT octet_length(payload) FROM snapshots", [], |r| r
+                    .get::<_, i64>(0))
+                .unwrap()
+                > 2 * 1024 * 1024
+        );
+    }
+
     fn upstream_meta(now: i64) -> crate::upstream_reviews::ResponseMeta {
         crate::upstream_reviews::response_meta(200, &reqwest::header::HeaderMap::new(), now, 0)
     }

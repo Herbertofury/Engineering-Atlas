@@ -182,3 +182,7 @@ not a general recommendation or approval to change another project.
 ## Exact queue-card identity, 2026-10-30
 
 [Large-ID card repair](../experiments/job-identity-lab/README.md) reproduces six real HTTP fixture jobs collapsing to five cards in the actual served renderer. Additive exact text identities restore all six while preserving legacy fields and complete outputs in both serializer modes. Controlled DOM evidence is distinct from native paint/input acceptance.
+
+## Prior upstream read bounds, 2026-10-30
+
+[Actual SnapshotStore copy-bound repair](../experiments/upstream-read-bound-lab/README.md) rejects oversized raw reads and avoids materializing a five-MiB corrupted prior TEXT value during refresh. Complete old/new data, valid controls and wrong-type failures remain checked. Requested Rust allocation evidence is not total process-memory or speed evidence.
