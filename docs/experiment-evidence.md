@@ -190,3 +190,7 @@ not a general recommendation or approval to change another project.
 ## Saved upstream inspection, 2026-10-30
 
 [Fixed-source archive inspector](../experiments/upstream-archive-view-lab/README.md) exposes complete saved RustSec/HLS/serde_json responses through the actual app, reusing validated bounded storage and the existing byte verifier. Offline reads preserve budgets, interrupted-request state and original history. Real local HTTP is verified; native browser acceptance remains separate.
+
+## Visual guidance and remote request planning · October 30
+
+[WebViSE and WaRP review](../research/2026-10-30-visual-and-request-planning-review.md) preserves functional regressions, retrieval-cost scope, overfetch and cross-region cost limits. Sources are research leads only: no model calls, paid storage runs, installed candidate or target-project recommendation.
