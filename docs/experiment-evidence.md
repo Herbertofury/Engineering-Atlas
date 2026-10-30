@@ -202,3 +202,7 @@ not a general recommendation or approval to change another project.
 ## Overview content identity after engine replacement · October 30
 
 [Isolated renderer candidates](../experiments/overview-content-identity-lab/README.md) reproduce stale results across two actual server/database instances at the same origin. Correctness repairs retain complete output, but measured controlled-DOM overhead remains and native-browser gates are open. Both candidates stay isolated; the default app is unchanged.
+
+## Overview engine-instance reuse boundary · October 30
+
+[Engine-scoped repair](../experiments/overview-engine-identity-lab/README.md) fixes stale cards after a local server/database restart without full-result comparison on each poll. Actual two-process HTTP evidence and fifty-card replacement stress preserve complete output. Broader mutable-content candidates remain isolated, and native-browser acceptance remains open.

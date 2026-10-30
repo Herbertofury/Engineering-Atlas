@@ -5,6 +5,7 @@ import {submitJob} from './job-submit.mjs';
 const $ = id => document.getElementById(id);
 const renderedJobs = new Map();
 let emptyNode = null;
+let renderedInstance = null;
 const panels = new Set(['overview','collectors','experiments']);
 function showPanel(name) {
   if (!panels.has(name)) name='overview';
@@ -14,13 +15,15 @@ function showPanel(name) {
 document.querySelectorAll('[data-panel]').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.panel;}));
 window.addEventListener('hashchange',()=>showPanel(location.hash.slice(1)));showPanel(location.hash.slice(1));
 function text(tag,value,className) {const e=document.createElement(tag);e.textContent=value;if(className)e.className=className;return e;}
-function render(data) {
+function render(data,instance=null) {
+  if(instance!==null&&!/^[a-f0-9]{32}$/.test(instance))throw new Error('Invalid engine identity; previous results are retained.');
+  const reuse=instance!==null&&instance===renderedInstance;
   const identities=data.jobs.map(jobIdentity);
   if(new Set(identities).size!==identities.length)throw new Error('Repeated job identities; previous results are retained.');
   const metrics={pending:(data.counts.queued||0)+(data.counts.running||0),completed:data.counts.succeeded||0,failed:data.counts.failed||0};
   const nodes=[],nextRenderedJobs=new Map();
   if(!data.jobs.length){if(!emptyNode){emptyNode=text('div','','empty');emptyNode.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));}nodes.push(emptyNode);}
-  for(const [index,job] of data.jobs.entries()){const identity=identities[index];const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(identity);if(prior&&prior.signature===signature){nextRenderedJobs.set(identity,prior);nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
+  for(const [index,job] of data.jobs.entries()){const identity=identities[index];const signature=job.state+':'+job.attempt;const prior=reuse?renderedJobs.get(identity):null;if(prior&&prior.signature===signature){nextRenderedJobs.set(identity,prior);nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
     const name=jobLabel(job.job);
     top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+identity+' · attempt '+job.attempt));
     if(job.result?.project){const p=job.result.project;e.append(text('p',p.title+' · '+p.id+' · '+p.versions.length+' version IDs'));}
@@ -39,10 +42,11 @@ function render(data) {
   for(const node of nodes){if(node===cursor){cursor=cursor.nextSibling;}else{container.insertBefore(node,cursor);}}
   while(cursor){const next=cursor.nextSibling;cursor.remove();cursor=next;}
   renderedJobs.clear();for(const [identity,record] of nextRenderedJobs)renderedJobs.set(identity,record);
+  renderedInstance=instance;
   $('pending').textContent=metrics.pending;$('completed').textContent=metrics.completed;$('failed').textContent=metrics.failed;
 }
 let fetching=false;
-async function refresh(){if(fetching||document.hidden)return;fetching=true;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(new DOMException('Local overview request timed out','TimeoutError')),15000);try{const r=await fetch('/api/overview',{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error('Local engine unavailable ('+r.status+').');const data=await r.json();render(data);$('connection').textContent='Connected · worker '+data.worker_status+' · refreshed '+new Date().toLocaleTimeString();$('connection').classList.remove('error');}catch(e){$('connection').textContent=e.message+' Previous results remain visible.';$('connection').classList.add('error');}finally{clearTimeout(timer);fetching=false;}}
+async function refresh(){if(fetching||document.hidden)return;fetching=true;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(new DOMException('Local overview request timed out','TimeoutError')),15000);try{const r=await fetch('/api/overview',{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error('Local engine unavailable ('+r.status+').');const data=await r.json();render(data,r.headers?.get('x-atlas-engine-instance')??null);$('connection').textContent='Connected · worker '+data.worker_status+' · refreshed '+new Date().toLocaleTimeString();$('connection').classList.remove('error');}catch(e){$('connection').textContent=e.message+' Previous results remain visible.';$('connection').classList.add('error');}finally{clearTimeout(timer);fetching=false;}}
 $('collect-form').addEventListener('submit',async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');if(button.disabled)return;button.disabled=true;$('collect-status').textContent='Queuing request…';$('collect-status').classList.remove('error');try{const j=await submitJob(collectionJob($('project').value));$('collect-status').textContent='Job '+j.id+' queued. Follow its result in Overview.';await refresh();}catch(error){$('collect-status').textContent=error.message;$('collect-status').classList.add('error');}finally{button.disabled=false;}});
 refresh();setInterval(refresh,2500);document.addEventListener('visibilitychange',refresh);
 

@@ -21,11 +21,18 @@ const HOST: &str = "127.0.0.1:41379";
 const ORIGIN: &str = "http://127.0.0.1:41379";
 #[derive(Clone)]
 struct App {
+    engine_instance: String,
     path: PathBuf,
     db_slots: Arc<tokio::sync::Semaphore>,
     worker_status: Arc<AtomicU8>,
     wake: SyncSender<()>,
     overview_candidate: bool,
+}
+// Public, ephemeral cache namespace, not an authentication credential.
+fn new_engine_instance() -> Result<String, std::io::Error> {
+    let mut bytes = [0_u8; 16];
+    getrandom::fill(&mut bytes).map_err(|error| std::io::Error::other(error.to_string()))?;
+    Ok(bytes.iter().map(|byte| format!("{byte:02x}")).collect())
 }
 fn now() -> i64 {
     SystemTime::now()
@@ -80,6 +87,12 @@ async fn overview(State(app): State<App>) -> Result<Response, StatusCode> {
             value["worker_status"] = status.into();
             Json(value).into_response()
         };
+        response.headers_mut().insert(
+            "x-atlas-engine-instance",
+            app.engine_instance
+                .parse()
+                .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
+        );
         response.headers_mut().insert(
             "x-atlas-overview-strategy",
             if app.overview_candidate {
@@ -452,6 +465,7 @@ async fn serve_strategy(
     path: PathBuf,
     overview_candidate: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    let engine_instance = new_engine_instance()?;
     Queue::open(&path)?;
     let listener = tokio::net::TcpListener::bind(HOST).await?;
     let stop = Arc::new(AtomicBool::new(false));
@@ -519,6 +533,7 @@ async fn serve_strategy(
         .layer(DefaultBodyLimit::max(4096))
         .layer(middleware::from_fn(guard))
         .with_state(App {
+            engine_instance,
             path,
             worker_status,
             wake,
@@ -542,6 +557,21 @@ async fn serve_strategy(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn engine_instances_are_bounded_public_namespaces() {
+        let mut seen = std::collections::HashSet::new();
+        for _ in 0..100 {
+            let value = new_engine_instance().unwrap();
+            assert_eq!(value.len(), 32);
+            assert!(
+                value
+                    .bytes()
+                    .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
+            );
+            assert!(seen.insert(value));
+        }
+    }
+
     #[test]
     fn upstream_archive_route_returns_only_bound_saved_evidence() {
         use crate::upstream_reviews::{Source, response_meta, tests::fixture};
@@ -567,6 +597,7 @@ mod tests {
         drop(store);
         let (wake, _receiver) = std::sync::mpsc::sync_channel(1);
         let app = App {
+            engine_instance: "0".repeat(32),
             path: path.clone(),
             worker_status: Arc::new(AtomicU8::new(1)),
             wake,
@@ -668,6 +699,7 @@ mod tests {
         drop(store);
         let (wake, _receiver) = std::sync::mpsc::sync_channel(1);
         let app = App {
+            engine_instance: "0".repeat(32),
             path: path.clone(),
             worker_status: Arc::new(AtomicU8::new(1)),
             wake,

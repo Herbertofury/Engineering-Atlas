@@ -179,3 +179,7 @@ The saved-data inspector also accepts RustSec, HLS.js and serde_json snapshots. 
 ### Preserve Overview after a malformed result · October 30, 2026
 
 Overview prepares every card before committing its keyed cache and summary metrics. A late preparation failure no longer mixes new counts with old cards or leaks an uncommitted card into the next successful refresh. [Actual renderer and loopback evidence](../../experiments/overview-last-good-lab/README.md) distinguishes this correctness repair from unverified native-browser performance.
+
+### Scope Overview reuse to an engine instance · October 30, 2026
+
+Overview responses carry a public ephemeral instance label. A newly started engine cannot reuse the previous engine's cached job cards merely because job IDs, states and attempts collide. Missing labels disable reuse; malformed labels retain the last-good view. No database path or credential is exposed. [Restart evidence and limits](../../experiments/overview-engine-identity-lab/README.md).

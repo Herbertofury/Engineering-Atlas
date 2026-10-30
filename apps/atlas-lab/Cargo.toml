@@ -6,6 +6,7 @@ rust-version = "1.99"
 publish = false
 
 [dependencies]
+getrandom = "=0.4.3"
 rusqlite = { version = "=0.41.0", features = ["bundled"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "=1.0.154", features = ["raw_value"] }
