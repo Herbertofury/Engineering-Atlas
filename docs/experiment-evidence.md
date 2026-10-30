@@ -178,3 +178,7 @@ not a general recommendation or approval to change another project.
 ## Unconfirmed job receipt recovery, 2026-10-30
 
 [Shared enqueue recovery](../experiments/job-submission-recovery-lab/README.md) repairs six indefinitely disabled action paths, bounds complete receipt reads, preserves exact decimal IDs and avoids automatic POST retries. An actual queue plus owned delayed-response proxy verifies that a client timeout can coexist with a successfully accepted job. Native browser acceptance remains open.
+
+## Exact queue-card identity, 2026-10-30
+
+[Large-ID card repair](../experiments/job-identity-lab/README.md) reproduces six real HTTP fixture jobs collapsing to five cards in the actual served renderer. Additive exact text identities restore all six while preserving legacy fields and complete outputs in both serializer modes. Controlled DOM evidence is distinct from native paint/input acceptance.

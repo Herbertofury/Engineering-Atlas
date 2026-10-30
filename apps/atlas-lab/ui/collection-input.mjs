@@ -48,3 +48,16 @@ export function jobLabel(job) {
   if(Object.hasOwn(job,'VersionValidationExperiment'))return 'Version validation · '+text(job.VersionValidationExperiment?.version);
   return 'Unrecognized recorded operation';
 }
+
+// Exact queue identity is separate from the legacy numeric API field.
+export function jobIdentity(job) {
+  const invalid=()=>{throw new Error('Invalid job identity; previous results are retained.');};
+  if(!job||typeof job!=='object'||Array.isArray(job)||!Number.isInteger(job.id)||job.id<1)invalid();
+  if(Object.hasOwn(job,'id_text')){
+    const exact=job.id_text;
+    if(typeof exact!=='string'||!/^[1-9][0-9]{0,18}$/.test(exact)||BigInt(exact)>9223372036854775807n||Number(exact)!==job.id)invalid();
+    return exact;
+  }
+  if(!Number.isSafeInteger(job.id))invalid();
+  return String(job.id);
+}

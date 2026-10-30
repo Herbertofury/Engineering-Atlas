@@ -167,3 +167,7 @@ The same saved-response inspector now reads complete individual version JSON obj
 ### Unconfirmed submission recovery · October 30, 2026
 
 All six enqueue actions now use a bounded receipt wait. If the reply stalls or cannot be verified, the control becomes available again and the UI asks you to check Overview before submitting again: the job may already exist. No POST is automatically retried or described as cancelled merely because its receipt timed out. Complete integer receipt IDs remain strings rather than rounded JavaScript numbers. [Reproduced failures and actual local queue/transport evidence](../../experiments/job-submission-recovery-lab/README.md) keep browser interaction acceptance separate.
+
+### Exact overview job identities · October 30, 2026
+
+Overview adds an exact decimal `id_text` field while preserving the numeric `id` for compatibility. The UI uses exact text for card keys and labels, preventing different large IDs from collapsing into one card. Malformed or duplicate identities fail before changing visible cards/counts; safe legacy IDs remain supported. [Actual HTTP/renderer reproduction and repair](../../experiments/job-identity-lab/README.md) preserve the six-job/five-card baseline and both six-card repaired modes. This is controlled DOM evidence, not native paint or latency acceptance.

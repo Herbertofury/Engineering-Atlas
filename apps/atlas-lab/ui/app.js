@@ -1,5 +1,5 @@
 'use strict';
-import {collectionJob,versionExperimentJob,versionCollectionJob,upstreamReviewJob,projectArchiveJob,jobLabel} from './collection-input.mjs';
+import {collectionJob,versionExperimentJob,versionCollectionJob,upstreamReviewJob,projectArchiveJob,jobLabel,jobIdentity} from './collection-input.mjs';
 import {createArchiveSelection,loadSavedArchive} from './archive-view.mjs';
 import {submitJob} from './job-submit.mjs';
 const $ = id => document.getElementById(id);
@@ -15,13 +15,15 @@ document.querySelectorAll('[data-panel]').forEach(b=>b.addEventListener('click',
 window.addEventListener('hashchange',()=>showPanel(location.hash.slice(1)));showPanel(location.hash.slice(1));
 function text(tag,value,className) {const e=document.createElement(tag);e.textContent=value;if(className)e.className=className;return e;}
 function render(data) {
+  const identities=data.jobs.map(jobIdentity);
+  if(new Set(identities).size!==identities.length)throw new Error('Repeated job identities; previous results are retained.');
   $('pending').textContent=(data.counts.queued||0)+(data.counts.running||0);$('completed').textContent=data.counts.succeeded||0;$('failed').textContent=data.counts.failed||0;
   const nodes=[];
   if(!data.jobs.length){if(!emptyNode){emptyNode=text('div','','empty');emptyNode.append(text('strong','Your first experiment starts with a question.'),text('span','Open Collection to retrieve public project metadata.'));}nodes.push(emptyNode);}
   const present = new Set();
-  for(const job of data.jobs){present.add(job.id);const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(job.id);if(prior&&prior.signature===signature){nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
+  for(const [index,job] of data.jobs.entries()){const identity=identities[index];present.add(identity);const signature=job.state+':'+job.attempt;const prior=renderedJobs.get(identity);if(prior&&prior.signature===signature){nodes.push(prior.node);continue;}const e=text('article','','job');const top=text('div','','job-top');
     const name=jobLabel(job.job);
-    top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+job.id+' · attempt '+job.attempt));
+    top.append(text('h3',name),text('span',job.state.toUpperCase(),'badge '+job.state));e.append(top,text('p','Job '+identity+' · attempt '+job.attempt));
     if(job.result?.project){const p=job.result.project;e.append(text('p',p.title+' · '+p.id+' · '+p.versions.length+' version IDs'));}
     if(job.result?.batch){const b=job.result.batch;e.append(text('p',b.projects.length+' retrieved · '+b.missing_ids.length+' missing from response'));if(b.missing_ids.length)e.append(text('p','Partial result. Missing IDs: '+b.missing_ids.join(', '),'error'));}
     if(job.result?.project_archive){const a=job.result.project_archive;e.append(text('p','Complete project archive · '+a.canonical_id+' · generation '+a.generation+' · '+a.payload_bytes+' bytes retained locally'));}
@@ -30,7 +32,7 @@ function render(data) {
     if(job.result?.experiment){const run=job.result.experiment;const decision=typeof run.decision==='string'?run.decision:Object.keys(run.decision)[0];e.append(text('p',run.evidence.trials.length+' timed pairs · '+run.evidence.stress_cases+' stress cases · '+run.reason),text('p','Gate: '+decision+' · execution is not promotion.'));}
     if(job.result?.error)e.append(text('p',job.result.error,'error'));
     if(job.result){const d=document.createElement('details');d.append(text('summary','Inspect recorded result'),text('pre',JSON.stringify(job.result,null,2)));e.append(d);}
-    renderedJobs.set(job.id,{signature,node:e});nodes.push(e);
+    renderedJobs.set(identity,{signature,node:e});nodes.push(e);
   }
   for(const id of renderedJobs.keys())if(!present.has(id))renderedJobs.delete(id);
   const container=$('jobs');let cursor=container.firstChild;

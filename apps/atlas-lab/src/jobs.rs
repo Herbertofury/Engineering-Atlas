@@ -207,6 +207,7 @@ impl Queue {
         #[derive(Serialize)]
         struct Row {
             id: i64,
+            id_text: String,
             job: Job,
             state: String,
             attempt: i64,
@@ -237,6 +238,7 @@ impl Queue {
             let (id, payload, state, attempt, result) = row?;
             jobs.push(Row {
                 id,
+                id_text: id.to_string(),
                 job: serde_json::from_str(&payload)?,
                 state,
                 attempt,
@@ -286,7 +288,7 @@ impl Queue {
             let result = result
                 .map(|s| serde_json::from_str::<serde_json::Value>(&s))
                 .transpose()?;
-            jobs.push(serde_json::json!({"id":id,"job":job,"state":state,"attempt":attempt,"result":result}));
+            jobs.push(serde_json::json!({"id":id,"id_text":id.to_string(),"job":job,"state":state,"attempt":attempt,"result":result}));
         }
         let mut counts = serde_json::Map::new();
         let mut stmt = connection.prepare("SELECT state,count(*) FROM jobs GROUP BY state")?;
@@ -300,6 +302,38 @@ impl Queue {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn overview_retains_exact_text_ids_without_changing_legacy_numeric_fields() {
+        let queue = Queue::open(Path::new(":memory:")).unwrap();
+        let ids = [1_i64, 9007199254740992, 9007199254740993, i64::MAX];
+        for id in ids {
+            queue.0.execute("INSERT INTO jobs(id,payload,state,result) VALUES(?1,'\"DedupExperiment\"','succeeded','{\"full\":[1,2,3]}')",[id]).unwrap();
+        }
+        let value = queue.overview().unwrap();
+        let candidate: serde_json::Value =
+            serde_json::from_slice(&queue.overview_raw_candidate().unwrap()).unwrap();
+        assert_eq!(candidate, value);
+        for (row, id) in value["jobs"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .zip(ids.into_iter().rev())
+        {
+            assert_eq!(row["id"].as_i64(), Some(id));
+            assert_eq!(row["id_text"], id.to_string());
+            assert_eq!(row["result"]["full"], serde_json::json!([1, 2, 3]));
+        }
+        assert_eq!(value["jobs"].as_array().unwrap().len(), 4);
+        assert_eq!(
+            queue
+                .0
+                .query_row("SELECT count(*) FROM jobs", [], |r| r.get::<_, i64>(0))
+                .unwrap(),
+            4
+        );
+        assert!(queue.0.is_autocommit());
+    }
+
     #[test]
     fn upstream_jobs_accept_only_fixed_public_sources() {
         let mut q = Queue::open(Path::new(":memory:")).unwrap();
