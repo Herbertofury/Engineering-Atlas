@@ -198,3 +198,7 @@ not a general recommendation or approval to change another project.
 ## Overview last-good preparation boundary · October 30
 
 [Reproduced renderer repair](../experiments/overview-last-good-lab/README.md) retains previous metrics and prevents failed card preparation from poisoning keyed reuse. Generated malformed results were exercised through the actual HTTP server and served JavaScript; no native-browser or performance acceptance is inferred.
+
+## Overview content identity after engine replacement · October 30
+
+[Isolated renderer candidates](../experiments/overview-content-identity-lab/README.md) reproduce stale results across two actual server/database instances at the same origin. Correctness repairs retain complete output, but measured controlled-DOM overhead remains and native-browser gates are open. Both candidates stay isolated; the default app is unchanged.
