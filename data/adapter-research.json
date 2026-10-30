@@ -45,8 +45,8 @@
     "slug": "discord",
     "name": "Discord",
     "source": "https://docs.discord.com/developers/resources/message",
-    "status": "Message schema reviewed; no bot grant or private-message collection configured.",
-    "checked_at": "2026-10-26"
+    "status": "Official content-access, attachment expiry and partial-update semantics reviewed; no app grant, authenticated collection or playback acceptance.",
+    "checked_at": "2026-10-30"
   },
   {
     "slug": "steam",
