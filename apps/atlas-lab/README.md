@@ -171,3 +171,7 @@ All six enqueue actions now use a bounded receipt wait. If the reply stalls or c
 ### Exact overview job identities · October 30, 2026
 
 Overview adds an exact decimal `id_text` field while preserving the numeric `id` for compatibility. The UI uses exact text for card keys and labels, preventing different large IDs from collapsing into one card. Malformed or duplicate identities fail before changing visible cards/counts; safe legacy IDs remain supported. [Actual HTTP/renderer reproduction and repair](../../experiments/job-identity-lab/README.md) preserve the six-job/five-card baseline and both six-card repaired modes. This is controlled DOM evidence, not native paint or latency acceptance.
+
+### Inspect saved fixed upstream responses · October 30, 2026
+
+The saved-data inspector also accepts RustSec, HLS.js and serde_json snapshots. Choose Saved upstream response and enter `rustsec`, `hls` or `serde-json`. This reads previously stored data, not a new provider checkpoint, and does not reset request budgets or interrupted reservations. Source-bound validation and exact-byte downloads reuse the existing archive path. [Evidence and remaining browser gates](../../experiments/upstream-archive-view-lab/README.md).

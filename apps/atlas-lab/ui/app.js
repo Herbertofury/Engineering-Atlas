@@ -63,6 +63,6 @@ function cancelPendingArchiveViewer(){if(!archiveSelection.pending)return;archiv
 $('close-saved-archive').addEventListener('click',()=>{cancelPendingArchiveViewer();$('saved-archive-dialog').close();});
 $('saved-archive-dialog').addEventListener('cancel',cancelPendingArchiveViewer);
 $('saved-archive-dialog').addEventListener('close',cancelPendingArchiveViewer);
-$('download-saved-archive').addEventListener('click',()=>{const record=archiveSelection.last;if(!record)return;const url=URL.createObjectURL(new Blob([record.bytes],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='modrinth-'+record.kind+'-'+record.id+'-generation-'+record.generation+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+$('download-saved-archive').addEventListener('click',()=>{const record=archiveSelection.last;if(!record)return;const url=URL.createObjectURL(new Blob([record.bytes],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=(record.kind==='upstream'?'github-upstream':'modrinth-'+record.kind)+'-'+record.id+'-generation-'+record.generation+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
 
 $('saved-archive-kind').addEventListener('change',()=>{archiveSelection.cancel();$('saved-archive-form').querySelector('button').disabled=false;$('cancel-archive-load').disabled=true;$('saved-archive-status').textContent='Archive type changed. The previous verified response remains available with its original type.';});

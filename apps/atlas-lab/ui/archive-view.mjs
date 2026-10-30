@@ -1,6 +1,7 @@
 export const MAX_ARCHIVE_BYTES=2*1024*1024;
 async function readSavedArchive(kind,id,{signal,fetchImpl}) {
- if(typeof id!=='string'||!/^[A-Za-z0-9]{8}$/.test(id))throw new Error('Enter one saved canonical eight-character ID.');
+ if(kind==='upstream'){if(!['rustsec','hls','serde-json'].includes(id))throw new Error('Choose one saved fixed upstream source: rustsec, hls or serde-json.');}
+ else if(typeof id!=='string'||!/^[A-Za-z0-9]{8}$/.test(id))throw new Error('Enter one saved canonical eight-character ID.');
  if(!globalThis.crypto?.subtle)throw new Error('Integrity verification is unavailable; no unchecked archive accepted.');
  const response=await fetchImpl('/api/'+kind+'-archive/'+id,{signal,cache:'no-store',redirect:'error',credentials:'same-origin'});
  const reject=async message=>{try{await response.body?.cancel();}catch{}throw new Error(message);};
@@ -31,7 +32,7 @@ async function readSavedArchive(kind,id,{signal,fetchImpl}) {
  return Object.freeze({kind,id,generation,hash,bytes,text});
 }
 export async function loadSavedArchive(kind,id,{signal,fetchImpl=globalThis.fetch,timeoutMs=15000}={}) {
- if(kind!=='project'&&kind!=='version')throw new Error('Choose a saved project or version archive.');
+ if(kind!=='project'&&kind!=='version'&&kind!=='upstream')throw new Error('Choose a saved project, version or upstream archive.');
  if(!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>30000)throw new Error('Invalid archive request deadline.');
  if(signal?.aborted)throw signal.reason||new DOMException('Archive request cancelled','AbortError');
  const controller=new AbortController(),relay=()=>controller.abort(signal.reason);

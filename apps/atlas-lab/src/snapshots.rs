@@ -151,12 +151,36 @@ impl SnapshotStore {
         &self,
         source: crate::upstream_reviews::Source,
     ) -> rusqlite::Result<Option<String>> {
-        self.0.query_row("SELECT CASE WHEN typeof(payload)='text' AND octet_length(payload)>4194304 THEN NULL ELSE payload END FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r| {
-            let body:String=r.get(0)?;
+        Ok(self
+            .latest_upstream_raw_snapshot(source)?
+            .map(|(_, payload)| payload))
+    }
+    pub fn latest_upstream_snapshot(
+        &self,
+        source: crate::upstream_reviews::Source,
+    ) -> Result<Option<(i64, crate::upstream_reviews::Record)>, Box<dyn std::error::Error>> {
+        self.latest_upstream_raw_snapshot(source)?
+            .map(|(generation, payload)| {
+                if generation < 1 {
+                    return Err("Invalid upstream archive generation".into());
+                }
+                Ok((
+                    generation,
+                    crate::upstream_reviews::parse_record(source, payload.as_bytes())?,
+                ))
+            })
+            .transpose()
+    }
+    fn latest_upstream_raw_snapshot(
+        &self,
+        source: crate::upstream_reviews::Source,
+    ) -> rusqlite::Result<Option<(i64, String)>> {
+        self.0.query_row("SELECT generation,CASE WHEN typeof(payload)='text' AND octet_length(payload)>4194304 THEN NULL ELSE payload END FROM snapshots WHERE provider='github-upstream' AND canonical_id=?1 ORDER BY generation DESC LIMIT 1",[source.id()],|r| {
+            let body:String=r.get(1)?;
             if body.len()>crate::upstream_reviews::MAX_BODY as usize {
-                return Err(rusqlite::Error::FromSqlConversionFailure(0,rusqlite::types::Type::Text,Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData,"Stored upstream payload exceeds read budget"))));
+                return Err(rusqlite::Error::FromSqlConversionFailure(1,rusqlite::types::Type::Text,Box::new(std::io::Error::new(std::io::ErrorKind::InvalidData,"Stored upstream payload exceeds read budget"))));
             }
-            Ok(body)
+            Ok((r.get(0)?,body))
         }).optional()
     }
     pub fn save_modrinth_project_record(
@@ -388,6 +412,48 @@ impl SnapshotStore {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn upstream_archive_snapshot_binds_source_generation_and_complete_bytes() {
+        use crate::upstream_reviews::{Source, tests::fixture};
+        let mut store = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        let body = fixture("v1.7.4");
+        store
+            .save_upstream(Source::Hls, &body, &upstream_meta(10000))
+            .unwrap();
+        let (generation, record) = store
+            .latest_upstream_snapshot(Source::Hls)
+            .unwrap()
+            .unwrap();
+        assert_eq!(generation, 1);
+        assert_eq!(record.payload.as_bytes(), body);
+        assert!(
+            store
+                .latest_upstream_snapshot(Source::RustSec)
+                .unwrap()
+                .is_none()
+        );
+        let foreign = String::from_utf8(body.clone())
+            .unwrap()
+            .replace("video-dev/hls.js", "serde-rs/json");
+        store
+            .0
+            .execute("UPDATE snapshots SET payload=?1", [&foreign])
+            .unwrap();
+        assert!(store.latest_upstream_snapshot(Source::Hls).is_err());
+        assert_eq!(
+            store.latest_upstream_payload(Source::Hls).unwrap().unwrap(),
+            foreign
+        );
+        assert_eq!(store.attempts().unwrap(), 1);
+        let invalid_generation = SnapshotStore::open(Path::new(":memory:")).unwrap();
+        invalid_generation.0.execute("INSERT INTO snapshots(generation,provider,canonical_id,payload) VALUES(0,'github-upstream','hls',?1)",[String::from_utf8(body).unwrap()]).unwrap();
+        assert!(
+            invalid_generation
+                .latest_upstream_snapshot(Source::Hls)
+                .is_err()
+        );
+    }
+
     fn upstream_over_budget_read_is_rejected(size: usize) {
         use crate::upstream_reviews::Source;
         let store = SnapshotStore::open(Path::new(":memory:")).unwrap();

@@ -186,3 +186,7 @@ not a general recommendation or approval to change another project.
 ## Prior upstream read bounds, 2026-10-30
 
 [Actual SnapshotStore copy-bound repair](../experiments/upstream-read-bound-lab/README.md) rejects oversized raw reads and avoids materializing a five-MiB corrupted prior TEXT value during refresh. Complete old/new data, valid controls and wrong-type failures remain checked. Requested Rust allocation evidence is not total process-memory or speed evidence.
+
+## Saved upstream inspection, 2026-10-30
+
+[Fixed-source archive inspector](../experiments/upstream-archive-view-lab/README.md) exposes complete saved RustSec/HLS/serde_json responses through the actual app, reusing validated bounded storage and the existing byte verifier. Offline reads preserve budgets, interrupted-request state and original history. Real local HTTP is verified; native browser acceptance remains separate.

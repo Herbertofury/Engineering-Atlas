@@ -107,12 +107,14 @@ async fn index(State(app): State<App>) -> Html<String> {
 enum ArchiveKind {
     Project,
     Version,
+    Upstream,
 }
 impl ArchiveKind {
     fn label(self) -> &'static str {
         match self {
             Self::Project => "project",
             Self::Version => "version",
+            Self::Upstream => "upstream",
         }
     }
 }
@@ -128,16 +130,30 @@ async fn saved_version_response(
 ) -> Result<Response, StatusCode> {
     saved_archive_response(app, id, ArchiveKind::Version).await
 }
+async fn saved_upstream_response(
+    State(app): State<App>,
+    RoutePath(id): RoutePath<String>,
+) -> Result<Response, StatusCode> {
+    saved_archive_response(app, id, ArchiveKind::Upstream).await
+}
 async fn saved_archive_response(
     app: App,
     id: String,
     kind: ArchiveKind,
 ) -> Result<Response, StatusCode> {
     match kind {
-        ArchiveKind::Project => crate::modrinth::projects_url(std::slice::from_ref(&id)),
-        ArchiveKind::Version => crate::modrinth_versions::versions_url(std::slice::from_ref(&id)),
+        ArchiveKind::Project => {
+            crate::modrinth::projects_url(std::slice::from_ref(&id))
+                .map_err(|_| StatusCode::BAD_REQUEST)?;
+        }
+        ArchiveKind::Version => {
+            crate::modrinth_versions::versions_url(std::slice::from_ref(&id))
+                .map_err(|_| StatusCode::BAD_REQUEST)?;
+        }
+        ArchiveKind::Upstream => {
+            crate::upstream_reviews::Source::parse(&id).map_err(|_| StatusCode::BAD_REQUEST)?;
+        }
     }
-    .map_err(|_| StatusCode::BAD_REQUEST)?;
     let permit = app
         .db_slots
         .try_acquire_owned()
@@ -153,6 +169,12 @@ async fn saved_archive_response(
             ArchiveKind::Version => store.latest_modrinth_version_snapshot(&id).map(|snapshot| {
                 snapshot.map(|(generation, record)| (generation, record.payload.get().to_owned()))
             }),
+            ArchiveKind::Upstream => store
+                .latest_upstream_snapshot(
+                    crate::upstream_reviews::Source::parse(&id)
+                        .map_err(|_| StatusCode::BAD_REQUEST)?,
+                )
+                .map(|snapshot| snapshot.map(|(generation, record)| (generation, record.payload))),
         };
         let (generation, payload) = stored
             .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?
@@ -491,6 +513,7 @@ async fn serve_strategy(
         )
         .route("/api/project-archive/{id}", get(saved_project_response))
         .route("/api/version-archive/{id}", get(saved_version_response))
+        .route("/api/upstream-archive/{id}", get(saved_upstream_response))
         .route("/api/overview", get(overview))
         .route("/api/jobs", post(enqueue))
         .layer(DefaultBodyLimit::max(4096))
@@ -519,6 +542,97 @@ async fn serve_strategy(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn upstream_archive_route_returns_only_bound_saved_evidence() {
+        use crate::upstream_reviews::{Source, response_meta, tests::fixture};
+        let directory = std::env::temp_dir().join(format!(
+            "atlas-upstream-view-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&directory).unwrap();
+        let path = directory.join("fixture.sqlite");
+        let body = fixture("v1.7.4");
+        let mut store = crate::snapshots::SnapshotStore::open(&path).unwrap();
+        store
+            .save_upstream(
+                Source::Hls,
+                &body,
+                &response_meta(200, &HeaderMap::new(), 10000, 0),
+            )
+            .unwrap();
+        drop(store);
+        let (wake, _receiver) = std::sync::mpsc::sync_channel(1);
+        let app = App {
+            path: path.clone(),
+            worker_status: Arc::new(AtomicU8::new(1)),
+            wake,
+            overview_candidate: false,
+            db_slots: Arc::new(tokio::sync::Semaphore::new(4)),
+        };
+        tokio::runtime::Builder::new_multi_thread()
+            .worker_threads(2)
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let response =
+                    saved_archive_response(app.clone(), "hls".into(), ArchiveKind::Upstream)
+                        .await
+                        .unwrap();
+                assert_eq!(response.headers()["x-atlas-archive-kind"], "upstream");
+                assert_eq!(response.headers()["x-atlas-canonical-id"], "hls");
+                assert_eq!(response.headers()["x-atlas-generation"], "1");
+                assert_eq!(
+                    response.headers()["x-atlas-payload-sha256"],
+                    crate::build_identity::sha256_hex(&body)
+                );
+                assert_eq!(
+                    axum::body::to_bytes(response.into_body(), 2 * 1024 * 1024)
+                        .await
+                        .unwrap()
+                        .as_ref(),
+                    body
+                );
+                assert_eq!(
+                    saved_archive_response(
+                        app.clone(),
+                        "new-unreviewed".into(),
+                        ArchiveKind::Upstream
+                    )
+                    .await
+                    .unwrap_err(),
+                    StatusCode::BAD_REQUEST
+                );
+                assert_eq!(
+                    saved_archive_response(app.clone(), "rustsec".into(), ArchiveKind::Upstream)
+                        .await
+                        .unwrap_err(),
+                    StatusCode::NOT_FOUND
+                );
+                let c = rusqlite::Connection::open(&path).unwrap();
+                c.execute("UPDATE snapshots SET payload='{}'", []).unwrap();
+                drop(c);
+                assert_eq!(
+                    saved_archive_response(app.clone(), "hls".into(), ArchiveKind::Upstream)
+                        .await
+                        .unwrap_err(),
+                    StatusCode::UNPROCESSABLE_ENTITY
+                );
+                assert_eq!(app.db_slots.available_permits(), 4);
+            });
+        assert_eq!(
+            crate::snapshots::SnapshotStore::open(&path)
+                .unwrap()
+                .attempts()
+                .unwrap(),
+            1
+        );
+    }
+
     #[test]
     fn saved_archive_routes_keep_namespaces_and_exact_bytes() {
         let directory = std::env::temp_dir().join(format!(

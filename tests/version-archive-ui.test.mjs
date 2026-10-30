@@ -35,3 +35,6 @@ test('closing the last-good viewer cancels pending work instead of reopening it 
 test('dialog cancel event also aborts a pending request',async()=>{
  let next=false,resolve,signal;const app=mount((_kind,_id,options)=>{if(!next)return Promise.resolve(record);signal=options.signal;return new Promise(r=>resolve=r);});await settle();await app.submit();next=true;const pending=app.submit();app.get('saved-archive-dialog').handlers.get('cancel')();assert.equal(signal.aborted,true);resolve({...record,text:'late'});await pending;assert.equal(app.get('saved-archive-text').textContent,raw);
 });
+test('upstream downloads keep their verified source label after the selector changes',async()=>{
+ const upstream={...record,kind:'upstream',id:'serde-json'};const app=mount(async()=>upstream);await settle();app.get('saved-archive-kind').value='upstream';app.get('saved-archive-id').value='serde-json';await app.submit();app.get('saved-archive-kind').value='project';app.get('download-saved-archive').handlers.get('click')();assert.equal(app.downloads[0].name,'github-upstream-serde-json-generation-9007199254740993.json');assert.match(app.get('saved-archive-title').textContent,/^upstream serde-json /);assert.deepEqual(new Uint8Array(await app.blobs.get(app.downloads[0].href).arrayBuffer()),bytes);
+});
