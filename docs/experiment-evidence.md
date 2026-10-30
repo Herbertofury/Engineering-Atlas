@@ -174,3 +174,7 @@ not a general recommendation or approval to change another project.
 ## Saved version inspection, 2026-10-30
 
 [Complete version-object inspector](../experiments/version-archive-view-lab/README.md) extends the actual app by reusing its project archive path, strict byte verifier and cancellation state. It preserves full JSON and namespace identity, fixes late reopening after viewer closure, and retains real HTTP plus controlled UI evidence. Browser interaction and performance acceptance remain separate.
+
+## Unconfirmed job receipt recovery, 2026-10-30
+
+[Shared enqueue recovery](../experiments/job-submission-recovery-lab/README.md) repairs six indefinitely disabled action paths, bounds complete receipt reads, preserves exact decimal IDs and avoids automatic POST retries. An actual queue plus owned delayed-response proxy verifies that a client timeout can coexist with a successfully accepted job. Native browser acceptance remains open.

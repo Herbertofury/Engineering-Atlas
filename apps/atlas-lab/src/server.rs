@@ -480,6 +480,15 @@ async fn serve_strategy(
                 )
             }),
         )
+        .route(
+            "/job-submit.mjs",
+            get(|| async {
+                (
+                    [(header::CONTENT_TYPE, "text/javascript; charset=utf-8")],
+                    include_str!("../ui/job-submit.mjs"),
+                )
+            }),
+        )
         .route("/api/project-archive/{id}", get(saved_project_response))
         .route("/api/version-archive/{id}", get(saved_version_response))
         .route("/api/overview", get(overview))

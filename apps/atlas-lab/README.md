@@ -163,3 +163,7 @@ The existing CLI and actual queued worker have now successfully requested and pe
 ### Inspect saved version objects · October 30, 2026
 
 The same saved-response inspector now reads complete individual version JSON objects. Select Project response or Version object and enter the matching canonical ID. Type-bound headers and hashes prevent cross-namespace substitution, and the original bytes can be downloaded with a type-specific filename. Changing type or closing a viewer with a pending load cancels that load while retaining previous verified data. File URLs remain inert metadata; no binary file is fetched. [Implementation and actual HTTP regression evidence](../../experiments/version-archive-view-lab/README.md) distinguish controlled UI tests from still-unverified native browser interaction.
+
+### Unconfirmed submission recovery · October 30, 2026
+
+All six enqueue actions now use a bounded receipt wait. If the reply stalls or cannot be verified, the control becomes available again and the UI asks you to check Overview before submitting again: the job may already exist. No POST is automatically retried or described as cancelled merely because its receipt timed out. Complete integer receipt IDs remain strings rather than rounded JavaScript numbers. [Reproduced failures and actual local queue/transport evidence](../../experiments/job-submission-recovery-lab/README.md) keep browser interaction acceptance separate.
