@@ -4,11 +4,13 @@
 
 **Build better software. Prove the improvement. Keep the evidence.**
 
-A practical, evolving research library for desktop apps, web services, Minecraft mods, game tooling and asset pipelines. Reviewed starting point: **October 26, 2026**. This is a curated foundation, not a claim that every technology has been exhaustively benchmarked.
+A practical, evolving research library for desktop apps, web services, Minecraft mods, game tooling and asset pipelines. Foundation reviewed October 26; latest stack and methods expansion: **October 31, 2026**. This is a curated foundation, not a claim that every technology has been exhaustively benchmarked.
 
 ## Search and compare the research catalog
 
 [Research Explorer](https://herbertofury.github.io/Engineering-Atlas/explorer/) provides field/type/evidence filters, source-backed 2026 candidates, dated GitHub popularity, scoped external benchmarks, retained Atlas measurements and a reproducible test queue. Compare a shortlist and export a test plan. Community reports have a reviewable GitHub submission path; no votes are fabricated.
+
+**Current snapshot:** 283 candidates, 36 papers, 20 stack layers and 38 planned comparisons. The [October 31 research record](research/2026-10-31-stack-expansion.md) adds 68 candidates, 15 existing-entry refreshes and 164 primary-source observations.
 
 [Complete catalog](docs/research-catalog.md) · [Ranking methodology](docs/research-explorer.md) · [Planned comparisons](docs/research-test-queue.md) · [Community reports](docs/research-community.md)
 
@@ -66,4 +68,4 @@ A substantial improvement changes the actual end-to-end experience while retaini
 
 The fixture data is **synthetic test data**, never evidence that a real application is faster. This repository contains no validated universal stack rankings or private project logs.
 
-[Primary-source register](data/sources.json) · [Research backlog](docs/roadmap.md) · [Contribution rules](CONTRIBUTING.md) · [Wiki](https://github.com/Herbertofury/Engineering-Atlas/wiki)
+[Complete primary-source index](data/source-index.json) · [Research backlog](docs/roadmap.md) · [Contribution rules](CONTRIBUTING.md) · [Wiki](https://github.com/Herbertofury/Engineering-Atlas/wiki)

@@ -1,15 +1,17 @@
 {
   "cohorts": 11,
-  "entries": 215,
+  "entries": 283,
   "files": {
-    "docs/explorer/catalog.0f5082fc1d6d1c80.json": "0f5082fc1d6d1c803bc78247bb584d8ae19a8e2ebdac2955f96d521fed7e3c41",
-    "docs/explorer/explorer-core.a375751d296ae2da.mjs": "a375751d296ae2dabe5b6bde9ed93658c7b000135b153daf480b8de84654e668",
-    "docs/explorer/explorer.11a0ce9b7a735799.css": "11a0ce9b7a7357995ae4f761b56e7aaadb2295ad4f8655335998fdbf91a7e627",
-    "docs/explorer/explorer.c1f012c2f839827c.mjs": "c1f012c2f839827ce58a86c187909569e3a22e18ec3021122f4c6cfc82a75bfa",
-    "docs/explorer/index.html": "98503f17fedbe26aa476a3174cf536738061e586140090648f005848d50ddfeb",
-    "docs/research-catalog.md": "833023fcb9c835182361c92a985aab68e4bf4199754a8b9eec61093813bd05c9",
-    "docs/stack-selection.md": "f431a2f793a09d83d13f071b436e11b3727c39712208c1109bb0f2a7da21bf2c"
+    "docs/explorer/catalog.656d184801be688c.json": "656d184801be688cea150ca45791f96cf79e9448cf3ff3f2c767db7063cad442",
+    "docs/explorer/explorer-core.659d5fdf9e79fc53.mjs": "659d5fdf9e79fc53be94b24fae9ad75f83c496c6134eefa18fe69068c9f225f5",
+    "docs/explorer/explorer.3c4c931f11046f27.css": "3c4c931f11046f27ae45ba34b9d76a7c568379c73156f873224f8d49f3551250",
+    "docs/explorer/explorer.74a96d35de2ccd73.mjs": "74a96d35de2ccd73239872a6f6efc456ab18be88317f2e8800de26bc19479069",
+    "docs/explorer/index.html": "ac97d5d9682fa4d564a3e9dfa39a9ea72a0d07c553f507a5180cf4bc0a0c210a",
+    "docs/research-catalog.md": "d9221f1c3855f08313b92789cc1312a7925cdf5c8ec527d398c076c9e0b12ced",
+    "docs/research-test-queue.md": "c12f912858756e918aca535206ea6a04bd0086dc6df34d53d5aa14c615df3579",
+    "docs/stack-selection.md": "0cc1297fa7a13164367a9496da9435b1c3d309af0255e78e3b3ebb0029e92b4c"
   },
   "observations": 35,
-  "schema_version": 1
+  "schema_version": 1,
+  "test_plans": 38
 }

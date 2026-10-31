@@ -40,3 +40,15 @@ The October 28 continuation adds **61 candidates**, updates **22 existing record
 Layer filtering, search/link intersection, observed-star ordering, reset behavior and mod ecosystem scoping were inspected in the browser. The HTTP preview correctly falls back to an address-bar instruction when clipboard access is unavailable. Saved-download verification remains limited as described above. No new candidate benchmark, community vote or target acceptance is claimed.
 
 The extension is merged through [PR #2](https://github.com/Herbertofury/Engineering-Atlas/pull/2). The [stack publication receipt](stack-publication-2026-10-28.json) records successful Linux/Windows validation, Pages deployment, the live 215-candidate snapshot and a verified HTTPS clipboard share link. The [wiki receipt](stack-wiki-publication-2026-10-28.json) verifies all four existing research copies, one in-place Home paragraph update, zero new pages, an unchanged Sidebar, all 15 protected adapter pages, and every other existing page. [Live stack guide](stack-live-explorer-2026-10-28.jpg) and [live wiki guide](stack-live-wiki-2026-10-28.jpg) screenshots preserve the inspected published states.
+
+## October 31 stack, methods and plan extension
+
+The current pass contains **283 candidates, 36 papers, 20 layers and 38 planned comparisons**. It adds 68 candidates, refreshes 15, and registers 164 primary-source observations. Fourteen additional paper records comprise twelve full-text reviews and two explicitly limited reviews. All remain candidates; the 11 retained result cohorts and 35 observations are unchanged.
+
+- [Dated validation record](stack-checks-2026-10-31.json) records counts, source/signal/result preservation, generated hashes and review repairs.
+- [Python output](stack-python-tests-2026-10-31.log): **250 tests passed**.
+- [JavaScript output](stack-javascript-tests-2026-10-31.log): **42 test files passed** under the standard repository command.
+
+The new tests cover planned-only data contracts, complete plan export despite active filters, URL state, source-domain search and additive-source deterministic fixtures. All historical source files, repository observations, community records and research-result inputs remain intact. The source checker reports 1,364 registered sources with no stale records at this check.
+
+Local validation completed before publication. The public deployment, live-browser behavior and separate wiki publication are verified in a subsequent publication receipt; the older October 28 screenshots above do not establish the new version's UI behavior.

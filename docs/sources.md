@@ -3898,3 +3898,7 @@ No selected source aborts current and pending image requests. Socket cancellatio
 [Prioritized Task Scheduling continuation semantics](https://wicg.github.io/scheduling-apis/) · Draft Community Group Report, 2025-05-30
 
 Prioritized continuations support cooperative main-thread yielding. This is not a W3C Standard or a preemptive execution guarantee. Feature support and workload tradeoffs require measurement. Reviewed 2026-10-28.
+
+## October 31 stack and methods expansion
+
+The complete additive register includes **164 additional dated observations** for this pass: [runtimes/builds/UI](../data/sources.d/stack-runtime-20261031.json), [graphics/assets](../data/sources.d/stack-graphics-20261031.json), [storage/I/O](../data/sources.d/stack-storage-20261031.json), and [diagnosis/evidence](../data/sources.d/stack-evidence-20261031.json). The [dated research record](../research/2026-10-31-stack-expansion.md#complete-new-source-ids) lists every new source ID and its primary URL. Read [source-index.json](../data/source-index.json) for the complete preserved register; the original sources.json remains unchanged.

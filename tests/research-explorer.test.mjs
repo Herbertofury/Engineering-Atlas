@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   COMMUNITY_PRIOR, PAGE_SIZE, cohortFor, communityScore, csvCell, encodeState,
   evidenceFor, exportCSV, measurement, parseState, publicationYearMatches, publishedDate, queryCatalog,
-  ratingURL, repositorySignal, safeURL,
+  ratingURL, repositorySignal, safeURL, testPlanFor, plansForCandidate, buildTestPlanProposal,
 } from '../docs/explorer/explorer-core.mjs';
 
 // All entries, accounts, popularity counts and measurements in this file are
@@ -46,6 +46,98 @@ function catalog(entries = [], extra = {}) {
   return {entries, results: {cohorts: [], observations: []},
     signals: {repositories: {}, errors: []}, community: {ratings: []}, ...extra};
 }
+
+function plan(entries, extra = {}) {
+  return {id: 'synthetic-plan', title: 'Synthetic recovery comparison', priority: 1, status: 'planned',
+    decision: 'Synthetic decision only.', layer_ids: ['synthetic-ui'], candidate_ids: entries.map(e => e.id),
+    controls: ['Pinned synthetic baseline'], gates: ['Complete synthetic outputs'],
+    metrics: ['Synthetic duration'], protocol: ['Retain synthetic failures'], ...extra};
+}
+
+test('planned comparisons intersect filters without treating membership as measured evidence', () => {
+  const a = entry('a', {layers: ['synthetic-ui']});
+  const b = entry('b', {layers: ['synthetic-runtime'], kind: 'framework'});
+  const unrelated = entry('unrelated', {layers: ['synthetic-ui']});
+  const selected = plan([a, b]);
+  const data = catalog([a, b, unrelated], {test_plans: [selected]});
+  assert.deepEqual(ids(queryCatalog(data, state({plan: selected.id}))), [a.id, b.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({plan: selected.id, layer: 'synthetic-ui'}))), [a.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({plan: selected.id, kind: 'framework'}))), [b.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({plan: selected.id, evidence: 'measured'}))), []);
+  assert.deepEqual(ids(queryCatalog(data, state({q: 'recovery comparison'}))), [a.id, b.id]);
+  assert.equal(evidenceFor(a, data), 'candidate');
+  assert.equal(testPlanFor(data, selected.id), selected);
+  assert.deepEqual(plansForCandidate(unrelated, data), []);
+  assert.deepEqual(plansForCandidate(a, catalog([a])), []);
+});
+
+test('project and primary-source domains are searchable without a GitHub repository or popularity score', () => {
+  const alternative = entry('alternative', {url: 'https://codeberg.org/synthetic/search', repo: null,
+    sources: [source(null, {url: 'https://gitlab.example.invalid/synthetic/index/docs'})]});
+  const paper = entry('paper', {paper_url: 'https://papers.example.invalid/synthetic-work'});
+  const data = catalog([alternative, paper]);
+  assert.deepEqual(ids(queryCatalog(data, state({q: 'codeberg.org search'}))), [alternative.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({q: 'gitlab.example.invalid'}))), [alternative.id]);
+  assert.deepEqual(ids(queryCatalog(data, state({q: 'papers.example.invalid'}))), [paper.id]);
+  assert.equal(repositorySignal(alternative, data), null);
+  assert.equal(evidenceFor(alternative, data), 'candidate');
+});
+
+test('unknown plan links never silently expand to the full catalog and plan scope roundtrips', () => {
+  const data = catalog([entry('a')]);
+  const view = state({plan: 'synthetic-missing', layer: 'synthetic-ui', q: 'café & queue', page: 2});
+  assert.deepEqual(parseState('?' + encodeState(view)), view);
+  const result = queryCatalog(data, view);
+  assert.equal(result.total, 0);
+  assert.match(result.reason, /planned comparison is unavailable/);
+  assert.equal(testPlanFor(data, view.plan), null);
+});
+
+test('plan export retains every candidate and contract while leaving actual execution evidence unknown', () => {
+  const a = entry('a', {source_ids: ['SYN001'], layers: ['synthetic-ui']});
+  const b = entry('b', {source_ids: ['SYN002'], kind: 'framework'});
+  const selected = plan([a, b]);
+  const data = catalog([a, b], {test_plans: [selected], snapshot_date: CHECKED, test_plans_reviewed_at: CHECKED});
+  const before = structuredClone(data);
+  assert.equal(queryCatalog(data, state({plan: selected.id, kind: 'tool'})).total, 1);
+  const result = buildTestPlanProposal(data, selected.id, CHECKED + 'T12:00:00Z');
+  assert.equal(result.evidence, 'proposal_not_run');
+  assert.equal(result.execution.status, 'not_run');
+  assert.deepEqual(result.plan, selected);
+  assert.deepEqual(result.candidates.map(candidate => candidate.id), [a.id, b.id]);
+  assert.deepEqual(result.candidates[0].sources, a.sources);
+  assert.deepEqual(result.candidates[1].evaluation, b.evaluation);
+  assert.deepEqual(result.execution.candidate_revisions, {[a.id]: null, [b.id]: null});
+  for (const key of ['baseline_revision', 'workload_sha256', 'environment', 'expected_output_contract',
+    'minimum_useful_improvement', 'trial_design', 'raw_evidence']) assert.equal(result.execution[key], null, key);
+  assert.equal(result.catalog_snapshot, CHECKED);
+  assert.equal(result.plan_reviewed_at, CHECKED);
+  assert.equal(result.exported_at, CHECKED + 'T12:00:00Z');
+  assert.equal(result.required_before_execution.length, 5);
+  assert.equal('results' in result, false);
+  result.plan.gates.push('Edited after export');
+  result.candidates[0].sources[0].note = 'Edited after export';
+  assert.deepEqual(data, before, 'Export must not mutate or share nested catalog data');
+});
+
+test('export rejects missing plans, status promotion, and incomplete candidate references', () => {
+  const a = entry('a');
+  assert.throws(() => buildTestPlanProposal(catalog([a]), 'missing'), /registered planned comparison/);
+  assert.throws(() => buildTestPlanProposal(catalog([a], {test_plans: [plan([a], {status: 'accepted'})]}),
+    'synthetic-plan'), /registered planned comparison/);
+  assert.throws(() => buildTestPlanProposal(catalog([a], {test_plans: [plan([a, entry('missing')])]}),
+    'synthetic-plan'), /unavailable candidate/);
+});
+
+test('CSV includes related plan IDs without inventing benchmark or community scores', () => {
+  const a = entry('a');
+  const data = catalog([a], {test_plans: [plan([a]), plan([a], {id: 'synthetic-second'})]});
+  const row = csvRecords(exportCSV([a], data, state({plan: 'synthetic-plan'})))[0];
+  assert.equal(row.planned_comparisons, 'synthetic-plan; synthetic-second');
+  assert.equal(row.benchmark_value, '');
+  assert.equal(row.community_adjusted_score, '');
+  assert.equal(row.evidence, 'candidate');
+});
 
 function state(extra = {}) { return {...parseState(''), ...extra}; }
 function ids(result) { return result.entries.map(e => e.id); }
@@ -421,9 +513,9 @@ test('CSV export preserves unknown versus zero popularity and does not invent me
   }}});
   const exported = exportCSV([zero, missing], data);
   const expected = [
-    '"id","name","kind","category","stack_layers","maturity","evidence","priority","track","github_stars","stars_observed_at","url"',
-    '"synthetic-zero","\'=SUM(1,2)","tool","synthetic-tools","","experimental","candidate","1","synthetic-build","0","2026-10-27T12:00:00Z","https://example.invalid/synthetic-zero"',
-    '"synthetic-missing","Synthetic Missing","tool","synthetic-tools","","experimental","candidate","1","synthetic-build","","","https://example.invalid/synthetic-missing"',
+    '"id","name","kind","category","stack_layers","planned_comparisons","maturity","evidence","priority","track","github_stars","stars_observed_at","url"',
+    '"synthetic-zero","\'=SUM(1,2)","tool","synthetic-tools","","","experimental","candidate","1","synthetic-build","0","2026-10-27T12:00:00Z","https://example.invalid/synthetic-zero"',
+    '"synthetic-missing","Synthetic Missing","tool","synthetic-tools","","","experimental","candidate","1","synthetic-build","","","https://example.invalid/synthetic-missing"',
   ].join('\r\n');
   assert.equal(exported, expected);
   assert.equal(exportCSV([], data), expected.split('\r\n')[0]);

@@ -15,14 +15,14 @@ export function parseState(search = '') {
   const page = Number(p.get('page'));
   return {q: (p.get('q') || '').slice(0, 300), category: p.get('category') || '', layer: p.get('layer') || '',
     kind: p.get('kind') || '', maturity: p.get('maturity') || '', evidence: p.get('evidence') || '',
-    year: p.get('year') || '', track: p.get('track') || '', cohort: p.get('cohort') || '',
+    year: p.get('year') || '', track: p.get('track') || '', plan: p.get('plan') || '', cohort: p.get('cohort') || '',
     sort: SORTS.includes(p.get('sort')) ? p.get('sort') : 'priority',
     page: Number.isInteger(page) && page > 0 ? Math.min(page, 10000) : 1};
 }
 
 export function encodeState(state) {
   const p = new URLSearchParams();
-  for (const key of ['q', 'category', 'layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'cohort', 'sort', 'page']) {
+  for (const key of ['q', 'category', 'layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'plan', 'cohort', 'sort', 'page']) {
     const value = state[key];
     if (value && !(key === 'sort' && value === 'priority') && !(key === 'page' && value === 1)) p.set(key, String(value));
   }
@@ -72,24 +72,59 @@ export function evidenceFor(entry, catalog) {
     catalog.results.cohorts.some(c => c.id === o.cohort_id && c.evidence === 'atlas_measured')) ? 'measured' : 'candidate';
 }
 
+export function testPlanFor(catalog, id) {
+  return (catalog.test_plans || []).find(plan => plan.id === id) || null;
+}
+
+export function plansForCandidate(entry, catalog) {
+  return (catalog.test_plans || []).filter(plan => plan.candidate_ids.includes(entry.id));
+}
+
+// Planning data never creates observations or supplies missing execution evidence.
+export function buildTestPlanProposal(catalog, id, exportedAt = new Date().toISOString()) {
+  const plan = testPlanFor(catalog, id);
+  if (!plan || plan.status !== 'planned') throw new Error('Choose a registered planned comparison.');
+  const candidates = plan.candidate_ids.map(candidateId => {
+    const entry = catalog.entries.find(item => item.id === candidateId);
+    if (!entry) throw new Error('Planned comparison references an unavailable candidate: ' + candidateId);
+    return {id: entry.id, name: entry.name, url: entry.url, layers: entry.layers || [],
+      evaluation: entry.evaluation, source_ids: entry.source_ids, sources: entry.sources};
+  });
+  return structuredClone({schema_version: 1, evidence: 'proposal_not_run', exported_at: exportedAt,
+    catalog_snapshot: catalog.snapshot_date, plan_reviewed_at: catalog.test_plans_reviewed_at || null,
+    plan, candidates,
+    required_before_execution: ['Pin the actual target baseline and every candidate configuration.',
+      'Define the complete workload, expected outputs and diagnostics, and retain their hashes.',
+      'Declare hardware, OS, dependency locks, security boundaries and resource budgets.',
+      'Set the minimum useful improvement, rejection gates and trial design before collecting results.',
+      'Retain raw results, failed trials and environment details in a new compatible cohort.'],
+    execution: {status: 'not_run', baseline_revision: null,
+      candidate_revisions: Object.fromEntries(candidates.map(entry => [entry.id, null])),
+      workload_sha256: null, expected_output_contract: null, environment: null,
+      minimum_useful_improvement: null, trial_design: null, raw_evidence: null}});
+}
+
 export function queryCatalog(catalog, state) {
   const terms = state.q.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
   const cohort = cohortFor(catalog, state);
   const needsCohort = ['external', 'measured'].includes(state.sort);
+  const plan = state.plan ? testPlanFor(catalog, state.plan) : null;
+  if (state.plan && !plan) return {entries: [], total: 0, pages: 1, page: 1, reason: 'This planned comparison is unavailable. Choose another plan or reset the filters.'};
   if (needsCohort && !cohort) return {entries: [], total: 0, pages: 1, page: 1, reason: 'Choose one benchmark cohort to compare matching results.'};
   if (state.sort === 'community' && !state.track) return {entries: [], total: 0, pages: 1, page: 1, reason: 'Choose an evaluation track to compare community experience in a shared scope.'};
   let entries = catalog.entries.filter(e => {
     if (state.category && state.category !== e.category) return false;
     if (state.layer && !(e.layers || []).includes(state.layer)) return false;
+    if (plan && !plan.candidate_ids.includes(e.id)) return false;
     if (state.kind && state.kind !== e.kind) return false;
     if (state.maturity && state.maturity !== e.maturity) return false;
     if (state.track && state.track !== e.evaluation.track) return false;
     if (state.evidence && state.evidence !== evidenceFor(e, catalog)) return false;
     if (state.year && !publicationYearMatches(e, state.year)) return false;
     if (needsCohort && !measurement(e, catalog, state)) return false;
-    const text = [e.name, e.summary, e.category, e.kind, e.repo || '', e.latest_signal || '', ...e.tags,
+    const text = [e.name, e.summary, e.category, e.kind, e.url, e.paper_url || '', e.repo || '', e.latest_signal || '', ...e.tags,
       e.evaluation.track, ...(e.layers || []).map(id => (catalog.layers || []).find(l => l.id === id)?.label || id),
-      ...e.sources.map(s => s.title)].join(' ').toLocaleLowerCase();
+      ...e.sources.flatMap(s => [s.title, s.url]), ...plansForCandidate(e, catalog).map(p => p.title)].join(' ').toLocaleLowerCase();
     return terms.every(t => text.includes(t));
   });
   const value = e => {
@@ -121,14 +156,14 @@ export function csvCell(value) {
 }
 
 export function exportCSV(entries, catalog, state = null) {
-  const fields = ['id', 'name', 'kind', 'category', 'stack_layers', 'maturity', 'evidence', 'priority', 'track', 'github_stars', 'stars_observed_at', 'url'];
+  const fields = ['id', 'name', 'kind', 'category', 'stack_layers', 'planned_comparisons', 'maturity', 'evidence', 'priority', 'track', 'github_stars', 'stars_observed_at', 'url'];
   if (state) fields.push('ranking_view', 'benchmark_cohort_id', 'benchmark_metric', 'benchmark_unit',
     'benchmark_direction', 'benchmark_value', 'benchmark_source_url', 'benchmark_observed_at',
     'community_track', 'community_report_count', 'community_raw_mean', 'community_adjusted_score', 'community_rank_eligible');
   const cohort = state ? cohortFor(catalog, state) : null;
   return [fields, ...entries.map(e => {
     const signal = repositorySignal(e, catalog);
-    const values = [e.id, e.name, e.kind, e.category, (e.layers || []).join('; '), e.maturity, evidenceFor(e, catalog), e.priority,
+    const values = [e.id, e.name, e.kind, e.category, (e.layers || []).join('; '), plansForCandidate(e, catalog).map(p => p.id).join('; '), e.maturity, evidenceFor(e, catalog), e.priority,
       e.evaluation.track, signal?.stars, signal?.observed_at, e.url];
     if (!state) return values;
     const result = cohort ? measurement(e, catalog, state) : null;

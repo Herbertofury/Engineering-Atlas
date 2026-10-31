@@ -146,6 +146,165 @@ def community_fixture():
     }
 
 
+def test_plan_fixture():
+    return {
+        "schema_version": 1,
+        "reviewed_at": "2026-10-27",
+        "description": "Synthetic planning fixture only; no experiment was run.",
+        "plans": [{
+            "id": "planned-synthetic-contract-v1",
+            "title": "Synthetic parser contract",
+            "priority": 1,
+            "status": "planned",
+            "decision": "Can the synthetic schema reject invalid proposals?",
+            "layer_ids": ["synthetic-storage"],
+            "candidate_ids": ["synthetic-parser"],
+            "controls": ["Synthetic current implementation fixture."],
+            "gates": ["Preserve the complete synthetic output."],
+            "metrics": ["Synthetic fixture errors detected; not performance evidence."],
+            "protocol": ["Validate without executing any candidate."],
+        }],
+    }
+
+
+class TestPlanValidationTests(unittest.TestCase):
+    def setUp(self):
+        self.catalog, _ = catalog_fixture()
+        self.catalog["layers"] = [{"id": "synthetic-storage", "label": "Synthetic storage"}]
+        self.registry = test_plan_fixture()
+
+    def validate(self):
+        return explorer.validate_test_plans(self.registry, self.catalog, TODAY)
+
+    def test_valid_proposal_preserves_planned_status_and_catalog_evidence(self):
+        before = copy.deepcopy((self.registry, self.catalog))
+        self.assertEqual(self.validate(), {"planned-synthetic-contract-v1"})
+        self.assertEqual((self.registry, self.catalog), before)
+        directory = explorer.markdown_test_plan_directory({**self.catalog, "test_plans": self.registry["plans"]})
+        self.assertIn("?plan=planned-synthetic-contract-v1#catalog", directory)
+        self.assertIn("Every row is planned, not a result", directory)
+        self.assertIn("Synthetic storage", directory)
+
+    def test_non_objects_invalid_schemas_and_undated_registry_fail(self):
+        for value in (None, [], "plans", 1):
+            with self.subTest(registry=value):
+                self.registry = value
+                with self.assertRaisesRegex(ValueError, "must be an object"):
+                    self.validate()
+        for schema in (True, 1.0, "1", 2, None):
+            with self.subTest(schema=schema):
+                self.registry = test_plan_fixture()
+                self.registry["schema_version"] = schema
+                with self.assertRaisesRegex(ValueError, "schema"):
+                    self.validate()
+        for value in (None, "", "2026-10-28"):
+            with self.subTest(reviewed_at=value):
+                self.registry = test_plan_fixture()
+                self.registry["reviewed_at"] = value
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_rejects_missing_unknown_or_result_fields(self):
+        for field in ("observations", "results", "measured_winner"):
+            with self.subTest(field=field):
+                self.registry = test_plan_fixture()
+                self.registry["plans"][0][field] = []
+                with self.assertRaisesRegex(ValueError, "test-plan field"):
+                    self.validate()
+        self.registry = test_plan_fixture()
+        del self.registry["plans"][0]["controls"]
+        with self.assertRaisesRegex(ValueError, "test-plan field"):
+            self.validate()
+        self.registry = test_plan_fixture()
+        self.registry["observations"] = []
+        with self.assertRaisesRegex(ValueError, "registry field"):
+            self.validate()
+
+    def test_rejects_invalid_empty_or_non_object_plan_rows(self):
+        for rows in (None, {}, [], [None], ["planned-synthetic"], [7]):
+            with self.subTest(rows=rows):
+                self.registry = test_plan_fixture()
+                self.registry["plans"] = rows
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_rejects_invalid_or_duplicate_plan_id(self):
+        for value in ("", "   ", "not-a-plan", "planned-BAD", None):
+            with self.subTest(id=value):
+                self.registry = test_plan_fixture()
+                self.registry["plans"][0]["id"] = value
+                with self.assertRaises(ValueError):
+                    self.validate()
+        self.registry = test_plan_fixture()
+        self.registry["plans"].append(copy.deepcopy(self.registry["plans"][0]))
+        with self.assertRaisesRegex(ValueError, "duplicate test-plan ID"):
+            self.validate()
+
+    def test_rejects_execution_claims_and_noninteger_priority(self):
+        for status in (None, "measured", "accepted", "running", "best"):
+            with self.subTest(status=status):
+                self.registry = test_plan_fixture()
+                self.registry["plans"][0]["status"] = status
+                with self.assertRaisesRegex(ValueError, "cannot claim"):
+                    self.validate()
+        for priority in (True, 1.0, "1", 0, 4, None):
+            with self.subTest(priority=priority):
+                self.registry = test_plan_fixture()
+                self.registry["plans"][0]["priority"] = priority
+                with self.assertRaisesRegex(ValueError, "priority"):
+                    self.validate()
+
+    def test_rejects_incomplete_protocol_and_reference_lists(self):
+        for key in ("layer_ids", "candidate_ids", "controls", "gates", "metrics", "protocol"):
+            for value in (None, "text", [], [""], ["   "], [None], [True], ["duplicate", "duplicate"]):
+                with self.subTest(key=key, value=value):
+                    self.registry = test_plan_fixture()
+                    self.registry["plans"][0][key] = value
+                    with self.assertRaisesRegex(ValueError, "test-plan " + key):
+                        self.validate()
+        for key in ("title", "decision"):
+            self.registry = test_plan_fixture()
+            self.registry["plans"][0][key] = "   "
+            with self.assertRaisesRegex(ValueError, "missing " + key):
+                self.validate()
+
+    def test_rejects_unknown_candidate_and_layer_references(self):
+        for key, message in (("candidate_ids", "candidate"), ("layer_ids", "layer")):
+            with self.subTest(key=key):
+                self.registry = test_plan_fixture()
+                self.registry["plans"][0][key] = ["missing-synthetic-reference"]
+                with self.assertRaisesRegex(ValueError, "Unknown test-plan " + message):
+                    self.validate()
+
+    def test_loader_keeps_legacy_catalogs_valid_and_never_mixes_proposals_into_results(self):
+        self.catalog["layers"][0].update(decision="Synthetic comparison only.", gate="Synthetic gate.",
+                                         baseline_ids=["synthetic-parser"], challenger_ids=[], watch_ids=[])
+        self.catalog["entries"][0]["layers"] = ["synthetic-storage"]
+        _, sources = catalog_fixture()
+        results = results_fixture()
+        files = {"research-catalog": self.catalog, "sources": sources, "research-results": results,
+                 "research-signals": signal_fixture(), "research-community": community_fixture()}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "data").mkdir()
+            for name, data in files.items():
+                (root / "data" / (name + ".json")).write_text(json.dumps(data))
+            with patch.object(explorer, "import_retained_json_lab", return_value=([], [])):
+                legacy = explorer.load_bundle(root)
+                self.assertEqual(legacy["test_plans"], [])
+                self.assertIsNone(legacy["test_plans_reviewed_at"])
+                self.assertEqual(legacy["results"], results)
+                path = root / "data/research-test-plans.json"
+                path.write_text(json.dumps(self.registry))
+                planned = explorer.load_bundle(root)
+                self.assertEqual(planned["test_plans"], self.registry["plans"])
+                self.assertEqual(planned["test_plans_reviewed_at"], "2026-10-27")
+                self.assertEqual(planned["results"], results)
+                path.write_text("null\n")
+                with self.assertRaisesRegex(ValueError, "registry must be an object"):
+                    explorer.load_bundle(root)
+
+
 class CatalogValidationTests(unittest.TestCase):
     def setUp(self):
         self.catalog, self.registry = catalog_fixture()
@@ -746,26 +905,147 @@ class StackGuideBuildTests(unittest.TestCase):
                     self.assertFalse((self.root / "docs/explorer/index.html").exists())
 
 
+class TestPlanDirectoryBuildTests(unittest.TestCase):
+    START = "<!-- test-plan-directory:start -->"
+    END = "<!-- test-plan-directory:end -->"
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        for name in ("explorer-core.mjs", "explorer.mjs", "explorer.css", "index.template.html"):
+            target = self.root / "docs/explorer" / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / "docs/explorer" / name, target)
+        self.queue_path = self.root / "docs/research-test-queue.md"
+        self.bundle, _ = catalog_fixture()
+        self.bundle.update(results={"cohorts": [], "observations": []},
+                           signals={"repositories": {}, "errors": []},
+                           community={"ratings": [], "errors": []})
+        loader = patch.object(explorer, "load_bundle", return_value=self.bundle)
+        loader.start()
+        self.addCleanup(loader.stop)
+
+    def add_plans(self):
+        self.bundle["layers"] = [{
+            "id": "synthetic-storage", "label": "Synthetic storage layer",
+            "decision": "Synthetic comparison.", "gate": "Synthetic gate.",
+            "baseline_ids": ["synthetic-parser"], "challenger_ids": [], "watch_ids": [],
+        }]
+        self.bundle["entries"][0]["layers"] = ["synthetic-storage"]
+        self.bundle["test_plans"] = test_plan_fixture()["plans"]
+        (self.root / "docs/stack-selection.md").write_text(
+            "# Synthetic stack guide\n\n<!-- stack-layer-map:start -->\n<!-- stack-layer-map:end -->\n")
+
+    def test_directory_is_deterministic_and_does_not_replace_authored_plan_details(self):
+        self.add_plans()
+        before, after = "# Synthetic queue\n\nPreserve admission policy.\n\n", "\n\n## Full authored plan\nKeep all warnings.\n"
+        self.queue_path.write_text(before + self.START + "\n" + self.END + after)
+        result = explorer.build(self.root)
+        generated = self.queue_path.read_bytes()
+        self.assertEqual(result["test_plans"], 1)
+        self.assertTrue(generated.startswith(before.encode()))
+        self.assertTrue(generated.endswith(after.encode()))
+        self.assertIn(b"?plan=planned-synthetic-contract-v1#catalog", generated)
+        self.assertEqual(explorer.build(self.root, check=True)["mode"], "check")
+        manifest = json.loads((self.root / "docs/explorer/build-manifest.json").read_text())
+        self.assertEqual(manifest["test_plans"], 1)
+        self.assertEqual(manifest["files"]["docs/research-test-queue.md"], hashlib.sha256(generated).hexdigest())
+        self.bundle["test_plans"] = []
+        with self.assertRaisesRegex(ValueError, "research-test-queue.md"):
+            explorer.build(self.root, check=True)
+        self.assertEqual(self.queue_path.read_bytes(), generated, "Check mode must not erase a stale directory")
+        explorer.build(self.root)
+        self.assertEqual(self.queue_path.read_text(), before + self.START + "\n" + self.END + after)
+
+    def test_legacy_queue_without_registry_or_markers_is_preserved(self):
+        self.assertFalse(self.queue_path.exists())
+        explorer.build(self.root)
+        self.assertFalse(self.queue_path.exists())
+        authored = "# Synthetic legacy queue\n\nKeep existing human-authored plans.\n"
+        self.queue_path.write_text(authored)
+        explorer.build(self.root)
+        manifest = json.loads((self.root / "docs/explorer/build-manifest.json").read_text())
+        self.assertNotIn("docs/research-test-queue.md", manifest["files"])
+        self.assertEqual(self.queue_path.read_text(), authored)
+
+    def test_registry_requires_existing_queue_and_ordered_markers_before_writing(self):
+        self.add_plans()
+        with self.assertRaisesRegex(ValueError, "requires the existing test queue"):
+            explorer.build(self.root)
+        self.assertFalse((self.root / "docs/explorer/index.html").exists())
+        for content in ("# Queue without markers", self.START, self.END, self.END + self.START,
+                        self.START + self.START + self.END, self.START + self.END + self.END):
+            with self.subTest(content=content):
+                self.queue_path.write_text(content)
+                for check in (False, True):
+                    with self.assertRaisesRegex(ValueError, "one ordered test-plan directory marker pair"):
+                        explorer.build(self.root, check=check)
+                    self.assertEqual(self.queue_path.read_text(), content)
+                    self.assertFalse((self.root / "docs/explorer/index.html").exists())
+
+
 class DeterministicBuildTests(unittest.TestCase):
     INPUTS = (
         "data/research-catalog.json", "data/research-results.json", "data/research-signals.json",
-        "data/research-community.json", "data/sources.json",
+        "data/research-community.json", "data/research-test-plans.json",
         "experiments/json-lab/results-2026-10-26.json",
         "docs/explorer/explorer-core.mjs", "docs/explorer/explorer.mjs",
         "docs/explorer/explorer.css", "docs/explorer/index.template.html",
-        "docs/stack-selection.md",
+        "docs/stack-selection.md", "docs/research-test-queue.md",
     )
 
+    @classmethod
+    def fixture_inputs(cls, root):
+        registry = explorer._registry_module
+        # Validate the complete index before trusting its file list. Legacy
+        # registers without an index still include every discovered addition.
+        registry.load_sources(root)
+        index_path = root / "data/source-index.json"
+        if index_path.exists():
+            paths = [root / name for name in json.loads(index_path.read_text())["files"]]
+            paths.append(index_path)
+        else:
+            paths = [root / "data/sources.json", *sorted((root / "data/sources.d").glob("*.json"))]
+        return (*cls.INPUTS, *registry.relative_source_names(root, paths))
+
+    def test_fixture_inventory_preserves_indexed_additions_and_their_catalog_references(self):
+        catalog, sources = catalog_fixture()
+        with tempfile.TemporaryDirectory() as directory:
+            source_root = Path(directory) / "source"
+            copied_root = Path(directory) / "copied"
+            contents = {
+                "data/sources.json": [],
+                "data/sources.d/synthetic-first.json": sources,
+                "data/sources.d/synthetic-second.json": [{**sources[0], "id": "SYN002"}],
+            }
+            contents["data/source-index.json"] = {"schema_version": 1, "files": list(contents)}
+            for name, value in contents.items():
+                path = source_root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps(value))
+            source_names = self.fixture_inputs(source_root)[len(self.INPUTS):]
+            self.assertEqual(set(source_names), set(contents))
+            for name in source_names:
+                target = copied_root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source_root / name, target)
+                self.assertEqual(target.read_bytes(), (source_root / name).read_bytes())
+            copied_sources = explorer.load_sources(copied_root)
+            self.assertEqual(copied_sources, [*sources, contents["data/sources.d/synthetic-second.json"][0]])
+            self.assertEqual(explorer.validate_catalog(catalog, copied_sources, TODAY), {"synthetic-parser"})
+
     def test_actual_dataset_build_is_deterministic_and_check_does_not_write(self):
-        missing = [name for name in self.INPUTS if not (ROOT / name).is_file()]
+        inputs = self.fixture_inputs(ROOT)
+        missing = [name for name in inputs if not (ROOT / name).is_file()]
         self.assertFalse(missing, "Required explorer inputs missing: " + ", ".join(missing))
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            for name in self.INPUTS:
+            for name in inputs:
                 target = root / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / name, target)
-            original_inputs = {name: (root / name).read_bytes() for name in self.INPUTS}
+            original_inputs = {name: (root / name).read_bytes() for name in inputs}
             first = explorer.build(root)
             manifest_path = root / "docs/explorer/build-manifest.json"
             manifest = json.loads(manifest_path.read_text())
@@ -778,7 +1058,7 @@ class DeterministicBuildTests(unittest.TestCase):
             self.assertEqual(explorer.build(root), first)
             self.assertEqual({name: (root / name).read_bytes() for name in generated}, generated)
             self.assertEqual(explorer.build(root, check=True)["mode"], "check")
-            self.assertEqual({name: (root / name).read_bytes() for name in self.INPUTS}, original_inputs)
+            self.assertEqual({name: (root / name).read_bytes() for name in inputs}, original_inputs)
             index_path = root / "docs/explorer/index.html"
             index_path.write_bytes(index_path.read_bytes() + b"\n<!-- synthetic stale-output fixture -->\n")
             before_check = {name: (root / name).read_bytes() for name in generated}

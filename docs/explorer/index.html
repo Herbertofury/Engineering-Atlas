@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="color-scheme" content="light">
   <title>Research Explorer · Engineering Atlas</title>
-  <link rel="stylesheet" href="explorer.11a0ce9b7a735799.css">
+  <link rel="stylesheet" href="explorer.3c4c931f11046f27.css">
 </head>
 <body>
   <a class="skip" href="#catalog">Skip to research catalog</a>
@@ -25,7 +25,7 @@
       <div class="sidebar-note"><span class="status-dot"></span><strong>Evidence before adoption.</strong><p>Discover a candidate. Define a fair test. Keep the result, including the failures.</p><a href="https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-explorer.md">How this works <span aria-hidden="true">↗</span></a></div>
       <a class="sidebar-link" href="https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-test-queue.md">Open the test queue <span aria-hidden="true">↗</span></a>
     </aside>
-    <main id="app" data-catalog="catalog.0f5082fc1d6d1c80.json">
+    <main id="app" data-catalog="catalog.656d184801be688c.json">
       <section class="hero" aria-labelledby="page-title">
         <div class="hero-top"><p class="eyebrow">CURATED DISCOVERY / REPRODUCIBLE DECISIONS</p><span class="snapshot" id="snapshot">Research snapshot</span></div>
         <h1 id="page-title">Find what’s next.<br><span>Prove what’s better.</span></h1>
@@ -34,7 +34,7 @@
       </section>
       <section id="catalog" class="catalog" aria-labelledby="catalog-heading">
         <div class="section-heading"><div><p class="eyebrow">THE RESEARCH INDEX</p><h2 id="catalog-heading">Explore the catalog</h2></div><button type="button" class="button secondary" id="compare-open">Compare shortlist <span id="shortlist-count">0</span></button></div>
-        <div class="search-row"><label class="search-field"><span aria-hidden="true">⌕</span><span class="sr-only">Search research</span><input id="search" type="search" aria-label="Search research" placeholder="Search projects, papers, techniques, tags…" autocomplete="off" maxlength="300"></label><button type="button" id="reset" class="button secondary">Reset filters</button></div>
+        <div class="search-row"><label class="search-field"><span aria-hidden="true">⌕</span><span class="sr-only">Search research</span><input id="search" type="search" aria-label="Search research" placeholder="Search projects, papers, techniques, source domains…" autocomplete="off" maxlength="300"></label><button type="button" id="reset" class="button secondary">Reset filters</button></div>
         <div class="filters">
           <label>Stack layer<select id="layer"><option value="">All stack layers</option></select></label>
           <label>Type<select id="kind"><option value="">All types</option></select></label>
@@ -43,7 +43,9 @@
           <label>Publication<select id="year"><option value="">Any date / unknown</option><option value="2026">Published in 2026</option></select></label>
           <label>Evaluation track<select id="track"><option value="">All tracks</option></select></label>
         </div>
+        <div class="plan-control"><label for="plan">Planned comparison<select id="plan"><option value="">All candidates / no plan selected</option></select></label><p id="plan-summary">Browse the shared test queue.</p></div>
         <section id="layer-guide" class="layer-guide" aria-label="Stack layer decision guide" hidden></section>
+        <section id="plan-guide" class="plan-guide" aria-label="Planned comparison protocol" hidden></section>
         <div class="sort-row"><span id="result-count" role="status" aria-live="polite">Loading the source-backed catalog…</span><div class="sort-actions"><label class="sort-label">Order by<select id="sort"><option value="priority">Test priority</option><option value="name">Name A–Z</option><option value="stars">GitHub stars ↓</option><option value="recent">Publication date ↓</option><option value="community">Community rating ↓</option><option value="external">Published benchmark</option><option value="measured">Atlas measurement</option></select></label><button type="button" id="export" class="button quiet">Export CSV <span aria-hidden="true">↓</span></button><button type="button" id="share" class="button quiet">Copy view link</button></div></div>
         <div id="cohort-control" class="cohort-control" hidden><label>Comparable benchmark cohort<select id="cohort"><option value="">Choose a cohort</option></select></label></div>
         <div class="evidence-note" id="ranking-note"><span class="note-icon" aria-hidden="true">i</span><p>Test priority is an editorial queue. It is not a performance ranking.</p></div>
@@ -61,6 +63,6 @@
   </div>
   <dialog id="compare-dialog" aria-labelledby="compare-title"><div class="dialog-header"><div><p class="eyebrow">YOUR RESEARCH SHORTLIST</p><h2 id="compare-title">Compare candidates</h2></div><button type="button" id="compare-close" class="button secondary">Close ✕</button></div><p id="comparison-note"></p><div id="comparison-cards" class="comparison-cards"></div><div class="dialog-actions"><button type="button" id="shortlist-export" class="button primary">Export test plan</button><button type="button" id="shortlist-clear" class="button secondary">Clear shortlist</button></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="explorer.c1f012c2f839827c.mjs"></script>
+  <script type="module" src="explorer.74a96d35de2ccd73.mjs"></script>
 </body>
 </html>

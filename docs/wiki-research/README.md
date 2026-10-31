@@ -4,6 +4,8 @@
 
 **Stack-layer extension published and verified:** the existing Explorer, Test Queue and Radar pages now include 215 candidates, 20 layers and 20 plans. All four research copies are byte-identical to wiki revision `ee7fa9d87a3b0451f5fdbddab6b3ac39df722077`. The existing Home research paragraph was refreshed in place; the Sidebar and all other pages were preserved, including all 15 adapter pages. The wiki still has 37 visible pages (38 Markdown files including the Sidebar), with no new page added by this pass. See the [stack publication verification](../../experiments/research-explorer-validation/stack-wiki-publication-2026-10-28.json) and [published guide screenshot](../../experiments/research-explorer-validation/stack-live-wiki-2026-10-28.jpg).
 
+**October 31 content prepared:** the existing Explorer, Test Queue and Radar copies now carry the 283-candidate, 36-paper, 38-plan expansion. The Community page remains unchanged. Publication of these prepared copies is verified separately; repository preparation alone does not update the wiki.
+
 Future repository edits do not automatically update the separate wiki. Apply and verify future changes independently using the procedure below.
 
 The four pages contain complete research documentation, dated snapshot context, and absolute links. They preserve the distinction between proposed experiments, publisher-reported benchmarks, retained Atlas measurements, and zero approved community reports in the reviewed snapshot. The repository documents below remain the canonical sources for future updates.
@@ -12,7 +14,7 @@ The four pages contain complete research documentation, dated snapshot context, 
 |---|---|---|
 | [Research-Explorer](https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Explorer) | [Research-Explorer.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/wiki-research/Research-Explorer.md) | [docs/research-explorer.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-explorer.md) |
 | [Research-Test-Queue](https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Test-Queue) | [Research-Test-Queue.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/wiki-research/Research-Test-Queue.md) | [docs/research-test-queue.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-test-queue.md) |
-| [Research-Radar-2026](https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Radar-2026) | [Research-Radar-2026.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/wiki-research/Research-Radar-2026.md) | [research/2026-10-27-explorer-review.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/research/2026-10-27-explorer-review.md) |
+| [Research-Radar-2026](https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Radar-2026) | [Research-Radar-2026.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/wiki-research/Research-Radar-2026.md) | [October 31 review](https://github.com/Herbertofury/Engineering-Atlas/blob/main/research/2026-10-31-stack-expansion.md), with the October 27–28 record retained |
 | [Research-Community](https://github.com/Herbertofury/Engineering-Atlas/wiki/Research-Community) | [Research-Community.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/wiki-research/Research-Community.md) | [docs/research-community.md](https://github.com/Herbertofury/Engineering-Atlas/blob/main/docs/research-community.md) |
 
 ## Maintain the wiki copies

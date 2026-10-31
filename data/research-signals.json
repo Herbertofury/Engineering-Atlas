@@ -101,6 +101,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/astral-sh/uv"
     },
+    "async-profiler/async-profiler": {
+      "stars": 9181,
+      "forks": 994,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-27T01:32:15Z",
+      "url": "https://github.com/async-profiler/async-profiler",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/async-profiler/async-profiler"
+    },
     "atlas-brown/incr": {
       "stars": 12,
       "forks": 0,
@@ -109,6 +119,16 @@
       "pushed_at": "2026-10-28T03:40:43Z",
       "url": "https://github.com/atlas-brown/incr",
       "observed_at": "2026-10-28T04:52:40Z"
+    },
+    "automerge/automerge": {
+      "stars": 6699,
+      "forks": 278,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T00:08:21Z",
+      "url": "https://github.com/automerge/automerge",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/automerge/automerge"
     },
     "avaloniaui/avalonia": {
       "stars": 31725,
@@ -120,6 +140,16 @@
       "observed_at": "2026-10-28T05:42:18Z",
       "source_url": "https://api.github.com/repos/AvaloniaUI/Avalonia"
     },
+    "awslabs/shuttle": {
+      "stars": 1109,
+      "forks": 63,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-30T05:48:58Z",
+      "url": "https://github.com/awslabs/shuttle",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/awslabs/shuttle"
+    },
     "awslabs/tough": {
       "stars": 234,
       "forks": 73,
@@ -129,6 +159,16 @@
       "url": "https://github.com/awslabs/tough",
       "observed_at": "2026-10-28T05:42:19Z",
       "source_url": "https://api.github.com/repos/awslabs/tough"
+    },
+    "axboe/liburing": {
+      "stars": 3804,
+      "forks": 553,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-28T01:07:46Z",
+      "url": "https://github.com/axboe/liburing",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/axboe/liburing"
     },
     "baldurk/renderdoc": {
       "stars": 11239,
@@ -179,6 +219,16 @@
       "url": "https://github.com/binpash/hs",
       "observed_at": "2026-10-28T04:52:40Z"
     },
+    "binpash/try": {
+      "stars": 5506,
+      "forks": 81,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-14T17:56:57Z",
+      "url": "https://github.com/binpash/try",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/binpash/try"
+    },
     "biomejs/biome": {
       "stars": 26016,
       "forks": 1298,
@@ -208,6 +258,16 @@
       "url": "https://github.com/blender/blender",
       "observed_at": "2026-10-28T05:42:19Z",
       "source_url": "https://api.github.com/repos/blender/blender"
+    },
+    "blizzardlab/omniprofiler": {
+      "stars": 3,
+      "forks": 0,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-05-19T19:33:22Z",
+      "url": "https://github.com/BlizzardLab/OmniProfiler",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/BlizzardLab/OmniProfiler"
     },
     "burntsushi/ripgrep": {
       "stars": 69517,
@@ -268,6 +328,36 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/ClickHouse/ClickHouse"
     },
+    "cloudwego/sonic-rs": {
+      "stars": 943,
+      "forks": 76,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-11T06:04:37Z",
+      "url": "https://github.com/cloudwego/sonic-rs",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/cloudwego/sonic-rs"
+    },
+    "coburggraphicslab/adaptivebeziersubdivision": {
+      "stars": 16,
+      "forks": 1,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-06-15T13:08:32Z",
+      "url": "https://github.com/CoburgGraphicsLab/AdaptiveBezierSubdivision",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/CoburgGraphicsLab/AdaptiveBezierSubdivision"
+    },
+    "codspeedhq/codspeed": {
+      "stars": 384,
+      "forks": 34,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-30T14:53:21Z",
+      "url": "https://github.com/CodSpeedHQ/codspeed",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/CodSpeedHQ/codspeed"
+    },
     "colinhacks/zod": {
       "stars": 44213,
       "forks": 2296,
@@ -277,6 +367,16 @@
       "url": "https://github.com/colinhacks/zod",
       "observed_at": "2026-10-28T05:42:19Z",
       "source_url": "https://api.github.com/repos/colinhacks/zod"
+    },
+    "compio-rs/compio": {
+      "stars": 1939,
+      "forks": 142,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-30T07:13:38Z",
+      "url": "https://github.com/compio-rs/compio",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/compio-rs/compio"
     },
     "containerd/containerd": {
       "stars": 21444,
@@ -336,6 +436,16 @@
       "url": "https://github.com/cure53/DOMPurify",
       "observed_at": "2026-10-28T05:42:20Z",
       "source_url": "https://api.github.com/repos/cure53/DOMPurify"
+    },
+    "cyan4973/xxhash": {
+      "stars": 11398,
+      "forks": 944,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-29T05:45:27Z",
+      "url": "https://github.com/Cyan4973/xxHash",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/Cyan4973/xxHash"
     },
     "dagger/dagger": {
       "stars": 16526,
@@ -417,6 +527,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/dotnet/runtime"
     },
+    "dougbinks/enkits": {
+      "stars": 2045,
+      "forks": 175,
+      "archived": false,
+      "license": "Zlib",
+      "pushed_at": "2026-09-29T09:53:37Z",
+      "url": "https://github.com/dougbinks/enkiTS",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/dougbinks/enkiTS"
+    },
     "dtolnay/cxx": {
       "stars": 6852,
       "forks": 430,
@@ -447,6 +567,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/duckdb/duckdb"
     },
+    "ebiggers/libdeflate": {
+      "stars": 1317,
+      "forks": 227,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T07:55:08Z",
+      "url": "https://github.com/ebiggers/libdeflate",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/ebiggers/libdeflate"
+    },
+    "electric-sql/pglite": {
+      "stars": 16216,
+      "forks": 466,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-30T21:12:11Z",
+      "url": "https://github.com/electric-sql/pglite",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/electric-sql/pglite"
+    },
     "electron/electron": {
       "stars": 123589,
       "forks": 17782,
@@ -466,6 +606,16 @@
       "url": "https://github.com/EleutherAI/lm-evaluation-harness",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/EleutherAI/lm-evaluation-harness"
+    },
+    "elias1518693/jpeg_textures": {
+      "stars": 117,
+      "forks": 4,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-14T09:30:19Z",
+      "url": "https://github.com/elias1518693/jpeg_textures",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/elias1518693/jpeg_textures"
     },
     "elixir-lang/elixir": {
       "stars": 26698,
@@ -496,6 +646,16 @@
       "url": "https://github.com/emilk/egui",
       "observed_at": "2026-10-28T05:42:21Z",
       "source_url": "https://api.github.com/repos/emilk/egui"
+    },
+    "epfl-dias/proteus": {
+      "stars": 28,
+      "forks": 5,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-23T15:05:10Z",
+      "url": "https://github.com/epfl-dias/proteus",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/epfl-dias/proteus"
     },
     "eth-sri/testsuitebench": {
       "stars": 4,
@@ -554,6 +714,16 @@
       "url": "https://github.com/fastapi/fastapi",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/fastapi/fastapi"
+    },
+    "fjall-rs/fjall": {
+      "stars": 2410,
+      "forks": 135,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-25T21:18:29Z",
+      "url": "https://github.com/fjall-rs/fjall",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/fjall-rs/fjall"
     },
     "flashinfer-ai/flashinfer": {
       "stars": 6799,
@@ -625,6 +795,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/golang/go"
     },
+    "google/flatbuffers": {
+      "stars": 26597,
+      "forks": 3718,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-29T22:19:32Z",
+      "url": "https://github.com/google/flatbuffers",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/google/flatbuffers"
+    },
     "google/osv-scanner": {
       "stars": 11296,
       "forks": 826,
@@ -664,6 +844,36 @@
       "url": "https://github.com/grafana/beyla",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/grafana/beyla"
+    },
+    "guillaumeblanc/ozz-animation": {
+      "stars": 3075,
+      "forks": 359,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-08-01T21:34:54Z",
+      "url": "https://github.com/guillaumeblanc/ozz-animation",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/guillaumeblanc/ozz-animation"
+    },
+    "gyuyeongkim/tessera-public": {
+      "stars": 6,
+      "forks": 0,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-30T07:28:47Z",
+      "url": "https://github.com/GyuyeongKim/Tessera-public",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/GyuyeongKim/Tessera-public"
+    },
+    "haasn/libplacebo": {
+      "stars": 803,
+      "forks": 139,
+      "archived": false,
+      "license": "LGPL-2.1",
+      "pushed_at": "2026-10-30T17:53:56Z",
+      "url": "https://github.com/haasn/libplacebo",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/haasn/libplacebo"
     },
     "harbor-framework/harbor": {
       "stars": 6553,
@@ -774,6 +984,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/JetBrains/kotlin"
     },
+    "jrouwe/joltphysics": {
+      "stars": 12001,
+      "forks": 985,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-30T21:24:28Z",
+      "url": "https://github.com/jrouwe/JoltPhysics",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/jrouwe/JoltPhysics"
+    },
+    "khronosgroup/ktx-software": {
+      "stars": 1395,
+      "forks": 320,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-31T04:22:09Z",
+      "url": "https://github.com/KhronosGroup/KTX-Software",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/KhronosGroup/KTX-Software"
+    },
     "lancedb/lancedb": {
       "stars": 11794,
       "forks": 1135,
@@ -803,6 +1033,26 @@
       "url": "https://github.com/libarchive/libarchive",
       "observed_at": "2026-10-28T05:42:21Z",
       "source_url": "https://api.github.com/repos/libarchive/libarchive"
+    },
+    "libsdl-org/sdl": {
+      "stars": 16922,
+      "forks": 3123,
+      "archived": false,
+      "license": "Zlib",
+      "pushed_at": "2026-10-31T03:29:16Z",
+      "url": "https://github.com/libsdl-org/SDL",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/libsdl-org/SDL"
+    },
+    "libvips/libvips": {
+      "stars": 11774,
+      "forks": 801,
+      "archived": false,
+      "license": "LGPL-2.1",
+      "pushed_at": "2026-10-30T19:01:29Z",
+      "url": "https://github.com/libvips/libvips",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/libvips/libvips"
     },
     "linebender/vello": {
       "stars": 4449,
@@ -844,6 +1094,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/LiveCodeBench/LiveCodeBench"
     },
+    "llvm/llvm-project": {
+      "stars": 41271,
+      "forks": 19418,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-31T08:36:46Z",
+      "url": "https://github.com/llvm/llvm-project",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/llvm/llvm-project"
+    },
     "lmcache/lmcache": {
       "stars": 12195,
       "forks": 2087,
@@ -864,6 +1124,26 @@
       "observed_at": "2026-10-28T05:42:21Z",
       "source_url": "https://api.github.com/repos/luau-lang/luau"
     },
+    "lz4/lz4": {
+      "stars": 12190,
+      "forks": 1621,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-30T16:16:47Z",
+      "url": "https://github.com/lz4/lz4",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/lz4/lz4"
+    },
+    "m-schuetz/curast": {
+      "stars": 248,
+      "forks": 20,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-22T13:40:35Z",
+      "url": "https://github.com/m-schuetz/CuRast",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/m-schuetz/CuRast"
+    },
     "microsoft/graphrag": {
       "stars": 36469,
       "forks": 3870,
@@ -873,6 +1153,16 @@
       "url": "https://github.com/microsoft/graphrag",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/microsoft/graphrag"
+    },
+    "microsoft/mimalloc": {
+      "stars": 13521,
+      "forks": 1207,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T04:34:03Z",
+      "url": "https://github.com/microsoft/mimalloc",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/microsoft/mimalloc"
     },
     "microsoft/playwright": {
       "stars": 98687,
@@ -944,6 +1234,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/modular/modular"
     },
+    "mozilla/sccache": {
+      "stars": 7857,
+      "forks": 790,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-29T22:11:09Z",
+      "url": "https://github.com/mozilla/sccache",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/mozilla/sccache"
+    },
     "mrdoob/three.js": {
       "stars": 117093,
       "forks": 36775,
@@ -953,6 +1253,16 @@
       "url": "https://github.com/mrdoob/three.js",
       "observed_at": "2026-10-28T05:42:22Z",
       "source_url": "https://api.github.com/repos/mrdoob/three.js"
+    },
+    "mstange/samply": {
+      "stars": 4469,
+      "forks": 109,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-24T20:29:34Z",
+      "url": "https://github.com/mstange/samply",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/mstange/samply"
     },
     "n0-computer/iroh-blobs": {
       "stars": 170,
@@ -1172,6 +1482,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/phoenixframework/phoenix_live_view"
     },
+    "piscinajs/piscina": {
+      "stars": 5233,
+      "forks": 178,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-31T03:39:05Z",
+      "url": "https://github.com/piscinajs/piscina",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/piscinajs/piscina"
+    },
     "pixijs/pixijs": {
       "stars": 48575,
       "forks": 5120,
@@ -1181,6 +1501,16 @@
       "url": "https://github.com/pixijs/pixijs",
       "observed_at": "2026-10-28T05:42:23Z",
       "source_url": "https://api.github.com/repos/pixijs/pixijs"
+    },
+    "plasma-umass/scalene": {
+      "stars": 13538,
+      "forks": 445,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-26T22:11:07Z",
+      "url": "https://github.com/plasma-umass/scalene",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/plasma-umass/scalene"
     },
     "pola-rs/polars": {
       "stars": 40220,
@@ -1211,6 +1541,26 @@
       "url": "https://github.com/prefix-dev/resolvo",
       "observed_at": "2026-10-28T05:42:23Z",
       "source_url": "https://api.github.com/repos/prefix-dev/resolvo"
+    },
+    "psf/pyperf": {
+      "stars": 969,
+      "forks": 111,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-01T11:41:18Z",
+      "url": "https://github.com/psf/pyperf",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/psf/pyperf"
+    },
+    "pubgrub-rs/pubgrub": {
+      "stars": 812,
+      "forks": 58,
+      "archived": false,
+      "license": "MPL-2.0",
+      "pushed_at": "2026-10-29T00:42:35Z",
+      "url": "https://github.com/pubgrub-rs/pubgrub",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/pubgrub-rs/pubgrub"
     },
     "pydantic/pydantic-ai": {
       "stars": 20915,
@@ -1252,6 +1602,16 @@
       "observed_at": "2026-10-28T05:42:24Z",
       "source_url": "https://api.github.com/repos/quickwit-oss/tantivy"
     },
+    "qwikdev/qwik": {
+      "stars": 22067,
+      "forks": 1416,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T06:44:14Z",
+      "url": "https://github.com/QwikDev/qwik",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/QwikDev/qwik"
+    },
     "r-carissimi/wasure": {
       "stars": 12,
       "forks": 3,
@@ -1260,6 +1620,16 @@
       "pushed_at": "2026-09-10T16:52:42Z",
       "url": "https://github.com/r-carissimi/wasure",
       "observed_at": "2026-10-28T04:52:40Z"
+    },
+    "rayon-rs/rayon": {
+      "stars": 13412,
+      "forks": 620,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-27T18:13:46Z",
+      "url": "https://github.com/rayon-rs/rayon",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/rayon-rs/rayon"
     },
     "restatedev/restate": {
       "stars": 4614,
@@ -1280,6 +1650,16 @@
       "url": "https://github.com/richgel999/neural_tex_block_compression",
       "observed_at": "2026-10-28T05:42:23Z",
       "source_url": "https://api.github.com/repos/richgel999/neural_tex_block_compression"
+    },
+    "rkyv/rkyv": {
+      "stars": 4391,
+      "forks": 240,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-09-25T12:05:05Z",
+      "url": "https://github.com/rkyv/rkyv",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/rkyv/rkyv"
     },
     "roc-lang/roc": {
       "stars": 6169,
@@ -1321,6 +1701,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/RUC-NLPIR/FlashRAG"
     },
+    "rui314/mold": {
+      "stars": 17705,
+      "forks": 584,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-22T05:12:11Z",
+      "url": "https://github.com/rui314/mold",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/rui314/mold"
+    },
     "rust-lang/rust": {
       "stars": 120908,
       "forks": 17995,
@@ -1340,6 +1730,16 @@
       "url": "https://github.com/SafeAILab/EAGLE",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/SafeAILab/EAGLE"
+    },
+    "sandermertens/flecs": {
+      "stars": 8781,
+      "forks": 629,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-30T21:35:17Z",
+      "url": "https://github.com/SanderMertens/flecs",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/SanderMertens/flecs"
     },
     "seanmonstar/reqwest": {
       "stars": 11891,
@@ -1361,6 +1761,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/sgl-project/sglang"
     },
+    "shader-slang/slang": {
+      "stars": 5769,
+      "forks": 521,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-31T08:44:54Z",
+      "url": "https://github.com/shader-slang/slang",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/shader-slang/slang"
+    },
+    "sharkdp/hyperfine": {
+      "stars": 29189,
+      "forks": 631,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-12T08:33:48Z",
+      "url": "https://github.com/sharkdp/hyperfine",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/sharkdp/hyperfine"
+    },
     "sierra-research/tau2-bench": {
       "stars": 2340,
       "forks": 613,
@@ -1381,6 +1801,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/sigstore/cosign"
     },
+    "simdjson/simdjson": {
+      "stars": 24488,
+      "forks": 1330,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-31T01:44:55Z",
+      "url": "https://github.com/simdjson/simdjson",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/simdjson/simdjson"
+    },
+    "skypjack/entt": {
+      "stars": 13232,
+      "forks": 1123,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-30T08:56:08Z",
+      "url": "https://github.com/skypjack/entt",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/skypjack/entt"
+    },
     "slint-ui/slint": {
       "stars": 24301,
       "forks": 1048,
@@ -1390,6 +1830,16 @@
       "url": "https://github.com/slint-ui/slint",
       "observed_at": "2026-10-28T05:42:24Z",
       "source_url": "https://api.github.com/repos/slint-ui/slint"
+    },
+    "solidjs/solid": {
+      "stars": 36197,
+      "forks": 1136,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T08:45:47Z",
+      "url": "https://github.com/solidjs/solid",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/solidjs/solid"
     },
     "sparkle-project/sparkle": {
       "stars": 9913,
@@ -1411,6 +1861,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/spinframework/spin"
     },
+    "spnda/fastgltf": {
+      "stars": 617,
+      "forks": 98,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T08:06:34Z",
+      "url": "https://github.com/spnda/fastgltf",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/spnda/fastgltf"
+    },
     "stanford-futuredata/colbert": {
       "stars": 3946,
       "forks": 476,
@@ -1430,6 +1890,16 @@
       "url": "https://github.com/stanfordnlp/dspy",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/stanfordnlp/dspy"
+    },
+    "stateright/stateright": {
+      "stars": 1916,
+      "forks": 62,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2025-07-27T23:48:01Z",
+      "url": "https://github.com/stateright/stateright",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/stateright/stateright"
     },
     "sveltejs/kit": {
       "stars": 20876,
@@ -1451,6 +1921,26 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/swiftlang/swift"
     },
+    "systemd/casync": {
+      "stars": 1619,
+      "forks": 119,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2025-09-22T12:02:05Z",
+      "url": "https://github.com/systemd/casync",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/systemd/casync"
+    },
+    "tanstack/db": {
+      "stars": 3971,
+      "forks": 277,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T01:03:44Z",
+      "url": "https://github.com/TanStack/db",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/TanStack/db"
+    },
     "tanstack/virtual": {
       "stars": 7172,
       "forks": 481,
@@ -1460,6 +1950,16 @@
       "url": "https://github.com/TanStack/virtual",
       "observed_at": "2026-10-28T05:42:24Z",
       "source_url": "https://api.github.com/repos/TanStack/virtual"
+    },
+    "taskflow/taskflow": {
+      "stars": 12222,
+      "forks": 1417,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-15T02:51:32Z",
+      "url": "https://github.com/taskflow/taskflow",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/taskflow/taskflow"
     },
     "tauri-apps/tauri": {
       "stars": 112250,
@@ -1531,6 +2031,26 @@
       "observed_at": "2026-10-28T05:42:24Z",
       "source_url": "https://api.github.com/repos/tokio-rs/loom"
     },
+    "tokio-rs/tokio": {
+      "stars": 33554,
+      "forks": 5169,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-29T15:55:51Z",
+      "url": "https://github.com/tokio-rs/tokio",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/tokio-rs/tokio"
+    },
+    "tursodatabase/turso": {
+      "stars": 25102,
+      "forks": 1516,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-31T08:22:48Z",
+      "url": "https://github.com/tursodatabase/turso",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/tursodatabase/turso"
+    },
     "ultrajson/ultrajson": {
       "stars": 4501,
       "forks": 383,
@@ -1560,6 +2080,26 @@
       "url": "https://github.com/UWASL/dedup-bench",
       "observed_at": "2026-10-28T05:42:25Z",
       "source_url": "https://api.github.com/repos/UWASL/dedup-bench"
+    },
+    "uwm-se/ecs": {
+      "stars": 1,
+      "forks": 0,
+      "archived": false,
+      "license": null,
+      "pushed_at": "2026-02-12T06:59:51Z",
+      "url": "https://github.com/uwm-se/ecs",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/uwm-se/ecs"
+    },
+    "vectordb-ntu/rabitq-ssd": {
+      "stars": 6,
+      "forks": 3,
+      "archived": false,
+      "license": "MIT",
+      "pushed_at": "2026-10-17T05:22:26Z",
+      "url": "https://github.com/VectorDB-NTU/RaBitQ-SSD",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/VectorDB-NTU/RaBitQ-SSD"
     },
     "velopack/velopack": {
       "stars": 2420,
@@ -1600,6 +2140,16 @@
       "url": "https://github.com/vibrantlabsai/ragas",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/vibrantlabsai/ragas"
+    },
+    "videolan/dav1d": {
+      "stars": 821,
+      "forks": 109,
+      "archived": false,
+      "license": "BSD-2-Clause",
+      "pushed_at": "2026-10-29T21:20:21Z",
+      "url": "https://github.com/videolan/dav1d",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/videolan/dav1d"
     },
     "vitejs/vite": {
       "stars": 83616,
@@ -1651,6 +2201,16 @@
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/vuejs/core"
     },
+    "wasm-micro-runtime/wasm-micro-runtime": {
+      "stars": 6179,
+      "forks": 878,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-28T09:36:09Z",
+      "url": "https://github.com/wasm-micro-runtime/wasm-micro-runtime",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/wasm-micro-runtime/wasm-micro-runtime"
+    },
     "web-infra-dev/rspack": {
       "stars": 12960,
       "forks": 872,
@@ -1660,6 +2220,16 @@
       "url": "https://github.com/web-infra-dev/rspack",
       "observed_at": "2026-10-28T04:42:46Z",
       "source_url": "https://api.github.com/repos/web-infra-dev/rspack"
+    },
+    "wild-linker/wild": {
+      "stars": 4103,
+      "forks": 150,
+      "archived": false,
+      "license": "Apache-2.0",
+      "pushed_at": "2026-10-31T05:39:24Z",
+      "url": "https://github.com/wild-linker/wild",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/wild-linker/wild"
     },
     "withastro/astro": {
       "stars": 63530,
@@ -1690,6 +2260,16 @@
       "url": "https://github.com/wxt-dev/wxt",
       "observed_at": "2026-10-28T05:42:25Z",
       "source_url": "https://api.github.com/repos/wxt-dev/wxt"
+    },
+    "yandex/perforator": {
+      "stars": 3436,
+      "forks": 160,
+      "archived": false,
+      "license": "NOASSERTION",
+      "pushed_at": "2026-10-31T02:25:47Z",
+      "url": "https://github.com/yandex/perforator",
+      "observed_at": "2026-10-31T08:46:52Z",
+      "source_url": "https://api.github.com/repos/yandex/perforator"
     },
     "z-lab/dflash": {
       "stars": 6206,
@@ -1729,5 +2309,5 @@
       "attempted_at": "2026-10-28T04:42:46Z"
     }
   ],
-  "last_attempted_at": "2026-10-28T05:42:25Z"
+  "last_attempted_at": "2026-10-31T08:46:52Z"
 }

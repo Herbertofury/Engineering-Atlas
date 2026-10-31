@@ -18,3 +18,9 @@ Conditional stack selection; measurement/equivalence contract; bounded file pipe
 - Supply-chain provenance, dependency updates, sandboxing and secure integrations.
 
 Each investigation needs a decision record, primary sources, representative workload and rejected alternatives. This is a living backlog, not a promise that every topic is already researched or that one stack wins them all.
+
+## October 31 research completed; execution remains planned
+
+The [October 31 synthesis](../research/2026-10-31-stack-expansion.md) adds 68 reviewed candidates and 14 paper records, including two explicitly limited reviews. The catalog now exposes 38 complete comparison proposals. This completes a source-research expansion, not the application experiments listed above.
+
+The next tractable execution sequence is: calibrate diagnostics; establish complete output and cancellation contracts; sweep bounded CPU/I/O admission; compare parsing/representations and memory costs; validate build cache/linker changes; then evaluate UI scheduling and asset pipelines on target workloads. Specialized GPU, compiler and storage papers remain gated by artifact, platform and fidelity prerequisites. Use the [existing test queue](research-test-queue.md) and retain failed attempts.

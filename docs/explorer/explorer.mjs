@@ -1,5 +1,6 @@
 import {parseState, encodeState, queryCatalog, repositorySignal, communityScore, publishedDate,
-  evidenceFor, cohortFor, measurement, exportCSV, safeURL, ratingURL, COMMUNITY_PRIOR, publicationYearMatches} from './__CORE__';
+  evidenceFor, cohortFor, measurement, exportCSV, safeURL, ratingURL, COMMUNITY_PRIOR, publicationYearMatches,
+  testPlanFor, plansForCandidate, buildTestPlanProposal} from './__CORE__';
 
 const $ = id => document.getElementById(id);
 const REPO = 'https://github.com/Herbertofury/Engineering-Atlas';
@@ -37,6 +38,10 @@ function title(text) { return text.replaceAll('-', ' ').replace(/\b\w/g, c => c.
 function trackLabel(id) { return catalog.tracks.find(t => t.id === id)?.label || title(id); }
 function categoryLabel(id) { return catalog.categories.find(t => t.id === id)?.label || title(id); }
 function layerLabel(id) { return (catalog.layers || []).find(layer => layer.id === id)?.label || title(id); }
+
+function planLink(plan) {
+  return element('a', {href: '?' + encodeState({...parseState(''), plan: plan.id}) + '#catalog'}, plan.title);
+}
 
 function notify(message) {
   $('toast').textContent = message;
@@ -117,6 +122,30 @@ function renderLayerGuide() {
     element('div', {class: 'layer-choices'}, groups),
     element('p', {class: 'layer-gate'}, element('strong', {}, 'Adoption gate: '), layer.gate),
     element('p', {class: 'layer-scope'}, 'Editorial roles, not measured winners. A layer can contain complementary components. Compare only the same functional role and workload; adding a component is a separate variable from replacing one.'));
+  const plans = (catalog.test_plans || []).filter(plan => plan.layer_ids.includes(layer.id));
+  if (plans.length) guide.append(element('div', {class: 'related-plans'}, element('h4', {}, 'Planned comparisons'),
+    element('ul', {}, plans.map(plan => element('li', {}, planLink(plan))))));
+}
+
+function renderPlanGuide() {
+  const plan = testPlanFor(catalog, state.plan);
+  const guide = $('plan-guide');
+  guide.hidden = !plan;
+  $('plan-summary').textContent = (catalog.test_plans || []).length + ' planned comparisons. Plans describe work to run; they are not results.';
+  if (!plan) { guide.replaceChildren(); return; }
+  const groups = [['Reference contract', 'controls'], ['Required gates', 'gates'], ['Measure', 'metrics']];
+  guide.replaceChildren(element('div', {class: 'plan-heading'},
+      element('div', {}, element('p', {class: 'eyebrow'}, 'PLANNED / P' + plan.priority), element('h3', {}, plan.title)),
+      element('button', {type: 'button', class: 'button primary', onclick: () => {
+        download(plan.id + '.json', JSON.stringify(buildTestPlanProposal(catalog, plan.id), null, 2));
+        notify('Plan download requested. Pin the baseline, workload and execution details before running.');
+      }}, 'Export this plan ↓')),
+    element('p', {class: 'plan-decision'}, plan.decision),
+    element('p', {class: 'plan-scope'}, plan.candidate_ids.length + ' registered candidates · ' + plan.layer_ids.map(layerLabel).join(' · ') +
+      '. Other filters can narrow the visible list; the plan export always includes every registered candidate.'),
+    element('div', {class: 'plan-contract'}, groups.map(([label, key]) => element('div', {}, element('h4', {}, label), bulletList(plan[key])))),
+    element('details', {class: 'plan-protocol'}, element('summary', {}, 'Execution protocol and evidence requirements'),
+      bulletList(plan.protocol), element('p', {}, 'Baseline revisions, workload hashes, environment, acceptance thresholds and raw evidence remain unfilled until a real experiment is prepared. A shared plan can contain complementary components; compare only equivalent configurations.')));
 }
 
 function signal(entry) {
@@ -153,6 +182,9 @@ function detail(entry) {
     element('p', {}, entry.evaluation.proposal), element('h4', {}, 'Measure'), bulletList(entry.evaluation.metrics),
     element('h4', {}, 'Constraints and possible disqualifiers'), bulletList(entry.evaluation.caveats));
   if (entry.layers?.length) column1.append(element('h4', {}, 'Stack layers'), element('p', {}, entry.layers.map(layerLabel).join(' · ')));
+  const plans = plansForCandidate(entry, catalog);
+  if (plans.length) column1.append(element('h4', {}, 'Registered test plans'),
+    element('ul', {}, plans.map(plan => element('li', {}, planLink(plan)))));
   const column2 = element('div', {}, element('h4', {}, 'Primary sources'), sources,
     element('h4', {}, 'Test priority rationale'), element('p', {}, entry.priority_reason),
     element('h4', {}, 'Repository snapshot'), element('p', {}, s ?
@@ -224,7 +256,7 @@ function renderRankingNote() {
 function render() {
   if (state.layer && !(catalog.layers || []).some(layer => layer.id === state.layer)) state.layer = '';
   renderNavigation();
-  for (const key of ['layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'sort']) $(key).value = state[key];
+  for (const key of ['layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'plan', 'sort']) $(key).value = state[key];
   if ($('search').value !== state.q) $('search').value = state.q;
   const isBenchmark = ['external', 'measured'].includes(state.sort);
   $('cohort-control').hidden = !isBenchmark;
@@ -236,7 +268,8 @@ function render() {
   const query = encodeState(state);
   history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
   $('result-count').textContent = visibleQuery.total + ' of ' + catalog.entries.length + ' candidates' +
-    (state.layer ? ' · ' + layerLabel(state.layer) : '') + (state.category ? ' · ' + categoryLabel(state.category) : '');
+    (state.layer ? ' · ' + layerLabel(state.layer) : '') + (state.category ? ' · ' + categoryLabel(state.category) : '') +
+    (testPlanFor(catalog, state.plan) ? ' · ' + testPlanFor(catalog, state.plan).title : '');
   if (!visibleQuery.total) $('results').replaceChildren(element('div', {class: 'empty'}, element('h3', {}, visibleQuery.reason ? 'Choose a comparison scope' : 'No matching candidates'),
     element('p', {}, visibleQuery.reason || 'Try fewer filters or a broader search. Missing results are not evidence that a project is unsuitable.')));
   else $('results').replaceChildren(...visibleQuery.visible.map((entry, index) => card(entry, (visibleQuery.page - 1) * 24 + index)));
@@ -244,6 +277,7 @@ function render() {
   $('page-label').textContent = 'Page ' + state.page + ' of ' + visibleQuery.pages;
   renderRankingNote();
   renderLayerGuide();
+  renderPlanGuide();
 }
 
 function showComparison() {
@@ -266,12 +300,12 @@ function showComparison() {
 
 function bindEvents() {
   $('search').addEventListener('input', e => setState({q: e.target.value}));
-  for (const key of ['layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'cohort']) $(key).addEventListener('change', e => setState({[key]: e.target.value}));
+  for (const key of ['layer', 'kind', 'maturity', 'evidence', 'year', 'track', 'plan', 'cohort']) $(key).addEventListener('change', e => setState({[key]: e.target.value}));
   $('sort').addEventListener('change', e => {
     const sort = e.target.value;
     const type = sort === 'measured' ? 'atlas_measured' : sort === 'external' ? 'external_reported' : null;
     setState({sort, cohort: type ? catalog.results.cohorts.find(c => c.evidence === type)?.id || '' : '',
-      ...(type ? {category: '', layer: '', kind: '', maturity: '', evidence: '', year: '', track: ''} : {})});
+      ...(type ? {q: '', category: '', layer: '', plan: '', kind: '', maturity: '', evidence: '', year: '', track: ''} : {})});
   });
   $('all-categories').addEventListener('click', () => setState({category: ''}));
   $('reset').addEventListener('click', () => { state = parseState(''); render(); });
@@ -291,6 +325,8 @@ function bindEvents() {
       required_before_execution: ['Exact baseline and candidate revisions', 'Workload and expected complete-output hashes',
         'Hardware, OS and toolchain', 'Quality, security and resource gates', 'Trial order and retained raw evidence'],
       selected_layer: state.layer || null,
+      selected_plan: state.plan || null,
+      registered_plans: [...new Set(entries.flatMap(entry => plansForCandidate(entry, catalog).map(plan => plan.id)))],
       candidates: entries.map(e => ({id: e.id, name: e.name, url: e.url, layers: e.layers || [], evaluation: e.evaluation, source_ids: e.source_ids}))}, null, 2));
   });
   window.addEventListener('popstate', () => { state = parseState(location.search); render(); });
@@ -306,6 +342,8 @@ async function main() {
     populateSelect('kind', [...new Set(catalog.entries.map(e => e.kind))].sort().map(id => ({id, label: title(id)})));
     populateSelect('track', catalog.tracks);
     populateSelect('layer', catalog.layers || []);
+    populateSelect('plan', [...(catalog.test_plans || [])].sort((a, b) => a.priority - b.priority || a.title.localeCompare(b.title))
+      .map(plan => ({id: plan.id, label: 'P' + plan.priority + ' · ' + plan.title})));
     try { const saved = JSON.parse(localStorage.getItem('engineering-atlas-shortlist-v1') || '[]');
       if (Array.isArray(saved)) shortlist = [...new Set(saved)].filter(id => catalog.entries.some(e => e.id === id)).slice(0, 4);
     } catch { shortlist = []; }

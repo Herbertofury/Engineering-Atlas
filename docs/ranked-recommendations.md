@@ -1,6 +1,6 @@
 # Ranked recommendations: best choices and what to avoid
 
-**Reviewed October 26, 2026.** Project-neutral recommendations, ordered within a stated job. Rankings distinguish local measurements, upstream claims and experimental ideas. A disqualifying requirement outranks speed. No score combines unrelated languages, hardware or workloads into a fictional universal winner.
+**Local parser evidence: October 26, 2026. Current-source extension: October 31, 2026.** Project-neutral recommendations, ordered within a stated job. Rankings distinguish local measurements, upstream claims and experimental ideas. A disqualifying requirement outranks speed. No score combines unrelated languages, hardware or workloads into a fictional universal winner.
 
 ## The practical leaderboard
 
@@ -9,7 +9,7 @@
 | Python JSON, ordinary finite values and compatible integer bounds | **orjson 3.13.0**, fastest in this local generated-workload comparison | Standard-library json when deployment simplicity or hooks dominate | A parser swap without large-integer, invalid-input and output-type checks |
 | Python JSON requiring exact integers above 64 bits or custom decode hooks | **Standard-library json**, with an explicit validation policy | A separately tested schema-aware solution | orjson as an unqualified lossless replacement |
 | New Python JSON dependency | **orjson**, subject to the contract above | Standard library when sufficient | **ujson for a new default**: maintenance-only upstream and concerning default-acceptance cases in this lab |
-| C++ selective JSON access | **simdjson 5.0.5** as the first benchmark candidate | Full DOM alternatives when traversal/access demands it | Treating selective field access as equivalent to validating every required field |
+| C++ selective JSON access | **simdjson 5.1.0** as the current benchmark candidate | Full DOM alternatives when traversal/access demands it | Treating selective field access as equivalent to validating every required field |
 | C JSON DOM and mutation workflows | **yyjson 0.13.0** as a strong candidate | Existing correct implementation if integration cost dominates | Comparing its DOM chart with a different parser's selective-access API as if they do the same work |
 | Go JSON hot paths | **Sonic 1.15.4** as a conditional candidate | encoding/json for compatibility baseline | Blindly enabling the fastest config or ignoring first-use compilation/memory behavior |
 | Large file/config inventories | **One verified inventory/index plus bounded independent work** | Serial indexed baseline on constrained storage | Reopening/reparsing everything per lookup; unbounded workers; dropping errors |
@@ -44,7 +44,23 @@ These are 12 targeted cases, not an exhaustive conformance suite or a finding th
 - **yyjson:** the upstream DOM comparison itself notes that simdjson On Demand can be faster for known fields, and its displayed benchmark charts include old hardware/toolchains. The latest release date does not refresh old performance evidence. [JSON05](https://github.com/ibireme/yyjson)
 - **Sonic:** the README's broad best-performance claim is not independently reproduced here. It distinguishes compatibility/default/fastest configurations, warns about huge-schema first-hit compilation and describes retained source-buffer memory. Test cold and steady-state behavior separately. [JSON06](https://github.com/bytedance/sonic)
 
-Release metadata checked through the official repository APIs: simdjson 5.0.5 (October 14, 2026), yyjson 0.13.0 (September 8), Sonic 1.15.4 (September 11). Availability is not proof of superiority or compatibility with a pinned target.
+The October 26 review recorded simdjson 5.0.5 (October 14, 2026), yyjson 0.13.0 (September 8), and Sonic 1.15.4 (September 11). On October 31, live metadata identified **simdjson 5.1.0, published October 30**; its large-integer builder and long-exponent fixes extend the validation corpus. [IO31002](https://api.github.com/repos/simdjson/simdjson/releases/latest) Availability is not proof of superiority or compatibility with a pinned target.
+
+## October 31: practical next comparisons
+
+These priorities are research choices, not newly measured winners. Establish the actual current implementation, then change one cost center at a time. The [dated review](../research/2026-10-31-stack-expansion.md) and [complete plans](research-test-queue.md) carry the protocols.
+
+| Observed problem | First comparison to consider | Constraint that can reject it |
+|---|---|---|
+| Unattributed CPU, allocation or wait time | Calibrated samply/Scalene/async-profiler or explicit resource counters; TypeCraft and OmniProfiler as deeper research | Missing symbols, instrumentation perturbation, unsupported language/platform or inaccurate attribution. [EV31001](https://github.com/mstange/samply) · [RT31021](https://github.com/plasma-umass/scalene) · [RT31023](https://github.com/async-profiler/async-profiler) · [EV31012](https://www.usenix.org/system/files/osdi26-li-zecheng.pdf) · [EV31014](https://www.usenix.org/system/files/osdi26-hu-yigong.pdf) |
+| Foreground stalls during CPU/file work | Bounded admission, owned buffers and separate CPU/I/O pools | Task count alone does not cap bytes; cancellation must reconcile already-running effects. [RT31010](https://github.com/piscinajs/piscina) · [IO31012](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html) · [IO31014](https://docs.rs/rayon/latest/rayon/struct.ThreadPoolBuilder.html) |
+| Slow rebuilds | sccache with invalidation tests; mold/Wild with the current linker as control | Wild has no incremental linking yet; mold 3's rewrite is not a documented speedup over 2.42.1. [RT31001](https://github.com/rui314/mold/releases/tag/v3.0.0) · [RT31003](https://github.com/wild-linker/wild/releases/tag/0.11.0) · [RT31005](https://github.com/mozilla/sccache/releases/tag/v0.19.0) |
+| Long main-thread work or offscreen layout | Chunked yielding, content-visibility, then a separately tested virtualization/state strategy | Retain complete results, accessibility, search, focus and memory budgets. [RT31012](https://wicg.github.io/scheduling-apis/) · [RT31014](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/content-visibility) |
+| Image/asset pipeline saturation | libvips, fastgltf and independently pinned texture/animation steps | Preserve color/alpha, glTF extensions, topology, skinning, warnings and full frame delivery. [GP31022](https://github.com/libvips/libvips/releases/tag/v8.18.7) · [GP31016](https://github.com/spnda/fastgltf/releases/tag/v0.9.1) · [GP31018](https://github.com/guillaumeblanc/ozz-animation/releases/tag/0.17.0) · [GP31020](https://github.com/KhronosGroup/KTX-Software/releases/tag/v4.4.2) |
+| Allocator or compression dominates a complete journey | mimalloc versus current allocator; LZ4/libdeflate versus a format-compatible control | Whole-process memory, thread/ABI behavior, total I/O and unchanged durable output outrank a kernel chart. [IO31010](https://github.com/microsoft/mimalloc) · [IO31023](https://github.com/lz4/lz4/blob/v1.10.0/README.md) · [IO31025](https://github.com/ebiggers/libdeflate/blob/v1.26/README.md) |
+| Repeated join materialization or vector I/O | Tessera or RaBitQ-SSD as workload-specific research | Current-engine baseline, skew, complete build cost and matched measured recall are mandatory. [IO31039](https://arxiv.org/html/2610.40620v1) · [IO31044](https://arxiv.org/html/2610.02652v1) |
+
+Do not select the newest timestamp blindly: Node 26.13.0's LTS transition contains no new code, TypeScript 7.1 is beta, KTX 5 is RC, and DuckDB 2 files introduce a downgrade boundary. A stable version's publication and a current documentation page are different evidence. [RT31032](https://nodejs.org/en/blog/release/v26.13.0) · [RT31036](https://devblogs.microsoft.com/typescript/announcing-typescript-7-1-beta/) · [GP31021](https://github.com/KhronosGroup/KTX-Software/releases/tag/v5.0.0-rc2) · [IO31052](https://duckdb.org/2026/10/21/announcing-duckdb-200)
 
 ## Always use these decision rules
 

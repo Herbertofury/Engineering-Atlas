@@ -1,8 +1,65 @@
 # Research test queue
 
-**Planning snapshot: October 27, 2026; stack-layer extension reviewed October 28 UTC. Every comparison below is planned and has not been run as part of this catalog contribution.** Priority describes the order in which a useful decision could be resolved; it is not a quality ranking or a promise to run cloud jobs.
+**Planning snapshot: October 31, 2026; earlier October 27–28 proposals retained and extended. Every comparison below is planned and has not been run as part of this catalog contribution.** Priority describes the order in which a useful decision could be resolved; it is not a quality ranking or a promise to run cloud jobs.
 
-The queue now contains **20 planned comparisons**. The [stack-layer comparison map](stack-selection.md#stack-layer-comparison-map) groups candidate roles without creating duplicate plans. The [research catalog](research-catalog.md) supplies candidate descriptions and dated primary sources. The [ranking methodology](research-explorer.md), [research method](research-method.md), and [benchmark format](benchmark-format.md) define the evidence boundary. Existing measurements remain in their original cohorts. In particular, the [retained Python JSON lab](../experiments/json-lab/README.md) is an earlier run, not evidence that the expanded JSON study below has happened.
+The queue now contains **38 planned comparisons** in the [validated plan registry](../data/research-test-plans.json). The generated directory links to every complete plan; the numbered sections retain the original twenty decision narratives. October 31 additions and extensions are authoritative in the registry, including controls, gates, metrics and protocols. The [stack-layer comparison map](stack-selection.md#stack-layer-comparison-map) groups candidate roles without creating duplicate plans. The [research catalog](research-catalog.md) supplies candidate descriptions and dated primary sources. The [ranking methodology](research-explorer.md), [research method](research-method.md), and [benchmark format](benchmark-format.md) define the evidence boundary. Existing measurements remain in their original cohorts. In particular, the [retained Python JSON lab](../experiments/json-lab/README.md) is an earlier run, not evidence that the expanded JSON study below has happened.
+
+<!-- test-plan-directory:start -->
+
+## Planned comparison directory
+
+Generated from the same [test-plan registry](../data/research-test-plans.json) used by the Explorer. Every row is planned, not a result. Priority orders research work; it does not rank the candidates. Open a plan to filter its candidates, inspect controls and gates, or export the proposal. Candidate counts include complementary components and separate follow-on lanes, not only interchangeable alternatives.
+
+| Planned comparison | Priority | Stack layers | Candidates |
+|---|---|---|---|
+| [Local catalog transactions](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-local-catalog-v1#catalog) | P1 | Local storage & search | 6 |
+| [Local result analytics under memory pressure](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-local-analytics-v1#catalog) | P1 | Analytics & result formats | 4 |
+| [Python JSON compatibility and complete application cost](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-json-contract-v2#catalog) | P1 | Languages & runtimes; Local storage & search; Shared core & native boundaries | 3 |
+| [Complete native file pipeline](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-file-pipeline-v1#catalog) | P1 | Languages & runtimes; Files, hashing & archives | 12 |
+| [Portable sandboxed plugin boundary](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-plugin-boundary-v1#catalog) | P1 | Plugins & process isolation; Shared core & native boundaries | 7 |
+| [Desktop vertical slice](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-desktop-slice-v1#catalog) | P1 | Desktop shells & native UI; Large collections & interaction | 9 |
+| [Frontend build and edit loop](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-frontend-build-v1#catalog) | P2 | Builds & reproducibility | 4 |
+| [JavaScript service runtime](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-js-service-v1#catalog) | P2 | Languages & runtimes; APIs & shared services | 3 |
+| [Game/tool vertical slice](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-game-slice-v1#catalog) | P2 | Games, graphics & physics; Assets, textures & delivery | 5 |
+| [Labeled catalog retrieval](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-catalog-retrieval-v1#catalog) | P2 | Local storage & search; APIs & shared services | 6 |
+| [Local model inference](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-local-inference-v1#catalog) | P2 | Optional AI & developer tools | 3 |
+| [Desktop profiling effectiveness](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-desktop-diagnostics-v1#catalog) | P2 | Testing, profiling & correctness; Large collections & interaction | 3 |
+| [GPU inference serving](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-gpu-serving-v1#catalog) | P3 | Optional AI & developer tools | 3 |
+| [Coding-agent configurations](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-agent-protocol-v1#catalog) | P3 | Optional AI & developer tools | 5 |
+| [Recoverable experiment orchestration](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-durable-jobs-v1#catalog) | P3 | Background work & recovery | 3 |
+| [Reproducible release and evidence pipeline](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-release-evidence-v1#catalog) | P3 | Builds & reproducibility; Signed distribution & updates | 10 |
+| [Mod dependency and compatibility planning](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-mod-resolution-v1#catalog) | P1 | Dependencies & conflict solving; Mod loaders & compatibility | 6 |
+| [Verified transfer, installation and rollback](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-verified-install-v1#catalog) | P1 | Downloads, transfer & sync; Signed distribution & updates; Background work & recovery; Assets, textures & delivery; Files, hashing & archives | 10 |
+| [Browser worker and native-message lifecycle](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-extension-lifecycle-v1#catalog) | P1 | Browser extensions; Shared core & native boundaries; Local storage & search | 9 |
+| [Asset fidelity, decoding and delivery](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-asset-pipeline-v1#catalog) | P1 | Assets, textures & delivery; Games, graphics & physics | 10 |
+| [Native link compatibility and complete build time](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-native-linking-v1#catalog) | P1 | Builds & reproducibility | 3 |
+| [Compiler cache invalidation and real build loops](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-compiler-cache-v1#catalog) | P1 | Builds & reproducibility | 1 |
+| [Profile-guided builds on held-out application journeys](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-profile-guided-builds-v1#catalog) | P1 | Languages & runtimes; Builds & reproducibility | 3 |
+| [Complete UI work with responsive scheduling and containment](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-browser-scheduling-v1#catalog) | P1 | Large collections & interaction | 4 |
+| [Live query correctness through optimistic rollback](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-client-live-queries-v1#catalog) | P2 | Large collections & interaction; Local storage & search | 1 |
+| [Command and Python benchmark reproducibility](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-command-benchmark-methods-v1#catalog) | P1 | Testing, profiling & correctness; Builds & reproducibility; Languages & runtimes | 2 |
+| [ECS layout, mutation and task ownership](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-ecs-scheduling-v1#catalog) | P1 | Games, graphics & physics; Assets, textures & delivery | 6 |
+| [Portable viewport and compute completion](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-portable-gpu-contract-v1#catalog) | P2 | Games, graphics & physics; Builds & reproducibility | 3 |
+| [Bounded thumbnail and image-transform completion](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-image-preview-completion-v1#catalog) | P1 | Files, hashing & archives; Assets, textures & delivery | 1 |
+| [AV1 decode, color and presentation](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-video-preview-contract-v1#catalog) | P2 | Assets, textures & delivery; Games, graphics & physics | 2 |
+| [Specialized rasterization and curved-surface watch experiments](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-specialized-gpu-research-v1#catalog) | P3 | Games, graphics & physics | 4 |
+| [Bounded CPU and I/O execution](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-bounded-execution-v1#catalog) | P1 | APIs & shared services; Background work & recovery; Files, hashing & archives; Downloads, transfer & sync; Languages & runtimes | 6 |
+| [Complete validated representations](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-validated-representation-v1#catalog) | P1 | Assets, textures & delivery; Files, hashing & archives; Local storage & search; Shared core & native boundaries | 4 |
+| [Allocator impact on the full application](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-allocator-impact-v1#catalog) | P1 | Files, hashing & archives; Languages & runtimes; Testing, profiling & correctness | 1 |
+| [Compression under end-to-end resource budgets](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-codec-complete-pipeline-v1#catalog) | P1 | Assets, textures & delivery; Files, hashing & archives | 3 |
+| [Skew-aware join aggregation reproduction](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-sparse-join-aggregate-v1#catalog) | P2 | Analytics & result formats; Local storage & search | 3 |
+| [Profiler and measurement calibration](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-profiler-calibration-v1#catalog) | P1 | Testing, profiling & correctness; Languages & runtimes | 9 |
+| [Concurrency optimization correctness](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=planned-concurrency-model-v1#catalog) | P1 | Testing, profiling & correctness; Background work & recovery | 4 |
+
+<!-- test-plan-directory:end -->
+
+## October 31 priorities and consolidation
+
+New detailed plans cover native linking, compiler-cache invalidation, held-out profile-guided builds, browser scheduling/containment, live-query rollback, benchmark-runner calibration, ECS/task ownership, portable GPU contracts, bounded image/video previews, specialized GPU research, CPU/I/O admission, validated formats, allocator impact, compression, skewed join aggregation, profiler calibration and concurrency models.
+
+Existing decisions expand instead of multiplying: durable stores include Fjall/libmdbx/Turso; transfer includes casync and current iroh-blobs; mod resolution includes PubGrub; plugin runtime comparisons include WAMR; the asset plan includes complete glTF/animation and texture-container contracts. Node/Piscina and Tokio/Rayon remain separate configurations inside the bounded-execution plan. Each profiler is evaluated for its actual diagnostic role.
+
+Use **Export complete plan** in the Explorer to obtain the full proposal. It preserves all registered candidates regardless of visible search results and leaves actual execution fields unfilled. A saved proposal is not a completed experiment.
 
 ## Admission and ranking rules
 

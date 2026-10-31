@@ -167,6 +167,42 @@ def validate_results(results, candidate_tracks, today=None):
     return cohorts
 
 
+def validate_test_plans(registry, catalog, today=None):
+    """Validate proposals without turning them into measured cohorts or results."""
+    today = today or dt.datetime.now(dt.timezone.utc).date()
+    require(isinstance(registry, dict), 'Test-plan registry must be an object')
+    require(type(registry.get('schema_version')) is int and registry['schema_version'] == 1,
+            'Unsupported test-plan schema')
+    require(set(registry) == {'schema_version', 'reviewed_at', 'description', 'plans'},
+            'Unexpected or missing test-plan registry field')
+    text_fields(registry, ['reviewed_at', 'description'], 'Test-plan registry')
+    date(registry['reviewed_at'], today)
+    require(isinstance(registry['plans'], list) and registry['plans'], 'Test-plan registry must contain plans')
+    candidate_ids = {entry['id'] for entry in catalog['entries']}
+    layer_ids = {layer['id'] for layer in catalog.get('layers', [])}
+    fields = {'id', 'title', 'priority', 'status', 'decision', 'layer_ids', 'candidate_ids',
+              'controls', 'gates', 'metrics', 'protocol'}
+    seen = set()
+    for plan in registry['plans']:
+        require(isinstance(plan, dict), 'Test plan must be an object')
+        require(set(plan) == fields, 'Unexpected or missing test-plan field')
+        text_fields(plan, ['id', 'title', 'decision'], 'Test plan')
+        require(ID.fullmatch(plan['id']) and plan['id'].startswith('planned-') and plan['id'] not in seen,
+                'Invalid or duplicate test-plan ID')
+        seen.add(plan['id'])
+        require(plan['status'] == 'planned', 'Test plans cannot claim execution, acceptance or ranking')
+        require(type(plan['priority']) is int and plan['priority'] in {1, 2, 3}, 'Invalid test-plan priority')
+        for key in ('layer_ids', 'candidate_ids', 'controls', 'gates', 'metrics', 'protocol'):
+            values = plan[key]
+            require(isinstance(values, list) and values and
+                    all(isinstance(value, str) and value.strip() for value in values),
+                    'Missing or invalid test-plan ' + key)
+            require(len(values) == len(set(values)), 'Duplicate test-plan ' + key)
+        require(set(plan['candidate_ids']) <= candidate_ids, 'Unknown test-plan candidate')
+        require(set(plan['layer_ids']) <= layer_ids, 'Unknown test-plan layer')
+    return seen
+
+
 def validate_signals(signals, community, catalog, today=None):
     today = today or dt.datetime.now(dt.timezone.utc).date()
     require(type(signals.get('schema_version')) is int and type(community.get('schema_version')) is int and
@@ -259,7 +295,14 @@ def load_bundle(root=ROOT):
     signals = read('data/research-signals.json')
     community = read('data/research-community.json')
     validate_signals(signals, community, catalog)
-    return {**catalog, 'results': results, 'signals': signals, 'community': community}
+    plans_path = root / 'data/research-test-plans.json'
+    if plans_path.exists():
+        test_plans = read('data/research-test-plans.json')
+        validate_test_plans(test_plans, catalog)
+    else:
+        test_plans = {'plans': [], 'reviewed_at': None}
+    return {**catalog, 'results': results, 'signals': signals, 'community': community,
+            'test_plans': test_plans['plans'], 'test_plans_reviewed_at': test_plans['reviewed_at']}
 
 
 def markdown_catalog(bundle):
@@ -299,6 +342,24 @@ def markdown_layer_map(bundle):
     return '\n'.join(lines) + '\n'
 
 
+def markdown_test_plan_directory(bundle):
+    """Keep the existing queue and the Explorer linked to one proposal registry."""
+    layers = {layer['id']: layer['label'] for layer in bundle.get('layers', [])}
+    lines = ['## Planned comparison directory', '',
+        'Generated from the same [test-plan registry](../data/research-test-plans.json) used by the Explorer. '
+        'Every row is planned, not a result. Priority orders research work; it does not rank the candidates. '
+        'Open a plan to filter its candidates, inspect controls and gates, or export the proposal. '
+        'Candidate counts include complementary components and separate follow-on lanes, not only interchangeable alternatives.', '',
+        '| Planned comparison | Priority | Stack layers | Candidates |',
+        '|---|---|---|---|']
+    for plan in bundle.get('test_plans', []):
+        row = ['[' + plan['title'] + '](https://herbertofury.github.io/Engineering-Atlas/explorer/?plan=' + plan['id'] + '#catalog)',
+               'P' + str(plan['priority']), '; '.join(layers[layer_id] for layer_id in plan['layer_ids']),
+               str(len(plan['candidate_ids']))]
+        lines.append('| ' + ' | '.join(cell.replace('|', '\\|').replace('\n', ' ') for cell in row) + ' |')
+    return '\n'.join(lines) + '\n'
+
+
 def build(root=ROOT, check=False):
     bundle = load_bundle(root)
     destination = root / 'docs/explorer'
@@ -330,8 +391,21 @@ def build(root=ROOT, check=False):
             _, suffix = rest.split(end)
             generated = '\n\n' + markdown_layer_map(bundle) + '\n' if bundle.get('layers') else '\n'
             outputs[stack_path] = (prefix + start + generated + end + suffix).encode()
+    queue_path = root / 'docs/research-test-queue.md'
+    if bundle.get('test_plans') or queue_path.exists():
+        require(queue_path.exists(), 'Test-plan registry requires the existing test queue')
+        queue_text = queue_path.read_text()
+        start, end = '<!-- test-plan-directory:start -->', '<!-- test-plan-directory:end -->'
+        if bundle.get('test_plans') or start in queue_text or end in queue_text:
+            require(queue_text.count(start) == queue_text.count(end) == 1 and queue_text.index(start) < queue_text.index(end),
+                    'Existing test queue must contain one ordered test-plan directory marker pair')
+            prefix, rest = queue_text.split(start)
+            _, suffix = rest.split(end)
+            generated = '\n\n' + markdown_test_plan_directory(bundle) + '\n' if bundle.get('test_plans') else '\n'
+            outputs[queue_path] = (prefix + start + generated + end + suffix).encode()
     manifest = {'schema_version': 1, 'files': {str(path.relative_to(root)): hashlib.sha256(data).hexdigest() for path, data in outputs.items()},
-        'entries': len(bundle['entries']), 'cohorts': len(bundle['results']['cohorts']), 'observations': len(bundle['results']['observations'])}
+        'entries': len(bundle['entries']), 'test_plans': len(bundle.get('test_plans', [])),
+        'cohorts': len(bundle['results']['cohorts']), 'observations': len(bundle['results']['observations'])}
     outputs[destination / 'build-manifest.json'] = (json.dumps(manifest, indent=2, sort_keys=True) + '\n').encode()
     errors = []
     for path, data in outputs.items():
@@ -344,6 +418,7 @@ def build(root=ROOT, check=False):
     require(not errors, 'Generated explorer files are stale: ' + ', '.join(errors))
     return {'entries': len(bundle['entries']), 'sources': len({s for e in bundle['entries'] for s in e['source_ids']}),
         'cohorts': len(bundle['results']['cohorts']), 'observations': len(bundle['results']['observations']),
+        'test_plans': len(bundle.get('test_plans', [])),
         'community_reports': len(bundle['community']['ratings']), 'mode': 'check' if check else 'build'}
 
 

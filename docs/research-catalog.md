@@ -1,6 +1,6 @@
 # Research catalog
 
-**Snapshot: 2026-10-27 (America/Denver).** Source checks use UTC dates.
+**Snapshot: 2026-10-31 (America/Denver).** Source checks use UTC dates.
 
 [Interactive Explorer](https://herbertofury.github.io/Engineering-Atlas/explorer/) · [Ranking methodology](research-explorer.md) · [Test queue](research-test-queue.md)
 
@@ -1002,17 +1002,17 @@ Embedded Rust lexical search library for evaluating tokenized catalog search aga
 
 **Stack layers:** Local storage & search.
 
-**Current signal:** The opened release page marks 0.26.1 as latest; its displayed May 10 date lacks a year, so no exact publication date is asserted.
+**Current signal:** Live release metadata resolves 0.26.1 publication to 2026-05-10, replacing the earlier year-unknown observation; no later release claimed.
 
 **Test:** Compare SQLite FTS5 and Tantivy on the same complete public catalog, labels and query set, with exact identifier lookup retained. Test tokenization, filters, updates, deletions, crash/rebuild recovery and commit-to-visible latency while resolving every hit to complete metadata.
 
 **Measure:** retrieval quality on labeled queries; exact identifier correctness; p95/p99 query latency; commit-to-visible latency; index size; rebuild time; metadata parity.
 
-**Constraints:** Tantivy is a search library, not an authoritative transactional catalog or an off-the-shelf server. Document replacement uses delete/reindex; commit, reader reload and a new searcher determine visibility. Different tokenizers and ranking semantics require relevance judgments; do not mistake unlike result sets for a speed win.
+**Constraints:** Tantivy is a search library, not an authoritative transactional catalog or an off-the-shelf server. Document replacement uses delete/reindex; commit, reader reload and a new searcher determine visibility. Different tokenizers and ranking semantics require relevance judgments; do not mistake unlike result sets for a speed win. Replay float ingestion, dynamic fields, query parsing and index reopen behavior when comparing the observed release.
 
 **Priority rationale:** A separate search index is justified only if measured relevance or latency improves without losing complete catalog data.
 
-**Sources:** [ST115](https://github.com/quickwit-oss/tantivy) · [ST116](https://github.com/quickwit-oss/tantivy/releases) · [ST117](https://www.sqlite.org/fts5.html)
+**Sources:** [ST115](https://github.com/quickwit-oss/tantivy) · [ST116](https://github.com/quickwit-oss/tantivy/releases) · [ST117](https://www.sqlite.org/fts5.html) · [IO31054](https://api.github.com/repos/quickwit-oss/tantivy/releases/latest)
 
 ### pgvector
 
@@ -1034,7 +1034,7 @@ PostgreSQL vector-search extension for comparing integrated relational retrieval
 
 **Sources:** [RX100](https://github.com/pgvector/pgvector)
 
-## Languages & runtimes (17)
+## Languages & runtimes (21)
 
 ### Bun
 
@@ -1044,17 +1044,17 @@ Integrated JavaScript runtime and development toolchain combining execution, pac
 
 **Stack layers:** Languages & runtimes.
 
-**Current signal:** Bun v1.4.4 introduces the built-in bun fmt formatter.
+**Current signal:** Bun 1.4.4 was published 2026-10-22 with bun fmt and bun check changes; the notes include fixes to previously missed type errors.
 
 **Test:** Compare application behavior and complete toolchain cycles against Node-based baselines with equivalent checks enabled.
 
-**Measure:** compatibility pass rate; install seconds cold and warm; test seconds; peak RSS MiB; formatter agreement rate.
+**Measure:** compatibility pass rate; install seconds cold and warm; test seconds; peak RSS MiB; formatter agreement rate; diagnostic identity agreement rate; missed expected diagnostics.
 
-**Constraints:** Keep formatter and runtime rankings separate. Vendor benchmark numbers remain external claims.
+**Constraints:** Keep formatter and runtime rankings separate. Vendor benchmark numbers remain external claims. Formatter, type checker, runtime and package-manager outcomes require separate cohorts and complete contracts. A matching diagnostic count does not establish diagnostic parity: compare codes, spans, messages and severity on positive and negative fixtures. Pin the source release's benchmark conditions and compare equivalent check coverage; do not import publisher tables as Atlas measurements.
 
 **Priority rationale:** Pin a representative workload and compatibility contract before considering a compiler or runtime migration.
 
-**Sources:** [RX057](https://bun.sh/blog/bun-v1.4.4)
+**Sources:** [RX057](https://bun.sh/blog/bun-v1.4.4) · [RT31043](https://bun.sh/blog/bun-v1.4.4)
 
 ### Deno
 
@@ -1124,17 +1124,57 @@ JavaScript runtime and compatibility baseline for server applications, build too
 
 **Stack layers:** Languages & runtimes; APIs & shared services.
 
-**Current signal:** Release index lists 26.12.1 Current and 24.22.1 LTS on 2026-10-21.
+**Current signal:** Node.js 26.13.0 became LTS on 2026-10-28 with no code changes from 26.12.1; Node 27 alpha belongs in compatibility CI, not the production comparison baseline.
 
 **Test:** Run the same HTTP, streams, filesystem, package, and test workloads across pinned Node, Bun, and Deno builds.
 
 **Measure:** compatibility pass rate; startup milliseconds; p99 latency milliseconds; peak RSS MiB; wall time seconds.
 
-**Constraints:** Current and LTS are distinct cohorts. Use identical dependency graphs and application semantics.
+**Constraints:** Current and LTS are distinct cohorts. Use identical dependency graphs and application semantics. The new annual major-release schedule separates alpha, Current and LTS; prereleases are separate test configurations. A lifecycle-label change alone does not establish a runtime performance improvement; keep dependencies and application semantics fixed.
 
 **Priority rationale:** Pin a representative workload and compatibility contract before considering a compiler or runtime migration.
 
-**Sources:** [RX056](https://nodejs.org/en/blog)
+**Sources:** [RX056](https://nodejs.org/en/blog) · [RT31032](https://nodejs.org/en/blog/release/v26.13.0) · [RT31033](https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule)
+
+### Piscina
+
+**tool · established · P1** · ID: piscina
+
+Node.js worker-thread pool for bounded CPU work with explicit queueing, transfer and worker-lifecycle choices.
+
+**Stack layers:** Languages & runtimes; Files, hashing & archives; APIs & shared services.
+
+**Current signal:** v5.3.2 published 2026-08-28; reviewed current pool, queue and ownership guidance.
+
+**Test:** Compare the same CPU transform on the main thread and in a bounded Piscina pool under foreground request load, including queue wait, serialization, transfer, cancellation and complete result collection.
+
+**Measure:** full job seconds; foreground p99 latency milliseconds; queue wait p95 milliseconds; worker startup milliseconds; peak process-tree RSS MiB; cancel-to-quiescence milliseconds.
+
+**Constraints:** Already asynchronous I/O does not automatically benefit from worker threads; begin with a demonstrated CPU bottleneck. Set maxQueue, worker counts and idle policy explicitly; default or excessively large queues can turn throughput into unbounded memory and latency. Transferred buffers change ownership, and worker aborts/errors must retain complete diagnostics and prevent stale results from publishing.
+
+**Priority rationale:** A bounded worker boundary can protect interactive latency while retaining an existing Node implementation.
+
+**Sources:** [RT31010](https://github.com/piscinajs/piscina) · [RT31011](https://github.com/piscinajs/piscina/releases/tag/v5.3.2)
+
+### PubGrub Rust solver
+
+**tool · established · P1** · ID: pubgrub-rs
+
+Generic dependency-version solver that retains a derivation of conflicts for application-specific incompatibility explanations.
+
+**Stack layers:** Dependencies & conflict solving; Mod loaders & compatibility.
+
+**Current signal:** Pinned 0.4.0 documentation exposes provider hooks and NoSolution derivation trees; no fresh release date is assumed.
+
+**Test:** Encode the same public package/mod constraints as existing libsolv/resolvo controls, testing valid solutions and unsatisfiable explanations plus metadata-fetch cost.
+
+**Measure:** resolution p95/p99 milliseconds; metadata requests and bytes; peak RSS MiB; valid-solution rate; independently checked contradiction rate; explanation completeness.
+
+**Constraints:** Generic version sets do not automatically capture platform predicates, optional dependencies, overrides or ecosystem-specific prerelease semantics. The provider controls package/version priority and metadata retrieval; record cache state and choice policy. An unsatisfiable result is useful only with sound reasons mapped to user-visible mod/package constraints. A solved version graph does not establish runtime ABI compatibility, load order, safe installation or rollback.
+
+**Priority rationale:** Adds an explanation-oriented contrast to the existing solvers and makes failed installations a first-class correctness/UX workload.
+
+**Sources:** [GP31030](https://docs.rs/pubgrub/0.4.0/pubgrub/) · [GP31031](https://github.com/pubgrub-rs/pubgrub)
 
 ### Python / CPython
 
@@ -1144,17 +1184,17 @@ General-purpose language and runtime for automation, data workflows, services, a
 
 **Stack layers:** Languages & runtimes.
 
-**Current signal:** Python 3.15.0 launched 2026-10-09; its page now points to a newer patch release.
+**Current signal:** Python 3.15 documentation reviewed 2026-10-31 for lazy imports, free-threaded extension compatibility and experimental JIT behavior; the versioned documentation header alone is not used to verify a newest patch release.
 
 **Test:** Compare pinned standard, free-threaded, and experimental JIT builds on startup, CPU, and extension-heavy application workloads.
 
-**Measure:** startup milliseconds; wall time seconds; threads scaling ratio; peak RSS MiB; extension compatibility pass rate.
+**Measure:** startup milliseconds; wall time seconds; threads scaling ratio; peak RSS MiB; extension compatibility pass rate; first-use import milliseconds; actual GIL state after extension imports.
 
-**Constraints:** Do not mix interpreter build modes in one ranking. Verify extension wheels and numerical correctness; JIT remains a separate experimental lane.
+**Constraints:** Do not mix interpreter build modes in one ranking. Verify extension wheels and numerical correctness; JIT remains a separate experimental lane. An extension without free-threading support can re-enable the GIL; verify actual runtime GIL state after importing the full dependency graph. Lazy imports can defer side effects and failures; include first-use latency and import-error timing in the application contract. Free-threaded container protection does not establish algorithm-level thread safety or safe shared iterators; test required concurrent use and memory overhead.
 
 **Priority rationale:** Pin a representative workload and compatibility contract before considering a compiler or runtime migration.
 
-**Sources:** [RX048](https://www.python.org/downloads/release/python-3150/)
+**Sources:** [RX048](https://www.python.org/downloads/release/python-3150/) · [RT31037](https://docs.python.org/3.15/whatsnew/3.15.html) · [RT31038](https://docs.python.org/3.15/howto/free-threading-python.html)
 
 ### Rust
 
@@ -1176,6 +1216,26 @@ Systems language for native tools and services, with ownership-based memory mana
 
 **Sources:** [RX044](https://doc.rust-lang.org/releases.html)
 
+### Taskflow
+
+**framework · established · P1** · ID: taskflow
+
+C++ task-graph runtime and parallel algorithms for expressing dependent CPU/GPU work with explicit scheduling structure.
+
+**Stack layers:** Files, hashing & archives; Assets, textures & delivery.
+
+**Current signal:** v4.1.0 was published 2026-06-20; release documentation dated June 19 describes new parallel primitives and executor work.
+
+**Test:** Express one asset-import or frame-preparation dependency graph without changing useful work, and compare the current pool, serial control and Taskflow at fixed process-wide thread budgets.
+
+**Measure:** end-to-end p95/p99 milliseconds; task scheduling overhead; queue and critical-path time; CPU utilization; peak RSS MiB; UI event latency.
+
+**Constraints:** 4.1 requires C++20; keep 4.2 master separate from the verified stable release. Do not improve throughput by dropping task dependencies, validation, diagnostics or completion barriers. Old tfprof binary traces are incompatible with 4.1; record profiler version and overhead. Small tasks, nested parallel libraries, blocking I/O and oversubscription may erase scheduling benefits.
+
+**Priority rationale:** Complete asset jobs provide a tractable experiment in critical-path scheduling and bounded concurrency.
+
+**Sources:** [GP31012](https://github.com/taskflow/taskflow/releases/tag/v4.1.0) · [GP31013](https://taskflow.github.io/taskflow/release-4-1-0.html)
+
 ### TypeScript 7 native compiler
 
 **language · established · P1** · ID: typescript-native
@@ -1184,17 +1244,37 @@ Native TypeScript compiler and language-server candidate for reducing feedback t
 
 **Stack layers:** Languages & runtimes; Shared core & native boundaries; Builds & reproducibility.
 
-**Current signal:** TypeScript 7.0 was announced 2026-07-08 as the native compiler release.
+**Current signal:** TypeScript 7.0.2 was published 2026-08-20; the 7.1 beta announcement on 2026-10-20 describes an evolving compiler API and is a separate preview cohort.
 
 **Test:** Compare pinned TypeScript 6 and 7 on identical monorepo commits, complete builds, incremental edits, and diagnostic agreement.
 
-**Measure:** full check seconds; incremental check milliseconds; peak RSS MiB; diagnostic agreement rate; tooling compatibility pass rate.
+**Measure:** full check seconds; incremental check milliseconds; peak RSS MiB; diagnostic agreement rate; tooling compatibility pass rate; aggregate build CPU seconds; API consumer compatibility failures.
 
-**Constraints:** Compiler API compatibility needs explicit testing. Vendor benchmarks are leads, not independent Atlas measurements.
+**Constraints:** Compiler API compatibility needs explicit testing. Vendor benchmarks are leads, not independent Atlas measurements. Compiler API consumers may still need TypeScript 6 alongside native TypeScript 7; enumerate tooling API dependencies before migration. TypeScript 7.1 beta's API and memory-lifecycle choices require independent compatibility testing; do not transfer preview behavior to the stable baseline. Native checker concurrency multiplied by an outer monorepo build can oversubscribe the host; cap aggregate CPU and memory use.
 
 **Priority rationale:** Pin a representative workload and compatibility contract before considering a compiler or runtime migration.
 
-**Sources:** [RX050](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)
+**Sources:** [RX050](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/) · [RT31034](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/) · [RT31035](https://github.com/microsoft/TypeScript/releases/tag/v7.0.2) · [RT31036](https://devblogs.microsoft.com/typescript/announcing-typescript-7-1-beta/)
+
+### enkiTS
+
+**framework · established · P1** · ID: enkits
+
+C/C++ task scheduler with dependencies and pinned tasks for explicit control of frame and background job execution.
+
+**Stack layers:** Files, hashing & archives; Assets, textures & delivery.
+
+**Current signal:** v1.12 (2026-07-04) adds shutdown controls and work for larger processor counts.
+
+**Test:** Compare the same task graph and worker limit against the current scheduler and Taskflow, including UI-thread-affine completions, shutdown and blocked-worker stress.
+
+**Measure:** task-to-completion p95/p99 milliseconds; scheduling overhead; UI event latency; worker utilization; shutdown latency; missed or duplicate task count.
+
+**Constraints:** Pinned task execution is not an automatic host UI integration; the host must drain work on the correct thread. Retain dependency ordering and memory lifetime through cancellation/shutdown. High logical-CPU counts and Windows processor groups need deployment-specific testing. Compare with the same worker and affinity budget; saturating all cores can hurt foreground responsiveness.
+
+**Priority rationale:** A small task runtime is a useful alternative for latency-sensitive tools when pool overhead and ownership are visible.
+
+**Sources:** [GP31014](https://github.com/dougbinks/enkiTS/releases/tag/v1.12) · [GP31015](https://github.com/dougbinks/enkiTS)
 
 ### .NET / C# stack
 
@@ -1376,7 +1456,7 @@ Experimental functional language exploring a compact language model and native o
 
 **Sources:** [RX053](https://github.com/roc-lang/roc)
 
-## Compilers & build tools (12)
+## Compilers & build tools (19)
 
 ### CXX Rust–C++ bridge
 
@@ -1397,6 +1477,26 @@ Generates checked Rust–C++ interfaces for reusing native libraries while expre
 **Priority rationale:** Provides a concrete migration path for trusted native functionality without forcing an engine or language rewrite.
 
 **Sources:** [ST043](https://cxx.rs/) · [ST044](https://github.com/dtolnay/cxx)
+
+### LLVM profile-guided optimization
+
+**method · established · P1** · ID: llvm-pgo
+
+Use sampled or instrumented execution profiles to guide compiler optimization for a declared deployment workload.
+
+**Stack layers:** Builds & reproducibility; Languages & runtimes.
+
+**Current signal:** Current Clang documentation reviewed 2026-10-31; no new release version or Atlas speedup inferred.
+
+**Test:** Train on one fixed workload partition and compare the current optimized binary with PGO on held-out full application journeys, keeping compiler, LTO, numeric flags and input semantics fixed.
+
+**Measure:** held-out full completion seconds; cold startup milliseconds; p99 operation milliseconds; peak RSS MiB; binary bytes; profile collection and rebuild seconds.
+
+**Constraints:** Training and evaluation must be separate; a profile that overfits one hot path can regress other operations or cold startup. Sampling and instrumentation are separate configurations; preserve provenance, stale-profile warnings and the cost of collecting and refreshing profiles. The reviewed documentation follows LLVM development; pin an actually installed release and its compatible profile format instead of treating documentation as a release announcement.
+
+**Priority rationale:** A controlled compiler configuration may improve an existing implementation before a language or architecture migration.
+
+**Sources:** [RT31007](https://clang.llvm.org/docs/UsersManual.html)
 
 ### Nix
 
@@ -1438,6 +1538,26 @@ Rust-based JavaScript bundler with a Rollup-compatible plugin interface and conf
 
 **Sources:** [RX060](https://voidzero.dev/posts/announcing-rolldown-1-0)
 
+### Slang shader compiler
+
+**language · established · P1** · ID: slang-shaders
+
+Modular shader language and compiler for generating target-specific GPU programs with reusable interfaces and explicit capability checks.
+
+**Stack layers:** Builds & reproducibility; Games, graphics & physics.
+
+**Current signal:** v2026.20 was published 2026-10-17; explicit stable language mode 2026 avoids silently inheriting legacy semantics.
+
+**Test:** Port one existing compute or material kernel while preserving numerical behavior, and compare clean/incremental shader builds and complete dispatch cost on each target.
+
+**Measure:** clean and incremental shader-build seconds; shader cache hit rate; GPU kernel and complete operation milliseconds; register and memory use; numerical or visual error; target compile pass rate.
+
+**Constraints:** Compiler v2026.20 and language mode 2026 are different pins; the documented default remains legacy 2018 and next/202c is development. Generated code still depends on target compilers, drivers and feature capabilities; one portable source does not imply identical performance. Match precision, fast-math, subgroup behavior and specialization count; avoid accepting a faster but numerically weaker kernel. Include migration diagnostics, reflection/ABI compatibility and target-specific failures in the comparison.
+
+**Priority rationale:** A focused shared-kernel experiment can expose build duplication and shader portability costs without replacing the application renderer.
+
+**Sources:** [GP31003](https://github.com/shader-slang/slang/releases/tag/v2026.20) · [GP31004](https://shader-slang.org/) · [GP31005](https://docs.shader-slang.org/en/stable/external/slang/docs/user-guide/11-language-version.html)
+
 ### Vite
 
 **tool · established · P1** · ID: vite
@@ -1446,17 +1566,17 @@ Frontend development server and build orchestrator with a unified Rolldown-based
 
 **Stack layers:** Builds & reproducibility.
 
-**Current signal:** Vite 8 replaces the earlier dual-bundler pipeline with Rolldown.
+**Current signal:** Vite 8 uses a unified Rolldown pipeline; the support page checked 2026-10-31 lists 8.3 for regular fixes, 7.3/8.2 for important and security fixes, and 6.4/8.1 for security fixes.
 
 **Test:** Run identical small, medium, and monorepo applications through cold builds, hot updates, and production smoke tests.
 
 **Measure:** cold build seconds; HMR p95 milliseconds; peak RSS MiB; compressed output bytes; plugin compatibility pass rate.
 
-**Constraints:** Match browser targets, minification, source maps, and cache state. Faster builds must preserve runtime behavior.
+**Constraints:** Match browser targets, minification, source maps, and cache state. Faster builds must preserve runtime behavior. Support lanes and latest patch identity are separate facts; pin the exact tested patch and its supported Node versions. Plugin behavior, output chunks, minification, source maps and browser targets must agree before attributing a build difference to the new bundler.
 
 **Priority rationale:** Build loops are a bounded, reproducible comparison with direct developer-time and diagnostic-correctness effects.
 
-**Sources:** [RX059](https://vite.dev/blog/announcing-vite8)
+**Sources:** [RX059](https://vite.dev/blog/announcing-vite8) · [RT31039](https://vite.dev/blog/announcing-vite8) · [RT31040](https://vite.dev/releases)
 
 ### WXT
 
@@ -1498,6 +1618,46 @@ SAT-based native dependency solver with conflict explanations, useful as a basel
 
 **Sources:** [ST132](https://github.com/openSUSE/libsolv) · [ST133](https://github.com/openSUSE/libsolv/blob/master/package/libsolv.changes) · [ST134](https://github.com/openSUSE/libsolv/blob/master/LICENSE.BSD)
 
+### mold
+
+**tool · established · P1** · ID: mold
+
+Parallel ELF linker candidate for reducing native build feedback time while preserving the target's complete binary and linker contract.
+
+**Stack layers:** Builds & reproducibility.
+
+**Current signal:** v3.0.0 published 2026-10-05; rewrite and compatibility changes require revalidation against the prior release.
+
+**Test:** Compare pinned mold, lld and the target's current linker on identical object files, libraries and link options; count successful complete builds separately from link-only timing.
+
+**Measure:** link wall time seconds; complete build seconds; peak linker RSS MiB; compatibility failures; binary bytes.
+
+**Constraints:** mold 3.0.0 is a Rust rewrite; release notes describe performance on par with 2.42.1, so the rewrite alone is not a speedup claim. Linux ELF and supported linker-script behavior define eligibility; unusual memory layouts and target-specific scripts require independent checks. Preserve exported symbols, TLS, exceptions/unwinding, debug information, LTO and identical ICF/dead-strip options before comparing timings.
+
+**Priority rationale:** Linker substitution is a bounded experiment that may improve developer feedback without rewriting application logic.
+
+**Sources:** [RT31001](https://github.com/rui314/mold/releases/tag/v3.0.0) · [RT31002](https://github.com/rui314/mold)
+
+### sccache
+
+**tool · established · P1** · ID: sccache
+
+Compiler cache for supported C/C++ and Rust compilation, with local, remote and distributed configurations that need separate trust and invalidation checks.
+
+**Stack layers:** Builds & reproducibility.
+
+**Current signal:** v0.19.0 published 2026-10-24, including cache-key, remote error reporting and Rust dependency-info fixes.
+
+**Test:** Compare uncached compilation, the existing incremental build and pinned sccache on clean, repeated and changed-input builds; perturb every declared cache-key input and verify emitted artifacts.
+
+**Measure:** clean build seconds; repeat build seconds; changed-input build seconds; cache hit and error counts; artifact equivalence failures; cache storage bytes.
+
+**Constraints:** Rust incremental compilation and final binary/dylib/proc-macro linking are not interchangeable cacheable operations; keep the existing incremental control. Remote failure must remain distinguishable from a cache miss; private sources, credentials and executable artifacts require the target's cache trust policy. Compiler flags, environment, generated headers, paths and architecture must participate in the tested invalidation contract.
+
+**Priority rationale:** Repeat CI and developer builds offer a concrete opportunity, but a false cache hit can invalidate the entire result.
+
+**Sources:** [RT31005](https://github.com/mozilla/sccache/releases/tag/v0.19.0) · [RT31006](https://github.com/mozilla/sccache)
+
 ### uv
 
 **tool · established · P1** · ID: uv
@@ -1517,6 +1677,46 @@ Python package and project manager providing lockfiles, workspaces, environment 
 **Priority rationale:** Build loops are a bounded, reproducible comparison with direct developer-time and diagnostic-correctness effects.
 
 **Sources:** [RX064](https://docs.astral.sh/uv/) · [RX065](https://astral.sh/blog/uv-ty-integration)
+
+### LLVM BOLT
+
+**tool · established · P2** · ID: llvm-bolt
+
+Post-link binary optimizer that uses execution profiles to improve supported machine-code layouts without changing application source.
+
+**Stack layers:** Builds & reproducibility; Languages & runtimes.
+
+**Current signal:** Main-branch BOLT documentation reviewed 2026-10-31; release and target compatibility must be pinned for each test.
+
+**Test:** Optimize one symbol-rich supported ELF binary using a representative training profile, then compare the original and rewritten artifacts on held-out journeys and deployment checks.
+
+**Measure:** held-out completion seconds; p99 operation milliseconds; instruction-cache related counters; binary bytes; optimization seconds; deployment regression count.
+
+**Constraints:** Eligibility depends on supported ELF architectures, retained symbols and usable relocation information; inspect the exact artifact rather than assuming any executable can be optimized. The documented GCC block-partitioning incompatibility requires a compatible build; preserve exceptions, unwinding, dynamic loading, debugger behavior and packaged artifact identity. Reusing one profile for a changed binary or omitting cold paths can produce regressions; retain a reproducible rollback artifact and do not combine PGO, LTO and BOLT in the first comparison.
+
+**Priority rationale:** Worth testing for CPU-bound large native binaries after profiling establishes layout-sensitive work.
+
+**Sources:** [RT31009](https://github.com/llvm/llvm-project/blob/main/bolt/README.md)
+
+### LLVM ThinLTO
+
+**method · established · P2** · ID: llvm-thinlto
+
+Cross-module optimization using a combined summary index and parallel backend compilation, with an optional incremental backend cache.
+
+**Stack layers:** Builds & reproducibility; Languages & runtimes.
+
+**Current signal:** ThinLTO design, job controls and cache policies reviewed 2026-10-31.
+
+**Test:** Compare non-LTO and ThinLTO builds with a fixed compiler and linker; measure cold and warm backend-cache builds separately and test the resulting full application behavior.
+
+**Measure:** compile and link seconds; backend peak RSS MiB; held-out application seconds; binary bytes; cache bytes; semantic pass rate.
+
+**Constraints:** More backend jobs can oversubscribe a build already parallelized by the outer build system; set the total CPU and memory budget explicitly. The backend cache is a separate variable from runtime optimization, and a warm-cache build is not a clean-build control. Verify linker, object-format and plugin support for the chosen toolchain; development documentation does not establish support in every release.
+
+**Priority rationale:** Potential runtime and build tradeoffs are worth measuring after the target's link and CPU bottlenecks are identified.
+
+**Sources:** [RT31008](https://clang.llvm.org/docs/ThinLTO.html)
 
 ### OpenTofu
 
@@ -1598,6 +1798,26 @@ Rust-based bundler designed around webpack compatibility, incremental compilatio
 
 **Sources:** [RX062](https://www.rspack.dev/blog/announcing-2-0)
 
+### Wild linker
+
+**tool · emerging · P2** · ID: wild-linker
+
+Parallel linker written in Rust with an expanding target and feature set; incremental linking remains a future objective.
+
+**Stack layers:** Builds & reproducibility.
+
+**Current signal:** 0.11.0 published 2026-10-24; added WebAssembly support and correctness fixes, without delivering incremental linking.
+
+**Test:** Compare Wild 0.11.0 with pinned lld and mold on the same eligible full-link workloads, retaining missing-feature and mislink cases as failures.
+
+**Measure:** full-link seconds; complete build seconds; peak RSS MiB; supported-workload pass rate; debugger and unwinder pass rate.
+
+**Constraints:** The README says incremental linking is planned, not implemented; do not advertise changed-input speed as an incremental-linker result. 0.11.0 WebAssembly support lacks debug information, and the macOS port is experimental; required unsupported targets disqualify the configuration. The release caps default threading at 32 because of contention and accepts a COMDAT correctness cost; use explicit worker budgets and preserve correctness.
+
+**Priority rationale:** A useful challenger for measured linker bottlenecks, subject to a stricter compatibility gate than mature controls.
+
+**Sources:** [RT31003](https://github.com/wild-linker/wild/releases/tag/0.11.0) · [RT31004](https://github.com/wild-linker/wild)
+
 ### Dagger
 
 **tool · emerging · P3** · ID: dagger
@@ -1618,7 +1838,47 @@ Programmable container-based CI candidate for repeatable local builds and reusab
 
 **Sources:** [RX130](https://dagger.io/blog/dagger-10-beta/)
 
-## Web & API stacks (20)
+## Web & API stacks (24)
+
+### CSS content-visibility
+
+**method · established · P1** · ID: css-content-visibility
+
+Browser rendering containment that can skip eligible offscreen work while retaining the document structure.
+
+**Stack layers:** Large collections & interaction.
+
+**Current signal:** Current containment, auto visibility and accessibility guidance reviewed 2026-10-31.
+
+**Test:** Compare identical complete DOM content with and without content-visibility:auto and declared intrinsic sizes; verify scrolling, find, focus and accessibility across supported browsers.
+
+**Measure:** initial rendering milliseconds; scroll frame p95 milliseconds; input latency p95 milliseconds; layout shift score; DOM and heap bytes; accessibility failures.
+
+**Constraints:** Skipping offscreen rendering does not bound DOM or data memory; compare true virtualization as a separate variable. contain-intrinsic-size and dynamic content can affect scroll stability, and hidden descendant behavior needs accessibility inspection. The complete dataset, search/export path, focus traversal and required find-in-page behavior must remain available.
+
+**Priority rationale:** A small rendering intervention offers an inexpensive first experiment before a framework replacement.
+
+**Sources:** [RT31014](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/content-visibility)
+
+### Cooperative browser task scheduling
+
+**method · emerging · P1** · ID: cooperative-task-scheduling
+
+Split long browser work into resumable tasks using feature-detected scheduling APIs while preserving complete work and cancellation semantics.
+
+**Stack layers:** Large collections & interaction.
+
+**Current signal:** Scheduling API draft and scheduler.yield behavior reviewed 2026-10-31; support is an explicit experiment condition.
+
+**Test:** Compare uninterrupted and explicitly chunked execution of the same large collection transform while replaying input; feature-detect scheduler.yield and test a declared fallback with identical final outputs.
+
+**Measure:** input response p95 and p99 milliseconds; long-task count; full completion milliseconds; peak heap MiB; stale-generation publication count; cancellation milliseconds.
+
+**Constraints:** Yielding creates scheduling opportunities rather than CPU parallelism; shorter blocking intervals can increase total completion time. The scheduling specification is a Community Group draft, and browser support requires feature detection and a tested fallback. Every required record must still be processed, and cancellation, priority changes and superseding user input must not publish stale partial state.
+
+**Priority rationale:** A targeted scheduling change can improve interaction while preserving the current framework and data model.
+
+**Sources:** [RT31012](https://wicg.github.io/scheduling-apis/) · [RT31013](https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/yield)
 
 ### Lit / Web Components
 
@@ -1900,6 +2160,26 @@ Server-driven interactive UI framework on the BEAM, useful for assessing persist
 
 **Sources:** [RX079](https://www.phoenixframework.org/blog/phoenix-liveview-1-2-released)
 
+### Qwik
+
+**framework · emerging · P2** · ID: qwik
+
+Web framework using resumable server-rendered application state and lazy event code to change client startup and interaction costs.
+
+**Stack layers:** Large collections & interaction; APIs & shared services.
+
+**Current signal:** Qwik City 1.20.3 published 2026-10-25; resumability docs reviewed without inferring v2 stability.
+
+**Test:** Compare one complete SSR-to-first-interaction journey with the current hydrated application, retaining all content, validation and events under both cold and warmed network conditions.
+
+**Measure:** server response milliseconds; initial HTML and JavaScript bytes; first successful interaction milliseconds; interaction network round trips; full journey milliseconds; behavioral pass rate.
+
+**Constraints:** Resumability moves some work and data across server and client boundaries; total transferred bytes and delayed interactions remain part of cost. Captured state must satisfy serialization constraints, and lazy code needs explicit offline, network-failure and deployment-version-skew tests. The observed 1.20.3 release is a Qwik City package; a separate v2 documentation site does not establish a stable Qwik 2 release.
+
+**Priority rationale:** Worth a bounded SSR experiment when client startup is a demonstrated bottleneck and deployment semantics fit.
+
+**Sources:** [RT31016](https://qwik.dev/docs/concepts/resumable/) · [RT31017](https://github.com/QwikDev/qwik/releases/tag/%40builder.io/qwik-city%401.20.3)
+
 ### React
 
 **framework · established · P2** · ID: react
@@ -1908,17 +2188,37 @@ Component library for interactive interfaces, with concurrent rendering and ecos
 
 **Stack layers:** Large collections & interaction.
 
-**Current signal:** React 19.3 stabilizes View Transitions and Fragment Refs.
+**Current signal:** React 19.3 was announced 2026-09-09 with stable View Transitions and Fragment Refs; React Compiler is an optional build-time optimization variable.
 
 **Test:** Run the same interactive table, editor, and dashboard behavior under identical browser and device profiles.
 
-**Measure:** INP milliseconds; frame time p95 milliseconds; heap MiB; initial JS bytes; accessibility pass rate.
+**Measure:** INP milliseconds; frame time p95 milliseconds; heap MiB; initial JS bytes; accessibility pass rate; complete transition milliseconds; reduced-motion and interruption failures.
 
-**Constraints:** React alone is not a full-stack framework. Control compiler use, memoization, virtualization, and rendering semantics.
+**Constraints:** React alone is not a full-stack framework. Control compiler use, memoization, virtualization, and rendering semantics. Animated transitions do not establish less total application work; include full completion, interrupted transitions and reduced-motion behavior. Treat compiler-enabled and compiler-disabled production builds as separate configurations, with Rules of React and incremental rollout checks. Framework choice, compiler memoization, scheduling and virtualization must be changed independently to explain a result.
 
 **Priority rationale:** Use an identical vertical slice including validation, persistence and deployment; isolated request speed is insufficient.
 
-**Sources:** [RX071](https://react.dev/blog/2026/09/09/react-19-3)
+**Sources:** [RX071](https://react.dev/blog/2026/09/09/react-19-3) · [RT31041](https://react.dev/blog/2026/09/09/react-19-3) · [RT31042](https://react.dev/learn/react-compiler/introduction)
+
+### Solid
+
+**framework · established · P2** · ID: solidjs
+
+Reactive UI framework that tracks dependencies and updates affected computations and DOM bindings with fine-grained reactivity.
+
+**Stack layers:** Large collections & interaction.
+
+**Current signal:** Official fine-grained reactivity documentation reviewed 2026-10-31; no unverified newest-version claim.
+
+**Test:** Implement the same table/editor slice in the existing framework and pinned Solid, exercising sparse and dense updates while preserving selection, focus, IME, accessibility and complete data.
+
+**Measure:** input latency p95 milliseconds; update-to-paint p95 milliseconds; heap MiB; production JavaScript bytes; behavioral pass rate; migration effort hours.
+
+**Constraints:** Fine-grained reactivity is a mechanism, not a universal speedup guarantee; dependency structure and application design determine the work. Hold virtualization, data shape, production mode and browser targets fixed before attributing a change to the framework. The reviewed documentation does not establish a latest package version; record exact package and compiler versions before experimentation.
+
+**Priority rationale:** A useful alternative for update-heavy interfaces after smaller scheduling and rendering changes are measured.
+
+**Sources:** [RT31015](https://docs.solidjs.com/advanced-concepts/fine-grained-reactivity)
 
 ### SvelteKit
 
@@ -2008,19 +2308,19 @@ Experimental verified blob and range transfer over QUIC for a separately scoped 
 
 **Stack layers:** Downloads, transfer & sync.
 
-**Current signal:** The changelog lists 0.103.1 on 2026-10-06, while the current README still warns that the version is not production quality.
+**Current signal:** Live changelog lists 0.104.0 on 2026-10-28, fixing lazy hash-sequence reads, truncated-stream detection, error propagation and non-canonical range decoding; pre-1.0 compatibility still needs testing.
 
 **Test:** Run an isolated feasibility comparison against validated HTTP for public immutable blobs, including partial ranges, corrupt peers, reconnects and interrupted local persistence. Require full final-byte verification and explicit source authorization before any application integration proposal.
 
 **Measure:** verified transfer success; total completion time; bytes transferred; peak RSS and disk; resume/recovery correctness; operational dependency count.
 
-**Constraints:** The current upstream README explicitly says this version is not production quality and recommends 0.35 for production use. The current 0.103.x line and the suggested 0.35 production line are separate configurations, not interchangeable evidence. Content hashes verify bytes, not publisher identity; blob payloads do not supply application metadata or an installation transaction.
+**Constraints:** The current upstream README explicitly says this version is not production quality and recommends 0.35 for production use. The current 0.103.x line and the suggested 0.35 production line are separate configurations, not interchangeable evidence. Content hashes verify bytes, not publisher identity; blob payloads do not supply application metadata or an installation transaction. 0.104.0 includes a breaking Hash::fmt_short return-type change; pin compatible callers and validate complete transfers after migration. Exercise malformed ranges, huge hash sequences, poisoned store entries and interrupted streams under explicit memory limits.
 
 **Priority rationale:** Watchlist only until version-specific production readiness, operational scope and a useful peer-delivery workload are established.
 
-**Sources:** [ST113](https://github.com/n0-computer/iroh-blobs) · [ST114](https://github.com/n0-computer/iroh-blobs/blob/main/CHANGELOG.md)
+**Sources:** [ST113](https://github.com/n0-computer/iroh-blobs) · [ST114](https://github.com/n0-computer/iroh-blobs/blob/main/CHANGELOG.md) · [IO31049](https://github.com/n0-computer/iroh-blobs/blob/main/CHANGELOG.md)
 
-## Desktop & game engines (26)
+## Desktop & game engines (34)
 
 ### Avalonia
 
@@ -2050,17 +2350,17 @@ Texture compression and transcoding toolkit supporting portable delivery formats
 
 **Stack layers:** Assets, textures & delivery.
 
-**Current signal:** Current README identifies v2.5 and distinguishes mature codec interchange from the newer XUASTC KTX2 integration work.
+**Current signal:** v2_50 published 2026-08-03; pinned v2.5 docs describe XUASTC deblocking and XUBC7 paths with evolving interchange support.
 
 **Test:** Compare ETC1S/UASTC delivery and supported target GPU formats at matched visual error using public albedo, normal, ORM, alpha, and HDR fixtures; include mipmaps, cubemaps, runtime transcode, and browser/desktop memory.
 
 **Measure:** compressed and transfer MiB; encode seconds; transcode and upload milliseconds; peak host and GPU MiB; per-channel reference error; alpha and normal-map correctness pass rate; runtime interoperability pass rate.
 
-**Constraints:** Apache-2.0; tool and test-image licenses should be recorded separately. README v2.5 still describes XUASTC KTX2 integration as ongoing standardization work; do not assume all KTX2 tools or engines support it. Baseline existing supported codecs separately from newer XUASTC/HDR configurations and optional shader deblocking. Same resolution, mip chain, colorspace, alpha semantics, normal reconstruction, and material channels are mandatory. 32-bit Wasm address-space limits and peak encoder allocations require explicit large-image tests.
+**Constraints:** Apache-2.0; tool and test-image licenses should be recorded separately. README v2.5 still describes XUASTC KTX2 integration as ongoing standardization work; do not assume all KTX2 tools or engines support it. Baseline existing supported codecs separately from newer XUASTC/HDR configurations and optional shader deblocking. Same resolution, mip chain, colorspace, alpha semantics, normal reconstruction, and material channels are mandatory. 32-bit Wasm address-space limits and peak encoder allocations require explicit large-image tests. Separate encoder-side effort, transcode/upload time and optional shader deblocking; hold quality and supported destination formats constant. Do not equate a new codec path with engine-wide KTX interoperability; round-trip through actual target toolchains.
 
 **Priority rationale:** Portable compressed textures can benefit delivery and GPU memory, but only after per-target fidelity and interchange checks.
 
-**Sources:** [ST062](https://github.com/BinomialLLC/basis_universal)
+**Sources:** [ST062](https://github.com/BinomialLLC/basis_universal) · [GP31048](https://github.com/BinomialLLC/basis_universal/releases/tag/v2_50) · [GP31049](https://raw.githubusercontent.com/BinomialLLC/basis_universal/v2_50/README.md)
 
 ### BepInEx
 
@@ -2142,6 +2442,26 @@ Minecraft mod loader and development ecosystem whose loader, API, mappings, buil
 
 **Sources:** [ST045](https://fabricmc.net/2026/09/15/263.html) · [ST046](https://fabricmc.net/2026/03/14/261.html) · [ST047](https://github.com/FabricMC/fabric-loader)
 
+### Flecs ECS
+
+**framework · established · P1** · ID: flecs
+
+Entity-component framework with cached queries, relationships and scheduled systems for data-oriented simulation and editor workloads.
+
+**Stack layers:** Games, graphics & physics; Assets, textures & delivery.
+
+**Current signal:** v4.1.6 (2026-06-29) includes cached-query allocation work and entity-range/relationship fixes.
+
+**Test:** Compare the existing object layout, a simple SoA control and Flecs on the same deterministic state-update and editor-query workload, varying structural mutation and worker count independently.
+
+**Measure:** update p50/p95/p99 milliseconds; query setup and iteration milliseconds; structural-change milliseconds; allocations per frame; peak RSS MiB; state equivalence pass rate.
+
+**Constraints:** Query cache and archetype benefits depend on mutation/query shape; retain high-churn and cold-cache cases. Declare read/write access and deferred structural changes; staged merges and system ordering are correctness obligations. Integrate with an existing task scheduler or cap workers rather than stacking independently saturated thread pools. No entity-count marketing number or release speed claim establishes application frame-time improvement.
+
+**Priority rationale:** An isolated data-layout benchmark can reveal a plausible cache/allocation bottleneck while preserving existing simulation behavior.
+
+**Sources:** [GP31006](https://github.com/SanderMertens/flecs/releases/tag/v4.1.6) · [GP31007](https://www.flecs.dev/flecs/Systems.html)
+
 ### Identity-preserving collection virtualization
 
 **method · established · P1** · ID: collection-virtualization
@@ -2161,6 +2481,26 @@ Realize only visible collection elements while preserving stable item identity, 
 **Priority rationale:** Likely first intervention for many rich cards because it can reduce UI work without changing the dataset or user-visible feature contract.
 
 **Sources:** [ST065](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/itemsview) · [ST066](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/items-repeater)
+
+### KTX-Software / libktx
+
+**tool · established · P1** · ID: ktx-software
+
+Khronos texture-container tools and library for creating, validating, transcoding and uploading KTX assets.
+
+**Stack layers:** Assets, textures & delivery.
+
+**Current signal:** Stable release remains 4.4.2 (2025-10-04); 5.0.0-rc2 (2026-08-17) is an explicitly separate preview.
+
+**Test:** Use stable 4.4.2 as one toolchain configuration and evaluate 5.0.0-rc2 separately, preserving source pixels, mipmaps, colorspace, semantic channels and actual target GPU formats.
+
+**Measure:** encoded and transfer MiB; encode seconds; validate/transcode/upload milliseconds; peak host and GPU MiB; fidelity pass rate; cross-tool interoperability pass rate.
+
+**Constraints:** 5.0.0-rc2 is prerelease because the related specification revision was not published; newer date does not make it a stable replacement. The release candidate changes encoder parameter fields and removes legacy tools; migration scripts and plugin ABI need explicit checks. HDR target formats and newer codecs have hardware, decoder and interchange constraints. Separate deterministic builds from encoder modes with nondeterminism; retain quality and block/mipmap restrictions.
+
+**Priority rationale:** Container validation and actual engine interoperability are necessary complements to existing Basis compression candidates.
+
+**Sources:** [GP31020](https://github.com/KhronosGroup/KTX-Software/releases/tag/v4.4.2) · [GP31021](https://github.com/KhronosGroup/KTX-Software/releases/tag/v5.0.0-rc2)
 
 ### NeoForge
 
@@ -2262,6 +2602,26 @@ Windows desktop application stack combining WinUI controls, windowing, lifecycle
 
 **Sources:** [ST026](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/) · [ST027](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/release-notes/windows-app-sdk-2-0?pivots=stable) · [ST028](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/release-channels) · [ST029](https://github.com/microsoft/WindowsAppSDK)
 
+### fastgltf
+
+**tool · established · P1** · ID: fastgltf
+
+Configurable C++ glTF loader using SIMD-assisted parsing with options for data ownership, validation and direct buffer handling.
+
+**Stack layers:** Assets, textures & delivery.
+
+**Current signal:** v0.9.1 (2026-09-27) fixes node-weight parsing and extends meshopt-related support.
+
+**Test:** Compare input bytes through validated scene readiness against the current loader with matching external-buffer, image, sparse-accessor and supported-extension behavior.
+
+**Measure:** bytes-to-ready-scene milliseconds; parse versus decode/upload milliseconds; peak RSS MiB; copied bytes; asset validation pass rate; malformed-input diagnostics.
+
+**Constraints:** The v0.9.1 README states C++17 with optional C++20; unpinned main has different requirements. Minimal default work is not equivalent to a fully loaded/validated scene; keep parse, resource load, image decode and GPU upload visible. Weights, animation, sparse accessors, extension handling and missing-resource errors must remain complete. Mapped output buffers require explicit ownership, alignment and lifetime testing.
+
+**Priority rationale:** Loading pipelines often expose avoidable copies, but a complete scene-readiness contract prevents misleading parser-only comparisons.
+
+**Sources:** [GP31016](https://github.com/spnda/fastgltf/releases/tag/v0.9.1) · [GP31017](https://raw.githubusercontent.com/spnda/fastgltf/v0.9.1/README.md)
+
 ### glTF Transform
 
 **tool · established · P1** · ID: gltf-transform
@@ -2290,17 +2650,17 @@ Mesh processing library and tooling for vertex/index optimization, compression, 
 
 **Stack layers:** Assets, textures & delivery.
 
-**Current signal:** Version 1.3 adds experimental voxel remeshing alongside the existing optimization toolkit; quality-sensitive use needs separate gates.
+**Current signal:** v1.3 published 2026-09-25; experimental voxel remeshing remains a separate topology/attribute-changing operation.
 
 **Test:** Compare unchanged geometry, lossless layout/compression changes, and separately budgeted LOD/remeshing variants on the same animated and static asset set and target renderer.
 
 **Measure:** encoded MiB; decode milliseconds; GPU frame p95 milliseconds; vertex processing and cache metrics; silhouette and surface error; animation and topology retention pass rate.
 
-**Constraints:** MIT; native and language bindings differ in coverage and must be pinned. Reordering/compression and lossy simplification/remeshing are separate comparison lanes. Experimental voxel remeshing may merge features, close gaps, erase thin structures, or alter interior geometry; reject when those semantics matter. No speed or size gain is admissible if it comes from undisclosed material, animation, or geometric loss.
+**Constraints:** MIT; native and language bindings differ in coverage and must be pinned. Reordering/compression and lossy simplification/remeshing are separate comparison lanes. Experimental voxel remeshing may merge features, close gaps, erase thin structures, or alter interior geometry; reject when those semantics matter. No speed or size gain is admissible if it comes from undisclosed material, animation, or geometric loss. Voxel remeshing discards original topology, positions and attributes; test thin features, nearby disconnected parts and closed gaps before any size/performance comparison.
 
 **Priority rationale:** Established optimization baseline with experimental geometry-changing features isolated from fidelity-preserving comparisons.
 
-**Sources:** [ST060](https://github.com/zeux/meshoptimizer) · [ST061](https://github.com/zeux/meshoptimizer/releases/tag/v1.3)
+**Sources:** [ST060](https://github.com/zeux/meshoptimizer) · [ST061](https://github.com/zeux/meshoptimizer/releases/tag/v1.3) · [GP31043](https://github.com/zeux/meshoptimizer/releases/tag/v1.3)
 
 ### wgpu
 
@@ -2310,17 +2670,17 @@ Portable Rust graphics abstraction supporting native GPU backends and browser We
 
 **Stack layers:** Games, graphics & physics.
 
-**Current signal:** Official releases show v30.0.1; current repository documentation separates native GPU backends from browser WebGPU/WebGL2 support.
+**Current signal:** v30.0.1 published 2026-08-22; synchronization, Metal color-space and failed browser adapter requests remain deployment test cases.
 
 **Test:** Render an identical public 2D/3D scene and shader set through the actual target backends; test low-end integrated GPUs, device loss, resize, missing features, and browser fallback independently.
 
 **Measure:** GPU frame p95 milliseconds; CPU submission p95 milliseconds; VRAM MiB; shader compilation milliseconds; visual parity pass rate; adapter and fallback pass rate; device recovery success rate.
 
-**Constraints:** MIT OR Apache-2.0; backend coverage differs across Windows, macOS, Linux, and browser targets. A graphics abstraction is not a UI toolkit, game engine, media stack, or plugin sandbox. Do not compare native DX12/Vulkan to browser WebGL2 without recording changed capabilities and visual output. Downlevel backends and adapter features require explicit detection rather than assumption.
+**Constraints:** MIT OR Apache-2.0; backend coverage differs across Windows, macOS, Linux, and browser targets. A graphics abstraction is not a UI toolkit, game engine, media stack, or plugin sandbox. Do not compare native DX12/Vulkan to browser WebGL2 without recording changed capabilities and visual output. Downlevel backends and adapter features require explicit detection rather than assumption. Exercise browser adapter-request failure with the pinned wasm-bindgen toolchain and preserve Vulkan validation checks during measurement.
 
 **Priority rationale:** Useful shared graphics foundation when the same rendering workload must run on desktop and in browsers.
 
-**Sources:** [ST039](https://github.com/gfx-rs/wgpu) · [ST040](https://github.com/gfx-rs/wgpu/releases)
+**Sources:** [ST039](https://github.com/gfx-rs/wgpu) · [ST040](https://github.com/gfx-rs/wgpu/releases) · [GP31044](https://github.com/gfx-rs/wgpu/releases/tag/v30.0.1)
 
 ### Bevy
 
@@ -2330,17 +2690,37 @@ Rust game engine organized around data-driven entities, reusable systems, and pr
 
 **Stack layers:** Games, graphics & physics.
 
-**Current signal:** Bevy 0.20 released 2026-10-08 with Feathers editor widgets, scene improvements, and changes to texture compression and mipmap generation.
+**Current signal:** 0.20.1 patch published 2026-10-28; 0.20 offers opt-in component-column change summaries and schedule randomization.
 
 **Test:** Build the same deterministic native/browser game and editor slice as the established engine control; pin backend, shaders, assets, texture compressor, mipmaps, and renderer features, and measure both authoring and shipped behavior.
 
-**Measure:** CPU and GPU frame p95 milliseconds; first-interactive milliseconds; asset processing and loading seconds; peak RSS and VRAM MiB; build and iteration seconds; asset fidelity pass rate; platform parity pass rate.
+**Measure:** CPU and GPU frame p95 milliseconds; first-interactive milliseconds; asset processing and loading seconds; peak RSS and VRAM MiB; build and iteration seconds; asset fidelity pass rate; platform parity pass rate; changed-column fraction; extraction p95 milliseconds; mutation-side tick overhead.
 
-**Constraints:** New renderer features are not automatically available on every platform; match visual quality and feature sets before comparing. Bevy 0.20 introduces a new CompressedImageSaver backend and mipmap generation; preserve codec, colorspace, normal-map, and mip-chain semantics. Renderer-specific upscaling or neural features require separate quality and hardware cohorts. Public editor widgets do not alone establish a complete editor workflow; count authoring, migration, and integration work.
+**Constraints:** New renderer features are not automatically available on every platform; match visual quality and feature sets before comparing. Bevy 0.20 introduces a new CompressedImageSaver backend and mipmap generation; preserve codec, colorspace, normal-map, and mip-chain semantics. Renderer-specific upscaling or neural features require separate quality and hardware cohorts. Public editor widgets do not alone establish a complete editor workflow; count authoring, migration, and integration work. Column summary ticks avoid unchanged-column work but add mutation-side bookkeeping; measure sparse and dense mutation independently. Use schedule randomization to expose unintended order dependencies before interpreting parallel speed; it does not replace explicit ordering contracts. Bevy 0.20 Solari disables ReSTIR by default, which can reduce shadow quality or omit moving shadows in many-light scenes; hold lighting and denoising quality settings fixed across engine versions.
 
 **Priority rationale:** The existing Atlas focus makes native integration, responsiveness, asset fidelity and target-device behavior central.
 
-**Sources:** [RX083](https://bevy.org/news/bevy-0-20/) · [ST071](https://bevy.org/news/bevy-0-20/) · [ST072](https://bevy.org/learn/quick-start/getting-started/setup/)
+**Sources:** [RX083](https://bevy.org/news/bevy-0-20/) · [ST071](https://bevy.org/news/bevy-0-20/) · [ST072](https://bevy.org/learn/quick-start/getting-started/setup/) · [GP31045](https://github.com/bevyengine/bevy/releases/tag/v0.20.1) · [GP31046](https://bevy.org/news/bevy-0-20/)
+
+### EnTT ECS
+
+**framework · established · P2** · ID: entt
+
+C++ entity-component library centered on sparse-set component pools and application-controlled storage, queries and scheduling.
+
+**Stack layers:** Games, graphics & physics; Assets, textures & delivery.
+
+**Current signal:** Major release v4.0.0 was published 2026-07-23 and includes breaking API/toolchain changes.
+
+**Test:** Use the same component-access trace as Flecs and the current layout, preserving stable-handle, serialization and mutation semantics before comparing sparse sets, groups and views.
+
+**Measure:** query and update p95/p99 milliseconds; component add/remove milliseconds; peak RSS MiB; allocations per update; iteration-order and state pass rate; migration effort.
+
+**Constraints:** v4.0.0 requires C++20 and CMake 3.28; count toolchain and API migration. The registry is not automatically thread-safe and EnTT does not supply the full application schedule. Views, groups, pointer stability and structural mutation need separate contracts; concurrent access is safe only under documented disjointness and synchronization. Do not require identical storage layouts across implementations; require identical externally observable state and constraints.
+
+**Priority rationale:** Provides a contrasting sparse-set design to archetype ECS candidates; adoption cost is meaningful for existing C++ applications.
+
+**Sources:** [GP31008](https://github.com/skypjack/entt/releases/tag/v4.0.0) · [GP31009](https://github.com/skypjack/entt/wiki/Entity-Component-System)
 
 ### Godot
 
@@ -2350,17 +2730,37 @@ Open-source game engine and editor for 2D and 3D projects, with stable and devel
 
 **Stack layers:** Games, graphics & physics.
 
-**Current signal:** Archive lists 4.7.2 stable on 2026-08-18 and 4.8 beta1 on 2026-10-15.
+**Current signal:** Stable 4.7.2 (2026-08-18) includes high-polling-rate input and GDExtension compatibility fixes; 4.8 preview stays separate.
 
 **Test:** Ship an identical small game/tool slice to Windows and the browser with the same public assets, input, audio, animation, save/load behavior, and fixed visual settings; run native and web renderer cohorts separately.
 
-**Measure:** CPU and GPU frame p95 milliseconds; first-interactive milliseconds; asset import and export seconds; artifact and transfer MiB; peak RSS and VRAM MiB; asset fidelity pass rate; platform parity pass rate.
+**Measure:** CPU and GPU frame p95 milliseconds; first-interactive milliseconds; asset import and export seconds; artifact and transfer MiB; peak RSS and VRAM MiB; asset fidelity pass rate; platform parity pass rate; input-to-present p95/p99 milliseconds.
 
-**Constraints:** Keep 4.7.2 stable and 4.8 beta1 in separate production/preview cohorts. Godot 4 C# projects cannot currently export to the web according to stable documentation; this disqualifies that configuration when the same game must ship in browsers. Web export uses the Compatibility renderer and WebGL2; Forward+ and Mobile renderers are not browser substitutes. Threaded web exports require the documented cross-origin isolation conditions; include actual hosting constraints. Match visuals, asset semantics, audio, input, and persistence before comparing frame time.
+**Constraints:** Keep 4.7.2 stable and 4.8 beta1 in separate production/preview cohorts. Godot 4 C# projects cannot currently export to the web according to stable documentation; this disqualifies that configuration when the same game must ship in browsers. Web export uses the Compatibility renderer and WebGL2; Forward+ and Mobile renderers are not browser substitutes. Threaded web exports require the documented cross-origin isolation conditions; include actual hosting constraints. Match visuals, asset semantics, audio, input, and persistence before comparing frame time. Include high-polling-rate mouse bursts, IME input and GDExtension inheritance behavior in the editor responsiveness/compatibility corpus.
 
 **Priority rationale:** The existing Atlas focus makes native integration, responsiveness, asset fidelity and target-device behavior central.
 
-**Sources:** [RX084](https://godotengine.org/download/archive/) · [ST069](https://godotengine.org/download/archive/) · [ST070](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html)
+**Sources:** [RX084](https://godotengine.org/download/archive/) · [ST069](https://godotengine.org/download/archive/) · [ST070](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html) · [GP31047](https://godotengine.org/article/maintenance-release-godot-4-7-2/)
+
+### Jolt Physics
+
+**framework · established · P2** · ID: jolt-physics
+
+C++ rigid-body physics engine with multithreaded simulation and integration points for games and interactive tools.
+
+**Stack layers:** Games, graphics & physics.
+
+**Current signal:** v5.6.0 (2026-07-11) updates friction and includes correctness/determinism fixes.
+
+**Test:** Run identical public collision and constraint scenes against the current engine, recording fixed timestep, solver settings, broadphase filters and deterministic replay scope.
+
+**Measure:** simulation p95/p99 milliseconds; contact and constraint correctness; peak RSS MiB; parallel scaling; replay divergence; integration effort.
+
+**Constraints:** v5.6.0 changes friction behavior; accepting a changed physical result as a faster solve is invalid. Cross-build and cross-architecture determinism must be tested under declared compiler/floating-point settings. Collision shapes, CCD, sleeping, constraints and update frequency must match the target behavior. Experimental GPU hair work is a separate subsystem and does not establish GPU rigid-body acceleration.
+
+**Priority rationale:** Useful when physical simulation is a measured frame-time bottleneck and contact/replay equivalence can be stated precisely.
+
+**Sources:** [GP31010](https://github.com/jrouwe/JoltPhysics/releases/tag/v5.6.0) · [GP31011](https://github.com/jrouwe/JoltPhysics)
 
 ### Rapier JavaScript / WASM physics
 
@@ -2381,6 +2781,26 @@ Rigid-body physics through WebAssembly with snapshot-based replay and documented
 **Priority rationale:** Replay the same input/timestep trace across browser hosts and machines; compare full state and contacts against the chosen physics baseline before evaluating throughput.
 
 **Sources:** [ST014](https://rapier.rs/docs/user_guides/javascript/determinism/)
+
+### SDL3 GPU
+
+**framework · established · P2** · ID: sdl3-gpu
+
+Portable command-based render and compute API for applications that need explicit GPU work without adopting a complete game engine.
+
+**Stack layers:** Games, graphics & physics.
+
+**Current signal:** SDL 3.4.18 is the verified stable maintenance release dated 2026-10-02.
+
+**Test:** Compare a complete image-preview or 3D viewport operation using the current renderer and SDL3 GPU on required backends; retain upload, submission, synchronization and any readback.
+
+**Measure:** CPU submission p95 milliseconds; GPU completion p95/p99 milliseconds; upload and readback milliseconds; VRAM MiB; visual parity pass rate; device-recovery pass rate.
+
+**Constraints:** Shader binary/source formats differ across Metal, Vulkan and D3D12; deployment includes shader compilation and reflection tooling. The API targets broadly portable features; do not assume ray tracing, mesh shaders, or every vendor extension. For simple 2D drawing include SDL renderer/current CPU implementation as a control; explicit GPU management can add overhead. Count device creation, asynchronous fences, resource lifetime and unsupported backend outcomes.
+
+**Priority rationale:** Useful portable GPU candidate when a measured preview/viewport bottleneck justifies a lower-level rendering path.
+
+**Sources:** [GP31001](https://github.com/libsdl-org/SDL/releases/tag/release-3.4.18) · [GP31002](https://wiki.libsdl.org/SDL3/CategoryGPU)
 
 ### Slint
 
@@ -2441,6 +2861,46 @@ Immediate-mode Rust GUI library with native and web application integrations, su
 **Priority rationale:** Strong candidate for inspectors and mod tools; qualify richer consumer UI requirements before comparing resource use.
 
 **Sources:** [ST037](https://github.com/emilk/egui) · [ST038](https://github.com/emilk/egui/releases/tag/0.37.0)
+
+### libplacebo
+
+**framework · established · P2** · ID: libplacebo
+
+Reusable GPU media-rendering library for frame scaling, color handling and temporal presentation pipelines.
+
+**Stack layers:** Games, graphics & physics; Assets, textures & delivery.
+
+**Current signal:** v7.360.1 (2026-03-13) addresses GL synchronization resources and Vulkan/MoltenVK compatibility.
+
+**Test:** Compare decoded frames through actual presentation at fixed scaling, dithering, tone-mapping and temporal settings, including seek and cache reset.
+
+**Measure:** decode-to-display p95/p99 milliseconds; dropped or repeated frames; GPU time and VRAM MiB; color and visual error; seek recovery milliseconds; backend pass rate.
+
+**Constraints:** Canonical upstream is VideoLAN GitLab; direct retrieval was blocked, so official docs and the maintainer mirror supply this review. Fast/default/high-quality presets perform different work; choose matching operations and quality thresholds explicitly. Frame ownership, queue latency, temporal history and color metadata must survive seek, resize and stream changes. The guide covers v4+ concepts; validate exact API signatures and driver workarounds against the v7.360.1 pin.
+
+**Priority rationale:** Useful for color-correct media previews when the renderer is a measured cost and matching quality can be enforced.
+
+**Sources:** [GP31025](https://github.com/haasn/libplacebo/releases/tag/v7.360.1) · [GP31026](https://libplacebo.org/) · [GP31027](https://libplacebo.org/renderer/)
+
+### ozz-animation
+
+**framework · established · P2** · ID: ozz-animation
+
+Skeletal-animation toolkit with offline optimization and SIMD-oriented runtime sampling, blending and inverse kinematics.
+
+**Stack layers:** Assets, textures & delivery; Games, graphics & physics.
+
+**Current signal:** 0.17.0 (2026-08-01) fixes two-bone IK NaNs and improves safe initialization and model-space utilities.
+
+**Test:** Encode and play the same public rigs, clip sets, blends and root motion through the current animation path and ozz under matched pose error and update frequency.
+
+**Measure:** sampling and blend p95 milliseconds; clip size MiB; pose and end-effector error; root-motion drift; offline processing seconds; NaN and discontinuity count.
+
+**Constraints:** Compression settings and skipped joints can change visible motion; register per-bone and root-motion tolerances before timing. Offline conversion, import compatibility and migration are part of total adoption cost. Include degenerate IK targets, zero-length bones, blend extremes and rest-pose transitions. v0.17.0 correctness fixes must remain enabled; do not compare an invalid older result as an eligible faster baseline.
+
+**Priority rationale:** Appropriate for animation-heavy viewports when sampling cost is measurable and pose fidelity can be checked automatically.
+
+**Sources:** [GP31018](https://github.com/guillaumeblanc/ozz-animation/releases/tag/0.17.0) · [GP31019](https://github.com/guillaumeblanc/ozz-animation)
 
 ### Compatibility-Guided Neighbor Selection for ReSTIR
 
@@ -2542,7 +3002,7 @@ Multi-instance training, selective pruning, and adaptive batch sizes reduce seed
 
 **Sources:** [RX164](https://research.nvidia.com/labs/rtr/publication/bitterli2026taming/) · [RX165](https://research.nvidia.com/labs/rtr/publication/bitterli2026taming/bitterli2026taming.pdf) · [RX166](https://github.com/NVlabs/neuralappearance)
 
-## WebAssembly & sandboxes (9)
+## WebAssembly & sandboxes (10)
 
 ### Wasmtime
 
@@ -2664,6 +3124,26 @@ A configurable runtime comparison toolkit that combines repeated execution, memo
 
 **Sources:** [RX138](https://arxiv.org/html/2602.05488v1) · [RX139](https://github.com/r-carissimi/wasure)
 
+### WebAssembly Micro Runtime
+
+**framework · established · P2** · ID: wamr
+
+Embeddable WebAssembly runtime with interpreter, AOT and JIT configurations for capability-constrained extension execution.
+
+**Stack layers:** Plugins & process isolation; Shared core & native boundaries.
+
+**Current signal:** WAMR-2.4.5 (2026-06-29) fixes memory-safety issues and is observed at the migrated canonical repository.
+
+**Test:** Run the identical plugin ABI and host-import policy against the current runtime and Wasmtime, comparing interpreter/AOT/JIT modes separately with bounded resources and preserved validation.
+
+**Measure:** module load-to-ready milliseconds; host-call and full-operation p95 milliseconds; peak RSS MiB; runtime/code artifact size; capability denial pass rate; trap and recovery pass rate.
+
+**Constraints:** The project moved to wasm-micro-runtime/wasm-micro-runtime; distinguish repository migration from runtime behavior. Feature sets vary by build mode and platform; do not infer Component Model or WASI 0.3 compatibility. Host imports define the effective authority; filesystem/network/handle denial and crash recovery remain explicit contracts. Keep recent memory-safety fixes and validation enabled; AOT trust, compile cost and portability require separate accounting.
+
+**Priority rationale:** Useful alternate footprint/startup configuration only after plugin ABI, capabilities and failure behavior are made equivalent.
+
+**Sources:** [GP31032](https://github.com/wasm-micro-runtime/wasm-micro-runtime/releases/tag/WAMR-2.4.5) · [GP31033](https://github.com/wasm-micro-runtime/wasm-micro-runtime)
+
 ### containerd
 
 **repository · established · P2** · ID: containerd
@@ -2724,7 +3204,7 @@ Mutation and machine-code comparison help localize inefficient instruction seque
 
 **Sources:** [RX140](https://arxiv.org/html/2604.13693v1) · [RX141](https://github.com/BZTesting/WarpL)
 
-## Storage & databases (5)
+## Storage & databases (10)
 
 ### Dexie / IndexedDB
 
@@ -2774,17 +3254,17 @@ Embedded SQL storage for desktop catalogs, settings, test metadata, and offline 
 
 **Stack layers:** Local storage & search.
 
-**Current signal:** Release history lists SQLite 3.54.1 on 2026-10-16.
+**Current signal:** Rechecked 2026-10-31: release history still lists 3.54.1 from 2026-10-16. The 3.54 line changes expression-index updates, UNION LIMIT 1 and Windows mutex behavior.
 
 **Test:** Retain SQLite as the authoritative complete catalog control. Replay imports, FTS5/exact searches and interrupted writes with every metadata field and warning preserved; separately compare journal/durability modes and test external-content FTS consistency, backfill, rebuild and crash recovery.
 
 **Measure:** full row and warning parity; p50/p95/p99 query latency; import throughput; commit-to-visible latency; database/index size; committed-write survival; recovery correctness.
 
-**Constraints:** Fix durability and journal settings across comparisons. SQLite is maintained in Fossil; a GitHub mirror is not the canonical repository. External-content FTS indexes must stay synchronized; adding triggers alone does not backfill existing rows. The retained Rust storage lab used DELETE/FULL and measured process-level reopen/readback, not power-loss durability. Use a fixed durability contract; a faster relaxed-acknowledgement configuration is a separate cohort.
+**Constraints:** Fix durability and journal settings across comparisons. SQLite is maintained in Fossil; a GitHub mirror is not the canonical repository. External-content FTS indexes must stay synchronized; adding triggers alone does not backfill existing rows. The retained Rust storage lab used DELETE/FULL and measured process-level reopen/readback, not power-loss durability. Use a fixed durability contract; a faster relaxed-acknowledgement configuration is a separate cohort. The upstream speedtest CPU-cycle improvement is workload/build specific; measure the actual schema and queries. Include schema ALTER behavior, authorizer callbacks and unchanged-value expression-index updates in upgrade parity checks.
 
 **Priority rationale:** Complete imports, indexed reads and crash recovery directly serve Atlas-style local catalogs and archives.
 
-**Sources:** [RX092](https://www.sqlite.org/changes.html) · [ST117](https://www.sqlite.org/fts5.html) · [ST122](https://www.sqlite.org/releaselog/3_54_1.html)
+**Sources:** [RX092](https://www.sqlite.org/changes.html) · [ST117](https://www.sqlite.org/fts5.html) · [ST122](https://www.sqlite.org/releaselog/3_54_1.html) · [IO31050](https://www.sqlite.org/releaselog/3_54_0.html) · [IO31051](https://www.sqlite.org/changes.html)
 
 ### redb
 
@@ -2806,6 +3286,46 @@ Pure Rust embedded key-value store using copy-on-write B-trees for local transac
 
 **Sources:** [RX104](https://github.com/cberner/redb) · [ST123](https://docs.rs/crate/redb/latest/source/CHANGELOG.md) · [ST124](https://docs.rs/redb/latest/redb/enum.Durability.html)
 
+### Fjall
+
+**repository · emerging · P2** · ID: fjall
+
+Rust embedded LSM key-value engine with atomic cross-keyspace operations and optional serializable transactions.
+
+**Stack layers:** Local storage & search.
+
+**Current signal:** 3.1.13 released 2026-10-25, including a journal replay fix.
+
+**Test:** Compare Fjall with the current store, redb and RocksDB under identical transaction, index and durability contracts including long imports and crash/reopen recovery.
+
+**Measure:** durable commit latency; p99 lookup latency; write amplification; compaction stalls; peak RSS; recovery parity.
+
+**Constraints:** Background compaction and write stalls must be included in the run, not deferred past measurement. Pin persistence settings and preserve acknowledged writes; default settings are not automatically equivalent. Recent journal-replay fix makes old/new version identity material to recovery evidence.
+
+**Priority rationale:** A Rust LSM option extends durable local-store comparisons, but compaction and application indexing make this a planned migration study.
+
+**Sources:** [IO31017](https://github.com/fjall-rs/fjall) · [IO31018](https://api.github.com/repos/fjall-rs/fjall/releases/latest)
+
+### PGlite
+
+**repository · emerging · P2** · ID: pglite
+
+Embedded PostgreSQL compiled to WebAssembly with browser persistence and worker-based multi-tab access.
+
+**Stack layers:** Local storage & search; Browser extensions.
+
+**Current signal:** See the dated primary sources.
+
+**Test:** Compare the current browser store with a worker-hosted PGlite catalog using identical queries, cold startup, durable writes and leader-tab failure/recovery.
+
+**Measure:** cold database-open time; query-to-render latency; peak worker memory; commit-to-visible time; leader failover correctness.
+
+**Constraints:** The documented IndexedDB VFS loads all database files into memory at startup. PGlite is single-connection; multi-tab access proxies through an elected leader. Storage quota, browser eviction, VFS compatibility and export/recovery are acceptance gates.
+
+**Priority rationale:** Browser-local PostgreSQL semantics can simplify an existing SQL model; cold-open memory and leader failover must be feasible before a larger adoption trial.
+
+**Sources:** [IO31019](https://pglite.dev/docs/filesystems) · [IO31020](https://pglite.dev/docs/multi-tab-worker)
+
 ### PostgreSQL
 
 **repository · established · P2** · ID: postgresql
@@ -2826,7 +3346,67 @@ Relational server baseline for shared catalogs, transactional metadata, and mult
 
 **Sources:** [RX093](https://www.postgresql.org/docs/release/)
 
-## Analytics & data formats (7)
+### TanStack DB
+
+**framework · emerging · P2** · ID: tanstack-db
+
+Client collection and live-query layer for incremental updates, optimistic changes and synchronization with an authoritative data source.
+
+**Stack layers:** Large collections & interaction; Local storage & search.
+
+**Current signal:** @tanstack/react-db 0.5.12 published 2026-10-21 with core DB 0.15.2 dependency; mixed documentation maturity remains explicit.
+
+**Test:** Compare the existing client query/cache implementation with pinned TanStack DB for full initial loads, joined live updates, deletion and optimistic rollback, checking every result against an authoritative oracle.
+
+**Measure:** initial complete load milliseconds; update-to-correct-view p95 milliseconds; confirmed-write visibility milliseconds; peak heap MiB; rollback correctness failures; network bytes.
+
+**Constraints:** Main documentation contains 1.0 RC migration material while the README labels the project beta and the observed adapter release remains 0.x; pin matching packages and docs. Fast optimistic presentation is not committed persistence or confirmed synchronization; report those completion points separately. Paging, sync modes and query selection must not silently omit records required by complete search, export or joins; test deletions and rollback as well as inserts.
+
+**Priority rationale:** A substantive candidate for expensive client recomputation, provided authoritative state and sync boundaries stay visible.
+
+**Sources:** [RT31018](https://github.com/TanStack/db/blob/main/docs/overview.md) · [RT31019](https://github.com/TanStack/db/blob/main/README.md) · [RT31020](https://github.com/TanStack/db/releases/tag/%40tanstack/react-db%400.5.12)
+
+### Turso Database
+
+**repository · emerging · P2** · ID: turso-database
+
+Evolving Rust embedded SQL engine pursuing SQLite compatibility, asynchronous I/O and concurrent-write features.
+
+**Stack layers:** Local storage & search.
+
+**Current signal:** Live release list: non-prerelease v0.8.3 on 2026-10-12; v0.9.0-pre.2 on 2026-10-28 is explicitly a prerelease.
+
+**Test:** Run a shadow catalog against the pinned current SQLite implementation, with identical SQL, FTS/extension requirements, transaction conflicts, crash recovery and export/rollback checks.
+
+**Measure:** full SQL corpus parity; durable import time; p99 read/write latency; conflict rate; migration and recovery correctness.
+
+**Constraints:** The README describes SQLite compatibility tracking 3.50.4; verify every required current SQLite feature. The Postgres frontend is experimental and does not imply PostgreSQL feature parity. Keep 0.8.3 and 0.9.0-pre.2 in separate cohorts; never replace the production baseline with a preview by default.
+
+**Priority rationale:** A new SQLite-compatible engine is worth watching when concurrency or I/O architecture is limiting; feature parity and release maturity require a controlled migration gate.
+
+**Sources:** [IO31021](https://github.com/tursodatabase/turso) · [IO31022](https://api.github.com/repos/tursodatabase/turso/releases?per_page=3)
+
+### libmdbx
+
+**repository · established · P2** · ID: libmdbx
+
+Memory-mapped transactional B+tree key-value storage with explicit durability modes and single-writer constraints.
+
+**Stack layers:** Local storage & search.
+
+**Current signal:** Official docs point to SourceCraft and distinguish stable 0.14.x from development 0.15.x; no stable patch version inferred.
+
+**Test:** Compare the stable libmdbx line with current SQLite/redb or another exact contract implementation, including ordered lookups, long readers, large values, durable commits and crash/reopen tests.
+
+**Measure:** durable commit time; p99 read latency; retained file growth; peak resident pages; recovery parity.
+
+**Constraints:** Use the stable branch/release; 0.15.0 is explicitly a technical non-release tag and 0.15.1 is under development. Compare equivalent durability; relaxed sync may lose acknowledged recent commits or permit corruption in the weakest mode. Long-lived readers retain old pages; constrain read transaction lifetimes and inspect address-space/filesystem requirements.
+
+**Priority rationale:** A memory-mapped B-tree adds a contrasting KV design to LSM controls, with long-reader growth and durability parity as decisive costs.
+
+**Sources:** [IO31035](https://libmdbx.dqdkfa.ru/docs/en/reference/api/usage.html) · [IO31036](https://libmdbx.dqdkfa.ru/docs/en/reference/changelog.html) · [IO31037](https://libmdbx.dqdkfa.ru/docs/en/getting-started/durability-modes.html) · [IO31038](https://libmdbx.dqdkfa.ru/docs/en/overview/restrictions.html)
+
+## Analytics & data formats (11)
 
 ### DuckDB
 
@@ -2836,17 +3416,37 @@ Embedded analytical SQL engine for querying benchmark runs, telemetry, and large
 
 **Stack layers:** Analytics & result formats.
 
-**Current signal:** DuckDB 2.0.0 LTS was announced on 2026-10-21 with asynchronous I/O and other major features.
+**Current signal:** Rechecked 2.0.0 LTS released 2026-10-21; 2.0.1 is only scheduled for November. Async I/O and file-format migration require separate tests.
 
 **Test:** Build an analytical read model from immutable committed catalog snapshots and retained experiment data. Compare equivalent complete SQL outputs with Polars/DataFusion under memory pressure, cancellation and cold/warm caches; keep embedded deployment and any Quack service configuration in separate cohorts.
 
 **Measure:** full query-result parity; query geometric mean; p95 query latency; peak RSS; bytes read and spilled; cancellation latency; snapshot freshness.
 
-**Constraints:** Validate result equivalence before measuring speed. Separate filesystem cache effects and extension versions. Native embedded concurrency rules differ from DuckDB 2.0 Quack client/server multi-process writing. Treat analytical snapshots as derived data unless a separate transactional-authority workload is established. Concurrent write conflicts and cancellation must preserve complete errors rather than partial successful output.
+**Constraints:** Validate result equivalence before measuring speed. Separate filesystem cache effects and extension versions. Native embedded concurrency rules differ from DuckDB 2.0 Quack client/server multi-process writing. Treat analytical snapshots as derived data unless a separate transactional-authority workload is established. Concurrent write conflicts and cancellation must preserve complete errors rather than partial successful output. Pre-2.0 DuckDB cannot read new 2.0-created database files; retain compatible rollback artifacts and verify downgrade requirements. Keep asynchronous I/O concurrency/memory budgets explicit; query-engine and network parallelism are separate variables.
 
 **Priority rationale:** Saved experiment results make a realistic controlled corpus for equivalent analytics and memory-pressure tests.
 
-**Sources:** [RX094](https://duckdb.org/2026/10/21/announcing-duckdb-200) · [ST126](https://duckdb.org/docs/2.0/connect/concurrency)
+**Sources:** [RX094](https://duckdb.org/2026/10/21/announcing-duckdb-200) · [ST126](https://duckdb.org/docs/2.0/connect/concurrency) · [IO31052](https://duckdb.org/2026/10/21/announcing-duckdb-200) · [IO31053](https://duckdb.org/release_calendar)
+
+### LZ4
+
+**repository · established · P1** · ID: lz4
+
+Lossless block/frame compression optimized for low encode/decode overhead, with a tunable ratio tradeoff.
+
+**Stack layers:** Files, hashing & archives; Assets, textures & delivery.
+
+**Current signal:** The live latest-release endpoint reports v1.10.0 from 2024-07-22; retained as a relevant control in the 2026 review.
+
+**Test:** Compare uncompressed, LZ4 and pinned Zstandard representations for the same complete asset/snapshot corpus, including read, decompression, validation and final durable write.
+
+**Measure:** complete load/save time; compressed bytes; decode CPU; peak memory; round-trip hashes.
+
+**Constraints:** Fix block/frame/checksum and dictionary policies; missing integrity checks disqualify a comparison. Already-compressed assets may gain little and still consume CPU. A 2026 source review does not turn the 2024 release into a new release.
+
+**Priority rationale:** A mature low-latency codec is a useful early control when decode latency or CPU outweigh compressed size; it is not presented as a new 2026 invention.
+
+**Sources:** [IO31023](https://github.com/lz4/lz4/blob/v1.10.0/README.md) · [IO31024](https://api.github.com/repos/lz4/lz4/releases/latest)
 
 ### Polars
 
@@ -2867,6 +3467,46 @@ DataFrame and SQL engine for typed local data transformations and memory-bounded
 **Priority rationale:** Saved experiment results make a realistic controlled corpus for equivalent analytics and memory-pressure tests.
 
 **Sources:** [RX095](https://pola.rs/posts/polars-2-1-changelog/) · [ST127](https://docs.pola.rs/user-guide/concepts/streaming/)
+
+### libdeflate
+
+**repository · established · P1** · ID: libdeflate
+
+Whole-buffer DEFLATE, zlib and gzip library for bounded compatible compression and decompression.
+
+**Stack layers:** Files, hashing & archives; Assets, textures & delivery.
+
+**Current signal:** v1.26 released 2026-08-22; versioned build and CRC notes reviewed.
+
+**Test:** Compare the current zlib/DEFLATE path against libdeflate on bounded archive members or blocks, preserving wrapper/checksum semantics and total decode-to-validated-output work.
+
+**Measure:** verified decode latency; encode latency; compressed size; peak buffer memory; malformed-input outcomes.
+
+**Constraints:** Whole-buffer operation is not a general streaming replacement; enforce input and decompressed-size budgets. Keep gzip/zlib/raw DEFLATE framing and checksum requirements equal. Version 1.26 requires C11; shipped Windows binaries are 64-bit only although 32-bit source builds remain possible.
+
+**Priority rationale:** DEFLATE-compatible whole-buffer compression can be compared without abandoning an interoperability requirement when maximum input size is bounded.
+
+**Sources:** [IO31025](https://github.com/ebiggers/libdeflate/blob/v1.26/README.md) · [IO31026](https://github.com/ebiggers/libdeflate/blob/v1.26/NEWS.md) · [IO31027](https://api.github.com/repos/ebiggers/libdeflate/releases/latest)
+
+### libvips
+
+**tool · established · P1** · ID: libvips
+
+Demand-driven image-processing library suited to bounded-memory thumbnail, transform and asset-processing pipelines.
+
+**Stack layers:** Files, hashing & archives; Assets, textures & delivery.
+
+**Current signal:** v8.18.7 (2026-09-26) is newer than stale 8.18.6 search results and includes image-format correctness fixes.
+
+**Test:** Compare complete decode-orient-color-convert-resize-encode jobs using an actual output sink, fixed quality/metadata semantics and a process-wide concurrency budget.
+
+**Measure:** input-to-output p50/p95/p99 milliseconds; peak RSS MiB; CPU seconds; output size and fidelity; orientation/color/metadata pass rate; foreground UI latency.
+
+**Constraints:** Constructing an operation graph or reading a header can defer pixel work; force the same completed output before stopping the timer. Account for inner operation threads when running many outer jobs; oversubscription changes UI responsiveness. Initialize as documented and keep regions thread-owned; shared error handling needs reliable per-job attribution. Retain animated/multipage behavior, ICC profiles, alpha and EXIF orientation rather than silently choosing cheaper semantics.
+
+**Priority rationale:** Thumbnails and previews offer a small, high-value test surface for latency and peak-memory improvements.
+
+**Sources:** [GP31022](https://github.com/libvips/libvips/releases/tag/v8.18.7) · [GP31023](https://www.libvips.org/API/current/using-from-c.html) · [GP31024](https://www.libvips.org/API/current/using-threads.html)
 
 ### Apache DataFusion
 
@@ -2968,7 +3608,27 @@ Lossless compression control for asset transport and cached metadata, including 
 
 **Sources:** [ST099](https://facebook.github.io/zstd/) · [ST100](https://github.com/facebook/zstd/blob/dev/README.md) · [ST101](https://github.com/facebook/zstd/releases) · [ST102](https://github.com/facebook/zstd/blob/dev/CHANGELOG)
 
-## Durable workflows (5)
+### dav1d AV1 decoder
+
+**tool · established · P2** · ID: dav1d
+
+CPU AV1 decoder maintained by VideoLAN and exposed through an official GitLab upstream with a read-only GitHub mirror.
+
+**Stack layers:** Assets, textures & delivery; Files, hashing & archives.
+
+**Current signal:** Official mirror NEWS lists 1.5.4 Sonic with scheduling and CPU-specific work; publication date remains unasserted.
+
+**Test:** Compare complete AV1 preview decoding with the current CPU decoder under identical bitstreams, output formats, thread limits and presentation deadlines; keep hardware decode a separate cohort.
+
+**Measure:** decode-to-ready-frame p95/p99 milliseconds; sustained frames per second; CPU seconds and peak RSS MiB; bit-exact output pass rate; corruption handling; seek latency.
+
+**Constraints:** NEWS identifies 1.5.4 Sonic, but its exact release date was not independently established. Architecture-specific acceleration and older CPU instruction requirements need actual deployment checks. A CPU decoder is not equivalent to hardware decode when power, transfers, supported formats or output precision differ. Keep truncated, malformed, high-bit-depth and unusual-subsampling streams in the eligibility corpus.
+
+**Priority rationale:** AV1 preview workloads are a tractable use case when current decoding consumes significant CPU or misses frame deadlines.
+
+**Sources:** [GP31028](https://github.com/videolan/dav1d) · [GP31029](https://raw.githubusercontent.com/videolan/dav1d/master/NEWS)
+
+## Durable workflows (6)
 
 ### Journaled staged installation
 
@@ -3009,6 +3669,26 @@ Persisted job/state-machine design for extension workers that may terminate and 
 **Priority rationale:** Terminate the worker and native connection at each job transition, then reopen the UI and verify the complete outcome, progress, warnings, retry state and cancellation.
 
 **Sources:** [ST024](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers/lifecycle) · [ST025](https://developer.chrome.com/docs/extensions/reference/api/offscreen)
+
+### Automerge
+
+**repository · emerging · P2** · ID: automerge
+
+CRDT-based local-first document changes and synchronization for offline edits and mergeable application state.
+
+**Stack layers:** Downloads, transfer & sync; Background work & recovery; Local storage & search.
+
+**Current signal:** JavaScript release 3.5.0 dated 2026-09-16 fixes large-list patching and a large-change performance regression.
+
+**Test:** Compare the existing offline state synchronization with Automerge on the same edit history, concurrent conflicts, reconnections and long-running documents while preserving required audit history.
+
+**Measure:** local edit latency; reconnect convergence time; history growth; peak memory; conflict outcome correctness.
+
+**Constraints:** Automatic convergence does not define the desired product conflict policy or enforce authorization. Do not drop required history to create a faster comparison. Track document size/history and large list patches; blobs and huge immutable assets need a separately bounded transfer path.
+
+**Priority rationale:** Offline concurrent editing may warrant CRDT state, while history growth and application merge semantics rule out treating it as a generic smaller download format.
+
+**Sources:** [IO31031](https://automerge.org/blog/automerge-3/) · [IO31032](https://api.github.com/repos/automerge/automerge/releases/latest)
 
 ### DBOS
 
@@ -3070,7 +3750,27 @@ Durable execution platform candidate for recoverable test orchestration and long
 
 **Sources:** [RX105](https://temporal.io/changelog)
 
-## Profiling & observability (6)
+## Profiling & observability (11)
+
+### CodSpeed measurement instruments
+
+**tool · emerging · P1** · ID: codspeed
+
+CLI and CI instruments for separate CPU-simulation, wall-clock and heap-allocation regression measurements.
+
+**Stack layers:** Testing, profiling & correctness; Builds & reproducibility.
+
+**Current signal:** v5.6.1 (2026-10-30) fixes a walltime hang involving corrupted perf jitdump after a Python fork.
+
+**Test:** Calibrate known CPU, allocation and I/O perturbations with each supported instrument; pair end-to-end walltime runs on a declared host and preserve complete-output checks outside the timed region.
+
+**Measure:** false regression rate; instrument repeatability; measurement overhead; CPU work and walltime separately; heap allocations and process-tree peak RSS separately.
+
+**Constraints:** Simulated CPU work is not user-visible elapsed time; heap allocation accounting is not process-tree peak memory. Shared-runner walltime noise must be characterized and a stable host budget declared. No hosted service, billing or upload is configured by this research; use reviewed publishable fixtures when evaluating externally.
+
+**Priority rationale:** A measurement layer can detect regressions while keeping CPU, elapsed time and memory claims distinct.
+
+**Sources:** [EV31009](https://github.com/CodSpeedHQ/codspeed/blob/main/README.md) · [EV31010](https://github.com/CodSpeedHQ/codspeed/releases/tag/v5.6.1)
 
 ### Perfetto
 
@@ -3092,6 +3792,26 @@ Trace capture and local analysis suite for diagnosing application scheduling, me
 
 **Sources:** [RX111](https://perfetto.dev/blog/perfetto-v58) · [ST195](https://perfetto.dev/blog/perfetto-v58) · [ST196](https://perfetto.dev/blog/) · [ST197](https://perfetto.dev/docs/instrumentation/tracing-sdk) · [ST198](https://github.com/google/perfetto)
 
+### Scalene
+
+**tool · established · P1** · ID: scalene
+
+Python profiler separating Python, native and system work with allocation and copy-volume views to guide targeted optimization.
+
+**Stack layers:** Testing, profiling & correctness; Languages & runtimes.
+
+**Current signal:** v2.4.0 published 2026-10-23, including free-threaded Python wheels and signal-handling fixes.
+
+**Test:** Profile an owned Python workload with planted CPU, allocation and copy bottlenecks; compare hotspot attribution with an unprofiled timing control and independently known fault locations.
+
+**Measure:** hotspot attribution accuracy; missed planted bottlenecks; runtime overhead percent; peak RSS overhead MiB; copy-volume attribution agreement; profile completeness.
+
+**Constraints:** Sampling, signal handling and allocator instrumentation can perturb the workload; use unprofiled end-to-end measurements to validate improvements. Free-threaded wheel availability in 2.4.0 does not establish compatibility for every Python extension or platform. Optional AI assistance is not needed for profiling; keep it disabled for the controlled offline measurement configuration.
+
+**Priority rationale:** Separating interpreter, native-extension and copying cost can prevent ineffective Python rewrites.
+
+**Sources:** [RT31021](https://github.com/plasma-umass/scalene) · [RT31022](https://github.com/plasma-umass/scalene/releases/tag/v2.4.0)
+
 ### Tracy Profiler
 
 **tool · established · P1** · ID: tracy
@@ -3112,6 +3832,26 @@ CPU, GPU, allocation, and synchronization profiler for games and interactive eng
 
 **Sources:** [RX110](https://github.com/wolfpld/tracy/blob/master/README.md) · [ST192](https://github.com/wolfpld/tracy/releases) · [ST193](https://github.com/wolfpld/tracy) · [ST194](https://github.com/wolfpld/tracy/blob/master/LICENSE)
 
+### async-profiler
+
+**tool · established · P1** · ID: async-profiler
+
+HotSpot profiler for CPU, allocation, locks and native stacks, with platform and event-source constraints that affect coverage.
+
+**Stack layers:** Testing, profiling & correctness; Languages & runtimes.
+
+**Current signal:** v4.6 published 2026-10-19; reviewed JFR rate controls, wall filters, export changes and compatibility notes.
+
+**Test:** Use an owned JVM service with known CPU, allocation and lock bottlenecks to compare async-profiler event configurations against unprofiled latency and independent hotspot checks.
+
+**Measure:** p99 request overhead milliseconds; CPU overhead percent; sample loss count; hotspot localization accuracy; profile bytes; allocation and lock coverage.
+
+**Constraints:** Supported operating systems, HotSpot versions and event permissions determine eligibility; this is not automatic coverage of every JVM or Windows host. JIT compilation, GC phases and sampling choices can distort attribution; retain lost samples and phase-specific behavior. Version 4.6 includes breaking changes and new rate controls; pin event rates and JFR/export configuration rather than comparing defaults.
+
+**Priority rationale:** Native and JVM attribution can explain service tails before runtime or language changes are attempted.
+
+**Sources:** [RT31023](https://github.com/async-profiler/async-profiler) · [RT31024](https://github.com/async-profiler/async-profiler/releases/tag/v4.6)
+
 ### rr record and replay
 
 **tool · established · P1** · ID: rr
@@ -3131,6 +3871,26 @@ Linux execution recording and replay debugger for reproducing native process-tre
 **Priority rationale:** Conditional Linux diagnosis baseline when hardware and kernel requirements are met; complement portable assertions and target-OS integration tests.
 
 **Sources:** [ST163](https://github.com/rr-debugger/rr) · [ST164](https://github.com/rr-debugger/rr/releases/tag/5.10.0) · [ST165](https://github.com/rr-debugger/rr/releases) · [ST166](https://github.com/rr-debugger/rr/blob/master/LICENSE)
+
+### samply
+
+**tool · established · P1** · ID: samply
+
+Sampling CPU profiler with a Firefox Profiler interface for inspecting application stacks and timelines.
+
+**Stack layers:** Testing, profiling & correctness.
+
+**Current signal:** Release API still reports samply-v0.13.1 (2025-02-01); distinguish the current source documentation from that pinned binary.
+
+**Test:** Record the unchanged import/search/render journey with the platform profiler and samply; reproduce one suspected hotspot with profiling disabled before changing code.
+
+**Measure:** resolved sample fraction; recording CPU and RSS overhead; end-to-end completion p50/p95; lost samples; time to reproducible diagnosis.
+
+**Constraints:** 0.13.1 is a 2025 release freshly reviewed in 2026; current README behavior may differ from that binary. Windows ETW permissions, managed-runtime symbols and stack unwinding must be verified; missing samples are not idle time. CPU samples alone do not establish queue wait, I/O time, physical presentation or causality.
+
+**Priority rationale:** A low-integration diagnostic can narrow the real bottleneck before selecting a rewrite.
+
+**Sources:** [EV31001](https://github.com/mstange/samply) · [EV31002](https://github.com/mstange/samply/releases/tag/samply-v0.13.1)
 
 ### Grafana Beyla
 
@@ -3172,6 +3932,26 @@ Vendor-neutral telemetry collection and transformation for consistent benchmark 
 
 **Sources:** [RX108](https://opentelemetry.io/blog/2026/ottl-v1/)
 
+### Perforator
+
+**tool · emerging · P2** · ID: perforator
+
+Continuous eBPF profiler for aggregating native-service CPU profiles and preparing sampled optimization profiles.
+
+**Stack layers:** Testing, profiling & correctness; APIs & shared services.
+
+**Current signal:** v0.1.0 (2026-02-24) corrects version numbering and sampling/output issues; the version bump alone does not establish a new maturity level.
+
+**Test:** Compare periodic platform-profiler captures with Perforator on the same representative Linux service; hold workload, sample frequency and retention fixed, then validate any optimization with collection disabled.
+
+**Measure:** agent CPU/RSS; sample loss and attribution coverage; profile storage bytes; service p95/p99 latency; diagnosis reproducibility.
+
+**Constraints:** Linux x86-64 and kernel/eBPF permissions constrain deployment; this is not a portable desktop baseline. Java/Python support is described as experimental; version-specific unwinding needs validation. Publisher overhead and fleet claims are not Atlas measurements; component licenses differ.
+
+**Priority rationale:** Useful when recurring service CPU cost justifies ongoing collection and operational complexity.
+
+**Sources:** [EV31003](https://github.com/yandex/perforator) · [EV31004](https://github.com/yandex/perforator/releases/tag/v0.1.0)
+
 ### RenderDoc
 
 **tool · established · P2** · ID: renderdoc
@@ -3192,7 +3972,7 @@ Frame-capture graphics debugger for inspecting rendering state, resources, and d
 
 **Sources:** [RX112](https://github.com/baldurk/renderdoc)
 
-## Testing & verification (18)
+## Testing & verification (22)
 
 ### Ajv standalone schema validation
 
@@ -3213,6 +3993,26 @@ JSON Schema validation compiled at build time for strict-CSP runtimes and explic
 **Priority rationale:** Compare full-diagnostic validation of the same trusted schemas and adversarial messages with pinned Ajv standalone and the current validator under the target CSP.
 
 **Sources:** [ST015](https://github.com/ajv-validator/ajv/releases/tag/v8.20.0) · [ST016](https://ajv.js.org/standalone.html) · [ST017](https://ajv.js.org/security.html)
+
+### Hyperfine
+
+**tool · established · P1** · ID: hyperfine
+
+Command benchmark runner with calibration, warmup, preparation and raw export facilities for reproducible command-level experiments.
+
+**Stack layers:** Testing, profiling & correctness; Builds & reproducibility.
+
+**Current signal:** v2.0.0 published 2026-10-07, with breaking execution/export changes and additional measurement facilities.
+
+**Test:** Use pinned Hyperfine to measure complete commands with an external correctness oracle, explicit shell mode and balanced trial ordering; retain every exit status, sample and artifact hash.
+
+**Measure:** complete command seconds; peak memory bytes where supported; coefficient of variation; failed command count; ordering sensitivity; raw sample completeness.
+
+**Constraints:** Hyperfine 2.0 uses direct execution by default and a changed JSON schema; old shell-dependent commands and parsers require migration. Warmup and preparation are experimental conditions, not license to remove real startup or cache cost from the deciding journey. The runner does not prove output correctness or automatically eliminate ordering and environmental bias; validate outputs independently.
+
+**Priority rationale:** A better measurement runner helps make proposed performance comparisons auditable without inventing results.
+
+**Sources:** [RT31025](https://github.com/sharkdp/hyperfine) · [RT31026](https://github.com/sharkdp/hyperfine/releases/tag/v2.0.0)
 
 ### Hypothesis
 
@@ -3294,6 +4094,26 @@ Python linter and formatter implemented in Rust, with caching, automated fixes, 
 
 **Sources:** [RX066](https://docs.astral.sh/ruff/)
 
+### Shuttle concurrent Rust testing
+
+**tool · emerging · P1** · ID: shuttle
+
+Randomized controlled scheduling and deterministic failure replay for concurrent Rust logic.
+
+**Stack layers:** Testing, profiling & correctness; Background work & recovery; Files, hashing & archives.
+
+**Current signal:** v0.9.9 shipped 2026-10-29 with lock/channel, atomic-update and Tokio notification-model repairs.
+
+**Test:** Run seeded schedule exploration over bounded queues, cancellation, caught panics, shutdown and notification handoff; retain every failing seed and replay on the exact wrapper/runtime versions.
+
+**Measure:** counterexamples found; replay success; schedules and seeds explored; test wall time; unmodeled operations.
+
+**Constraints:** Passing randomized exploration is not a proof; retain Loom or another appropriate small-state checker as a complementary control. Unsupported direct synchronization or I/O can escape the scheduling model. 0.9.9 fixes model behavior around caught panics, atomic updates and cancelled notifications; compare old failures against the corrected model before blaming production code.
+
+**Priority rationale:** Protects correctness when changing worker pools and synchronization to improve latency.
+
+**Sources:** [EV31005](https://github.com/awslabs/shuttle) · [EV31006](https://github.com/awslabs/shuttle/releases/tag/v0.9.9)
+
 ### Zod
 
 **tool · established · P1** · ID: zod
@@ -3353,6 +4173,26 @@ Recursive artifact comparison tool that exposes differences inside archives, exe
 **Priority rationale:** Baseline diagnostic companion to independent rebuilds; choose it for explainable artifact differences, not as a substitute for a controlled build.
 
 **Sources:** [ST161](https://diffoscope.org/) · [ST162](https://diffoscope.org/news/diffoscope-335-released/)
+
+### pyperf
+
+**tool · established · P1** · ID: pyperf
+
+Python benchmark toolkit providing worker processes, calibration, metadata and stability checks for controlled runtime experiments.
+
+**Stack layers:** Testing, profiling & correctness; Languages & runtimes.
+
+**Current signal:** 2.10.0 published 2026-02-07; current documentation includes calibration, stability and CPython JIT recognition.
+
+**Test:** Measure a pinned Python operation corpus using independent worker processes and retained metadata, then validate any microbenchmark improvement in the complete application journey.
+
+**Measure:** operation latency distribution; between-process variance; startup milliseconds; memory bytes; unstable benchmark count; application completion seconds.
+
+**Constraints:** Inner-loop repetitions are not independent workload samples; report process and dataset structure, not only an aggregate iteration count. Warmup must not hide relevant cold imports or JIT startup; standard, free-threaded and JIT builds belong in separate cohorts. Statistical significance does not establish practical benefit or semantic equivalence; retain complete output and error checks.
+
+**Priority rationale:** Useful for extending Python runtime and serializer investigations with reproducible sampling and metadata.
+
+**Sources:** [RT31027](https://pyperf.readthedocs.io/en/latest/) · [RT31028](https://github.com/psf/pyperf/releases/tag/2.10.0)
 
 ### AFL++
 
@@ -3453,6 +4293,26 @@ Failure-injection and consistency-testing framework for databases, queues, and d
 **Priority rationale:** First establish that the method catches known defects while preserving complete results; then measure execution cost.
 
 **Sources:** [RX118](https://jepsen.io/)
+
+### Stateright
+
+**tool · emerging · P2** · ID: stateright
+
+Rust model checker and actor runtime for exploring protocol states and checking declared safety properties.
+
+**Stack layers:** Testing, profiling & correctness; Background work & recovery; Downloads, transfer & sync.
+
+**Current signal:** Documentation 0.31.0 reviewed today; useful established method, not a newly released 2026 tool.
+
+**Test:** Model a resumable job or update protocol with bounded participants, duplicated/reordered messages and crashes; compare discovered counterexamples against a separate executable implementation.
+
+**Measure:** reachable states; counterexample replay; bounded safety violations; state-space memory; exploration completion.
+
+**Constraints:** Liveness support is explicitly experimental/incomplete; do not report a liveness proof. A finite model only supports its declared state bounds and assumptions; implementation conformance needs a separate test. Docs show 0.31.0 and master dates to 2025-07-27; no GitHub latest release was returned.
+
+**Priority rationale:** Useful for durable-state and synchronization changes with a small, explicit state machine.
+
+**Sources:** [EV31007](https://docs.rs/stateright/latest/stateright/) · [EV31008](https://github.com/stateright/stateright)
 
 ### TLA+ and TLC
 
@@ -3776,7 +4636,47 @@ Rust TUF client and repository tooling candidate for a native updater that needs
 
 **Sources:** [ST140](https://github.com/awslabs/tough) · [ST141](https://docs.rs/tough/0.24.0/tough/) · [ST142](https://github.com/awslabs/tough/security/advisories/GHSA-4v58-8p28-2rq3) · [ST143](https://github.com/awslabs/tough/security/advisories/GHSA-8m7c-8m39-rv4x)
 
-## Systems research (17)
+## Systems research (38)
+
+### Rayon bounded CPU pools
+
+**repository · established · P1** · ID: rayon
+
+Work-stealing data parallelism with configurable local thread pools for CPU-heavy file and data transformations.
+
+**Stack layers:** Files, hashing & archives; Languages & runtimes.
+
+**Current signal:** Rayon 1.12.0 ThreadPoolBuilder documentation reviewed.
+
+**Test:** Run equivalent hashing, parsing and transformation jobs with serial, current and bounded Rayon pools; sweep declared worker counts under the same UI latency and memory budgets.
+
+**Measure:** complete job throughput; p95/p99 task latency; UI input delay; CPU utilization; peak RSS.
+
+**Constraints:** More workers may compete with rendering and I/O or increase memory pressure. Parallel ordering and panic propagation must preserve the output/error contract. Do not initialize independent unbounded CPU pools in each pipeline stage.
+
+**Priority rationale:** A fixed local CPU pool is a practical control for hashing and parsing workloads that must share cores with foreground interaction.
+
+**Sources:** [IO31014](https://docs.rs/rayon/latest/rayon/struct.ThreadPoolBuilder.html)
+
+### Tokio bounded blocking work
+
+**method · established · P1** · ID: tokio-bounded-blocking
+
+Separate asynchronous I/O from CPU/blocking work with explicit admission limits and cooperative cancellation contracts.
+
+**Stack layers:** Files, hashing & archives; Background work & recovery; APIs & shared services.
+
+**Current signal:** Tokio 1.54.1 documentation reviewed; started blocking tasks remain non-abortable.
+
+**Test:** Compare the current executor against a bounded Tokio I/O plus blocking-work configuration, replaying complete mixed download/parse/hash jobs while the UI remains active.
+
+**Measure:** full verified completion time; p99 input delay; queue age; peak RSS; cancellation-to-quiescence.
+
+**Constraints:** spawn_blocking has a large default thread limit; CPU work needs a semaphore or dedicated CPU executor. A started blocking closure cannot be aborted by JoinHandle::abort; shutdown and cancellation need a real stop/check protocol. Bound queued bytes as well as running task counts.
+
+**Priority rationale:** Explicit admission limits and cooperative stopping directly address responsiveness and runaway queues during CPU-heavy background jobs.
+
+**Sources:** [IO31012](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html) · [IO31013](https://tokio.rs/tokio/topics/bridging)
 
 ### WalkDir
 
@@ -3838,6 +4738,26 @@ Streaming multi-format archive library for testing a shared extraction policy ac
 
 **Sources:** [ST103](https://www.libarchive.org/) · [ST104](https://github.com/libarchive/libarchive/blob/master/libarchive/archive.h)
 
+### mimalloc
+
+**repository · established · P1** · ID: mimalloc
+
+General-purpose allocator with recent profiling and memory-management changes for allocation-heavy applications.
+
+**Stack layers:** Languages & runtimes; Files, hashing & archives; Testing, profiling & correctness.
+
+**Current signal:** v3.6.1 released 2026-10-30; v3.6.0 introduced profiling hooks and detailed allocation statistics on 2026-10-23.
+
+**Test:** Keep the application and workload fixed while comparing its system allocator with a pinned mimalloc build during imports, searches, cancellation and repeated open/close cycles.
+
+**Measure:** full operation latency; p95/p99 input delay; peak and retained RSS; allocation count; fragmentation after churn.
+
+**Constraints:** Keep security mode and allocation-failure behavior fixed; a less protected build is a separate configuration. Measure process-tree memory and long-lived fragmentation, not just malloc/free microbenchmarks. Verify allocator ownership across foreign-library and DLL boundaries.
+
+**Priority rationale:** An allocator-only build comparison is relatively isolated and useful after profiles identify allocation churn; whole-session memory determines whether it helps.
+
+**Sources:** [IO31010](https://github.com/microsoft/mimalloc) · [IO31011](https://api.github.com/repos/microsoft/mimalloc/releases/latest)
+
 ### notify filesystem watching
 
 **repository · established · P1** · ID: notify
@@ -3898,6 +4818,26 @@ Parallel cryptographic hashing candidate for internal content identity, chunk ve
 
 **Sources:** [ST090](https://github.com/BLAKE3-team/BLAKE3) · [ST091](https://docs.rs/crate/blake3/latest) · [ST092](https://github.com/BLAKE3-team/BLAKE3/releases/tag/1.8.7)
 
+### Compio completion-based I/O
+
+**repository · emerging · P2** · ID: compio
+
+Thread-per-core Rust runtime spanning IOCP, io_uring and polling, with explicit I/O-buffer ownership.
+
+**Stack layers:** Files, hashing & archives; Downloads, transfer & sync; Languages & runtimes.
+
+**Current signal:** v0.19.2 released 2026-08-18; documentation includes tokio-console instrumentation.
+
+**Test:** Compare current and Compio implementations of one complete bounded file/network pipeline on each supported OS, preserving result validation, buffers, cancellation and shutdown behavior.
+
+**Measure:** verified completion time; CPU per byte; p99 latency; peak queued bytes; shutdown correctness.
+
+**Constraints:** An I/O runtime migration is a whole integration change, not a drop-in performance guarantee. The project does not promise an MSRV before 1.0; pin compiler and crate versions. Test buffer lifetime and cancellation races on each backend, including fallback paths.
+
+**Priority rationale:** Completion-based I/O merits investigation only after I/O waits dominate; backend coverage and runtime integration add work beyond tuning the existing executor.
+
+**Sources:** [IO31015](https://github.com/compio-rs/compio) · [IO31016](https://api.github.com/repos/compio-rs/compio/releases/latest)
+
 ### FastCDC for Rust
 
 **repository · emerging · P2** · ID: fastcdc-rs
@@ -3938,6 +4878,46 @@ Windows-specific journal-assisted invalidation with journal-identity checkpoints
 
 **Sources:** [ST088](https://learn.microsoft.com/en-us/windows/win32/fileio/change-journals) · [ST089](https://learn.microsoft.com/en-us/windows/win32/fileio/using-the-change-journal-identifier) · [ST087](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw)
 
+### Tessera: sparse join-aggregate execution
+
+**paper · experimental · P2** · ID: tessera-join-aggregate-paper
+
+Skew-aware join-aggregate operator that avoids materializing join rows and uses a dense CPU-accelerator frontier only when it pays off.
+
+**Stack layers:** Analytics & result formats; Local storage & search.
+
+**Current signal:** arXiv v1 submitted 2026-10-29; public artifact README reviewed without execution.
+
+**Test:** Reproduce one co-occurrence query against the current engine plan with complete output, exact integer overflow policy, skew/threshold sweeps, cancellation and bounded spill storage.
+
+**Measure:** end-to-end query latency; peak memory; spill bytes; row/value parity; cold versus warm cost.
+
+**Constraints:** Author results are not Atlas measurements; several slow baseline runs were measured only once. The paper is specialized to join-aggregates, not general SQL performance. Pin current-engine and artifact revisions; declare AMX availability and preserve an eligible non-AMX fallback.
+
+**Priority rationale:** Recent artifact-backed work is relevant when profiling exposes large intermediate join materialization; simpler query/index fixes remain the control.
+
+**Sources:** [IO31039](https://arxiv.org/html/2610.40620v1) · [IO31040](https://arxiv.org/abs/2610.40620) · [IO31041](https://github.com/GyuyeongKim/Tessera-public/blob/main/README.md)
+
+### The Essence of Entity Component System
+
+**paper · experimental · P2** · ID: essence-ecs-2026
+
+SAC 2026 study formalizing ECS access and synchronization, with a small artifact comparing object, array and parallel data layouts.
+
+**Stack layers:** Games, graphics & physics; Testing, profiling & correctness.
+
+**Current signal:** SAC 2026 publication and author artifact reviewed; performance generalization remains limited.
+
+**Test:** Use the access/phase model to specify a deterministic application slice, then separate data layout, structural mutation and parallel scheduling as independent experiment variables.
+
+**Measure:** update p95/p99 milliseconds; state/checkpoint equivalence; structural-mutation cost; allocations and RSS MiB; race/dependency violations; scale sensitivity.
+
+**Constraints:** The paper uses one Scala Tower Defense case and a representative run; this is not broad evidence for a generally fastest ECS. Formal access restrictions guide tests but do not prove arbitrary application systems race-free. Author artifact tooling and license permission need review before code reuse; no reproduction was executed. Compare actual application behavior and common contracts rather than reproducing only a favorable layout microbenchmark.
+
+**Priority rationale:** The formal access model can improve proposed ECS tests now, even before committing to a particular runtime.
+
+**Sources:** [GP31034](https://boyang.cs.uwm.edu/publication/sac2026_ECS.pdf) · [GP31035](https://github.com/uwm-se/ecs)
+
 ### bita / bitar
 
 **repository · emerging · P2** · ID: bita
@@ -3958,6 +4938,86 @@ HTTP range-based delta cloning that reuses local chunks and verifies downloaded 
 
 **Sources:** [ST098](https://github.com/oll3/bita)
 
+### casync
+
+**repository · established · P2** · ID: casync
+
+Content-defined chunk synchronization for related filesystems and directory trees over reusable compressed chunk stores.
+
+**Stack layers:** Downloads, transfer & sync; Files, hashing & archives; Assets, textures & delivery.
+
+**Current signal:** See the dated primary sources.
+
+**Test:** Compare full archive delivery, existing delta transfer and casync for repeated versioned asset trees, including index creation, seed scanning, download, verification and materialization.
+
+**Measure:** complete update time; bytes transferred; seed-scan CPU; peak RSS; chunk-store growth; full tree parity.
+
+**Constraints:** Require real cross-version similarity; recompressed/encrypted archives may destroy reusable chunk boundaries. Test modes, links and required metadata alongside file bytes. README verify/diff commands are marked unimplemented; build independent complete-tree validation.
+
+**Priority rationale:** Related large asset revisions can benefit from content reuse, but seed scanning, metadata parity and server preparation must be counted before adoption.
+
+**Sources:** [IO31030](https://github.com/systemd/casync/blob/main/README.md)
+
+### liburing / io_uring
+
+**repository · established · P2** · ID: liburing
+
+Linux asynchronous submission/completion APIs for explicit bounded I/O pipelines.
+
+**Stack layers:** Files, hashing & archives; Downloads, transfer & sync.
+
+**Current signal:** liburing 2.15 released 2026-06-29; cBPF restriction helpers and completion/timeout fixes reviewed.
+
+**Test:** Compare the current Linux I/O implementation with a pinned liburing configuration across storage devices, operation sizes and queue depths, keeping buffer lifetime, error and durability contracts fixed.
+
+**Measure:** verified completion time; CPU per operation; p99 latency; in-flight bytes; cancellation correctness.
+
+**Constraints:** Library version alone does not establish kernel opcode or feature support; probe required capabilities. Include short I/O, completion ordering, cancellation races, resource limits and fallback behavior. A Linux-specific gain does not establish portability or benefit on IOCP-based targets.
+
+**Priority rationale:** A Linux-specific I/O path is a second-stage experiment after profile evidence; kernel capability fallback and cancellation ownership must remain explicit.
+
+**Sources:** [IO31033](https://github.com/axboe/liburing/blob/liburing-2.15/README) · [IO31034](https://api.github.com/repos/axboe/liburing/releases/latest)
+
+### mold: A Massively Parallel Linker
+
+**paper · experimental · P2** · ID: mold-parallel-linker-paper
+
+2026 paper examining parallelism across linker phases, with an artifact protocol that must be separated from later mold releases.
+
+**Stack layers:** Builds & reproducibility.
+
+**Current signal:** Submitted 2026-08-24; full design, evaluation, limitations and artifact appendix reviewed; no local reproduction.
+
+**Test:** Reproduce the paper's historical linker configurations as their own cohort, then run a separate current-release comparison over identical compatible link inputs and complete application tests.
+
+**Measure:** phase and total link seconds; scaling by worker count; peak RSS MiB; failed workload count; full build seconds; runtime correctness failures.
+
+**Constraints:** The August 2026 preprint reports historical mold 2.42.0 and lld 22.1.8 configurations; it does not measure October's mold 3 Rust rewrite. The artifact describes substantial RAM/disk requirements and filesystem sensitivity; preserve its warmup, repetition and failure-reporting rules. Check artifact and upstream workload licenses before redistribution; paper acceptance for ASPLOS 2027 is not a claim that the 2027 conference has occurred.
+
+**Priority rationale:** A concrete parallel-build design and artifact offer a deeper research lane behind the practical linker comparison.
+
+**Sources:** [RT31029](https://arxiv.org/html/2608.23228v1)
+
+### xxHash / XXH3
+
+**repository · established · P2** · ID: xxhash
+
+Non-cryptographic content fingerprints for hash tables, change hints and collision-checked deduplication.
+
+**Stack layers:** Files, hashing & archives; Local storage & search.
+
+**Current signal:** v0.8.4 released 2026-09-19; includes streaming/platform dispatch and Windows path changes.
+
+**Test:** Compare the current fingerprint with XXH3 in an end-to-end catalog scan while retaining the cryptographic verification or byte equality required for authoritative identity.
+
+**Measure:** scan completion time; CPU per byte; small-key latency; collision-handling correctness; cross-platform digest parity.
+
+**Constraints:** Non-cryptographic hashes cannot replace security-sensitive identity, signature verification or adversarial integrity checks. Force collisions in tests to verify the fallback equality/strong-hash path. Pin seed, width and streaming boundaries; include file I/O instead of reporting cache-hot hash throughput alone.
+
+**Priority rationale:** Cheap internal fingerprints are relevant where cryptographic authenticity is unnecessary and collision handling is explicit; authoritative content identity must keep stronger checks.
+
+**Sources:** [IO31028](https://github.com/Cyan4973/xxHash) · [IO31029](https://api.github.com/repos/Cyan4973/xxHash/releases/latest)
+
 ### AtomSanitizer / Fast Atomicity Monitoring
 
 **paper · experimental · P3** · ID: atomsanitizer-paper
@@ -3977,6 +5037,86 @@ PLDI 2026 atomicity-monitoring algorithm and ThreadSanitizer prototype for detec
 **Priority rationale:** Watchlist challenger when an actual atomicity failure escapes existing race and state-machine tests; require artifact reproduction before product use.
 
 **Sources:** [ST172](https://arxiv.org/abs/2604.11369) · [ST173](https://pldi26.sigplan.org/details/pldi-2026-papers/5/Fast-Atomicity-Monitoring) · [ST174](https://hcantunc.github.io/papers/pldi26/paper.pdf) · [ST175](https://zenodo.org/records/19615809)
+
+### Controlling Opaque-Component Effects with Semisolates and Try
+
+**paper · experimental · P3** · ID: semisolates-try-paper
+
+OSDI 2026 effect-control abstraction for inspecting and selectively applying filesystem changes from already-trusted commands.
+
+**Stack layers:** Plugins & process isolation; Builds & reproducibility; Files, hashing & archives.
+
+**Current signal:** OSDI 2026 paper plus stable v0.2.1 (2026-09-15); the artifact checkpoint, release and current README remain separate observations.
+
+**Test:** Compare a disposable worktree/container with a pinned Try release for a trusted asset/build command; inspect create/delete/rename/mode/symlink effects and charge setup, execution, review and application time.
+
+**Measure:** complete effect equivalence; setup and teardown time; effect-inspection latency; bytes copied; failure recovery; total verified completion.
+
+**Constraints:** Upstream explicitly rejects using semisolation to run untrusted commands; network effects are allowed by default. Linux namespaces/OverlayFS, UID/GID behavior, IPC and device access can change compatibility. Selective effect application can violate cross-file invariants; it is not a universal atomic transaction or an automatic rollback for remote effects.
+
+**Priority rationale:** A research option for controlled build/asset experiments when effect visibility is valuable and all boundaries are explicit.
+
+**Sources:** [EV31016](https://www.usenix.org/conference/osdi26/presentation/lamprou) · [EV31017](https://www.usenix.org/system/files/osdi26-lamprou.pdf) · [EV31018](https://github.com/binpash/try) · [EV31019](https://github.com/binpash/try/releases/tag/v0.2.1)
+
+### CuRast
+
+**paper · experimental · P3** · ID: curast-2026
+
+EGSR 2026 compute rasterizer specializing CUDA work distribution for dense opaque triangle scenes without a precomputed hierarchy.
+
+**Stack layers:** Games, graphics & physics.
+
+**Current signal:** EGSR 2026 paper; arXiv v2 dated 2026-04-24 and original artifact inspected.
+
+**Test:** Compare an unchanged common-feature public scene and camera sequence with a tuned Vulkan baseline, retaining total frame cost, fidelity and all memory allocations.
+
+**Measure:** total frame p95/p99 milliseconds; GPU stage time; peak host and GPU MiB; load-to-ready seconds; image difference; feature-completeness pass rate.
+
+**Constraints:** The artifact targets dense opaque geometry; transparency and general low-poly rendering are not established substitutes. Published evaluations use separate texture modes and modified scene content; reduced textures or removed geometry cannot enter an equal-work comparison unnoticed. The reviewed artifact is Windows/CUDA oriented, lists Linux as TODO and has loading/frame-pipeline limits. Paper means over 60 frames do not establish target-device tail latency or multi-vendor portability. Do not interpret a kernel-focused research result as a complete editor/engine replacement.
+
+**Priority rationale:** Potentially valuable for dense scan/CAD preview niches, with severe workload and portability restrictions that need a controlled prototype.
+
+**Sources:** [GP31039](https://arxiv.org/html/2604.21749v2) · [GP31040](https://github.com/m-schuetz/CuRast)
+
+### Diagnosing Performance Issues in Application-Defined Resources
+
+**paper · experimental · P3** · ID: gigiprofiler-paper
+
+OSDI 2026 resource-aware diagnosis combines semantic discovery, static validation and runtime events for application-managed pools and caches.
+
+**Stack layers:** Testing, profiling & correctness; Local storage & search; Background work & recovery.
+
+**Current signal:** OSDI 2026 paper and artifact c3136bf reviewed; no execution. Start with explicit resource counters before attempting the full toolchain.
+
+**Test:** First instrument queue occupancy, permit wait and buffer lifetime manually; compare an artifact build on a supported open-source application, verifying inferred resource events and total tracing cost.
+
+**Measure:** validated resource-event precision; known-bug detection; false positives; tracing CPU/RSS; end-to-end throughput and tail latency; analysis/model cost.
+
+**Constraints:** The paper uses gigiprofiler while the linked artifact is named OmniProfiler; retain the exact artifact identity. The inspected artifact depends on LLVM 17, generated source documentation and configured LLM access; portability and reproducibility remain untested. A plausible generated resource interpretation is not evidence until checked against source and actual runtime events.
+
+**Priority rationale:** Useful when application-owned resources explain waits that ordinary CPU profiles cannot localize.
+
+**Sources:** [EV31013](https://www.usenix.org/conference/osdi26/presentation/hu-yigong) · [EV31014](https://www.usenix.org/system/files/osdi26-hu-yigong.pdf) · [EV31015](https://github.com/BlizzardLab/OmniProfiler/blob/c3136bf78bc8e74fdd5728be8150999fe82040e0/README.md)
+
+### GPU View-Adaptive Crack-Free Subdivision of Bezier Surfaces
+
+**paper · experimental · P3** · ID: adaptive-bezier-2026
+
+EGSR 2026 surface-subdivision research exploring compact patch reconstruction and recursive GPU work generation with a fallback implementation.
+
+**Stack layers:** Games, graphics & physics.
+
+**Current signal:** Author article dated 2026-08-06 documents EGSR 2026 work and an MIT artifact with a hardware fallback.
+
+**Test:** Compare hardware tessellation, Execute Indirect and supported Work Graphs on identical patch scenes, camera paths and screen-space error bounds, measuring seams and total memory.
+
+**Measure:** GPU and total frame p95/p99 milliseconds; subdivision memory MiB; dispatch overhead; screen-space geometric error; seam/crack pixel count; hardware/fallback coverage.
+
+**Constraints:** The original full PDF exceeded retrieval limits; this review inspected the author technical article and artifact, not the entire paper. Work Graphs with mesh nodes require supported hardware/drivers; the artifact includes a separate Execute Indirect path. Nearly identical output is not exact equivalence; declare geometry and image tolerances and inspect shared patch edges. Count internal/runtime memory as well as visible buffers and retain unsupported-device results. Article date is 2026-08-06; exact paper publication day is not asserted.
+
+**Priority rationale:** A relevant watch candidate for curved CAD/asset previews, but specialized GPU support and incomplete paper retrieval limit readiness.
+
+**Sources:** [GP31041](https://gpuopen.com/learn/gpu-view-adaptive-subdivision/) · [GP31042](https://github.com/CoburgGraphicsLab/AdaptiveBezierSubdivision)
 
 ### HARE: Cache-Centric Multi-Resource Allocation for Storage Services
 
@@ -4058,6 +5198,66 @@ USENIX Security 2026 research on composing and selectively revealing SBOM data w
 
 **Sources:** [ST169](https://www.usenix.org/conference/usenixsecurity26/presentation/abu-ishgair) · [ST170](https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_ishgair.pdf) · [ST171](https://zenodo.org/records/17906622)
 
+### ParaWeb: Parallel Programming Patterns for Web Development
+
+**paper · experimental · P3** · ID: paraweb-paper
+
+2026 research on reusable parallel patterns across Node workers, browser workers and WebGPU, with workload and numeric constraints that prevent universal backend rankings.
+
+**Stack layers:** Shared core & native boundaries; Large collections & interaction.
+
+**Current signal:** 2026-08-20 preprint; full text recovered and reviewed on 2026-10-31 after initial fetch failures; no local reproduction.
+
+**Test:** Evaluate an owned numeric transform under sequential, worker-message, shared-memory and GPU variants, using a declared precision contract and counting cold setup, transfer, compute and complete result delivery.
+
+**Measure:** full operation milliseconds; cold setup milliseconds; peak memory MiB; numeric error; foreground input p99 milliseconds; unsupported configuration count.
+
+**Constraints:** The design restricts data shapes and uses self-contained serialized functions; captured closures and strict dynamic-code policies need separate checks. CPU Float64 and GPU f32 calculations require an explicit equivalence tolerance; browser shared memory requires isolation support. The reviewed paper reports that simple reductions can lose to sequential execution; artifact retrieval and license review remain outstanding.
+
+**Priority rationale:** A focused research lane for compute-heavy web features, after ordinary scheduling and worker-pool approaches establish the baseline.
+
+**Sources:** [RT31031](https://arxiv.org/abs/2608.19935)
+
+### RaBitQ-SSD
+
+**paper · experimental · P3** · ID: rabitq-ssd-paper
+
+SSD-resident approximate vector search splits binary codes between RAM and disk and pipelines candidate reads with computation.
+
+**Stack layers:** Local storage & search; Analytics & result formats.
+
+**Current signal:** arXiv v1 submitted 2026-10-02; artifact platform and index-format constraints reviewed.
+
+**Test:** Compare a pinned RaBitQ-SSD artifact with the current disk-backed search at identical measured recall, query set, memory cap and SSD; retain exact ground truth and repeated-order runs.
+
+**Measure:** recall at k; p50/p95/p99 query latency; throughput at fixed recall; peak RAM; SSD reads; index build cost.
+
+**Constraints:** Probabilistic bounds do not imply exact retrieval; Appendix B reports small run-order-dependent differences. Current artifact requires Linux and AVX2/AVX-512; host-native builds are not portable binaries. Include scratch space, index build time and 32/64-bit format boundaries; do not reduce recall to claim a speedup.
+
+**Priority rationale:** Useful only when a measured vector-search corpus exceeds RAM; ordinary lexical search and smaller in-memory indexes remain relevant controls.
+
+**Sources:** [IO31044](https://arxiv.org/html/2610.02652v1) · [IO31045](https://arxiv.org/abs/2610.02652) · [IO31046](https://github.com/VectorDB-NTU/RaBitQ-SSD/blob/main/README.md)
+
+### RubikFS sort-enhanced read-only images
+
+**paper · experimental · P3** · ID: rubikfs-paper
+
+Read-only filesystem research clusters similar and frequently accessed chunks before compression to reduce image size and read amplification.
+
+**Stack layers:** Assets, textures & delivery; Files, hashing & archives.
+
+**Current signal:** FAST 2026 paper reviewed, including implementation and emulation methodology; exact publication day not asserted.
+
+**Test:** On licensed immutable asset packs, compare unchanged EROFS/Squashfs-style layouts with similarity/hotness grouping under the same codec, complete bytes, metadata and startup read trace.
+
+**Measure:** complete startup time; compressed size; bytes read; offline build time; peak build memory; full extraction parity.
+
+**Constraints:** Research implementation changes EROFS/Linux; this is not a portable library swap. Published runtime evaluation uses FEMU/QEMU with an embedded-oriented configuration, not desktop deployment acceptance. Layout preprocessing and trace collection cost must be counted; immutable-image assumptions do not fit frequent arbitrary edits.
+
+**Priority rationale:** An asset-layout research lead when delivery size and read amplification dominate; portable format-compatible codecs should be evaluated first.
+
+**Sources:** [IO31047](https://www.usenix.org/conference/fast26/presentation/huang) · [IO31048](https://www.usenix.org/system/files/fast26-huang.pdf)
+
 ### SysSpec generative file systems
 
 **paper · experimental · P3** · ID: sysspec-paper
@@ -4077,6 +5277,66 @@ Specification-centered file-system generation research for studying the correctn
 **Priority rationale:** Watch-stage proposal: Reproduce a narrow mechanism and check assumptions before translating a paper into an application recommendation.
 
 **Sources:** [RX134](https://www.usenix.org/conference/fast26/presentation/liu-qingyuan)
+
+### The Unseen Delta: Characterizing the Compiler Optimization Landscape via Top-Down Differential Analysis
+
+**paper · experimental · P3** · ID: unseen-delta-paper
+
+Limited-review ISSTA 2026 lead: the primary abstract describes using compiler performance differences and microarchitectural evidence to locate optimization gaps.
+
+**Stack layers:** Builds & reproducibility; Testing, profiling & correctness.
+
+**Current signal:** ISSTA 2026 primary conference abstract checked 2026-10-31; full-text retrieval failed and publisher access returned 403.
+
+**Test:** First obtain and review the full method and artifact; then preregister a semantics-preserving GCC/Clang comparison that localizes performance differences without treating cross-compiler binary transplantation as a deployment recipe.
+
+**Measure:** semantics pass rate; repeatable performance-gap count; localization precision; counter collection overhead; artifact reproduction completeness.
+
+**Constraints:** Only the primary conference abstract and metadata were accessible; full-text and artifact protocol have not been reviewed. No numerical effect, detailed implementation, license availability or production readiness is established by this record. Hardware-counter availability, compiler flags, undefined behavior and workload equivalence must be resolved before attributing a difference to a compiler defect.
+
+**Priority rationale:** A useful research lead for explaining compiler differences, pending full-text and artifact review.
+
+**Sources:** [RT31030](https://conf.researchr.org/details/issta-2026/issta-2026-research-papers/73/The-Unseen-Delta-Characterizing-the-Compiler-Optimization-Landscape-via-Top-Down-Dif)
+
+### Tile-Based Decompression in Compiled GPU Engines
+
+**paper · experimental · P3** · ID: gpu-tile-decompression-paper
+
+Proteus research integrates tile decompression into compiled GPU query pipelines to trade decode work for lower device-memory traffic.
+
+**Stack layers:** Analytics & result formats.
+
+**Current signal:** arXiv v1 submitted 2026-10-23; PVLDB Vol.20 acceptance listed.
+
+**Test:** Reproduce within one fixed Proteus build: uncompressed, pre-decompressed and fused-decode query plans over identical results; separately include host transfer and cold compilation.
+
+**Measure:** complete query latency; peak GPU memory; GPU memory traffic; compile time; result parity.
+
+**Constraints:** The published core evaluation preloads GPU-resident input and excludes host transfer. Shared-memory/register pressure can make compressed execution slower; retain regressing queries. Hardware, SQL rewrites and engine differences confound cross-system rankings.
+
+**Priority rationale:** A specialized GPU analytics watchlist item; requires GPU memory pressure and a reproducible engine integration before application relevance.
+
+**Sources:** [IO31042](https://arxiv.org/html/2610.32695v1) · [IO31043](https://arxiv.org/abs/2610.32695)
+
+### TypeCraft: A Lightweight Data Type Profiler with High Resolution
+
+**paper · experimental · P3** · ID: typecraft-paper
+
+OSDI 2026 method that attributes memory-access samples to data types and fields to guide data-layout changes.
+
+**Stack layers:** Testing, profiling & correctness; Languages & runtimes.
+
+**Current signal:** OSDI 2026 full paper and limitations reviewed; no local reproduction or cross-language support claim.
+
+**Test:** On a supported x86 C binary with matching debug information, compare ordinary perf attribution with TypeCraft; change one private structure layout and rerun unchanged complete workloads without profiling.
+
+**Measure:** type-resolution coverage; offline analysis time; cache/TLB events; full completion p50/p95; binary size and ABI checks.
+
+**Constraints:** The paper implementation targets x86 and reports strongest coverage for C; C++/Go coverage is lower and other architectures remain follow-on work. Missing DWARF and encoded pointers limit attribution; record unresolved samples. Field reordering must preserve external ABI, serialization, alignment and concurrent ownership.
+
+**Priority rationale:** Strong targeted diagnostic after memory stalls are demonstrated; artifact/toolchain applicability precedes adoption.
+
+**Sources:** [EV31011](https://www.usenix.org/conference/osdi26/presentation/li-zecheng) · [EV31012](https://www.usenix.org/system/files/osdi26-li-zecheng.pdf)
 
 ### VS-Flash
 
@@ -4098,6 +5358,26 @@ Research proposal combining flash-backed vector capacity with batch-aware placem
 
 **Sources:** [RX133](https://arxiv.org/html/2610.26960v1)
 
+### Variable-Rate Texture Compression: Real-Time Rendering with JPEG
+
+**paper · experimental · P3** · ID: jpeg-variable-texture-2026
+
+2026 journal paper using demand-driven GPU JPEG-block decoding and a cache to explore variable-rate RGB texture storage.
+
+**Stack layers:** Assets, textures & delivery; Games, graphics & physics.
+
+**Current signal:** Computer Graphics Forum paper first published 2026-04-25; full journal limitations and original artifact inspected.
+
+**Test:** Reproduce a restricted diffuse-RGB texture workload at matched visual error and compare total frame latency and memory with BC/ASTC, including cache misses and interoperability costs.
+
+**Measure:** total frame p95/p99 milliseconds; decode and interop milliseconds; resident cache/index/mipmap MiB; cold camera-cut latency; texture fidelity; unsupported-material coverage.
+
+**Constraints:** Journal first publication is 2026-04-25; the preprint lineage is October 2025, so this is not wholly new October 2026 research. The method supports three-channel diffuse textures; alpha, normal maps and general material replacement are not established. Reported pipeline timing excludes a CUDA/OpenGL launch-switch cost, while reported FPS includes it; do not transplant kernel numbers as full latency. Tileable game textures may benefit less than photo textures; cache, indices and mipmaps belong in the total memory budget. Artifact execution and code-reuse license verification remain pending.
+
+**Priority rationale:** Interesting storage-versus-frame-time research, but restricted material coverage and uncounted timing components require reproduction before adoption.
+
+**Sources:** [GP31036](https://onlinelibrary.wiley.com/doi/10.1111/cgf.70338) · [GP31037](https://arxiv.org/html/2510.08166v2) · [GP31038](https://github.com/elias1518693/jpeg_textures)
+
 ### hS: Speculative Script Reordering at Subprocess Granularity
 
 **paper · experimental · P3** · ID: hs-speculative-shell-paper
@@ -4118,7 +5398,7 @@ Speculative subprocess execution detects effects dynamically and commits indepen
 
 **Sources:** [RX155](https://www.usenix.org/conference/osdi26/presentation/liargkovas) · [RX156](https://github.com/binpash/hs) · [RX157](https://blog.greenberg.science/posts/osdi2026/)
 
-## Serialization (3)
+## Serialization (7)
 
 ### Python standard-library json
 
@@ -4179,6 +5459,86 @@ Rust-backed Python JSON implementation with UTF-8 byte output and a defined seri
 **Priority rationale:** Retained Atlas evidence provides a reproducible starting point, with explicit numeric and duplicate-key disqualifiers.
 
 **Sources:** [RX136](https://github.com/ijl/orjson)
+
+### rkyv checked archives
+
+**repository · established · P1** · ID: rkyv
+
+Rust archived representations allow direct access while retaining explicit validation and format compatibility controls.
+
+**Stack layers:** Shared core & native boundaries; Local storage & search.
+
+**Current signal:** docs.rs identifies rkyv 0.8.18; GitHub latest-release metadata still points to 0.8.8 from 2024, so package metadata must be checked before pinning.
+
+**Test:** Compare the current persisted snapshot with rkyv checked access, measuring serialization, file I/O, validation, queries and migration of the same complete logical data.
+
+**Measure:** cold load-to-usable time; validation time; bytes read; peak RSS; migration correctness.
+
+**Constraints:** Keep bytecheck/access validation for untrusted or corruptible bytes; unsafe unchecked access is not an eligible optimization. Pin archive schema and format-control features, including alignment/endianness choices; migration is part of total cost. Direct access does not eliminate page faults, I/O or ownership lifetime constraints.
+
+**Priority rationale:** Repeatedly reopened snapshots can expose materialization cost; checked archived access is a useful early comparison when schema migration is acceptable.
+
+**Sources:** [IO31006](https://docs.rs/rkyv/latest/rkyv/) · [IO31007](https://rkyv.org/validation.html)
+
+### simdjson
+
+**repository · established · P1** · ID: simdjson
+
+C++ SIMD JSON parsing with on-demand and DOM APIs for complete validated data pipelines.
+
+**Stack layers:** Shared core & native boundaries; Files, hashing & archives.
+
+**Current signal:** Live API reports v5.1.0 released 2026-10-30; includes large-integer builder rejection and long-exponent fixes.
+
+**Test:** Compare pinned current parsing against simdjson on identical complete records, including all consumed fields and downstream validation; measure cold loading and end-to-end import as well as parser time.
+
+**Measure:** input-to-validated-output time; allocations; peak RSS; semantic failures; output parity.
+
+**Constraints:** Include duplicate keys, invalid UTF-8, depth, large integers, long exponents and malformed trailing data. Selective extraction is a separate workload; do not count omitted fields or validation as a speedup. CPU-dispatch and packaging compatibility must hold on the oldest supported device.
+
+**Priority rationale:** A current parser comparison is actionable when complete JSON import profiles show parsing cost; the fresh correctness fixes define useful parity cases.
+
+**Sources:** [IO31001](https://github.com/simdjson/simdjson) · [IO31002](https://api.github.com/repos/simdjson/simdjson/releases/latest)
+
+### sonic-rs
+
+**repository · emerging · P1** · ID: sonic-rs
+
+SIMD-oriented Rust JSON library with typed values, lazy field access and explicit serde_json compatibility differences.
+
+**Stack layers:** Shared core & native boundaries; Files, hashing & archives.
+
+**Current signal:** Versioned documentation reviewed at 0.5.10; no later crate release inferred.
+
+**Test:** Compare serde_json and sonic-rs over a fixed compatibility corpus and a full import, with identical field projection, numerical contract and build portability.
+
+**Measure:** validated import latency; p95 parse latency; allocations; peak RSS; duplicate-key outcomes.
+
+**Constraints:** Value duplicate-key behavior differs from serde_json. Native CPU tuning is unsuitable for an unrestricted binary distribution without a declared supported CPU baseline. Lazy partial reads must not replace required full-record validation.
+
+**Priority rationale:** A Rust-native JSON challenger can be isolated without a file-format migration, but duplicate-key semantics and CPU support must pass first.
+
+**Sources:** [IO31004](https://docs.rs/sonic-rs/0.5.10/sonic_rs/) · [IO31005](https://github.com/cloudwego/sonic-rs/blob/main/docs/serdejson_compatibility.md)
+
+### FlatBuffers
+
+**repository · established · P2** · ID: flatbuffers
+
+Schema-based binary buffers with direct field access, explicit verification and version-evolution rules.
+
+**Stack layers:** Shared core & native boundaries; Assets, textures & delivery.
+
+**Current signal:** See the dated primary sources.
+
+**Test:** Compare verified FlatBuffers with the current format across all required language readers and old/new schema pairs, keeping complete data, validation and ordering requirements fixed.
+
+**Measure:** encode plus verify plus read latency; bytes transferred; peak memory; cross-version parity; rejected malformed inputs.
+
+**Constraints:** Run the generated verifier before untrusted-buffer access and set depth/table-count budgets. Schema additions, deprecation and field IDs must follow the evolution rules. A zero-copy accessor comparison alone omits construction and verification costs.
+
+**Priority rationale:** Portable schema evolution can justify a representation change when several language runtimes share persisted data; verifier and migration costs make this a second-stage test.
+
+**Sources:** [IO31008](https://flatbuffers.dev/languages/cpp/) · [IO31009](https://flatbuffers.dev/evolution/)
 
 ## Evaluated configurations (8)
 
