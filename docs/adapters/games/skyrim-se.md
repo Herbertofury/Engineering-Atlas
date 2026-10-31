@@ -87,3 +87,109 @@ No raw-page parser selectors or embedded JSON paths are claimed. Anonymous `urll
 A useful next fixture for each service should capture an authorized public post and its canonical profile, enumerate all body blocks and gallery pages, distinguish thumbnail/original media, resolve signed/external file links without publishing sensitive query data, preserve version edits and deletion states, and explicitly record gated fields. A playable video requires a real playback/decode result; a GIF requires verified animation; an archive requires file/version/integrity evidence. Authentication or a successful metadata query alone closes none of those gates.
 
 The [sanitized game manifest](../../../experiments/site-adapter-discovery/game-research-2026-10-28.json) contains 35 scopes, 11 cases, 72 source records, observed media URLs, per-field states and failed retrievals. Source IDs **SKY1–SKY72** are included in the [source register](../../../data/sources.json). Failed/empty/blocked records explicitly keep `primaryContentObserved: false`; their register presence is not evidence that source content was read. There are **zero new implemented adapters and zero authenticated or full-content acceptances** from this pass.
+
+## Round two: concrete methods
+
+[Cross-site method index](../methods-round2.md) · [Sanitized method evidence](../../../experiments/site-adapter-discovery/method-research-round2-2026-10-28.json). Source IDs with historical S2K/M2C/S2S prefixes are published as SKYB/MCB/SIMB; original IDs remain in the manifest.
+
+Checked **2026-10-28 UTC**; requested user-facing label **October 28, 2026, Denver**. Baseline was the current 248-entry catalog and existing Skyrim research note. This section preserves the scope of the original public research pass. It adds no implemented adapter or authenticated/full-content acceptance.
+
+The useful result is a concrete recovery method for Dwemer’s previously missing body/files, a newly discovered independent mod host, and sample-proven identity/media selectors across the Invision communities. The structured handoff contains **14 new candidate scopes: 11 independent registrable domains and three named creator scopes on already cataloged platforms**. It records **53 inspected scopes**, including 47 successful HTML responses and five image decodes, plus preserved failed discovery requests. Scope counts are request/evidence counts, not accepted-service counts.
+
+### Concrete gap resolutions
+
+#### Dwemer: the public detail shell is not the description
+
+The actual `/mods/5123` response contains `#modTabsContent [data-url]`. Those attributes declare separate same-origin GET fragments for `desc`, `files`, `images`, `comments` and `changelog`. The description, files, images and changelog fragments all returned HTTP200. This resolves the missing-body gap without a browser session or an invented API endpoint. [SKYB001–SKYB005]
+
+The full description boundary is `.mod-detailed-desc.bbcode-output`, which yielded 730 normalized characters. The main page’s `CreativeWork.author.name` is **Acro748**; the fragment’s `a.mod-author-link` identifies **Motherhydra**, the local uploader. These must remain distinct identities. The profile supplies `.profile-avatar-user[src]`. A content collector that substitutes uploader identity for the schema author would misattribute this sample. [SKYB001] [SKYB002] [SKYB006]
+
+The files fragment exposes two named ZIPs: `MXPBD Physics framework 0.4.0.zip` and `MXPBD Cloth cluster example.zip`. The additional file has `data-file-id="3187"`; the main file does not expose an equivalent ID in the inspected element. Both `.file-actions` blocks explicitly require login. Their names and gating are collectible metadata; there is no accepted transfer URL. The images fragment has one `img.extra-image[data-full][data-index]`, with a different original WebP URL from the thumbnail. The empty changelog is explicit content, rather than a parser error. [SKYB003–SKYB005]
+
+The scratch parser reads the DOM-declared fragments and preserves mixed text/link/media order. It does not call neighboring edit, delete, report, endorsement, upload or AI routes. Social follower counts on a creator profile also need to be distinguished from the **Followers** NPC mod category, which otherwise creates a false follow-control match. [SKYB002] [SKYB006]
+
+#### ModPub: independent original host found through Dwemer
+
+Dwemer’s public files help links to ModPub’s first-party MO2 guide. From there, actual **Effects 11** mod, files and **doodlum** profile pages were inspected. This host was absent from the 248-entry catalog. [SKYB003] [SKYB017–SKYB020]
+
+`SoftwareApplication` JSON-LD supplies mod metadata and `author.name`, while `.gray-box.user-content` supplies the actual full description: 2,922 normalized characters, with four inline images. The first two are social badges and the next two are example screenshots. A single undifferentiated “screenshots” array would lose those roles and their position in the body. [SKYB017]
+
+The public Files tab exposes **Effect 11 v1.0.0, 11.1 KiB**. The manual button is `button.js-btndl[name="file_id"][value="1164"]`, with `disabled` present. The MO2 button references the same file identity. This is a concrete file ID and access state, not a discovered download URL. The profile provides `ProfilePage.mainEntity` and `img.avatar-100[src]`; its avatar decoded as a 128×128 JPEG. No follow operation or authenticated transfer was attempted. [SKYB018] [SKYB019] [SKYB053]
+
+### Invision communities: methods now based on actual HTML
+
+The anonymous raw responses resolve gaps left by text-only page extraction. The observations below are per sample, rather than a claim that every Invision installation is identical.
+
+| Field | Observed structure | Consequence |
+|---|---|---|
+| File body | `div.ipsType_richText.ipsContained.ipsType_break.ipsSpacer_bottom` | Separate the main description from reviews, comments and metadata. [SKYB007] [SKYB009] [SKYB011] |
+| Account avatar | Author-bound `a.ipsUserPhoto img[src]` | Recover the actual account image; do not choose theme backgrounds or rank art. [SKYB007] [SKYB009] [SKYB013] [SKYB015] |
+| File gallery | `ul.cDownloadsCarousel li.ipsCarousel_item img` | TESAll uses a spacer `src` and real `data-src`; AFK uses direct `src`. Do not synthesize originals by removing `thumb`. [SKYB007] [SKYB011] |
+| Original author/translator | Labeled `li.ipsDataItem` fields on TESAll | FabioJoose remains original author; Arkanion Eternal remains local translator/uploader. [SKYB007] |
+| Topic/post body | `article.ipsComment[id]` and inner `[data-role="commentContent"]` | Bind author and body to a specific post ID; avoid merging replies and responsive duplicate author panes. [SKYB013] [SKYB015] |
+| Inline attachment | `img[data-src][data-fileid]` and some `a.ipsAttachLink.ipsAttachLink_image[href]` ancestors | Preserve source attachment ID, image URL and position in the post. [SKYB013] |
+| Pagination | `ul.ipsPagination` | Traverse explicit next/page links and deduplicate repeated controls; page traversal remains separate from gallery and profile cursors. [SKYB015] |
+| Native follow | `[data-role="followButton"]` | Anonymous targets point to login. File/topic subscriptions are distinct from member followers or local bookmarks. [SKYB007] [SKYB009] [SKYB011] [SKYB013] [SKYB015] |
+
+TESAll, TES Alliance and Step account avatars decoded successfully, resolving their earlier “avatar unresolved” states. Their public image sources are in the structured file. AFK’s file page still exposes an Arthmoor image and byline, while the exact profile request returns403. That failure is preserved and was not retried through another route. [SKYB008–SKYB012] [SKYB050–SKYB052]
+
+Schaken’s initial technical post contains seven ordered inline images with lazy `data-src` attributes and attachment IDs. Separately, its rank decoration is a GIF that decoded as **120 frames at 556×556**. That GIF sits outside the post body and is deliberately excluded from body-media results. This is a measured example of why “all images anywhere on the page” is an incorrect extraction boundary. It is not evidence of a GIF mod showcase. [SKYB013] [SKYB049]
+
+### Additional independent sources worth integrating
+
+These are distinct communities, creator hosts or named creator scopes with actual public content inspection. They are discovery candidates, not rankings of mod quality or blanket download recommendations.
+
+| Candidate | Actual inspection and useful distinction | Source IDs |
+|---|---|---|
+| **ModPub** — `mod.pub` | Effects 11 release, file metadata and doodlum profile. Original mod-host scope. | SKYB017–SKYB020 |
+| **Migal3D** — `migal3d.com` | Iona update plus Housecarl Beauties mod page; local ZIP links split common body assets and individual NPC versions. Creator homepage links Nexus identity and other creator sites. | SKYB021–SKYB023 |
+| **Interesting NPCs / 3DNPC** — `3dnpc.com` | Actual news post and Kris Takahashi author archive. Sidebar contains cross-game packages, which must not become attachments to every Skyrim post. | SKYB024–SKYB025 |
+| **Rektas Wix** — `rektas.wixsite.com` | Actual First Priest post with four ordered body images and 3BA/BHUNP/CBBE/4K file links. Exact Wix origin linked by Migal3D. | SKYB023, SKYB026–SKYB027 |
+| **tktk / skyrimshot** — `tktk1.net` | Japanese TK Dodge release/tutorial and explicitly linked creator profile; historical files and update text remain dated claims. | SKYB028–SKYB029 |
+| **TRE-MAGA** — `tre-maga.com` | Japanese armor review and Mita author archive. Editorial writer is not the original mod author. | SKYB030–SKYB031 |
+| **full_inu Workshop** — `inu-workshop.blogspot.com` | Actual2026 Paladin release and canonical Blogger profile, including matching profile-image source. | SKYB032–SKYB033 |
+| **Smooth** — `smooths.tistory.com` | Actual historical SE/AE Disable Turn Animation release and current homepage. Mixed newer content needs per-post provenance review. | SKYB034–SKYB035 |
+| **Kaidan AIO** — `kaidanmod.com` | Downloads-navigation and Our Mod pages. Project/team identity rather than a personal profile; individual archive validation pending. | SKYB036–SKYB037 |
+| **Joseph Russell / Lucien** — `josephrussellauthor.com` | Actual Lucien page and creator blog. Similar-name `.co.uk` site is a different design portfolio. | SKYB038–SKYB039, SKYB066 |
+| **Skywind** — `tesrskywind.com` | Current project and credits pages reached through TESRenewal. `/author/kevmelba/` serves home-like content and is not an accepted profile. | SKYB040–SKYB042 |
+| **Skyblivion** — `skyblivion.com` | Project About and Team pages. Keep development/community discovery separate from binary-release claims. | SKYB043–SKYB044 |
+| **TESRenewal** — `tesrenewal.com` | Current first-party federation links distinct projects and original game targets. | SKYB045 |
+| **ModBooru** — `modbooru.com` | Actual catalog mod page with primary image, four thumbnail/original gallery pairs and outbound releases. `admin` is catalog updater; profile request displays Login. | SKYB046–SKYB047 |
+
+The three named scopes on existing cataloged platforms are **Rektas/Wix**, **full_inu/Blogger** and **Smooth/Tistory**. They should not be counted as three newly discovered hosting-platform technologies.
+
+### WordPress, Wix, Blogger and older custom pages
+
+Migal’s `article#post-4322 .entry-content` contains the update, while social controls and previous/next navigation are outside. Its linked mod page exposes native `/downloads/*.zip` links with file-specific names. 3DNPC’s author archive is public and paginated; no standalone author-avatar field was verified. A commenter’s Gravatar must not fill that gap. No WordPress REST endpoint or undocumented JSON field is inferred from CMS appearance. [SKYB021–SKYB025]
+
+Rektas’s current Wix response exposes stable semantic hooks: `article[data-hook="post"]`, `[data-hook="post-description"]`, `[data-hook="post-title"]` and `[data-hook="post-hero-image"]`. Those are preferable to hashed styling classes. `BlogPosting` JSON-LD identifies the author name and publish/edit times, but no member-profile URL or avatar was accepted. The four MediaFire links are file variants, not four mirrors of one interchangeable package. Wix image transformations are retained exactly; original-resolution recovery remains unproven. [SKYB026–SKYB027]
+
+The Japanese TK Dodge article contains a `div.lyMe` wrapper with `id="WYL_RwdKsxngg5s"` and an explicit noscript YouTube link. Its thumbnail is a deferred-video placeholder, not a decoded video. TRE-MAGA’s sample has three body screenshots followed by a site icon; image role needs context. Both sites’ article authors and actual upstream mod authors are separate concepts. [SKYB028–SKYB031]
+
+full_inu’s full body is `.post-body.entry-content`; its `a.profile-link.g-profile` points to a real Blogger profile. Homepage excerpts are insufficient substitutes for this post. The shared `entry-content` class also appears on Blogger and Tistory, so its presence alone is not evidence of WordPress. Signed image query material on the Tistory sample was omitted from the public metadata. [SKYB032–SKYB035]
+
+Lucien’s custom HTML repeats `section[id="team"]` four times. A first-match ID lookup would discard sections of the real page. Team pages, creator blogs, editorial archives and native member profiles need different identity models; a page editor link does not automatically identify the mod’s author. [SKYB038–SKYB042]
+
+### Paid-platform follow-up for separately authorized access
+
+The following exact destinations were observed on current primary creator/project pages. Their presence establishes link provenance only; it does not establish public post completeness, subscription entitlement or file access.
+
+| Origin | Exact destination |
+|---|---|
+| Dwemer MXPBD description | `https://www.patreon.com/acro748/posts/mxpbd-physics-0-156455107` |
+| ModPub Effects 11 body | `https://patreon.com/CommunityShaders` |
+| full_inu Paladin post | `https://patreon.com/full_inu` and `https://boosty.to/full_inu` |
+| Migal3D homepage | `https://www.patreon.com/migal130` |
+| tktk creator profile | `https://www.patreon.com/tktk` |
+| Lucien page | `https://www.patreon.com/josephrussellauthor` |
+| immyneedscake Featured Sites | `https://www.patreon.com/CloudBird` |
+
+Sources: SKYB002, SKYB017, SKYB023, SKYB029, SKYB032, SKYB038, SKYB048. No SubscribeStar destination was confirmed in these inspected primary pages. No purchases, follows, account links, messages or authentication were performed.
+
+### Failed and misleading discoveries remain visible
+
+The structured failure list retains actual403/404/503 responses without claiming the service is universally down or login-only. `rektasmarket.com` returned404 while the creator-linked Wix site worked. `dragonporn.ldblog.jp` returned a password screen; `mitakusaner.blog.fc2.com` returned Site Unavailable. A guessed Skyrim Lazz WordPress route returned generic platform content. No password or alternate access was attempted. [SKYB054–SKYB065] [SKYB068–SKYB070]
+
+The creator-linked older `sunkeumjeong.com` URL currently serves generic gaming editorial content. That does not establish continuity with a mod creator, even though old primary pages still link it. Similar-name `josephrussell.co.uk` likewise cannot be used to identify the Lucien creator. Skywind’s apparent author URL and ModBooru’s profile URL both returnHTTP200 but fail the intended profile scope. HTTP status alone is insufficient acceptance evidence. [SKYB041] [SKYB047] [SKYB066–SKYB067]
+
+LoversLab and F95 were excluded from all requests in this round, respecting the earlier explicit policy block. No alternate-surface workaround was attempted.

@@ -124,3 +124,76 @@ Fallout 476/OpenWorld is an FO4 mod title in SKK’s catalogue; it does not prov
 ## Source register integration
 
 All proposed sources below carry checked_at 2026-10-28, review_after_days 14, observed_version, topic, note, evidence and separate retrievalStatus in the JSON. Retrieved first-party pages/media use primary_documented only for their narrow visible facts. Failed/shell/search-lead rows carry explicit non-success evidence values and should remain research observations if the global source checker only accepts primary_documented. Do not weaken that checker or promote failures to satisfy it.
+
+## Round two: concrete methods
+
+[Cross-site method index](../methods-round2.md) · [Sanitized method evidence](../../../experiments/site-adapter-discovery/method-research-round2-2026-10-28.json). Source IDs with historical S2K/M2C/S2S prefixes are published as SKYB/MCB/SIMB; original IDs remain in the manifest.
+
+Checked **2026-10-28 UTC**, research date **October 28 in America/Denver**. Baseline: 248 catalogue entries. This pass made 53 anonymous public requests: 48 successful responses and 5 failures. It adds ten candidate scopes, eight with retrieved original pages and two retained failures. 13 concrete scopes and 11 method recipes have actual local field-extraction receipts. No new authenticated acceptance, native follows, purchases or mod archives.
+
+### Findings that change implementation
+
+**Several previously missing fields are now recoverable through actual source representations.** The Sim Settlements exact thread returns real posts through anonymous HTTP even though the prior search retriever returned an index. CDante’s own linked JavaScript reveals a public JSON file containing all 157 advertised trigger records. Boosty public responses expose creator owner identity, ordered typed blocks and explicit access/pagination state. boopi publishes documentation and a working four-pack official catalogue. Each improvement is limited to its observed representation; earlier failures remain recorded.
+
+| New scope | Discovery and actual boundary | Evidence |
+|---|---|---|
+| Archidexter AD.Caravos | Original AI-NPC launcher description, structured creator identity and exact Boosty delivery link. | [FOY002](https://archidexter.ru/en/caravos/) [FOY015](https://archidexter.ru/en/) [FOY048](https://boosty.to/archidexter/posts/8d49c533-9e7e-479d-9508-a180ef80360d) |
+| Ardent Arms & Armor | Original FO4 WIP weapon/armor pages and creator self-description; gallery boundary explicit. | [FOY003](https://kmbridle.wixsite.com/ardent) [FOY017](https://kmbridle.wixsite.com/ardent/m4custom) |
+| Rogue Lantern Studios | Original Shadows of the Old World project and studio sections; upcoming status preserved. | [FOY004](https://roguelanternstudios.com/) |
+| Plagued Mods | Original creator links to publicly readable mod source and release-development pages. | [FOY005](https://plagued-mods.com/) [FOY018](https://github.com/Plagued-Mods/PlagueRadio) [FOY019](https://github.com/Plagued-Mods) |
+| boopi.site | Original mod/tool platform with documented read API and live four-pack catalogue; browse-empty limit explicit. | [FOY006](https://boopi.site/) [FOY020](https://boopi.site/developers/api) [FOY037](https://boopi.site/api/v1/official/index.json) |
+| Ruinedworld creator portfolio | Original FO4/SS2 contributor portfolio with direct project links. | [FOY014](https://wiki.simsettlements2.com/Dev-Spotlights/ruinedworld) [FOY023](https://ruinedworld.com/) [FOY047](https://ruinedworld.com/about) |
+| GingasVR original mod hub | FO4VR original mods, curation and exact Patreon/social identity links. | [FOY007](https://resourcecatalogue.co.uk/catalogue/search-fallout-4?f=4) [FOY039](https://gingasmods.com/) [FOY052](https://gingasmods.com/videos/) |
+| Cryss Gaming Repository | Original settlement-mod posts, on-site author archive and JSON Feed with body HTML. | [FOY042](https://therealcryss.github.io/cryss-greenhouses.html) [FOY050](https://therealcryss.github.io/authors/cryss/) [FOY051](https://therealcryss.github.io/feed.json) |
+| FalloutUG | Potential original Fallout Underground project; current retrieval503, no fields accepted. | [FOY001](https://falloutug.net/f4/mods/Fallout-Underground) |
+| Fallout4 Experiences | FO4 experience/resource hub linked by MRC; both direct requests503. | [FOY040](https://www.fallout4experiences.com/) [FOY041](https://www.fallout4experiences.com/resources-hub) |
+
+The regional/creator expansion follows original links rather than counting every search hit as a new service. MRC’s FO4 catalogue and all eight advertised continuation offsets were retrieved; directory references led to GingasVR, Cryss and Fallout4 Experiences. The Sim Settlements developer spotlight led to Ruinedworld. Search leads were followed to original Archidexter, Ardent, Rogue Lantern, Plagued Mods and boopi pages. Existing Boosty, Patreon, GitHub and SubscribeStar platforms are scoped identity/content evidence rather than newly discovered service counts. [FOY007](https://resourcecatalogue.co.uk/catalogue/search-fallout-4?f=4) [FOY014](https://wiki.simsettlements2.com/Dev-Spotlights/ruinedworld)
+
+### Working method details
+
+#### Boosty: explicit access gate and ordered blocks
+
+Exact public post/profile pairs were retrieved for Omega4D2’s helmet, Fallout Ruins’ audio overhaul and Archidexter’s AD.Caravos. Parse `script#initial-state` as JSON, then select the requested UUID from `posts.postsList.data.posts`. In these direct post responses, `posts.currentPost.data` is null; assuming it holds the requested post would lose valid content. Creator identity/avatar comes from `blog.blog.data.owner`; post user attribution is a separate field. [FOY025](https://boosty.to/omega4d2/posts/91b3857b-1539-47ef-a544-07f7071c85b2) [FOY026](https://boosty.to/falloutruins/posts/9c59b5cf-5c25-4e1d-bf81-6615e9a98cfb) [FOY048](https://boosty.to/archidexter/posts/8d49c533-9e7e-479d-9508-a180ef80360d)
+
+Only traverse `post.data` when `hasAccess` is true. Maintain array positions across text, links, headers, images, files, audio and video descriptors. The public audio-overhaul response contains 317 blocks. Its creator’s pinned download-links entry instead has `hasAccess=false`, zero data blocks and four teaser blocks. It remains a gated title/teaser observation; no hidden body was requested. Creator-list pagination reported `isLast=true` with null offset in the inspected small lists; this is not a promise about filtered, deleted or historical posts. [FOY010](https://boosty.to/falloutruins)
+
+Raw serialized states, `signedQuery`, current-user sections and signed media query strings are excluded from the deliverable. Media locators retain a query-free URL plus a hash of the original locator; they are not playable or downloadable acceptance. No undocumented API requests were inferred from the bundle.
+
+#### Sim Settlements: actual per-post DOM
+
+The correct thread page contains five `article.message--post[data-author]` records with IDs 228557, 228561, 228562, 228563 and 228570. Extract each body from its nested `article.message-body`; extract member ID and profile URL from the per-post username link’s `data-user-id` and `href`. Read `time@datetime` within the correct date/edit container. Quotes belong to the body, while signatures, reaction controls and author-side decorations do not. The linked kinggath member profile returned 403 and remains partial. [FOY013](https://simsettlements.com/site/index.php?threads/patch-3-8-1a-hotfix.34019/post-228570) [FOY024](https://simsettlements.com/site/index.php?members/kinggath.1/)
+
+#### Cryss: body, author, original image targets and JSON Feed
+
+The Greenhouses article provides `div.post__entry`, Article JSON-LD with a Person author, `img.bio__avatar` and six linked gallery originals with separate thumbnail URLs. Its exact author page has five article cards and a page 2 continuation. The document head advertises a JSON Feed containing eight items with `content_html`, author and timestamps. This is a concrete feed route, not a guessed CMS endpoint. [FOY042](https://therealcryss.github.io/cryss-greenhouses.html) [FOY050](https://therealcryss.github.io/authors/cryss/) [FOY051](https://therealcryss.github.io/feed.json)
+
+The completeness comparison deliberately failed: normalized DOM body has 607 characters and feed content 618, although each contains six images. Both representations and the failed parity result are retained. Feed item count is not a complete-history guarantee.
+
+#### boopi: documented and exercised public JSON
+
+The creator platform’s public API document describes general browse, detail, versions, updates and separate device authorization/tracking operations. The linked official index returned schema 1, four packs and zero scene packs. Pack objects include versions, localized description, category/tags, image roles, relative file, declared size and SHA-256. The observed first pack is plugins version 1.6.0, 14,927,148 bytes; integrity values remain publisher metadata until binary bytes are fetched and hashed. [FOY020](https://boopi.site/developers/api) [FOY037](https://boopi.site/api/v1/official/index.json)
+
+The documented anonymous FO4 general browse request returned `items=[]`, total 0, page 1, per_page 24. Do not extrapolate working general mod records from the successful official catalogue. The web detail exposes separate `#description`, `#changelog` and `#files`; the visible file action sends readers to the application release. A speculative `/u/boopi_mod` profile route returned 404 and is explicitly rejected. No device authorization, account endpoint or tracking mutation was requested. [FOY049](https://boopi.site/api/v1/mods?game=fallout4&per_page=24&page=1&adult=0&official=0) [FOY021](https://boopi.site/official/plugins)
+
+#### CDante: repairing the missing dynamic-table observation
+
+The public page links `assets/js/codex.js?v=13`; that file explicitly fetches `assets/data/codex-data.json`. The JSON contains 157 article records, matching `articleCount`, nine categories and eight trigger types. Each record exposes category, article, triggers and footnotes. This repairs the previous missing-table limitation for the JSON representation; it does not certify in-game lore content or download the mod. [FOY011](https://cdantemodding.com/codex) [FOY027](https://cdantemodding.com/assets/js/codex.js?v=13) [FOY038](https://cdantemodding.com/assets/data/codex-data.json)
+
+#### Other original sources and media boundaries
+
+Archidexter’s actual JSON-LD graph separates SoftwareApplication from Organization; author/publisher point to the organization ID and `sameAs` supplies the creator’s Boosty and GitHub. Screenshot and logo are distinct from person avatar. Rogue Lantern separates its project and studio into semantic section IDs in one HTML page; the FO4 project section contains two image nodes, with no released archive inferred. [FOY002](https://archidexter.ru/en/caravos/) [FOY004](https://roguelanternstudios.com/)
+
+Ardent’s exact M4 page exposes Wix rich-text containers, but its gallery is a separate iframe. The outer DOM does not prove gallery item order or completeness. Plagued Mods links a readable GitHub repository README and owner profile. GingasVR’s original My Mods page links specific FO4VR mods and its creator profile; the Socials page publishes Patreon. Preserve per-project game/VR compatibility and external author roles. [FOY017](https://kmbridle.wixsite.com/ardent/m4custom) [FOY018](https://github.com/Plagued-Mods/PlagueRadio) [FOY019](https://github.com/Plagued-Mods) [FOY052](https://gingasmods.com/videos/) [FOY053](https://gingasmods.com/socials/)
+
+### Exact creator support fixtures
+
+Nexus mod 36428 publishes SubscribeStar `nul_del` and Patreon `Nul_Del` destinations. Its uploader is member 13602225, arobot96; support links alone do not justify merging these accounts. The SubscribeStar profile exposes a distinct userpic/cover and advertises one post, but explicitly says the profile is under review and subscription will be available after approval. It is an identity/restriction fixture, not evidence of readable subscriber posts. [FOY028](https://www.nexusmods.com/fallout4/mods/36428) [FOY046](https://www.nexusmods.com/fallout4/users/13602225) [FOY044](https://www.subscribestar.com/nul_del) [FOY045](https://www.patreon.com/Nul_Del)
+
+Archidexter’s creator site links its Boosty account, which supplies an exact AD.Caravos post. Omega4D2 and Fallout Ruins public posts supply stronger immediate extraction fixtures than a generic login landing page. Free/public bodies, gated download lists, membership and source follow operations remain distinct.
+
+### Failures and validation
+
+FalloutUG returned 503. Fallout4 Experiences homepage and resource hub both returned 503. Sim member profile returned 403. The guessed boopi profile route returned 404. No block was bypassed; no alternate access to LoversLab/F95 occurred. Round 1 avatar, shell, login, Haven, gallery, video and stale-domain failures remain referenced in JSON; the later successful Sim thread transport does not erase the earlier wrong-page result.
+
+Response SHA-256 values, byte counts, normalized field hashes, selector matches, typed-block counts and JSON schema keys are in the accompanying JSON. These are field-extraction receipts, not performance benchmarks or production acceptance. Full responses remain transient scratch material; published observations exclude bodies, credentials, private details and signed access strings.

@@ -27,3 +27,11 @@ Repository-content API credentials do not necessarily authenticate the wiki's se
 ## Maintenance scope
 
 Review active API/access-policy/download changes frequently and rotate the larger discovery catalog. A new official route is a candidate until its required fields and account states pass fixtures. Keep a dated decision note with changed sources, stale/unreachable entries, exact test scope, publication status and any remaining user action. Continue to enforce the private target comparison before moving a method into GameSync Next.
+
+## Verified publication: October 28, 2026
+
+The recovered cloud browser published all 40 mapped pages and additive sidebar navigation. A subsequent fetch of the wiki repository verified every projected page byte-for-byte at wiki commit `b403c4a7b69f56858e61d502882292a33b3ef226`. The [exact publication receipt](../../experiments/site-adapter-discovery/wiki-publication-verified-2026-10-28.json) supersedes the earlier pending queue for that batch. Unrelated wiki pages and the existing sidebar prefix were preserved. This verifies that batch only; any later source changes must pass the same projection and read-back process.
+
+## Second-round methods publication
+
+The second-round browser publication added three pages and updated fifteen existing managed pages plus the sidebar. All **43 managed pages** matched the prepared canonical projection byte-for-byte at wiki commit `647c2e88fa6f50fe41df663c76ede76f7565f624`. Concurrent edits to `Experiment-Evidence.md` were retained. The [method-publication receipt](../../experiments/site-adapter-discovery/wiki-methods-publication-verified-2026-10-28.json) records the exact read-back and subsequent maintenance update. This verifies the wiki publication; synchronization of the canonical repository and executable-lab code is still pending after a rejected repository write.

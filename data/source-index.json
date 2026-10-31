@@ -2,6 +2,7 @@
   "schema_version": 1,
   "files": [
     "data/sources.json",
+    "data/sources.d/adapter-methods-round2-2026-10-28.json",
     "data/sources.d/compact-layout.json",
     "data/sources.d/constraint-index-papers-20261029.json",
     "data/sources.d/discord-completeness-20261030.json",
@@ -9,8 +10,10 @@
     "data/sources.d/hls-fragment-20261029.json",
     "data/sources.d/hls-release-174.json",
     "data/sources.d/http-fixture-order-20261029.json",
+    "data/sources.d/itch-io-2026-10-31.json",
     "data/sources.d/job-identity-20261030.json",
     "data/sources.d/node-resource-usage.json",
+    "data/sources.d/paid-platforms-2026-10-31.json",
     "data/sources.d/process-memory-accounting.json",
     "data/sources.d/provenance-review-20261030.json",
     "data/sources.d/query-reuse-and-extraction.json",

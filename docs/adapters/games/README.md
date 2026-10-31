@@ -2,7 +2,7 @@
 
 [Coverage catalog](../coverage-catalog.md) · [Adapter laboratory](../README.md) · Checked **2026-10-28 UTC**.
 
-The six guides connect original distribution sites, creator and team hosts, regional communities, source releases, indexes and authoring references. They retain 179 game scope records with 420 source records. The catalog adds 86 unique services after canonicalizing platforms across games; these figures measure discovery coverage, not working adapters.
+The initial six-game expansion connected original distribution sites, creator and team hosts, regional communities, source releases, indexes and authoring references. They retain 179 game scope records with 420 source records. That first expansion added 86 unique services after canonicalizing platforms across games; these figures measure discovery coverage, not working adapters.
 
 | Game | Scopes in bundle | Source records | Concrete inspection evidence | Status |
 |---|---:|---:|---|---|
@@ -30,3 +30,19 @@ Skyrim preserves unavailable historical community routes and a rejected unrelate
 ## Next acceptance work
 
 Use the [shared contract](../author-post-media-contract.md), [secure login workflow](../authenticated-research.md) and [adoption gates](../validation-and-adoption.md) to capture permitted real fixtures. Verify stable identities and avatars; compare full body and ordered media; establish pagination termination, edits and failures; then test authorized files, playback and follow/import as separate operations. Choose candidates by the required game, original authorship, maintained releases, access permission and fixture quality, rather than catalog size.
+
+## Round-two method research
+
+The second pass adds concrete body/identity/media/file methods, executed sample receipts, preserved parity failures and additional independent discovery. [Cross-site methods](../methods-round2.md) maps every catalog entry to its evidence routes and unknown operations. These results append to the first-pass scope above.
+
+| Game | Candidate scopes | Inspected scopes | Method recipes | Sources | Retained failure records |
+|---|---:|---:|---:|---:|---:|
+| [Skyrim SE / AE](skyrim-se.md#round-two-concrete-methods) | 14 | 53 | 11 | 70 | 20 |
+| [Minecraft Java / Bedrock](minecraft.md#round-two-concrete-methods) | 22 | 9 | 4 | 63 | 8 |
+| [The Sims 4](sims-4.md#round-two-concrete-methods) | 20 | 17 | 18 | 75 | 27 |
+| [Fallout 4](fallout-4.md#round-two-concrete-methods) | 10 | 13 | 11 | 53 | 7 |
+| [Cyberpunk 2077](cyberpunk-2077.md#round-two-concrete-methods) | 12 | 28 | 9 | 32 | 10 |
+| [Hytale](hytale.md#round-two-concrete-methods) | 14 | 8 | 8 | 39 | 11 |
+| [Additional game ecosystems](../methods-round2.md) | 12 | 33 | 10 | 35 | 8 |
+
+The 104 candidate scopes add 98 canonical service entries after platform/domain normalization. The 71 research recipes include sample-proven selectors/schema, executed normalizers, semantic extraction plans and documented alternatives; their individual states remain explicit. Every final catalog entry (346) has operation evidence and unknown fields. The game bundles add no authenticated or full-support acceptance. Separate browser receipts can prove narrower operations.
