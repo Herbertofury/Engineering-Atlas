@@ -1,10 +1,10 @@
 # Offline site extraction lab
 
-**Repository synchronization pending:** this research pass is published through the wiki. Its updated canonical files and new executable-lab files have not yet been uploaded to `main`, so new repository-only code and receipt links may not yet resolve. The wiki retains the reviewed methods and their limits in full.
-
 This executable experiment replays **eight scoped parser families** against caller-supplied local bytes. It retains rich bodies in memory and emits sanitized evidence receipts. It performs no network requests, account actions, file transfers or media playback. A successful replay establishes the selected fixture relationships and boundaries; `fullSupportAccepted` remains false.
 
 The October 28, 2026 replay covers nine real public cases: Modrinth, Planet Minecraft, WordPress REST, two RSS feeds, Dwemer, ModPub, SubscribeStar and SimsFinds. Twenty-four separate regression tests use explicitly labeled synthetic fixtures. The real bodies and browser fragments remain external inputs, excluded from this repository.
+
+The separate October 31 [itch.io DOM experiment](itch.py) is documented in the [itch.io adapter guide](../../docs/adapters/itch-io.md). It retains [two actual public DOM replays](../site-adapter-discovery/itch-io-dom-replay-2026-10-31.json) and [nine defensive regression tests](../../tests/test_site_extraction_itch.py). These scoped observations cover selected project/devlog boundaries; complete history, authenticated access, file transfers and full support remain unaccepted. The eight-family and nine-case October 28 results above retain their original scope.
 
 ## Run
 
