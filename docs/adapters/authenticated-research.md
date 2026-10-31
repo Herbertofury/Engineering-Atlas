@@ -1,6 +1,6 @@
 # Login and authenticated adapter research
 
-[Adapter laboratory](README.md) · Workflow and session observations, October 27, 2026 (America/Denver) / October 28 UTC
+[Adapter laboratory](README.md) · Workflow and session observations, updated October 28, 2026
 
 The goal is to test the same post as a guest, a logged-in nonmember and an entitled member, while keeping sign-in secrets outside chat and public research. A successful sign-in is only one prerequisite: the site must expose the requested content to that account, and the chosen integration route must support the operation.
 
@@ -72,11 +72,15 @@ The [sanitized connection ledger](../../experiments/site-adapter-discovery/authe
 | Destination | Observed outcome | Remaining work |
 |---|---|---|
 | Mod Collective | Secure sign-in completed. The normal free-account download flow delivered one DBPF package; the rendered post yielded its author, avatar, body and three gallery images. | Reusable parser, complete creator history, GIF/video cases, follow import, expired sessions and any separately authorized member fixture. See the [exact receipt and selectors](mod-collective.md). |
-| GitHub wiki | Signed-in wiki showed Edit and New page controls. | Page publication still requires successful writes and read-back verification. This sign-in alone is not a publication receipt. |
+| GitHub wiki | Initially signed-in controls only; subsequently all 40 mapped pages were published and read back from the wiki Git repository. | Exact byte equality is recorded in the [publication receipt](../../experiments/site-adapter-discovery/wiki-publication-verified-2026-10-28.json). Later research requires its own projection/publication check. |
+| SubscribeStar.com | Secure sign-in succeeded; the same public post matched guest content, author and eight decoded images. | Entitled content, complete history, delivery, native follow import and writes remain untested. See the [observed extraction recipe](subscribestar.md). |
+| Patreon | Secure Google sign-in/device approval succeeded. One public post supplied its full visible body, creator/avatar, image and a 932,816-byte ZIP with passing CRC checks; a separate locked post remained gated. | Entitled member content, full history, animation/playback, native follows and expiry recovery remain untested. See [Patreon's exact cases](patreon.md). |
+| SimsFinds | Guest item and linked profile supplied body, account identity and decoded preview/profile avatar. The normal link delivered a ZIP containing one DBPF package through the browser file-link helper; the earlier event timeout remains recorded. | Signed-in behavior, complete history, media variants, link expiry and native follow operations remain untested. See [SimsFinds](simsfinds.md). |
+| Tumblr | Guest original/reblog pages supplied matching 788-character text and 11 decoded content images each, with distinct publisher/original-author roles and decoded avatars. | HTML/image-src parity differs by theme; API/NPF, signed-in cases, full history and native following remain untested. See [Tumblr](tumblr.md). |
 | LoversLab and F95zone | This research browser denied navigation under its site policy before login. | Retain `blocked_by_tool_policy`. A new password, alternate domain, browser or endpoint is not an authorized workaround. |
 | Other catalog login routes | Public sign-in routes or account controls were documented where visible. | Authentication and content extraction remain untested unless an independent receipt says otherwise. |
 
-The remote browser later stopped responding during a creator-profile read. Diagnostic and runtime-reset requests also timed out. Preserve the successful earlier observations and label subsequent operations `browser_backend_unavailable`; do not rewrite them as site failures or expired-account errors.
+The remote browser initially stopped responding during a creator-profile read. Diagnostic and runtime-reset requests also timed out. Those failed operations remain `browser_backend_unavailable`; they are not site failures or expired-account errors. A later session recovered browser access and completed the wiki publication and SubscribeStar comparison above. Recovery does not retroactively turn the earlier failed operations into successes.
 
 ## Connecting Opera or Google Chrome
 
