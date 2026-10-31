@@ -158,3 +158,142 @@ All HYX source IDs below are recorded in the [source register](../../../data/sou
 - [HYX065: Zephyr project](https://www.curseforge.com/hytale/mods/zephyr) — public_primary_page_observed; Public page observed 2026-10-28.
 - [HYX066: narwhals CurseForge author profile](https://www.curseforge.com/members/narwhals/projects) — public_primary_page_observed; Public page observed 2026-10-28.
 - [HYX067: Zephyr file metadata](https://www.curseforge.com/hytale/mods/zephyr/files/9348212) — public_primary_page_observed; Zephyr-0.4.3.jar.
+
+## Round two: concrete methods
+
+[Cross-site method index](../methods-round2.md) · [Sanitized method evidence](../../../experiments/site-adapter-discovery/method-research-round2-2026-10-28.json). Source IDs with historical S2K/M2C/S2S prefixes are published as SKYB/MCB/SIMB; original IDs remain in the manifest.
+
+Checked 2026-10-28 UTC; user-facing date October 28, 2026 in America/Denver. Baseline: 248-entry catalog and existing Hytale guide. This section records the scope of the original public research pass. It adds 14 candidate scopes and 8 concrete extraction recipes. No complete adapter, authenticated action, binary download, image decode, video playback or installation is accepted.
+
+### Strong new surfaces
+
+| Scope | Observed evidence | Boundary |
+|---|---|---|
+| Hytamods.org | concrete raw html method | Nine plugins; README/release/author pointers observed. Distinct from HytaleMods subreddit and HytaHub. |
+| Picanik | concrete project profile dom | Five real homepage records; actual FancyCore author route/body/version/changelog observed, no binaries. |
+| Hytale Garage | concrete project uploader dom | Four actual projects; CustomArrows release link and six item previews; uploader UUID profile inspected. |
+| HytaleGG | concrete embedded json no author join | Inertia JSON provides project/file/media fields; imported creator label has null user, so profile ownership not established. |
+| HytaleLibrary | concrete body generic avatar rejected | Actual plugin records; generic author illustration not accepted as account avatar. |
+| HytaleCN | concrete resource member history | Chinese community with real resource, member and history pages; protected download not attempted. |
+| 9hytale | concrete static metadata stale record | Useful package analysis claims but provenance, freshness and redistribution require inspection; no creator profile sample. |
+| Hymods | rendered project creator raw 500 | Rendered pages show WIT, owner profile and HymodsLib dependency; raw directory/project/profile return 500. Documentation article raw 200. No paid access. |
+| Hytale Depot | rendered small inventory raw 502 | Rendered homepage indicates one asset/creator; actual asset/profile not obtained. Raw pages 502; scanner marketing is not validated safety. |
+| BlockyNetworks | javascript shell | Raw response is 2,398-byte app shell; no plugin cards/author body. Do not guess API endpoints. |
+| HT-Mods | raw test records only | Four placeholder/test records observed, despite thousands marketing. No real game compatibility or artifact accepted. |
+| Hytale Prefabs | empty public catalog | Raw public page says no prefabs found; announcement of tool/mod is not a populated community release fixture. |
+| Player Games Hytale community | raw directory only | Hytale category with 96 advertised listings and pagination; generated prompts/descriptions are not proof that binaries function. Personal-path strings were excluded from receipts. |
+| HytaleBBS | http 403 | Public web retrieval returned 403. Search snippets are leads only; no actual resource/profile fields accepted. |
+
+### Repeatable methods
+
+The companion JSON includes SHA-256 and byte-count receipts for successful raw pages, tested XPath match counts, content hashes and narrow public field samples. Raw pages remain temporary scratch. No JavaScript was evaluated, no private endpoint was guessed, and no account/write/download control was submitted. Anonymous public GETs used a truthful research user agent.
+
+#### Modtale project and creator INITIAL_DATA
+
+Sources: [HYY001](https://modtale.net/mod/levelingcore), [HYY002](https://modtale.net/creator/AzureDoom).
+
+- **transport:** GET public canonical HTML with truthful EngineeringAtlasResearch/1.0 UA
+- **locator:** //script[not(@src)] whose text starts window.INITIAL_DATA =
+- **parse:** Use JSONDecoder.raw_decode after first assignment equals; never eval JavaScript; parse about separately as sanitized HTML/Markdown.
+- **identityJoin:** project.authorId == creator.id; validated equality in this sample.
+
+Limitations: Raw page includes fallback headings and actual streamed content; JSON avoids first-heading fallback error. Creator/project JSON is live evidence, not advertised API example. Follower arrays are counts only here; no native follow/import test. No public API response or release-file manifest fetched.
+
+#### HytaleGG Inertia project payload
+
+Sources: [HYY003](https://hytalegg.com/mods/bjaxuss-windows), [HYY004](https://hytalegg.com/).
+
+- **locator:** //*[@id="app"]/@data-page
+- **parse:** HTML parser decodes attribute entities; JSON parse; restrict to props.mod rather than relatedMods.
+- **primaryBodyPath:** $.props.mod.content
+- **orderedMedia:** $.props.mod.gallery preserves display order; $.props.mod.media provides id, collection_name, order_column, original_url and conversions.
+- **pagination:** $.props.comments.{current_page,last_page,next_page_url,total}; applies to comments, not author history.
+
+Limitations: user_id and user are null; custom_author_name Bjaxus is a label, not a verified profile join. version=1 is source record value; original filename contains 0.2.2, compatibility >=0.5.1 differs from 0.5.2+ body claim. Preserve conflicts. Internal storage path and moderation fields deliberately omitted; do not construct undocumented download URLs.
+
+#### Picanik project and creator DOM
+
+Sources: [HYY005](https://www.picanik.gg/mods/62), [HYY006](https://www.picanik.gg/users/oliver), [HYY007](https://www.picanik.gg/).
+
+- **title:** //main//h1
+- **author:** //main//h1//a[contains(@href,"/users/")]
+- **body:** //*[class token wmde-markdown]
+- **versionChoices:** //*[@id="modVersionSelect"]/option
+- **changelog:** //h2[starts-with(normalize-space(.),"Changelog")]/following-sibling::pre[1]
+- **identity:** Project numeric route 62; creator route oliver. Do not use icon-path 60 as project ID.
+
+Limitations: Creator page has one project icon image; no author avatar established. Favorite forms target /signin; do not submit or treat favorite as author-follow. Version options are mod versions; no independent file/compatibility/dependency manifest verified. Use DOM, not eval of Next/React script payloads.
+
+#### Hytamods README, release IDs and GitHub owner
+
+Sources: [HYY008](https://hytamods.org/plugin/detail/5), [HYY009](https://hytamods.org/), [HYY010](https://github.com/nitrado), [HYY011](https://github.com/nitrado/hytale-plugin-webserver/releases).
+
+- **body:** First div with class tokens prose and max-w-none; later prose-sm blocks are release notes.
+- **releases:** a[href starts /plugin/download?] carries pluginId and versionId; dedupe identical latest-download links.
+- **author:** img[alt="nitrado"] and a[href="https://github.com/nitrado"]; identity points to organization, not individual authors.
+- **upstreamHistory:** Linked GitHub releases are additional original release surface.
+
+Limitations: Two version IDs observed: 17 and 18; no download endpoint invoked. No archive manifest or installer tested. README requirement examples remain document text, not validated installed dependencies. Star counts are upstream popularity, not native author-follow.
+
+#### Hytale Garage project, uploader and item previews
+
+Sources: [HYY012](https://www.hytalegarage.com/mods/custom-arrows), [HYY013](https://www.hytalegarage.com/user/641e1b59-ff48-4cb5-9570-b43164eb2fa4), [HYY014](https://www.hytalegarage.com/mods).
+
+- **title:** //main//h1
+- **download:** //main//a whose visible text is Download; preserve href without invoking.
+- **uploader:** //a[starts-with(@href,"/user/")] UUID route; role text Uploaded by.
+- **itemMedia:** //*[@id="mod-content"]//img in DOM order; item card h3 labels attach to each preview.
+- **profileHistory:** //main//article on linked uploader page.
+
+Limitations: Project slug custom-arrows and uploader UUID are distinct keys. Filename CustomArrows-1.6.0.jar is observed link metadata; file bytes, hashes and dependencies not read. Auth modal can coexist with public body; it does not imply current account or block public extraction.
+
+#### HytaleCN resource/member/history
+
+Sources: [HYY015](https://hytalecn.com/resources/7/), [HYY016](https://hytalecn.com/members/386/), [HYY017](https://hytalecn.com/resources/7/history), [HYY018](https://hytalecn.com/resources/authors/386/), [HYY019](https://hytalecn.com/resources/).
+
+- **body:** article.resourceBody-main div.bbWrapper; do not parse nav/auth/footer as content.
+- **identity:** a.username[data-user-id="386"] links local publisher RegadPole; original GitHub repo link is separate provenance.
+- **history:** Resource /history linked in page; inspect table rows and datetime attributes.
+- **avatar:** memberHeader avatar--default is a default CSS image, not a verified custom avatar.
+
+Limitations: Original/translated/reposted role must come from resource labels and provenance; do not equate forum publisher with GitHub account. No custom avatar URL observed; do not fabricate. One history release 3.0.0 observed; terminal history only for inspected page, no global author history acceptance.
+
+#### HytaleLibrary public plugin description
+
+Sources: [HYY020](https://www.hytalelibrary.com/view/plugin/7), [HYY021](https://www.hytalelibrary.com/plugins), [HYY022](https://www.hytalelibrary.com/).
+
+- **body:** div.description-text is literal Markdown-like description; retain as source text and parse deliberately.
+- **identity:** Route plugin/7 and visible meta-user ZioMark; no linked profile found.
+- **download:** Observed /download/plugin/7 link is not fetched.
+- **comments:** #tab-comments is a separate content surface; do not concatenate styles into post body.
+
+Limitations: Author image is a shared site asset named image-removebg-preview(11).png, so identity-avatar acceptance is rejected. Directory shows five plugins but zero mods; do not discard plugins merely because mods category is empty. Homepage still displays release countdown; current game state must come from official source.
+
+#### 9hytale static package/version table
+
+Sources: [HYY023](https://9hytale.com/mod/bettermap/), [HYY024](https://9hytale.com/), [HYY025](https://9hytale.com/mods/).
+
+- **identity:** Canonical /mod/bettermap/ slug; no observed author profile.
+- **versions:** table.wt rows are catalog version records.
+- **media:** div.shots a/@href and img/@src expose full/preview relation.
+- **manifestClaims:** How-to-install prose includes filename/server and optional-dependency claim; label as third-party derived metadata.
+
+Limitations: Site says it unpacks packages; this pass does not repeat that analysis. Catalog count 6,767 is source inventory claim, not unique maintained mods. Do not reuse its incorrect client-side install generalization as Hytale support contract.
+
+### Decisions that prevent false records
+
+Modtale is the largest improvement over round 1: both project and creator raw pages succeeded. `window.INITIAL_DATA` supplies matching author IDs and an actual author avatar, while the page also includes generic fallback headings. Read the JSON without executing script; avoid first-heading extraction. Social arrays were reduced to counts, not published as a graph. Version/file fields are absent from the inspected project object and must remain unknown.
+
+HytaleGG exposes unusually rich project metadata through `div#app[data-page]`: content HTML, gallery order, original/converted media, filename, exact file size and comment pagination. The sample has a null account relation and an imported creator label. That is a useful failed identity join, not a reason to invent a profile. Its source record version, filename version, compatibility field and body compatibility wording also differ. Preserve each field with provenance.
+
+Picanik provides a real project/profile pair, body image and ordered mod-version choices. The project route ID is 62 while its icon storage path contains 60; filenames and CDN folders are not identity authorities. The creator page has a project icon but no identified author avatar. Favorite controls lead to sign-in and were not submitted.
+
+Hytale Garage distinguishes uploader UUID from project slug and exposes six ordered item previews and a named JAR URL. Hytamods links a GitHub organization avatar and two release IDs. HytaleCN exposes a real resource/member/history chain with permission-limited downloads and a default avatar. These offer concrete extraction candidates while retaining missing fields. HytaleLibrary demonstrates why a generic “Author” illustration must be rejected as an avatar.
+
+9hytale is a derived metadata catalog. Its BetterMap record is older than the official-host baseline and claims package-manifest inspection that this pass did not repeat. The displayed inventory is not evidence of maintained unique mods, source permission or current compatibility.
+
+### Failure and operation evidence
+
+Hymods rendered public project/owner/dependency pages through web retrieval, but anonymous raw directory/project/profile requests returned HTTP 500. Its public documentation article succeeded. Hytale Depot rendered a small advertised inventory, while raw marketplace/creator requests returned 502. Picanik web retrieval timed out while raw HTML succeeded. HytaleBBS returned 403 and was not probed again. BlockyNetworks returned only a JavaScript application shell. HT-Mods contains four test records; Hytale Prefabs returned an empty catalog. These are preserved as distinct results, not overwritten by retries.
+
+Public avatar/media URLs and filename/size metadata remain separate from fetched/decoded media and downloaded archives. No package endpoint was invoked. Source follow, favorite, star, account membership and local tracking are distinct operations; none of the native mutations or imports was tested. Hytale is a separate game scope, and the baseline official Modrinth exclusion remains in force.
