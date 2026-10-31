@@ -225,3 +225,252 @@ The following are new service/hub scopes relative to the 248-entry baseline. Cre
 | [Skript.pl](https://skript.pl/) | Public root timeout; retain Polish community lead with no inferred current activity or fields. |
 
 Several candidates remain blocked or historical. Their inclusion preserves useful leads without recommending unauthorized rehosts or claiming active distribution. MinecraftSchem and Minecraft-Schematics.com are separate domains/services; Minecraft-France and Minecraft.fr are also separate. Bedrock Tweaks expressly identifies itself as an unofficial port and links Vanilla Tweaks, so it should not be merged into the original project's identity.
+
+## Round-three community and extraction research
+
+Checked **2026-10-31**. The [round-three evidence manifest](../../../experiments/site-adapter-discovery/community-research-round3-2026-10-31.json) preserves original source locators, operation limits, failures and field mappings. Public observations are separate from executable parser and authenticated acceptance. Proposal counts below retain their original scope; the shared catalog applies alias and same-project normalization.
+
+### Strong item and creator inspections
+
+#### mcmodels
+
+Identity: {"itemId": "18015", "creatorId": "115", "creatorRole": "Created by vendor ModelBlox", "creatorUrl": "https://mcmodels.net/vendors/115/modelblox"}.
+
+**Avatar:** No confirmed creator avatar. Explicit ModelBlox banner is cover art; product hero is separate.
+
+**Body:** Overview includes pack contents and pre-made configurations; do not absorb related items/footer.
+
+**Media:** Product image1 and YouTube privacy-enhanced embed; no playback/decode. Animated in another product title is not animated-image proof.
+
+**Files:** v1.0 and Oct28 dates; texture resolution16; per-plugin tested versions ItemsAdder1.21.4/HMCCosmetics1.21.6/Nexo1.21.4/CraftEngine1.21.6. No original archive filename,size,hash or entitled URL observed.
+
+**Pagination:** Vendor140 products; only1–24/page1 of6 observed.
+
+**Follow:** FOLLOW/Follow visible; no mutation or imported follows. Wishlist/cart distinct; purchase required for inspected product.
+
+Sources: RDMC31002, RDMC31003.
+
+#### chunkfactory
+
+Identity: {"itemId": "4854", "creatorId": "37842", "creatorRole": "Author NitroPlugins", "creatorUrl": "https://chunkfactory.com/artists/nitroplugins.37842/"}.
+
+**Avatar:** Artist listing only; no avatar confirmed.
+
+**Body:** Overview feature lists, showcase, Free/Premium comparison and collapsed Terms Of Use must retain own sections.
+
+**Media:** NITROPLOTS_MENU_SHOWCASE.gif and NITROPLOTS_PLOTENTERMESSAGE_SHOWCASE (1).gif precede PNG showcases. GIF labels observed, bytes/frame counts not tested; do not flatten to thumbnails.
+
+**Files:** Paid €10/€8 observed,13 Updates and History links. No binary manifest verified. Java21/25 and1.21–26.3 compatibility are publisher claims.
+
+**Pagination:** Artist product cards read; update/history continuation not traversed.
+
+**Follow:** Native creator-follow control not established. Support Discord https://discord.com/invite/rZSDt7xykb observed in project; no join. Item forbids redistribution.
+
+Sources: RDMC31007, RDMC31008.
+
+#### minecraftstorage
+
+Identity: {"itemSlug": "solas", "creatorSlug": "jaker", "creatorRole": "Publisher; not established shader developer", "creatorUrl": "https://minecraftstorage.com/users/jaker"}.
+
+**Avatar:** Profile image labeled Mod; creator-avatar semantics unresolved. Article hero/screenshots cannot substitute.
+
+**Body:** Description, Guide, Installation, Screenshots, Comments, Downloads separate routes/tabs. Preserve screenshot captions and comparison section; avoid recommendations.
+
+**Media:** Eleven description image nodes90–100 with captions; comparison UI and Watch a video text lack verified media sources/playback.
+
+**Files:** Solas Shader V3.2.zip;1.17mb displayed; Jan1 2026; release label; external cdn.modrinth.com Download. No bytes/hash/license acceptance.
+
+**Pagination:** Profile zero-count summary conflicts with visible posts and7 Subscribers; page controls1–10…21,22. Keep partial/inconsistent flag.
+
+**Follow:** Follow visible, not performed/imported.
+
+Sources: RDMC31010, RDMC31011, RDMC31012.
+
+#### smithed
+
+Identity: {"itemSlug": "recipes_plus", "creatorSlug": "genmode", "creatorRole": "GenMode byline; stable UID pending live API", "creatorUrl": "https://smithed.net/genmode"}.
+
+**Avatar:** Profile has two api.smithed.dev images; roles require API join. Documented UserData.pfp and banner differ; PackData.display.icon is project image.
+
+**Body:** ReadMe area retrieved only short description; do not certify complete README from this projection. Documented display.webPage is optional.
+
+**Media:** Six gallery images10–15 observed in pack order. Schema permits bucket/file/string gallery forms; no decode.
+
+**Files:** Observed1.8.8 latest for26.3; many older compatibility/version rows. Documented versions.downloads.datapack/resourcepack,dependencies,supports; public live API attempts inaccessible.
+
+**Pagination:** Collection docs limit20 default/max100,start0; no exhaustion pass. User page includes contributed NotGleam pack, so do not call every card owned.
+
+**Follow:** No native follow established; site login and external project Discord are distinct. No auth token used.
+
+Sources: RDMC31014, RDMC31015, RDMC31017, RDMC31018, RDMC31019, RDMC31020.
+
+#### bedrock-explorer
+
+Identity: {"itemId": "7cb1d924-4a39-452d-88bc-daa5f8843f54", "creatorSlug": "starfish-studios", "creatorRole": "Marketplace publisher indexed by service", "creatorUrl": "https://bedrockexplorer.com/@starfish-studios"}.
+
+**Avatar:** No publisher avatar confirmed; Minecoins/Verified badges and product images are separate.
+
+**Body:** Item description before promotion. Avoid generated evaluative prose/recommendations as author body.
+
+**Media:** Ten product screenshots links22–31 on Xbox asset CDN. Later YouTube iframe32 is sponsored Mini Blocks, not Naturalist trailer.
+
+**Files:** Get add-on outbound mcmarketplace.net discovery; no package/export/entitlement retrieval. Free items still Marketplace content.
+
+**Pagination:** Publisher reports122 items with type counts; only initial surface inspected.
+
+**Follow:** No native publisher follow or import established.
+
+Sources: RDMC31022, RDMC31023.
+
+#### stardust-labs
+
+Identity: {"itemSlug": "incendium", "creatorRole": "Team roster: Starmute founder/worldgen; catter technical lead; Botany creative director; Whale structure artist"}.
+
+**Avatar:** Four roster images25–28 are role-scoped candidate portraits; no independent user profile/UID joins.
+
+**Body:** Feature sections and team roster separated; original download points Modrinth.
+
+**Media:** Image references9–24 repeat twice. Preserve source layout while storing sixteen unique gallery asset references, not32 distinct screenshots.
+
+**Files:** External Modrinth project discovery only; no release archive.
+
+**Pagination:** No complete team/project history acceptance.
+
+**Follow:** No native site follow established; Patreon/Discord require separate semantics.
+
+Sources: RDMC31026.
+
+### Broad independent discovery
+
+| Candidate | Edition / role | Evidence boundary | Sources |
+|---|---|---|---|
+| [MCModels](https://mcmodels.net/) | Java server asset configurations; per-product verify / platform_or_host_scope | Actual paid product/vendor pair; product18015, vendor115. Body, hero and YouTube player observed; vendor banner expressly labeled, avatar not confirmed. Follow UI and six-page vendor history require permitted client verification. | RDMC31001, RDMC31002, RDMC31003, RDMC31005 |
+| [Chunkfactory](https://chunkfactory.com/) | Mixed catalog; inspected Java Bukkit/Spigot plugin / platform_or_host_scope | Actual NitroPlots4854 and NitroPlugins37842 artist listing. Ordered GIF and PNG showcase; price gate; Overview/13 Updates/History distinct. Artist listing is not yet a personal profile/avatar. | RDMC31006, RDMC31007, RDMC31008 |
+| [MinecraftStorage](https://minecraftstorage.com/) | Java inspected shader; verify each category / platform_or_host_scope | Solas review labels Jaker Publisher. Original project is separate Modrinth link. Download table links external CDN; Jaker page has inconsistent zero summary versus cards/subscribers and22-page controls. | RDMC31009, RDMC31010, RDMC31011, RDMC31012 |
+| [Smithed](https://smithed.net/) | Java datapacks/resource packs / platform_or_host_scope | Actual Recipes Plus/GenMode pair; documented public v2 API distinguishes metadata owner/contributors, user pfp/banner, display content and version datapack/resourcepack URLs. Live API retrieval failed; schemas remain documented only. | RDMC31013, RDMC31014, RDMC31015, RDMC31016, RDMC31017, RDMC31018, RDMC31019, RDMC31020 |
+| [Bedrock Explorer](https://bedrockexplorer.com/) | Bedrock Marketplace index / reference_or_tool_only | Actual Naturalist item/publisher pair with UUID7cb1d924-4a39-452d-88bc-daa5f8843f54. Ordered Xbox CDN screenshots; publisher slug and categories. Promotional video is for another product; entitlement/files unavailable. | RDMC31021, RDMC31022, RDMC31023 |
+| [Stardust Labs](https://www.stardustlabs.net/) | Java datapacks/mods; other editions per release / platform_or_host_scope | Incendium project includes creator roster and role-scoped portrait nodes; Modrinth distribution link. Gallery repeats same sixteen references twice: retain carousel repetitions separately from unique assets. About route failed. | RDMC31026, RDMC31027 |
+| [Serilum](https://serilum.com/) | Java mods / platform_or_host_scope | Creator home/biography and mod listing inspected; external CurseForge/Modrinth publication. Mod-list retrieval partial; no file manifest or creator avatar established. | RDMC31030, RDMC31031, RDMC31032 |
+| [Modding Legacy](https://moddinglegacy.com/) | Java mod team candidate / platform_or_host_scope | Root403; no fields promoted from unrelated similarly named GitHub organization. | RDMC31033 |
+| [ModFest](https://modfest.net/) | Java mod event community; event platform per event / reference_or_tool_only | Official About identifies ModFest/BlanketCon participant/volunteer/team roles and source-linked API/bot infrastructure; root partial. An open-source bot is not permission to collect Discord messages. | RDMC31034, RDMC31035 |
+| [Mod Garden](https://modgarden.net/) | Minecraft mod event community / reference_or_tool_only | Official event/participant guide and Discord discovery. Site describes slash-command registration; no command or join performed. Event participation differs from creator follow. | RDMC31036 |
+| [Modded Minecraft Wiki / Sinytra](https://moddedmc.wiki/en) | Java project documentation / reference_or_tool_only | moddedmc.org redirects to moddedmc.wiki/en. First-party docs hosting with versions, recipes, developer links and official Discord; project documentation is not a binary release manifest. | RDMC31037 |
+| [bedrock.dev](https://bedrock.dev/) | Bedrock / reference_or_tool_only | Version/file selectors, packs, Bedrock Wiki and Discord links. Documentation reference, not user-uploaded addon collection; version-specific schema is required. | RDMC31038 |
+| [Bedrock Wiki](https://wiki.bedrock.dev/) | Bedrock / reference_or_tool_only | Distinct linked community wiki rather than interchangeable official Microsoft documentation; contribution/page provenance and licensing need exact-page review. | RDMC31039 |
+| [Team Abnormals](https://www.teamabnormals.com/) | Java explicitly / platform_or_host_scope | Original team site exposes mods, wiki and dated release blogs. Discord label present but extracted destination resolves home; invitation unresolved, not invented. | RDMC31040 |
+| [Team CoFH](https://teamcofh.com/) | Java / platform_or_host_scope | Own version-grouped project directory links original CurseForge/Modrinth, source and changelog independently. Project icons are not avatars; official CoFH Discord linked. | RDMC31041, RDMC31059 |
+| [MCPEDL.ORG](https://mcpedl.org/) | Bedrock / platform_or_host_scope | Distinct domain from MCPEDL.com; categories and item leads observed. Attribution, rehosting authorization and provenance unverified; not a replacement for MCPEDL.com shells. | RDMC31043 |
+| [9Minecraft](https://www.9minecraft.net/) | Mixed Java/Bedrock categories / platform_or_host_scope | Broad first-party catalog navigation incl mods/datapacks/models/schematics and edition-specific subdomains. Article writer, original developer and mirror rights require per-item checks. | RDMC31044 |
+| [MCMod.net](https://www.mcmod.net/) | Unverified / platform_or_host_scope | Root inaccessible through retrieval. Distinct from mcmod.cn; no supported extraction fields established. | RDMC31045 |
+| [MCBuild](https://mcbuild.org/) | Mixed Java/Bedrock / platform_or_host_scope | Catalog provides schematic/litematic/map/mod categories and online installer. Conversion and world-upload tools are separate actions; title/extension alone does not prove edition compatibility or provenance. | RDMC31046 |
+| [Fabric project community](https://fabricmc.net/) | Java mod loader/tooling / reference_or_tool_only | Official loader/docs/template and Discord links. Fabric API is a separate dependency and loader installer is not playable mod content. | RDMC31048, RDMC31058 |
+| [NeoForged project community](https://neoforged.net/) | Java mod loader/tooling / reference_or_tool_only | Installer selection shell and dated developer blog with scoped author avatar labels; authors differ from NeoForged Team. Pagination1/3 observed; not complete blog history. | RDMC31049 |
+| [Quilt project community](https://quiltmc.org/) | Java tooling candidate / reference_or_tool_only | Root redirect shell has zero readable lines; no Discord, profile or current loader/file details established. | RDMC31050 |
+| [MineCrafteo](https://www.minecrafteo.com/) | Spanish portal; edition per item / platform_or_host_scope | Version-tagged mod/resource/shader/map article discovery and next-page link; author/avatar/original-file rights require actual article fixture. | RDMC31051 |
+| [MinecraftSkins.net / observed MinecraftMods redirect](https://www.minecraftskins.net/) | Skin assets; edition dimensions require verification / platform_or_host_scope | minecraftmods.com redirected to skin catalog with Designed by credits and25-page navigation. Do not publish obsolete mod-host identity; skin download is not an author avatar. | RDMC31052 |
+| [Sildur official hub](https://sildurs-shaders.github.io/) | Java shaders/resource shaders / platform_or_host_scope | Hub explicitly identifies itself as official and shows Sildur image, download/changelog/gallery/social links. Separate candidate domain failed and is not accepted as an alias. | RDMC31054, RDMC31060 |
+| [Minecraft Mod Development / ModDev.Zone](https://mc.moddev.zone/) | Java mod team/documentation community / reference_or_tool_only | Official member roster gives managers/developers and named GitHub-backed images, distinct from brand logo. Own mod docs, CurseForge and friendly ModDevCafe linked; invitation shells/errors retained. | RDMC31055, RDMC31056, RDMC31057 |
+
+### Existing-service improvements
+
+- **curseforge**: Add distinct Minecraft Bedrock discovery scope under existing canonical service, not another service count. Bedrock route exposes addon,texture,map categories and member bylines; do not feed a Java-only category/extension mapping into this scope. Exact API game/category IDs still pending. (RDMC31061).
+- **mcpedl**: Fresh root returns Nothing here yet in three feeds and author route remains undefined shell. Actual Raiyon item403 overrides rich search snippet: no completed body/author/file acceptance. Different .org domain is not fallback identity. (RDMC31062, RDMC31063, RDMC31064).
+- **modrinth**: Stellarity page states team/support migration from kohara basement to Prismatic Shards. Retain temporal project attribution and current official Discord per release; old creator social links do not establish current ownership. Datapack sometimes packaged as mod: keep distribution kind separate. (RDMC31065).
+- **hanmafo**: Current navigation explicitly separates Java mod/datapack/model and Bedrock behavior/resource/server plugin categories. Preserve edition and server platform axes rather than one mod tag. (RDMC31066).
+- **mcreator**: Current community separates playable mods, tool plugins, forums and Explore Users; content RP tags and FG labels are not interchangeable. Retrieve actual project type before file classification. (RDMC31067).
+- **planet-minecraft**: Current root includes Groups, Wall Posts, Blogs, Jams and Discord alongside projects. Treat social post/group namespace as separate scope; do not synthesize downloadable files for all PMC content. (RDMC31068).
+- **minecraft-forum**: Root current dated Java/Bedrock announcements have editorial byline separate from game developer. Thread-level profile/post pagination remains prior gate; homepage currentness does not certify attachment access. (RDMC31069).
+- **discord**: Record official-origin invite provenance and shell/error independently. ModDev.Zone redirects fbkYYXjaTj with error; Fabric v6v4pMv,CoFH uRKrnbH,ModDevCafe T5MGNBB and MCModels invite shell read. None proves membership,channel visibility,post-history access or follow import. (RDMC31005, RDMC31056, RDMC31057, RDMC31058, RDMC31059, RDMC31060).
+
+### Protocol and extraction upgrades
+
+- **Smithed documented metadata and pack merge boundaries**: GET pack data,meta and user by documented identity; preserve docId/rawId,owner/contributors and userUID. Version downloads carry datapack/resourcepack separately. GET /download can merge packs and may skip unsupported ones; generated zip is not original-file byte parity. Docs latest-version section labels DELETE while example uses fetch default GET: resolve contract before use; never issue DELETE to read. Collection limit/start and count supply planned completeness checks. (RDMC31017, RDMC31018).
+- **Marketplace sponsored-media scope**: Assign gallery to item by section boundaries; promote/provider iframe may advertise another item. Name/UUID matching and bounded extraction prevent downloading wrong product video. (RDMC31023).
+- **Mixed author/publisher roles and carousel repetitions**: Store uploader/editor,original developer,team contributor separately. Asset URL identity and placement occurrence separate repeated carousel images from distinct screenshots. Display-count mismatch remains visible. (RDMC31010, RDMC31011, RDMC31026).
+
+### Acceptance queue
+
+- Permitted raw HTML/client fixtures for MCModels vendor image role,pagination and follow auth; no internal API guesses.
+- Smithed actual public pack/meta/user receipts and UID joins; complete README and gallery decoding; original-versus-merged file checks; API docs inconsistency verification.
+- Chunkfactory artist-to-member profile join and image-role validation; original GIF multi-frame decode; updates/history traversal; entitled file only after authorized access.
+- MinecraftStorage creator identity and actual external CDN manifest/hash provenance; profile count mismatch and pagination.
+- Bedrock Explorer UUID original publisher/Marketplace join; separate ads; no inference of exportable mcaddon.
+- No binary,animated-media decode,video playback,native follow/import,purchase,message or Discord join acceptance in this pass.
+
+### Source register and retained retrieval results
+
+All source dates below are2026-10-31 retrieval checks. Search leads are deliberately labeled and are not equivalent to opened primary evidence. Failed requests are operation-specific retrieval outcomes; their cause is not inferred. No CSS selectors, internal API contracts, native follow behavior or purchase entitlements were invented.
+
+| ID | Primary page / attempted URL | Status |
+|---|---|---|
+| RDMC31001 | [MCModels marketplace](https://mcmodels.net/) | read |
+| RDMC31002 | [Frozen Weapon Assortment](https://mcmodels.net/products/18015/frozen-weapon-assortment) | read |
+| RDMC31003 | [ModelBlox vendor](https://mcmodels.net/vendors/115/modelblox) | read |
+| RDMC31004 | [MCModels first-party About](https://mcmodels.net/information/about) | search_lead_only |
+| RDMC31005 | [MCModels official linked Discord](https://discord.gg/mcmodels) | js_shell |
+| RDMC31006 | [Chunkfactory marketplace](https://chunkfactory.com/) | read |
+| RDMC31007 | [NitroPlots premium project](https://chunkfactory.com/product/plot-addon-nitroplots-pick-complete-plot-utils-high-voltage-addon-for-plotify-plotsquared-sparkles-premium-version.4854/) | read |
+| RDMC31008 | [NitroPlugins artist listing](https://chunkfactory.com/artists/nitroplugins.37842/) | read |
+| RDMC31009 | [MinecraftStorage](https://minecraftstorage.com/) | read |
+| RDMC31010 | [Solas shader review](https://minecraftstorage.com/shaders/solas) | read |
+| RDMC31011 | [Jaker publisher profile](https://minecraftstorage.com/users/jaker) | read |
+| RDMC31012 | [Solas download manifest page](https://minecraftstorage.com/shaders/solas/download) | read |
+| RDMC31013 | [Smithed](https://smithed.net/) | read |
+| RDMC31014 | [Recipes Plus pack](https://smithed.net/packs/recipes_plus) | read |
+| RDMC31015 | [GenMode profile](https://smithed.net/genmode) | read |
+| RDMC31016 | [Smithed documentation](https://docs.smithed.dev/) | read |
+| RDMC31017 | [Smithed public routes](https://docs.smithed.dev/api/routes/) | read |
+| RDMC31018 | [Smithed public data types](https://docs.smithed.dev/api/data-types/) | read |
+| RDMC31019 | [Actual pack API request](https://api.smithed.dev/v2/packs/recipes_plus) | tool_inaccessible |
+| RDMC31020 | [Actual user API request](https://api.smithed.dev/v2/users/genmode) | tool_inaccessible |
+| RDMC31021 | [Bedrock Explorer](https://bedrockexplorer.com/) | read |
+| RDMC31022 | [Starfish publisher listing](https://bedrockexplorer.com/@starfish-studios) | read |
+| RDMC31023 | [Naturalist Bedrock listing](https://bedrockexplorer.com/@starfish-studios/naturalist-add-on-26-1) | read |
+| RDMC31024 | [Stardust Labs home](https://www.stardustlabs.net/) | search_lead_only |
+| RDMC31025 | [Stardust downloads](https://www.stardustlabs.net/downloads) | search_lead_only |
+| RDMC31026 | [Incendium team project](https://www.stardustlabs.net/incendium) | read |
+| RDMC31027 | [Guessed Stardust about route](https://www.stardustlabs.net/about) | tool_inaccessible |
+| RDMC31028 | [Stardust official organization](https://github.com/Stardust-Labs-MC) | search_lead_only |
+| RDMC31029 | [Stardust Discord server public page](https://discord.com/servers/stardust-labs-738046951236567162) | search_lead_only |
+| RDMC31030 | [Serilum home](https://serilum.com/) | read |
+| RDMC31031 | [Serilum mod listing](https://serilum.com/mods/) | read_partial |
+| RDMC31032 | [Serilum creator biography](https://serilum.com/about/) | read |
+| RDMC31033 | [Modding Legacy](https://moddinglegacy.com/) | http_403 |
+| RDMC31034 | [ModFest home](https://modfest.net/) | read_partial |
+| RDMC31035 | [ModFest About](https://modfest.net/pages/about) | read |
+| RDMC31036 | [Mod Garden event community](https://modgarden.net/) | read |
+| RDMC31037 | [Modded Minecraft Wiki former route](https://moddedmc.org/) | redirect_read |
+| RDMC31038 | [bedrock.dev docs](https://bedrock.dev/) | read |
+| RDMC31039 | [Bedrock Wiki](https://wiki.bedrock.dev/) | read |
+| RDMC31040 | [Team Abnormals](https://www.teamabnormals.com/) | read |
+| RDMC31041 | [Team CoFH downloads](https://teamcofh.com/downloads/) | read |
+| RDMC31042 | [Team CoFH roles](https://teamcofh.com/about/index.html) | search_lead_only |
+| RDMC31043 | [MCPEDL.ORG distinct portal](https://mcpedl.org/) | read |
+| RDMC31044 | [9Minecraft](https://www.9minecraft.net/) | read |
+| RDMC31045 | [MCMod.net candidate](https://www.mcmod.net/) | tool_inaccessible |
+| RDMC31046 | [MCBuild mixed-edition catalog](https://mcbuild.org/) | read |
+| RDMC31047 | [Incorrect head-site candidate route](https://minecraftheads.com/) | tool_inaccessible |
+| RDMC31048 | [Fabric project](https://fabricmc.net/) | read |
+| RDMC31049 | [NeoForged project](https://neoforged.net/) | read |
+| RDMC31050 | [Quilt project](https://quiltmc.org/) | empty_redirect_shell |
+| RDMC31051 | [MineCrafteo Spanish portal](https://www.minecrafteo.com/) | read |
+| RDMC31052 | [MinecraftMods redirect observation](https://www.minecraftmods.com/) | redirect_read |
+| RDMC31053 | [Unverified Sildur domain candidate](https://www.sildurs-shaders.com/) | tool_inaccessible |
+| RDMC31054 | [Sildur official creator hub](https://sildurs-shaders.github.io/) | read |
+| RDMC31055 | [Minecraft Mod Development community](https://mc.moddev.zone/) | read |
+| RDMC31056 | [MMD official Discord redirect](https://discord.moddev.zone/) | redirect_error |
+| RDMC31057 | [ModDevCafe officially linked friend community](https://discord.gg/T5MGNBB) | js_shell |
+| RDMC31058 | [Fabric official Discord](https://discord.gg/v6v4pMv) | js_shell |
+| RDMC31059 | [CoFH official Discord](https://discord.gg/uRKrnbH) | js_shell |
+| RDMC31060 | [Sildur official Discord](https://discord.gg/mg3w2tSEsb) | redirect_error |
+| RDMC31061 | [CurseForge Bedrock scope](https://www.curseforge.com/minecraft-bedrock) | read |
+| RDMC31062 | [MCPEDL current root shell](https://mcpedl.com/) | read_partial |
+| RDMC31063 | [MCPEDL unresolved author shell](https://mcpedl.com/user/r4isen1920/) | read_partial |
+| RDMC31064 | [Raiyon actual item request](https://mcpedl.com/raiyons-java-combat-addon/) | http_403 |
+| RDMC31065 | [Stellarity current team migration](https://modrinth.com/datapack/stellarity) | read |
+| RDMC31066 | [Hanmafo current edition categories](https://www.koreaminecraft.net/) | read |
+| RDMC31067 | [MCreator current community discovery](https://mcreator.net/community) | read |
+| RDMC31068 | [PMC current community scopes](https://www.planetminecraft.com/) | read |
+| RDMC31069 | [Minecraft Forum current root](https://www.minecraftforum.net/) | read |
+
+Source IDs RDMC31001–RDMC31069 are reserved for this pass. Unverified domain guesses are excluded from canonical candidate counts. Catalog and shared game guides were not edited.
