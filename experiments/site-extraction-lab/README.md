@@ -6,6 +6,17 @@ The October 28, 2026 replay covers nine real public cases: Modrinth, Planet Mine
 
 The separate October 31 [itch.io DOM experiment](itch.py) is documented in the [itch.io adapter guide](../../docs/adapters/itch-io.md). It retains [two actual public DOM replays](../site-adapter-discovery/itch-io-dom-replay-2026-10-31.json) and [nine defensive regression tests](../../tests/test_site_extraction_itch.py). These scoped observations cover selected project/devlog boundaries; complete history, authenticated access, file transfers and full support remain unaccepted. The eight-family and nine-case October 28 results above retain their original scope.
 
+## October31 social normalizers
+
+Two additional modules preserve message/feed-specific identity and media without changing the earlier eight-family or itch.io results:
+
+| Module | Actual scope | Evidence boundary |
+|---|---|---|
+| [Discord](discord_message.py) | User/webhook identity; guild/global avatar; ordered attachments, embeds and component media; forward snapshots; absent-field partial updates; access-limited retention; restricted public receipt | Documented schemas and synthetic defensive tests. No bot grant or live message fixture. [Guide](../../docs/adapters/discord.md). |
+| [Bluesky](bluesky.py) | Post URI/author DID join; text and UTF-8 facets; image/video/external/quote embeds; repost actor; profiles; paginated follows | Actual public AppView captures from EightSidedSquare and The Aether, plus synthetic defensive cases. No native follow mutation, complete account import or playback. [Guide](../../docs/adapters/bluesky.md). |
+
+Run the site-extraction tests with `python -m unittest discover -s tests -p 'test_site_extraction*.py' -v` from repository root. The [social validation receipt](social-normalizer-validation-2026-10-31.json) records exact implementation identities, real input hashes/counts and bounded media checks. Raw third-party bodies and API captures are external, uncommitted inputs. The normalizers make no network calls.
+
 ## Run
 
 Requires Python 3 and the dependency in [requirements.txt](requirements.txt). From the repository root:
