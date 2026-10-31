@@ -1,7 +1,5 @@
 # Adapter laboratory
 
-**Repository synchronization pending:** this research pass is published through the wiki. Its updated canonical files and new executable-lab files have not yet been uploaded to `main`, so new repository-only code and receipt links may not yet resolve. The wiki retains the reviewed methods and their limits in full.
-
 **Collect real data. Preserve source identity. Prove complete media and responsive cards together.**
 
 Research and implementation status are separate. A platform listing is not proof that all pages, paid content or media work. Existing adapters and maintained upstream tools are baselines, not disposable scaffolding.
@@ -9,6 +7,8 @@ Research and implementation status are separate. A platform listing is not proof
 ## Expanded research: 349 service and scope entries
 
 Reviewed **October 31, 2026 UTC**, retaining dated October 28 evidence. The [coverage catalog](coverage-catalog.md) spans mod hosts, paid creator platforms, social networks, regional communities, blogs, code forges, file hosts and specialist indexes. The first six-game expansion reached 248 entries; the second added 98 canonical services/scopes, bringing that dated snapshot to **346**. The October 31 screenshot review adds Pawchive, Tipeee and historical HYPAGE as researched candidates, bringing current coverage to **349**; [the per-site matrix](paid-platforms.md#screenshot-coverage-and-operation-evidence--october-31) retains unresolved Library and explicit operation gates. The [new extraction methods](methods-round2.md) retain 71 game/cross-game recipes, five additional browser scopes, actual failures, field boundaries and remaining gates. Every entry has operation-specific evidence status; a catalog entry does not imply complete support.
+
+The [itch.io adapter guide](itch-io.md) adds a separate scoped DOM experiment with [two actual public replays](../../experiments/site-adapter-discovery/itch-io-dom-replay-2026-10-31.json) and nine defensive tests. It does not establish complete authenticated access, history or file-transfer support.
 
 The [executable extraction lab](../../experiments/site-extraction-lab/README.md) replays nine real captured fixtures through eight parser families, producing 27 normalized records with sanitized receipts. Authenticated checks now include [Mod Collective](mod-collective.md), [SubscribeStar](subscribestar.md) and [Patreon](patreon.md). Actual browser downloads are verified for a public Patreon release and [SimsFinds](simsfinds.md), alongside the earlier Mod Collective fixture. Member-only bodies, complete histories and native follow operations remain separately gated.
 
