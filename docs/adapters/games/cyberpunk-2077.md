@@ -250,3 +250,205 @@ The [sanitized game manifest](../../../experiments/site-adapter-discovery/game-r
 - **CPX062** [2077MODS CET API route](https://www.2077mods.com/api/v1/mods/cyber-engine-tweaks) — `tool_inaccessible`; observed Route attempted on check date. Documented route could not be retrieved by this tool; runtime response/schema/complete output unverified.
 - **CPX063** [Cyberpunk mod tutorial on YouTube](https://www.youtube.com/watch?v=5gR3rsL-sCs) — `footer_only`; observed Public tutorial linked by 2077MODS. Open exposed only generic footer; channel identity, description, stream and playback not recovered.
 - **CPX064** [mod.io Cyberpunk game scope](https://mod.io/g/cyberpunk-2077) — `javascript_shell`; observed Official linked game scope. First-party game route required JavaScript. Official CDPR page documents account linking; this pass did not retrieve item/profile/API payloads.
+
+## Round two: concrete methods
+
+[Cross-site method index](../methods-round2.md) · [Sanitized method evidence](../../../experiments/site-adapter-discovery/method-research-round2-2026-10-28.json). Source IDs with historical S2K/M2C/S2S prefixes are published as SKYB/MCB/SIMB; original IDs remain in the manifest.
+
+**Checked 2026-10-28 UTC; user date October28, America/Denver.** Baseline:248 catalog entries. This pass records12 candidate domains/scopes,28 inspected page/API scopes and9 concrete extraction recipes. These counts do not mean12 new independent platforms. There is no authenticated, ZIP-integrity, playback or universal-adapter acceptance.
+
+The most useful new independent community is **Ketaros**: seven Cyberpunk listings, actual creator profiles, public full article markup, screenshot buttons and explicit download/tracking gates. **EDGEmodders** is an original tool community whose files are distributed through GitHub. Deceptious’ own **phil-wright.co.uk**, **xbaebsae Jimdo**, **NoraLeeDoes Neocities** and **NightCityRiot** add original creator/resource provenance; their underlying hosting platforms and file destinations remain separate. Japanese **cyberpunk2077.2game.info** adds a game-specific regional scope to the existing2game family.
+
+### Candidate map
+
+| Candidate | Classification and result | Evidence |
+|---|---|---|
+| [Deceptious original creator hub](https://www.phil-wright.co.uk/) | Independent original domain on existing Wix platform; sends files to Nexus. | CPY002 |
+| [Ketaros Modders Community](https://www.ketaros.com/) | New independent community/catalog candidate; two posts + creator profile inspected. Login/subscriber gates remain. | CPY004 |
+| [EDGEmodders original tool community](https://edgemodders.ai/) | New original community/tool host; downloadable releases live on GitHub. No performance/gameplay acceptance. | CPY009 |
+| [xbaebsae original modding guides](https://xbaebsae.jimdofree.com/cyberpunk-2077-guides/cp2077-item-additions-with-wkit/) | New original guide domain on Jimdo; generic About page is not identity evidence. | CPY016 |
+| [NoraLeeDoes palette resources](https://noraleedoes.neocities.org/resources/community_palette/info) | Original creator resource site on Neocities; Nexus file destination remains distinct. | CPY018 |
+| [Bioskop narrative design guide](https://bioskop.notion.site/CP2077-Narrative-Modding-b47f789f992248e08241da1a983912c5) | Reference scope; shell only, no extractor established. | CPY021 |
+| [Bioskop Cyberquest design wiki](https://cyberpunk-2077-quest-design.gitbook.io/cyberquest-2077-wiki/) | Original quest-design reference; current redirect preserved. Not an independent download platform. | CPY022 |
+| [NightCityRiot creator and comic hub](https://nightcityriot.bio/) | New creator domain on Lnk.Bio, adjacent comic resources tied to three quest mods. Not a new mod host. | CPY024 |
+| [Japanese Cyberpunk Mod Database](https://cyberpunk2077.2game.info/detail.php?id=2380) | New game scope of existing 2game family, not a new umbrella platform. Original author attribution and regional editorial role separated. | CPY025 |
+| [TevoxMods candidate](https://tevoxmods.com/) | Discovery-only portal; author consent/originality unverified. | CPY026 |
+| [DLCfun regional mod portal candidate](https://dlcfun.com/en/cyberpunk-2077/obmancivoe-iadro-kvesta) | Public post/profile parser candidate; original authorship and reuse permission unproven. | CPY027 |
+| [Cyberpunk2077Mod mirror candidate](https://www.cyberpunk2077mod.com/cyber-engine-tweaks-2/) | Historical mirror; no consent/originality acceptance. | CPY029 |
+
+### Repeatable extraction evidence
+
+Two Ketaros HTML items and two anonymous public GitHub REST release responses were parsed twice from the same captured snapshots. Complete normalized outputs matched. This proves deterministic replay of those snapshots, not live uptime, complete platform coverage or target-project adoption.
+
+- Replay receipt:2 passes, identical outputs; SHA256 `4d9e9a54644f9ea3491aad861190d6f90782b2b090827a0ca465d7e2179053b1`.
+- Source HTML/API bytes, lengths and SHA256 are retained in the JSON source receipts. Full pages remain outside the repository.
+
+#### CPYM01: Ketaros SSR item/profile
+
+Sources: CPY006, CPY007, CPY008, CPY005, CPY032.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| title | //h1 |
+| author | //main//a[starts-with(@href,"/modders/")] |
+| body | //section[h2[normalize-space(.)="About"]]/div[1] |
+| gallery | //main//button//img/@src |
+| metadata | script[type="application/ld+json"] array object @type=CreativeWork: author.name, publisher.name, description, image |
+| gates | //a[starts-with(@href,"/login?from=")]; sidebar visible Version/File size/Updated; creator card Free/Subscriber |
+| follow | Visible text says sign in to track/email on update; current-user tracked state and write untested |
+| pagination | Game page observed7 item links; creator profile multi-game list. No fabricated API/paging parameters. |
+
+JSON-LD description truncates body; use bounded HTML. No distinct creator avatar isolated, site logo excluded. Gallery3/1 retrieved as URL lists, one PNG decoded. Files listed sizes24KB/87KB, bytes and entitlement untested. Completion Catalog says Codeware+TweakXL but related links Codeware+Redscript; retain discrepancy.
+
+#### CPYM02: Documented public GitHub release REST
+
+Sources: CPY013, CPY014, CPY015, CPY011, CPY012, CPY030.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| identity | $.id; $.tag_name; $.html_url |
+| publisher | $.author.{id,login,type,html_url,avatar_url} |
+| body | $.body exact complete Markdown string; chars and SHA256 retained |
+| files | $.assets[*].{id,name,size,content_type,digest,browser_download_url}; $.assets[*].uploader.login |
+| versions | $.published_at; $.prerelease; $.draft; game gates remain in body |
+| avatar | $.author.avatar_url -> GET -> Pillow Image.load; psiberx420x420PNG decoded |
+| pagination | These latest/specific-tag responses are single release objects, not complete release history. No list pagination tested. |
+| follow | Public user $.followers is aggregate; current-user relationship requires separately authorized documented endpoints. |
+
+REDnode publisher Bot is not organization owner. API assets2 for ArchiveXL differs prior HTML Assets4; keep both without assuming equivalence. Download URLs/digests are published metadata, ZIP bytes not fetched; no SDK execution.
+
+#### CPYM03: Original creator cross-host identity
+
+Sources: CPY002, CPY003.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| body | //main[@id="PAGES_CONTAINER"] |
+| identity | Heading text Deceptious plus anchors @href=https://www.nexusmods.com/profile/deceptious; separate Ko-fi and X destinations |
+| avatar | Portrait-like Wix image exists but no explicit creator-avatar semantic field; unresolved |
+| files | Only original creator destination links; no ZIP on original hub |
+| follow | Original hub links social sites; no native follow state shown |
+
+Wix generated component IDs are brittle; verify identity text plus href. A personal portfolio is a creator hub, not a new distribution service.
+
+#### CPYM04: Jimdo original tutorial
+
+Sources: CPY001, CPY016, CPY017.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| body | //*[@id="content_area"] |
+| media | //*[@id="content_area"]//img/@data-src with @src fallback; preserve actual Jimcdn transform URLs |
+| author | Site title xbaebsae; wiki creator credit; actual About link gives generic platform boilerplate |
+| files | No mod archive bytes established; guide outbound tool links distinct |
+| pagination | Single guide page; nav lists other guides; no post-feed inference |
+| follow | No native follow semantics isolated |
+
+Tutorial images not fetched in this pass. Jimdo identity must not be invented from platform About.
+
+#### CPYM05: Neocities original palette guide
+
+Sources: CPY018, CPY019, CPY020, CPY001.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| body | //main; h1 title; h2 sections and credits |
+| author | Home //h1 NoraLeeDoes; project credits as body roles |
+| files | //a[@href="https://www.nexusmods.com/cyberpunk2077/mods/10437"] -> project distribution |
+| gallery | No img in retrieved guide DOM; do not invent image media |
+| follow | No follow state or write control observed |
+
+Resource/reference, not universal file host. Palette inline code/text may be required content; retain it in body extraction. Avatar unresolved.
+
+#### CPYM06: Lnk.Bio creator domain
+
+Sources: CPY023, CPY024, CPY031.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| avatar | //img[@id="profile_picture_catch_error"]/@src; actual JPEG512x512 decoded |
+| links | //a[@href]; retain original mod handoffs separately from comic Drive PDF/ePub and publication links |
+| body | Creator hub link sections; preserve displayed labels and ordering, exclude Lnk.Bio marketing/footer |
+| media | Ignore data:image/gif 1x1 transparent placeholder; do not label GIF-animation support |
+| follow | No caller following state or write tested |
+| pagination | Single hub; linked publication pagination untested |
+
+Creator/comics adjacent scope. Files linked in Drive not downloaded. Profile avatar provenance stronger than unlabeled cover images.
+
+#### CPYM07: Japanese 2game regional entry
+
+Sources: CPY025.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| body | //div[@class="desc"]/div[@class="character"] |
+| attribution | //div[@class="aReverse"] original Nexus attribution; local editorial author not proven |
+| gallery | //div[@class="desc"]//div[@class="imgBox"]//a/@href; img/@data-original, not placeholder @src |
+| versions | Original entry current metadata and //div[@class="cVer"] historical-comment versions retained separately |
+| files | Explicit Nexus /cyberpunk2077/mods/2380 download handoff |
+| pagination | Comments and historical version groups not a release/download history API |
+| follow | No logged-in follow state inspected |
+
+Regional descriptions can include old install steps. A source author string is not regional uploader/profile ID. No gallery decode.
+
+#### CPYM08: DLCfun public item/profile
+
+Sources: CPY027, CPY028, CPY002.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| title | //h1[1] |
+| localIdentity | JSON-LD SoftwareApplication.author.{name,url}; link user-profile/16 -> Antihype |
+| body | //section[h3[normalize-space(.)="About This Mod"]]/div[contains(@class,"insertInfo")] |
+| files | JSON-LD $.downloadUrl observed; no request made to download action |
+| originalAuthor | Local schema author is uploader attribution; independent Deceptious creator hub separately identified |
+| gallery | No complete ordered gallery parsed; main contains recommendations, exclude them from mod body |
+| follow | No authenticated state or write; profile aggregates are public-only |
+
+Do not promote copied first-person body or schema author into original authorship. Mirror authorization unproven.
+
+#### CPYM09: WordPress mirror provenance
+
+Sources: CPY029.
+
+| Field | Observed extraction path or semantics |
+|---|---|
+| title | //h1[contains(@class,"entry-title")] |
+| body | Entry-content class boundary candidate; verify root count before use |
+| localPublisher | JSON-LD @graph Person.name=The V; WebPage.author @id references local article identity |
+| source | Body actual GitHub/maximegmd/CyberEngineTweaks link |
+| versions | Heading1.35.1 and JSON-LD dateModified2025-07-06; historical, not patch2.5 proof |
+| follow | No native current-user state observed |
+
+No creator profile chain, permission or download bytes established; keep mirror candidate below original upstream.
+
+### Actual image-byte decoding
+
+| Media | Format/dimensions | Bytes | SHA256 |
+|---|---|---:|---|
+| github_psiberx_avatar | PNG 420×420; frames1 | 3339 | `85fd0f5ce32320122b15812f8e6fb294f3911cf51b4b8256c9dc8e995fd78585` |
+| nightcityriot_avatar | JPEG 512×512; frames1 | 17084 | `cf71511a41a9d34890c5bccffd105ad9c65ece830d1eaf315bf61a94ab12a7b7` |
+| ketaros_gallery_first | PNG 2562×1440; frames1 | 4152879 | `44f172dbca3b9b72e4ed69edf5324a9a05b8cf4841d1fa1915c56ed10e743ddd` |
+
+Pillow `Image.load()` decoded the actual network bytes for two avatars and one gallery image. This is stronger than a discovered URL or retrieval-tool preview. All three were static single-frame images; it establishes no GIF animation or video/audio playback. Lnk.Bio’s tiny data-URI GIF placeholder is explicitly excluded.
+
+### Role and gate findings
+
+The GitHub REST records expose bot release publisher, asset uploader, repository owner and individual profile separately. REDnode release425786395 has four listed asset records and a2821-character Markdown body. ArchiveXL release425538188 has two listed asset records and a105-character body. Its earlier HTML Assets4 observation remains dated evidence; a cross-surface difference must not silently disappear. Published asset digest values are not locally verified archive hashes.
+
+Ketaros JSON-LD `description` truncates the actual article; the bounded About HTML is the body source. Its author and publisher both display Ketaros but their Person/Organization types remain separate. The creator profile does not establish a separate avatar; the site logo is excluded. Criminal Tendencies targets patch2.5 and lists CET minimum1.38.0. Completion Catalog’s requirements text and related links differ; retain both.
+
+DLCfun’s schema calls local uploader Antihype the author, while Deceptious’ original hub directs mod downloads to Nexus. Preserve local uploader and original creator roles rather than adopting the copied first-person prose as identity proof. Cyberpunk2077Mod’s local JSON-LD publisher The V likewise differs from CET upstream authors. Neither mirror has creator-permission acceptance.
+
+### Preserved failures and boundaries
+
+- **default public exec — `sandbox_network_denied`:** Default urllib request Operation not permitted; authorized public network retrieval succeeded under escalation. No bot block workaround.
+- **scratch parser dependency — `missing_bs4`:** Initial parser import failed before request; corrected to installed lxml. Initial failure retained.
+- **Bioskop Notion — `javascript_shell`:** HTTP200 title Notion; no article h1 or anchors. No private API guessing.
+- **Jimdo About — `generic_platform_about`:** Actual About page is platform boilerplate; creator biography/avatar not proven.
+- **prior round — `preserved_not_superseded`:** Earlier Tumblr403, Kala robots denial, ZIP unsupported, CDPR route ambiguity and media playback gaps remain valid dated evidence. New raw public API retrieval does not erase old lazy-region failures.
+- **media/files/follow — `not_accepted`:** Only2 avatars and1 gallery static image decoded; no animation/video playback, ZIP byte hashes, authenticated download or follow write.
+- **Tevox provenance — `discovery_only`:** No original creator authorization or actual item/profile extraction established; homepage is insufficient acceptance.
+- **policy-blocked domains — `not_attempted`:** LL/F95 not accessed through browser, network, search fetch or alternate surfaces.
+- **ArchiveXL asset count — `cross_surface_difference`:** Prior HTML Assets4; public API assets2. Do not silently overwrite one with other.
+- **paid gates — `not_crossed`:** Ketaros Subscriber/free download gates observed; no purchase, account write or entitlement bypass.
