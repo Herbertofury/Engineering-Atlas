@@ -91,3 +91,7 @@ General results stay here. Only verified improvement against a target project's 
 ## Real-media workbench
 
 [Open the public media laboratory](https://herbertofury.github.io/Engineering-Atlas/media-lab/) for real source snapshots, image decode and explicit player states. [Retained browser evidence](../../experiments/real-media-lab/README.md) distinguishes working Steam playback, delayed YouTube playback with a failed thumbnail, and unknown gallery coverage.
+
+## Round-three communities and executable social normalization
+
+[Round-three methods](methods-round3.md) expands the catalog to426 canonical service/scope entries with367 new dated source/outcome records. It combines six game passes, [other game communities](games/other-games.md), [Discord normalization](discord.md) and [actual Bluesky public API extraction](bluesky.md). Independent alias review keeps hosted project scopes under their existing service. The previous349-scope snapshot and earlier workbench results remain dated evidence.
