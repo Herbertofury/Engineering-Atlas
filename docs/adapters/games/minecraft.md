@@ -125,3 +125,103 @@ Local creator follow can be designed around stable IDs/canonical profiles withou
 Prioritize a permitted fixture set that resolves the actual remaining failures: Modrinth creator/team join and actual file bytes; CurseForge authorized API description and files plus member avatar; PMC collapsed body, creator image and update continuation; MinecraftMaps missing two creator maps and native follow state; ModBay final file link and comment continuation; Hangar platform-specific downloads; Voxel null owner fields; login-gated MCBBS attachments only after the user completes authorized sign-in. A 403, 503, shell or null is a retained result, not a reason to probe internal endpoints or change domains to evade controls.
 
 Source IDs MCX001–MCX067 refer to this pass's primary pages and attempted URLs; the accompanying integration evidence supplies the proposed register objects. Existing broader [mod-host guidance](../mod-hosts.md) retains its earlier scoped findings. No GameSync changes or target adoption were made.
+
+## Round two: concrete methods
+
+[Cross-site method index](../methods-round2.md) · [Sanitized method evidence](../../../experiments/site-adapter-discovery/method-research-round2-2026-10-28.json). Source IDs with historical S2K/M2C/S2S prefixes are published as SKYB/MCB/SIMB; original IDs remain in the manifest.
+
+Checked **2026-10-28 UTC**, user date **October 28, 2026, America/Denver**. Baseline: the current 248-entry Atlas catalog and existing Minecraft guide. This pass adds **22 independent candidate service/hub scopes**, **63 primary source records**, **nine inspected scopes**, **four executable extraction candidates** and **14 preserved real public response fixtures**. New candidates include explicitly blocked and historical references; those are not active-distribution acceptances.
+
+The strongest improvement is concrete, repeatable evidence for Modrinth creator joins, a real public file hash check, Planet Minecraft creator/avatar/body selectors, and WordPress/RSS extraction. **No full adapter is accepted.** All native follow mutations/imports, authenticated workflows, purchases and video playback remain untested. No browser or authenticated session was used. No LoversLab or F95 URLs were accessed.
+
+### Executed sample evidence
+
+Actual anonymous responses were parsed live and replayed offline. The publication manifest retains fixture URLs, byte lengths, response hashes, normalized body hashes, creator joins, file manifests and decoding receipts. Raw bodies and private local paths are excluded. Experimental parsers do not establish production support.
+
+### Modrinth: observed join and precise acceptance scope
+
+Actual public GETs succeeded for [Sodium project](https://api.modrinth.com/v2/project/sodium), [team members](https://api.modrinth.com/v2/project/AANobbMI/members), [versions](https://api.modrinth.com/v2/project/AANobbMI/version) and [uploader](https://api.modrinth.com/v2/user/TEZXhE2U). See MCB001–MCB009 and the JSON `liveExperiment` receipts. Web retrieval initially failed for several of these URLs; a permitted public HTTP read with a meaningful User-Agent succeeded. The earlier transport failures remain in the failure register.
+
+The actual project is `AANobbMI`, team `4reLOAKe`, organization `LjcZDkRW`. The organization ID remains opaque: an organization API contract was not established, and the public organization page returned a shell. A team record is not itself proof of organization ownership or an organization avatar.
+
+| Person | Stable user ID | Observed project role | Creator image source |
+|---|---|---|---|
+| jellysquid3 | `TEZXhE2U` | Project Lead | `user.avatar_url`, confirmed by separate user response |
+| IMS | `DzLrfrbK` | Maintainer | Nested team `user.avatar_url` |
+| douira | `PSleyMoH` | Maintainer | Nested team `user.avatar_url` |
+
+Display `name` is null in these observed member/user objects. Preserve the username instead of inventing a display name. The separate user response confirms the current release uploader, rather than selecting an arbitrary first team member.
+
+The candidate `modrinth_candidate` asserts `version.project_id == project.id`, each `member.team_id == project.team`, and `version.author_id == uploader.id`. It retains project roles independently of release-uploader identity. Project `icon_url` stays separate from creator `avatar_url`.
+
+The rich body contains 5,414 characters / 5,422 UTF-8 bytes. Its SHA-256 is `df3a968ae7436db584b614889a22b8574fb3123a16580e4c28b7fb3a6cf9ec58`. The six gallery records retain `url`, `raw_url`, `featured`, title and `ordering`; their observed order is `0,1,10,30,999,1000`. The original body remains authoritative. The included Markdown/HTML image-token projection is explicitly incomplete for arbitrary Markdown and does not certify a general body parser.
+
+The first observed release is `g6ju16VJ`, uploader `TEZXhE2U`, Fabric / Minecraft `26.3`, `client_only`, beta release. Its file `rbdNchdD` is `sodium-fabric-0.9.3-beta.1+mc26.3.jar`, size **1,912,496 bytes**. A public in-memory stream matched its advertised size, SHA-1 and SHA-512. Separate NeoForge variants remain separate release/file choices. The complete hashes and source URL are in the receipt. These checks establish this file's manifest/byte parity; they do not establish installation, compatibility in a target, or execution safety.
+
+The uploader avatar decoded as a **700×700 PNG**, one frame, 38,682 bytes. The decode receipt SHA-256 is `780ef3050eed6aca0814ebd25f17f070e7e05f73f5da8f01367da7d5c46d03b6`. Native project follow is documented separately from a local creator subscription. No follow/import request was made; version-history completeness and deleted/hidden releases remain unaccepted.
+
+### Planet Minecraft: actual DOM rather than inferred labels
+
+Actual raw public HTML was read for [More Music Discs](https://www.planetminecraft.com/mod/more-music-discs-fabric-forge-1-16-5-1-19-2/) and [MarsThePlanet](https://www.planetminecraft.com/member/marstheplanet/) (MCB011–MCB013). The `pmc_candidate` function ran live and offline on the retained responses.
+
+| Field | Observed selector / source | Actual evidence |
+|---|---|---|
+| Project identity | `#resource_id` text | `5780546` |
+| Creator identity | `#author_id`; byline `.mini-profile a.membertip[data-mid]` | `2726548`, canonical member link |
+| Creator avatar | Profile `#avatar[data-mid="2726548"] img.avatar_icon` | `static.planetminecraft.com/files/avatar/2726548_1.png` |
+| Rich body | Unique `#r-text-block.rich-user` | 18,795 normalized serialized UTF-8 bytes |
+| Ordered media | Descendant image/iframe/video/audio/source nodes | 52 image nodes; includes badges/logos |
+| Native follow evidence | `#subscribe_full button.subscribe` | `data-mid`, resource content type/ID, Subscribe/Subscribed/Unsubscribe labels |
+| File discovery | `#resource-options a.third-party-download` | Two outward download/website routes |
+| Update history | `#resource-log` | Initial update plus continuation; not exhausted |
+
+The creator avatar decoded as a **120×120 PNG**, one frame, 17,125 bytes; SHA-256 `6fc14aa45259159a519d12459058e2792e85b1b6fd862627c7b0333301a28466`. The matching `data-mid` and scoped profile node prevent accidental assignment of comment/activity avatars.
+
+The body projection preserves the complete selected HTML and walks media in document order. Fifty-two image nodes must not be relabeled as fifty-two screenshots: donation badges and project/loader graphics are part of that count. Gallery, body decorations and creator images need separate roles. The serialized-body SHA-256 is `adb1efb64548217c95cca736ddd636bba5696c9708e903be9edadb9599ed6531`.
+
+The outward routes carry IDs `665405` and `665404`; they are discovery links to other hosts, not a verified PMC jar manifest. Native subscription attributes were observed without firing any request. The 76-log history and profile continuation remain incomplete. No internal AJAX/private endpoint was used or guessed for normalization.
+
+### WordPress and RSS: a real alternative source with an honest mismatch
+
+[RRe36's hub](https://rre36.com/) advertises `rel=https://api.w.org/` and RSS. The actual public [post collection with embeds](https://rre36.com/wp-json/wp/v2/posts?per_page=1&_embed) returned post **7402**, author **1**, `content.protected=false`, rich `content.rendered`, embedded author and featured media. [User 1](https://rre36.com/wp-json/wp/v2/users/1) supplies RRe36, the author slug and avatar URLs at sizes 24/48/96. The author's HTML URL redirects to the homepage, so it is not an independently verified profile page. Use the successful public REST identity evidence.
+
+`wordpress_candidate` joins `post.author` to `_embedded.author[].id`. This is the **post writer** role; a mod developer or screenshot contributor must be established separately. Featured media `7404` remains project/article imagery, not the author's avatar. Its media response reports `image/jpeg` while the source URL and generated sizes use WebP: preserve the discrepancy and decode bytes before assigning a definitive media type.
+
+Collection headers actually report `X-WP-Total:231`, `X-WP-TotalPages:231` at `per_page=1`, with a `rel=next` URL. Those headers provide a continuation recipe, not evidence that all pages were collected.
+
+The advertised [RRe36 RSS](https://rre36.com/feed) parsed ten items. Its first `content:encoded` and REST body are both **12,342 characters**, but raw byte/hash equality **failed**. Inspection found the same text and ordered image sources; one image has REST `loading=lazy` / an `auto` sizes prefix versus RSS `fetchpriority=high` / a sizes value without that prefix. Both originals and hashes are retained. Do not silently canonicalize away that failed comparison or claim identical HTML.
+
+[Crafters Colony](https://minecraft-mcworld.com/) provides a second working advertised [RSS feed](https://minecraft-mcworld.com/feed/). The current addon [269598](https://minecraft-mcworld.com/269598/) and its linked creator page were inspected. Public HTML and headers identify an opaque author slug, a scoped creator image and an advertised WP user ID `37884`; that user JSON was not fetched. The documented post REST route returned **403**. Its separate public RSS succeeds: ten items, first canonical link 269598, `dc:creator=kaochanMC_`, full `content:encoded` of **2,600 characters** versus a 120-character description. A feed's display name is not a stable user ID/avatar.
+
+`rss_candidates` parses namespaces, GUID/link, publication time, `dc:creator`, full encoded content, description, ordered media and enclosures separately. It does not infer author avatars from channel artwork or turn a ten-item window into complete history. An initial experiment mistakenly applied JSON decoding to the XML feeds and failed; the corrected XML parse succeeded. That experiment failure is retained.
+
+### Independent discovery beyond the existing catalog
+
+The following are new service/hub scopes relative to the 248-entry baseline. Creator-owned websites are distinct scopes; creator accounts on already cataloged platforms are not counted again. The JSON retains precise source URLs, statuses and capability limits for each.
+
+| Candidate | Scope and observed boundary |
+|---|---|
+| [Crafters Colony / クラフターズコロニー](https://minecraft-mcworld.com/) | Japanese original creator distribution; public addon/profile/feed inspected. REST403 retained. Do not mistake anonymous commenter Gravatar for creator image. |
+| [Hanmafo / 한마포](https://www.koreaminecraft.net/) | Korean mod/pack/map/plugin community. Inspected article4215064: poster HyperSPR, developer HyperSpruce, MIT/source Modrinth/GitHub, four jar attachment rows with sizes and ordered body screenshots. Profile-hover UI lacks proven stable public member route; do not equate unrelated sidebar skin to poster avatar. Login required to comment; file bytes not fetched. |
+| [Minecraft-Schematics.com](https://www.minecraft-schematics.com/) | Actual item32113 and HackAccused profile; Submitted by role, post date/body and favorites link. Item explicitly non-free with purchase/subscription required; no purchase/download attempted. Creator profile7creations vs3initial cards => incomplete history. Avatar not established. |
+| [Abfielder](https://abfielder.com/) | Free/Premium separated. Factory Castle2944 has Created by PepaBw, original.litematic filename,37KB,version1.0 and conversion/3D links. Creator1 scoped list and abfielder item11780 inspected; this list is not proof of a profile/avatar. No format-conversion output or binaries tested. |
+| [OlcanoMods](https://olcano.net/) | Actual Land Claim addon/profile Areed Elahi. Description image and item hero separate from profile image. Profile lists10publications/followercount; item carries platforms,version labels,40KB metadata but no extracted direct file manifest. Hand-review claim is site description, not independently verified moderation. |
+| [RRe36's Projects](https://rre36.com/) | Active original shader hub with tested public WordPress/RSS author/body methods. Keep site post author distinct from screenshot contributors and external project hosting. Native follow unspecified; Patreon/Discord links are different actions. |
+| [Bedrock Tweaks](https://bedrocktweaks.net/) | First-party site explicitly calls itself unofficial Vanilla Tweaks port, links original project, has separate resource/addon/crafting selectors. Treat independently from Vanilla Tweaks; builder-selection ZIP/rights/avatar not yet verified. |
+| [myGen Gaming](https://mygen.co.uk/) | Original Bedrock hub: Advanced Floating Text detail has11captioned screenshots,body/features/install and external CurseForge download. Creator hub character art is not a confirmed human avatar. Public release-feed link exists; no complete release history or native follow test. |
+| [BDcraft](https://bdcraft.net/) | Homepage502; retain blocked original-creator candidate only. No claims about current packages/entitlements/avatar. |
+| [Dokucraft](https://dokucraft.co.uk/) | Official homepage title retrieved but zero extracted lines. Public rendering fixture pending; do not label the site inactive or its downloads accessible. |
+| [Sapixcraft](https://sapixcraft.com/) | Original resource-pack hub with resolution-specific Java downloads, addons,mod support,news and separate Bedrock Marketplace path. Free16x/32x external Modrinth/CurseForge explicitly stated. Do not infer higher-resolution entitlement or creator avatar from logo; no package purchase performed. |
+| [Sonic Ether / SEUS](https://www.sonicether.com/) | Original shader creator About Me and SEUS release/download listing inspected. Legacy/Renewed downloads on site; PTGI links Patreon and page says free. No entitlement or download acceptance inferred from text; preserve shader/version/date and external social follow separately. |
+| [Continuum Graphics](https://continuum.graphics/) | Original publisher distinguishes free Continuum2.1 through Focal Engine, early-access store packages, RT and Stratum. No login/purchase/download; publisher page not a complete file manifest or creator avatar record. |
+| [World Minecraft Japan](https://world-minecraft.com/) | Japanese world/mod/addon directory/forum with RSS link, but displayed newest material uses1.18.1 and forum ages4–5years; treat as historical/reference discovery until item/file freshness verified, not confirmed active distribution. |
+| [Minecraft Japan Forum](https://civa.jp/) | Public root403. Search leads suggest mod/world sharing but no precise fields or API promoted. |
+| [MCBE Japanese Forum](https://forum.mcbe.jp/) | Public root retrieval timeout. No profile/body/file or current active-distribution claim. |
+| [MinecraftSchem](https://minecraftschem.com/about) | Distinct from minecraft-schematics.com. First-party About identifies LeonisTeam, public beta,creator uploads/avatars/subscriptions and direct or external downloads. Promised public APIs/open source are future-facing statements, not documented current endpoints. Actual item/profile fixture pending. |
+| [Minecraft-France](https://www.minecraft-france.fr/) | Distinct from minecraft.fr. Actual Much More Dungeons article and Ezral team profile inspected. Ezral is editorial writer, not inferred mod author; profile skin portrait is editor representation. Ordered screenshot body/download source links need original mod developer attribution and separate binary validation. |
+| [ZonaCraft](https://www.zonacraft.net/) | Spanish category directory retrieved from2-year-old crawl. Current freshness,original publisher links,creator/avatar/body/file rights unverified; historical discovery candidate. |
+| [CloudburstMC Nukkit resources](https://cloudburstmc.org/resources/) | MobPlugin resource3 by PetteriM1: overview,107updates,history,compatible API1.1.0+,source/contributors and download link. Author profile403; preserve unresolved avatar. Nukkit plugin compatibility differs from Bedrock addon packs. No purchase/auth/follow action. |
+| [skUnity](https://forums.skunity.com/resources/) | Official community describes creator-published Skript resources and separate docs/parser. Resource index inspected; concrete resource/profile/file fixture still pending. Syntax docs are reference tooling, not downloadable scripts by themselves. |
+| [Skript.pl](https://skript.pl/) | Public root timeout; retain Polish community lead with no inferred current activity or fields. |
+
+Several candidates remain blocked or historical. Their inclusion preserves useful leads without recommending unauthorized rehosts or claiming active distribution. MinecraftSchem and Minecraft-Schematics.com are separate domains/services; Minecraft-France and Minecraft.fr are also separate. Bedrock Tweaks expressly identifies itself as an unofficial port and links Vanilla Tweaks, so it should not be merged into the original project's identity.
