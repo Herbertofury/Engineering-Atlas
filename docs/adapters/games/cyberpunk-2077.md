@@ -452,3 +452,65 @@ DLCfun’s schema calls local uploader Antihype the author, while Deceptious’ 
 - **policy-blocked domains — `not_attempted`:** LL/F95 not accessed through browser, network, search fetch or alternate surfaces.
 - **ArchiveXL asset count — `cross_surface_difference`:** Prior HTML Assets4; public API assets2. Do not silently overwrite one with other.
 - **paid gates — `not_crossed`:** Ketaros Subscriber/free download gates observed; no purchase, account write or entitlement bypass.
+
+## Round-three community and extraction research
+
+Checked **2026-10-31**. The [round-three evidence manifest](../../../experiments/site-adapter-discovery/community-research-round3-2026-10-31.json) preserves original source locators, operation limits, failures and field mappings. Public observations are separate from executable parser and authenticated acceptance. Proposal counts below retain their original scope; the shared catalog applies alias and same-project normalization.
+
+### New scope candidates
+
+| Service/scope | URL | Decision |
+|---|---|---|
+| M Works / MaximiliumM | https://maximiliumm.com/ | Strong original creator/release-discovery hub. Real Nexus item/author, avatar and gallery join inspected. |
+| SoundDB | https://sounddb.redmodding.org/ | Reference audio explorer; author, documentation and API pointer inspected. No sound playback or runtimeAPI acceptance. |
+| Audioware original docs | https://cyb3rpsych0s1s.github.io/audioware/ | Official linked project documentation, existing GitHubPages scope. Source cover is not author avatar. |
+| XMODhub | https://www.xmodhub.com/ | Multi-game regional portal candidate; actual public item, body/media and authentication label. Creator account/consent unverified. |
+| ModsLab | https://modslab.net/ | Strong regional identity-role sample: author facet, uploader profile and external file host are all separate. |
+
+### Deep item/project and author pairs
+
+#### M Works → RelicBeGone2536 → MaximiliumM1677940
+
+[Creator hub](https://maximiliumm.com/) (RDCP31001) explicitly self-identifies MaximiliumM and links AMM, ACM and RelicBeGone. Contributions to friends’ work are separately labeled; a portfolio card need not mean sole authorship. [Actual RelicBeGone2536](https://www.nexusmods.com/cyberpunk2077/mods/2536) has Created by MaximiliumM and Uploaded by linked numeric user1677940, resolving to [profile/MaximiliumM?gameId=3333](https://www.nexusmods.com/profile/MaximiliumM?gameId=3333). Preserve both roles even where equal.
+
+Description region has original text, installation, limitations, requirement and contributor credits; do not ingest general guest menu/dialogs as content. Main file is2KBv1.0 with its own upload time; this differs from the project’s displayed update time. Manual binary URL is absent in retrieved guest text. The old source date is historical applicability, not proof of compatibility with the current game.
+
+[Images tab](https://www.nexusmods.com/cyberpunk2077/mods/2536?tab=images) lists two items under Author images, yet their image uploaders are MaximiliumM and599Rider. Both actual images displayed, in source order, and the [creator avatar](https://avatars.nexusmods.com/1677940/100) displayed separately. Gallery ownership/category does not authorize attributing599Rider’s image to the mod author.
+
+The [Ko-fi profile](https://ko-fi.com/maximiliumm) provides an explicitly labeled profile picture, actually displayed, bio and Follow text. Empty Feed and template placeholders do not prove no posts or an authenticated session. The linked Discord `Ce3xVqMcWN` failed on redirect; no messages or attachments read. AMM790 actual link returned only Nexus shell; do not fill its body from portfolio prose.
+
+#### Audioware12001 → Roms1383 + RedModding member
+
+[Actual mod12001](https://www.nexusmods.com/cyberpunk2077/mods/12001) and [numeric uploader163516183→profile](https://www.nexusmods.com/profile/Roms1383?gameId=3333) expose original creator/uploader, version1.11.0 and Oct29 2026 update. Historical changelog hashes and dependency versions are author statements tied to those versions, not independently checked current archive integrity. Spanish/Chinese translation authors remain separate contributors.
+
+[Files tab](https://www.nexusmods.com/cyberpunk2077/mods/12001?tab=files) shows current1.3MB file and old rows with dates, but many per-file Version cells are blank. Keep them unknown; project version cannot silently fill every old row. No actual file delivery accepted. Main description and changelog are readable; title/summary alone is not completebody verification.
+
+[RedModding member](https://redmodding.org/members/roms1383) has explicit member avatar/REDCore role. The actual Discord-hosted avatar displayed. This is identity evidence from the first-party project/member graph, not proof of Discord message access. [Official guide](https://cyb3rpsych0s1s.github.io/audioware/) is linked by the actual mod. Its Cover image is a project illustration; its docs author handle/domain differs from the Nexus display name, so retain the provenance link rather than asserting name equality. Navigation includes manifest, developer/API and integration docs. Install points to upstream release; no binary downloaded.
+
+#### SoundDB project → Zhincore member/original site
+
+[SoundDB about](https://sounddb.redmodding.org/about) explicitly names creator/maintainer Zhincore and provides audio-search field documentation and an [API reference pointer](https://sounddb.zhincore.eu/). Documentation facts include sound hash, bank/event and filename distinctions; no runtimeAPI response or generated audio-file URL was observed. The reference pointer returned2lines only. Index returned navigation shell; individual records/audio playback remain unverified.
+
+[Linked member](https://redmodding.org/members/zhincore) exposes explicit avatar and GitHub/Nexus identity links; avatar displayed. Project directory links [original site](https://zhincore.eu/en). Preserve different snapshot times: member retrieval includes Apr2025 update metadata whereas current directory includes Oct2026. Do not interpret differing cached counters as live profile changes. SoundDB Favorites is not creator-follow; no social mutation occurred.
+
+#### PinkyDude original roadmap138570804 → creator profile → external catalog
+
+[Actual public post](https://www.patreon.com/PinkyDude/posts/roadmap-useful-138570804) and [linked creator](https://www.patreon.com/cw/PinkyDude) expose stable postID/creator alias, Sep10 2025 and public mainbody. Roadmap status is a plan, explicitly without promised release dates. Mainbody has two content images separate from the explicitly labeled creator profile picture. Actual avatar request failed; token-bearing delivery URL was deliberately omitted from publication.
+
+The actual [GoogleSheet catalog](https://docs.google.com/spreadsheets/d/1slqe7jYBw2B16IIFxy0-W_gB-9YiNXE8g7694Ln2BXM/edit?gid=0) reveals title, view-only and introductory rows, but category tabs/mod entries do not populate. It is a creator-maintained catalog lead, not complete imported history. Drive resource links, mod original distribution and Patreon membership are distinct objects. Profile’s latest teaser does not replace the roadmap body or establish all-post entitlement. No follow history/import or pagination terminal state accepted.
+
+#### ModsLab High-ResJohnny → XilaMonstrr facet + Swordself14 uploader
+
+[Actual detail](https://modslab.net/en/cyberpunk_2077/mods/hD85eyKS3r/) names Author XilaMonstrr and Uploaded by Swordself14 separately. [Author facet](https://modslab.net/en/authors/XilaMonstrr/) says4files, but no creator-account/profile data; [uploader profile](https://modslab.net/en/user/Swordself14/) exposes account/material counts and message control while uploaded lists remain empty. No avatar role verified. Do not turn the uploader into the mod creator or personal metadata into required collection fields.
+
+Detail has short complete visible directory description, version2.0/dateNov15 2023, main267MB and additional2K90.6MB variant. Download action actually redirects from `download_file.php?...u_id=23691` to [ModsFire82H38ceEshtp4G2](https://modsfire.com/82H38ceEshtp4G2), inaccessible. No binary/permission acceptance. Category date/history and display size are metadata, not installed compatibility. [Actual category](https://modslab.net/en/cyberpunk_2077/categories/244/) has pagination; terminal history untested. Earlier guessed root category failed and is preserved.
+
+### Additional public portal and community observations
+
+[XMODhub VTK Neck Seam Fix](https://www.xmodhub.com/en/game-mods/cyberpunk-2077-mods/vtk-neck-seam-fix-angel-evb) exposes Creator:PinkyDude, updated timestamp,5KB, long description, three content-image links and Authentification/download text. No linked creator profile, original ownership or binary URL accepted. It links Nexus dependency projects and an official support [Xmod Discord invite](https://discord.com/invite/KMAxzUSwtp), shell only. Preserve portal prose/media separately from originals; do not assert redistribution permission merely because a creator name appears.
+
+Broader honest leads: official Discord listings for [Cyberpunk Modding Community717692382849663036](https://discord.com/servers/717692382849663036) and [NightCityReborn1285796904160202752](https://discord.com/servers/1285796904160202752) surfaced in search, but were not directly opened and have no channel/post fixture. [Mistralys upstream mod database](https://github.com/Mistralys/cyberpunk-mod-db/blob/main/mods-list.md) surfaced creator/alias mappings, still a search-only lead and existing GitHub service. Existing baseline already covers Word in Progress, cyberpunk.codes, Deceptious, Ketaros, EDGEmodders, NightCityRiot, TevoxMods, Japanese2game and major regional hosts; none was added again.
+
+### Remaining gates
+
+These observations establish field locations and provenance joins, not selectors or accepted adapters. Obtain permitted DOM fixtures; validate fullbody boundaries, media ordering and missing-field behavior; follow actual pagination to terminalstate; preserve mod author/uploader/gallery-uploader/translator/Discord-poster roles; prove binary/archive/hash integrity separately; and test read-only signed-in follows/import and legitimate entitlement. Unknown numeric IDs, avatars, fileURLs and counts remain unknown. No native follow/download mutation, messages or access-control bypass was attempted.
