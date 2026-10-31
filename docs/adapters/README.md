@@ -1,16 +1,21 @@
 # Adapter laboratory
 
+**Repository synchronization pending:** this research pass is published through the wiki. Its updated canonical files and new executable-lab files have not yet been uploaded to `main`, so new repository-only code and receipt links may not yet resolve. The wiki retains the reviewed methods and their limits in full.
+
 **Collect real data. Preserve source identity. Prove complete media and responsive cards together.**
 
 Research and implementation status are separate. A platform listing is not proof that all pages, paid content or media work. Existing adapters and maintained upstream tools are baselines, not disposable scaffolding.
 
-## Expanded research: 248 service and scope entries
+## Expanded research: 349 service and scope entries
 
-Reviewed **October 28, 2026 UTC** (October 27 in America/Denver). The [coverage catalog](coverage-catalog.md) spans mod hosts, paid creator platforms, social networks, regional communities, blogs, code forges, file hosts and specialist indexes. Six game research passes added 86 canonical entries, 179 game scope records and 420 source records. The resulting 248 entries include research candidates and reference-only tools. One [authenticated Mod Collective fixture](mod-collective.md) establishes specific body, identity, image and free-file observations; complete platform acceptance remains pending.
+Reviewed **October 31, 2026 UTC**, retaining dated October 28 evidence. The [coverage catalog](coverage-catalog.md) spans mod hosts, paid creator platforms, social networks, regional communities, blogs, code forges, file hosts and specialist indexes. The first six-game expansion reached 248 entries; the second added 98 canonical services/scopes, bringing that dated snapshot to **346**. The October 31 screenshot review adds Pawchive, Tipeee and historical HYPAGE as researched candidates, bringing current coverage to **349**; [the per-site matrix](paid-platforms.md#screenshot-coverage-and-operation-evidence--october-31) retains unresolved Library and explicit operation gates. The [new extraction methods](methods-round2.md) retain 71 game/cross-game recipes, five additional browser scopes, actual failures, field boundaries and remaining gates. Every entry has operation-specific evidence status; a catalog entry does not imply complete support.
+
+The [executable extraction lab](../../experiments/site-extraction-lab/README.md) replays nine real captured fixtures through eight parser families, producing 27 normalized records with sanitized receipts. Authenticated checks now include [Mod Collective](mod-collective.md), [SubscribeStar](subscribestar.md) and [Patreon](patreon.md). Actual browser downloads are verified for a public Patreon release and [SimsFinds](simsfinds.md), alongside the earlier Mod Collective fixture. Member-only bodies, complete histories and native follow operations remain separately gated.
 
 | Research area | Start here |
 |---|---|
 | Every entry, route, follow semantics and evidence state | [Coverage catalog](coverage-catalog.md) · [Machine-readable records and source statuses](../../data/site-adapter-catalog.json) |
+| Actual extraction boundaries, evidence and working parser samples | [Second-round methods](methods-round2.md) · [Executable extraction lab](../../experiments/site-extraction-lab/README.md) |
 | Skyrim SE/AE, Fallout 4, Minecraft, Sims 4, Cyberpunk 2077 and Hytale | [Game community guides, actual item/profile inspections and source records](games/README.md) |
 | Mod distribution, projects, creators, releases and files | [Mod hosts: 15 deep recipes](mod-hosts.md) |
 | Membership posts, paid downloads and creator stores | [Paid platforms: 12 deep recipes](paid-platforms.md) |
@@ -19,9 +24,10 @@ Reviewed **October 28, 2026 UTC** (October 27 in America/Denver). The [coverage 
 | Tumblr | [Dedicated NPF, author/avatar, media and following recipe](tumblr.md) |
 | SubscribeStar and SubscribeStar.adult | [Separate-origin API, access and following review](subscribestar.md) |
 | Dwemer Mods | [Credited author versus uploader; structured-data limits](dwemer-mods.md) |
-| WCIF.cc | [Index versus hosted files; loading-shell handling](wcif.md) |
+| WCIF.cc | [Rendered directory, creator identity, item/source links and tested pagination](wcif.md) |
 | Plumbdex / Plumdex | [Creator matches, file index, avatars and account follows](plumbdex.md) |
 | Mod Collective | [Signed-in body, author/avatar, ordered gallery and actual mod-file receipt](mod-collective.md) |
+| SimsFinds | [Actual body, byline/profile join, preview and verified package delivery](simsfinds.md) |
 | TS4 Rebels | [Forum identities, hidden links, feeds and attachment provenance](ts4-rebels.md) |
 | Mirrors and reuploads | [Provenance and original-source relationships](mirrors-and-provenance.md) |
 
@@ -67,13 +73,14 @@ Nexus Mods groups Skyrim Special Edition, Fallout 4 and Starfield with distinct 
 - [Measured storage workload](../../experiments/rust-storage-lab/README.md)
 - [Dated research decision and source register references](../../research/2026-10-28-site-adapters.md)
 - [Six-game expansion and authenticated fixture decision](../../research/2026-10-28-game-adapter-expansion.md)
+- [Second-round method evidence and source records](../../research/2026-10-28-adapter-methods-round2.md)
 - [Public specialist-site observation receipt](../../experiments/site-adapter-discovery/README.md)
 
 ## Next proof work
 
-1. Build permitted public fixtures for the structured candidates: Tumblr NPF, Modrinth, CurseForge, Nexus, Hangar, Steam Workshop, mod.io and creator-owned feeds. Compare identity/body/media completeness, not just request speed.
-2. Use existing authorized accounts for Patreon, SubscribeStar, Boosty, FANBOX, Fantia, Afdian and the requested specialist forums/indexes. Record guest/nonmember/member differences, follow semantics and file access; do not assume an API for creator administration can read every patron's subscriptions.
-3. Extend to the remaining catalog using real creator links and the same acceptance corpus. Where a site only permits embeds, links or creator-installed integrations, expose that capability accurately instead of substituting an unverified scraper.
+1. Expand the retained samples into complete acceptance corpora, including edited/deleted posts, multi-page histories, missing or incorrect creator joins, animated media and expiring files. The current Modrinth, WordPress/RSS, Tumblr DOM and specialist-site observations provide concrete starting points; API/NPF parity remains a separate check.
+2. Use authorized member fixtures to compare guest, signed-in nonmember and entitled states. Patreon and SubscribeStar sign-in succeeded, but that does not establish paid access. Follow-list imports and native writes require their own evidence; creator administration APIs do not automatically expose a patron's subscriptions.
+3. Resolve each remaining operation using the catalog's evidence state and the same acceptance corpus. Where a site permits only embeds, links or creator-installed integrations, expose that capability accurately. Preserve policy-blocked and failed results instead of calling them working adapters.
 
 Each provider keeps its actual review date and source status. The [wiki projection instructions](wiki-sync.md) keep this source and the wiki aligned without overwriting unrelated pages.
 
