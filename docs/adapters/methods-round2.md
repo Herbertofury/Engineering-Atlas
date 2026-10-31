@@ -1,7 +1,5 @@
 # Concrete adapter methods: round two
 
-**Repository synchronization pending:** this research pass is published through the wiki. Its updated canonical files and new executable-lab files have not yet been uploaded to `main`, so new repository-only code and receipt links may not yet resolve. The wiki retains the reviewed methods and their limits in full.
-
 [Coverage catalog](coverage-catalog.md) · [Game guides](games/README.md) · [Machine evidence](../../experiments/site-adapter-discovery/method-research-round2-2026-10-28.json) · Checked **2026-10-28 UTC**.
 
 The public research bundles retain **104 candidate scopes**, **161 inspected scopes**, **71 method recipes** and **367 game-source records**; 12 separate browser source records are also integrated. After canonicalizing repeated platforms and hosted creator accounts, they add **98 services**, taking the catalog from 248 to **346 entries**. These are discovery and sample-method counts; no full adapter is accepted.
