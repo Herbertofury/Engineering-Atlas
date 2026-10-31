@@ -39,5 +39,9 @@
   "docs/adapters/games/cyberpunk-2077.md": "Game-Adapters-Cyberpunk-2077",
   "docs/adapters/games/hytale.md": "Game-Adapters-Hytale",
   "docs/adapters/mod-collective.md": "Adapter-Mod-Collective",
-  "docs/adapters/wikimedia-commons.md": "Wikimedia-Commons-Adapter-Research"
+  "docs/adapters/wikimedia-commons.md": "Wikimedia-Commons-Adapter-Research",
+  "docs/adapters/simsfinds.md": "Adapter-SimsFinds",
+  "docs/adapters/methods-round2.md": "Site-Adapter-Extraction-Methods",
+  "experiments/site-extraction-lab/README.md": "Site-Extraction-Lab",
+  "docs/adapters/itch-io.md": "Adapter-Itch-io"
 }
