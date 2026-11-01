@@ -46,3 +46,7 @@ The second pass adds concrete body/identity/media/file methods, executed sample 
 | [Additional game ecosystems](../methods-round2.md) | 12 | 33 | 10 | 35 | 8 |
 
 The 104 candidate scopes add 98 canonical service entries after platform/domain normalization. The 71 research recipes include sample-proven selectors/schema, executed normalizers, semantic extraction plans and documented alternatives; their individual states remain explicit. Every final catalog entry (346) has operation evidence and unknown fields. The game bundles add no authenticated or full-support acceptance. Separate browser receipts can prove narrower operations.
+
+## Round-three update — October 31
+
+All six guides now append another dated community and item/profile extraction pass. [Other game ecosystems](other-games.md) adds Outer Wilds, Celeste, Rain World, Doom, Sonic, Project Zomboid, 7 Days to Die, flight-simulator, SimCity, Souls and Satisfactory scopes. The [round-three index](../methods-round3.md) lists normalized counts and executable social improvements. Original proposal counts remain visible; the canonical catalog merges aliases and same-project documentation.

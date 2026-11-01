@@ -2,6 +2,7 @@
   "schema_version": 1,
   "files": [
     "data/sources.json",
+    "data/sources.d/adapter-communities-round3-20261031.json",
     "data/sources.d/adapter-methods-round2-2026-10-28.json",
     "data/sources.d/compact-layout.json",
     "data/sources.d/constraint-index-papers-20261029.json",

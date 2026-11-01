@@ -197,3 +197,56 @@ Archidexter’s creator site links its Boosty account, which supplies an exact A
 FalloutUG returned 503. Fallout4 Experiences homepage and resource hub both returned 503. Sim member profile returned 403. The guessed boopi profile route returned 404. No block was bypassed; no alternate access to LoversLab/F95 occurred. Round 1 avatar, shell, login, Haven, gallery, video and stale-domain failures remain referenced in JSON; the later successful Sim thread transport does not erase the earlier wrong-page result.
 
 Response SHA-256 values, byte counts, normalized field hashes, selector matches, typed-block counts and JSON schema keys are in the accompanying JSON. These are field-extraction receipts, not performance benchmarks or production acceptance. Full responses remain transient scratch material; published observations exclude bodies, credentials, private details and signed access strings.
+
+## Round-three community and extraction research
+
+Checked **2026-10-31**. The [round-three evidence manifest](../../../experiments/site-adapter-discovery/community-research-round3-2026-10-31.json) preserves original source locators, operation limits, failures and field mappings. Public observations are separate from executable parser and authenticated acceptance. Proposal counts below retain their original scope; the shared catalog applies alias and same-project normalization.
+
+### Strongest new scopes
+
+**Overwolf Appstore**: official Fallout London release page links https://www.overwolf.com/app/teamfolonlimited-folon_launcher . Actual listing retrieves publisher Team FOLON Limited, standalone-download control, launcher platform/size, app icon, screenshots and video-poster role. This is a different operation from existing CurseForge coverage. It is an app distribution scope, not a new source of arbitrary mod-author archives. An intended Download Standalone tool click returned a decorative support-icon-ads.webp image; that is retained as a wrong-target retrieval and **not** installer transfer or valid download-URL evidence. RDFO431001–009.
+
+**Fallen World**: https://fallenworld.nexus/ . Original Fallout Anomaly Nexus74075 explicitly identifies the rebrand and links new Nexus104700 plus this host. Actual site has full project body, fourteen screenshot links, installation documentation, external modlist and Discord. New uploader NomadsReach differs from old QuikCarnage, while creator field remains Fallout Anomaly Team. Preserve a migration edge instead of rewriting historical uploader identity. The `.nexus` domain does not imply ownership by Nexus Mods. RDFO431028–034.
+
+**Nexar's Gaming Reprieve**: https://www.nexarplays.co.za/fallout4/ . Original project page, readme, categorized mod table and support/curator statement retrieved. The curator explicitly states they did not make constituent mods. The489-line table is usable source-link discovery, with an unresolved native avatar/account profile. No next-page control established. RDFO431019–023.
+
+These are three net-new canonical host/scope proposals. CSEP, Pignessman7, Horizon, Confrérie and already-discovered Skyrim scopes are not counted again as new platform technologies.
+
+### Concrete item + creator/profile inspections
+
+#### Fallout London release, team and distribution
+
+https://fallout4london.com/release/ and https://fallout4london.com/team/ retrieve project instructions and named team biographies/images. Distinguish project Team FOLON, publisher Team FOLON Limited, individual contributors and theme designer WP Royal. Nexus https://www.nexusmods.com/profile/TeamFOLON?gameId=1151 supplies team avatar link and Track UI but an empty extracted About section. Prilladog's linked ArtStation request fails.
+
+Release body links GOG via shorturl.at/BzLTO, which fails on redirect, and Overwolf's actual appstore listing. Overwolf repeats five screenshot URLs in its viewer; deduplicate repeated sources while preserving video-poster role. No video playback, original media quality, binary integrity or installation acceptance. The updates page says a real-time changelog is below but its extracted response does not contain that changelog. Do not substitute that promise for actual release changes. Native follow unperformed; official Discord response empty. RDFO431001–009.
+
+#### CSEP Detour and Pig
+
+https://www.nexusmods.com/fallout4/mods/109732 retrieves title/version/dates, Created by and Uploaded by, technical body, collaborators, voice credits and official cross-platform/social links. Byline's numeric user108296588 redirects https://www.nexusmods.com/profile/Pig?gameId=1151 . The profile supplies avatar URL and Track UI; avatar decode fails because the tool reports application/octet-stream. Link presence is not a decoded avatar.
+
+Actual Files tab lists Detour173.7MB uploaded16Oct2026 plus separate old files and version histories. No concrete archive download accepted. Images tab separates **author images** with pages1/2 from **user images**, including mdkd99 and JoeMalibu. Thus Images33 is not evidence that Pig authored all33 media. Page2 not traversed; video tab retrieved but playback and concrete video URLs unconfirmed. Patreon Pignessman7 creator page retrieves identity/image links and membership UI but no unlocked post bodies. Official CSEP Pig Pen `https://discord.gg/JWkWJJ7WDG` gives a JavaScript shell. Bethesda Detour detail is inaccessible in this tool even though indexed primary search exposes it. RDFO431010–018.
+
+#### Fallen World and NomadsReach
+
+Old https://www.nexusmods.com/fallout4/mods/74075 expressly says it is no longer updated and directs to new104700. New release and https://www.nexusmods.com/fallout4/users/2606477 → https://www.nexusmods.com/profile/NomadsReach retrieved. Model creator team versus local uploader. The old release credits uploader108560898/QuikCarnage; do not assume that handle is the same user as the new uploader. [RDFO431028]
+
+https://fallenworld.nexus/docs/intro/ retrieves substantive original guide content and a Load Order Library outbound target. Fourteen screenshot links appear on home; some reused image links are labeled Play video, which is not three proven videos. Community route retrieves partial shell. Official invite `https://discord.gg/Q5DmJDZFVR` fails after redirect. No binary, native follow or pagination acceptance. New Nexus permission text unexpectedly discusses PrismaUI F4 despite the Fallen World title. Preserve this content inconsistency instead of treating the paragraph as authoritative modlist licensing. RDFO431028–034.
+
+#### Confrérie Fallout4 topic and attempted Herald profile
+
+https://www.confrerie-des-traducteurs.fr/forum/viewtopic.php?t=39013 retrieves two discussion posts, bylines, dates, profile links, post447953 permalink,2messages/page1of1 and upstream patch links. Poster Herald is discussion author, not SS2 author kinggath. The post describes uncertain personal compatibility research, so it is primary evidence of the discussion/extraction structure rather than authoritative compatibility guarantees.
+
+Actual author link13176, post permalink and Discord link all return403. The followed links include transient `sid`; publication records omit it. No alternate route/bypass. Avatar label and separate Testeur rank label are visible but actual avatar URL/decoding is not established. Smileys/rank decorations are separate from mod screenshots. This upgrades the **same Confrérie scope proposed during Skyrim**, not an additional canonical service. A working Fallout4 topic does not erase the earlier Skyrim item403. RDFO431024–027.
+
+#### Nexar project and curator identity
+
+https://www.nexarplays.co.za/fallout4/ , `/fallout4/readme/`, `/fallout4/modlist/` and `/support-me-and-this-project/` retrieve full bodies and table links. Support page establishes curator role, not native member-profile acceptance. No native avatar or follow control confirmed. The readme documents Wabbajack distribution and external-source requirements; no local direct archive link accepted. Official Discord `https://discord.gg/dhWM6qSbDC` retrieves JavaScript shell. Readme mentions LoversLab accounts; no such link followed or service request made. Runtime/performance assertions remain creator statements, not local measurements. RDFO431019–023.
+
+### Additional credible leads and useful cautions
+
+- **Official Horizon list** https://nemal34.github.io/beyondthehorizon_wj/README_official.html retrieved. Useful authored source links preserve each mod creator, separate Steam/GOG profile instructions, date-specific changelog and official community navigation. This is a GitHub Pages scope on existing hosting, not a remote GitHub repo operation. RDFO431035.
+- **Niero Gumroad** https://niero.gumroad.com/ returned zero readable lines. Store extraction remains unresolved. RDFO431036.
+- **Jewel of Commonwealth** original Nexus31762 primary indexed result says June2026 standalone site removed and future Blogger migration intended. Search-only current-status lead; old jewelofthecommonwealth.xyz must not be endorsed as current. RDFO431037.
+- **Magnum Opus / Life in the Ruins** primary indexed Wabbajack registry exposes title, author, maintainers, game, machineURL, distribution link, hash/size and force_down. The actual registry file was not opened in this focused pass; no API/parser or archive acceptance follows. RDFO431038.
+
+No selectors, undocumented APIs, original-image URL transformations, server channel histories or authenticated operations inferred. Five inspection records include three successful concrete item/profile pairs (London team identity, CSEP/Pig and Fallen World/NomadsReach), one attempted blocked profile pair and one project/curator identity case with no native profile acceptance.

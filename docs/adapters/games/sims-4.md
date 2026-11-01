@@ -1105,3 +1105,84 @@ No LoversLab or F95 request was made in this round; the earlier browser site-saf
 A later guest browser fixture rendered the creator directory as100rows with11headers and the actual RIMINGS profile14342 as885items/1,745public favorites. One normal Load More expanded50item links to100unique links with the initial prefix preserved; more remained available. Creator avatar is absent, with only an initial-R fallback. Explicit Tumblr and Patreon links are provenance claims. [BRR010] [BRR011]
 
 The exact Weekend Escape index item exposes `h1`, `section[aria-label="Item details"]`, creator14342 and source Patreon172243497. Its88-character generated DigitalDocument description is not the original post body. One267×267 preview decoded, with signed query values excluded. Complete original body/gallery, files, entitlement and native follows remain untested. This resolves the narrow rendered-index gap without erasing earlier shell observations. [BRR012]
+
+## Round-three community and extraction research
+
+Checked **2026-10-31**. The [round-three evidence manifest](../../../experiments/site-adapter-discovery/community-research-round3-2026-10-31.json) preserves original source locators, operation limits, failures and field mappings. Public observations are separate from executable parser and authenticated acceptance. Proposal counts below retain their original scope; the shared catalog applies alias and same-project normalization.
+
+### Proposed coverage
+
+| ID | Canonical URL | Scope and evidence |
+|---|---|---|
+| simblr-cc | https://simblr.cc/ | Strongest new canonical host: real Sims4 item/profile/avatar/media/file/pagination observations; also explicitly supports Sims1/2/3, Medieval and other life sims. |
+| sglynp | https://www.sglynp.com/ | Chinese Discuz community with original/share/trade/subscription distinctions; actual linked item and creator both redirect to login. |
+| ts4-mod-hound | https://app.ts4modhound.com/ | Reference/status service with creator profiles and file-stem/type/notes/reviser tables; not accepted binary hosting. |
+| houseofharlix | https://www.houseofharlix.com/ | Shared Harrie/Felixandre original-content hub, detail/gallery and creator scope opened. Squarespace CDN does not itself prove JSON endpoints. |
+| sixam-cc | https://sixam.cc/ | Independent original creator hub; detailed mod body, actual author portrait, ordered stills and failed GIF decode; external release alternatives have different entitlement. |
+| lumpinou-mods | https://lumpinoumods.com/ | Independent documentation/release-discovery hub; actual author archive and pagination; downloads explicitly elsewhere. |
+| the-plumbob-post | https://theplumbobpost.com/ | Curated CC directory; detail/profile and generated avatar fallback observed. Directory prose is not original author body. |
+| saesoli-sims | https://saesoli.com/ | Small original Sims4 animation/pose/preset/CAS hub; about and listing observed, detail/file extraction unresolved. |
+| sims4nexus | https://sims4nexus.com/ | Independent original-plus-finds archive, unrelated canonical service to Nexus Mods. Numeric WordPress-style permalink observed. |
+| jenijenfred | https://www.jenijenfred.com/ | German/English curator, translation and community hub; CC table and official Tumblr/Discord provenance. |
+| sims4-modders-reference | https://thesims4moddersreference.org/ | Creator Musings member-maintained documentation and direct current invite provenance; reference-only. |
+| simularity | https://simularity.cc/ | Direct403; public official Patreon announcement verifies creator hub/recent redesign as author statements. Keep retrieval gate explicit. |
+
+### Deep actual item/creator pairs and field recipes
+
+#### Simblr.cc — item8487 and creator96
+
+[RDSIM31003](https://simblr.cc/ts4/mod/8487-ts4-scd002-shirt-new-edit-by-julie-j.html) and [RDSIM31004](https://simblr.cc/user/96-julie-j/) form the strongest new pair. Preserve numeric item8487 and user96, title, by-link and uploaded/updated timestamps separately. The profile explicitly labels Julie J’s avatar and lists Tumblr/Pillowfort/YouTube/Patreon. The original/curator distinction must still be evaluated per item, especially dead-site archive records; one creator upload is not a site-wide provenance guarantee.
+
+The short main description is distinct from “Other Uploads,” tags and the duplicated end “Description” preview. Body images are encountered in order as `6e9cf107-….png`, `b32ddf65-….png`, `fb70c6a0-….png`; all three actually displayed [RDSIM31010–12]. The linked avatar `core/avatars/9/6/Nick-TS2-Poster.png` displayed separately [RDSIM31005]. Do not make the clothing picture the author avatar.
+
+Two file roles are exposed: a listed2.2MB `JulieJ-MaleSCD002Shirt-NewEdit.rar` attachment whose actual `https://simblr.cc/download/19610/` action returned404, and an outbound body link `https://simfileshare.net/download/6253039/` whose file page initially retrieved but later became inaccessible. Neither is a downloaded/validated archive. Preserve failure rather than treating the alternative link as proof the first works.
+
+Profile project page2 is `/user/96-julie-j/projects/page/2/?filter=all`; mod page2 is `/user/96-julie-j/page/2/?filter=all`. Both were actually clicked and opened. These are independent collections. Snapshot counters19following/31followers and project/mod totals are source-local observations, not account-follow import. Global Sims4 listing displayed347results/29pages, but text pagination targets collapsed to the same link label; do not derive undocumented query endpoints from that retrieval.
+
+#### SIXAMcc — Aero Diffuser and original creator homepage
+
+[RDSIM31018–22](https://sixam.cc/aero-aroma-diffuser-sims-4-mod/) pair the real item with the [creator homepage](https://sixam.cc/). Title and full visible article region include version details, gameplay instructions and download alternatives. No numeric creator/item identifier was exposed on the independent site: retain canonical route identity and separately record external IDs.
+
+The homepage image explicitly labels the creator; `https://sixam.cc/wp-content/themes/sixamcc-next/assets/sixamcc-creator.jpg` actually displayed. The item media order is leading preview `…1000x1434.webp`, then inline `…4.webp`, `…2.webp`, `…3.webp`, then `…2.gif`. Four stills displayed; the actual GIF returned unsupported `image/gif`. Do not report animation playback or complete gallery acceptance.
+
+The public “Download Now” reaches [CurseForge Aero Aroma Diffuser](https://www.curseforge.com/sims4/mods/aero-aroma-diffuser). The adjacent Patreon fast-download reaches [post172179764](https://www.patreon.com/sixamcc/posts/aero-aroma-v1-0-172179764), explicitly Locked with `SIXAMcc_AeroDiffuser_V1.0.package` and Join to unlock. This is a concrete counterexample to deriving every mirror’s entitlement from the public creator article. No source-native follow appeared on the independent item; external social follow invitations and paid/free Patreon membership differ.
+
+#### Lumpinou — Personal Lists and author archive
+
+[RDSIM31028–32](https://lumpinoumods.com/2024/05/13/personal-lists-in-game-checklists-and-basic-lists-for-gameplay-tracking-or-whatever-else-a-sims-4-mod/) identify the author by actual by-link to [author/lumpinou](https://lumpinoumods.com/author/lumpinou/), with date and original description. Archive excerpts say Continue reading and must not substitute for complete item bodies. Main post has three image links including a demonstration GIF. The GIF displayed a still; playback is unverified. Comments still say Loading Comments; body and comments are separate completion states.
+
+The author archive has six-page navigation and an actual Older posts link to `/author/lumpinou/page/2/`, successfully opened. Do not conflate previous/next item links with history pagination. No author-avatar role was verified on that archive. Homepage About image remains a candidate until role is proven; never turn arbitrary WordPress imagery into a user avatar. The site explicitly provides descriptions/FAQ and directs downloads to Patreon. Support Discord shortlink resolved to `discord.com/invite/wQfG5Su`, but server content was inaccessible.
+
+#### House of Harlix — Quilted Dreams and Harrie
+
+[RDSIM31013–17](https://www.houseofharlix.com/quilted-dreams) pair an original detail with [Harrie’s scoped catalog](https://www.houseofharlix.com/downloads/harrie) and its official linked [Patreon profile](https://www.patreon.com/cw/heyharrie). Identity is slug-based in this retrieval. Shared footer links to both creators alone cannot attribute every creation; creator scope plus the hub’s collaboration model provide context, and uncertain attribution should stay uncertain.
+
+The description is visible with requirements; the same page says Requires Seasons and all pieces base-game-compatible. Keep both conflicting source statements; do not silently repair requirements. Four unique gallery links are repeated by slide navigation; deduplicate repeated carousel references while preserving first-occurrence order and keep the separate leading image. Download actually reaches [CurseForge Quilted Dreams](https://www.curseforge.com/sims4/build-buy/quilted-dreams). Harrie scoped page omitted item cards in text; no complete history/avatar accepted there. The linked Patreon profile exposes a labeled Harrie image and bio, but a latest locked post does not classify the Harlix catalog as locked.
+
+#### Plumbob Post — Swan Set and madlensims facet
+
+[RDSIM31043–47](https://theplumbobpost.com/mod/the-swan-set) pair a directory item with [creator/madlensims](https://theplumbobpost.com/creator/madlensims). Use site-local slug identity; Created by links to Tumblr, while the directory facet is a separate record. Body is directory-written summary, not verified original author prose. The supposed creator avatar resolves to `api.dicebear.com/7.x/avataaars/svg?...seed=madlensims`, a generated fallback; SVG retrieval was unsupported. Represent avatar role as generated placeholder and original avatar unavailable.
+
+The item has leading and gallery media links, but “View Original Source” actually opens [Tumblr tagged/ts4](https://madlensims.tumblr.com/tagged/ts4), a broad archive, not an exact original item. Do not invent a post join. Profile exposes Follow Creator text and Load More Mods even with three listed items; no authenticated relationship state or terminal history accepted. Homepage’s latest-patch testing claim is unverified marketing, not Atlas compatibility evidence.
+
+### Regional, community and existing-service upgrades
+
+SGLYNP homepage [RDSIM31040–42](https://www.sglynp.com/) exposes original work, shared work, trade/customization/subscription and Sims3 categories. Treat re-shared uploader identities separately from original creators. Actual Luka profile `/susername-Luka.` and thread `/t130796` both redirected login, so the homepage’s avatar links and topic snippets cannot establish a readable creator/profile/thread body. No alternate endpoint or login bypass attempted.
+
+[TS4 Mod Hound](https://app.ts4modhound.com/creator/public_page/Lumpinou) [RDSIM31034–37] is particularly useful for attribution: its table includes mod name, filename stem, file type, last-updated, status, notes, download and information reviser. Registered creators maintain their own info; unregistered creators’ records are maintained by Trusted Community Members. Preserve `creator` versus `infoReviser` and source patch/date separately. A filename stem deliberately lacking version numbers is not the full downloaded filename. Blank dates remain unknown. Filtered rows remain filtered. [Signup information](https://app.ts4modhound.com/auth/signup_info) says mod users need no account; creator/trusted-community accounts require verification codes. No login was needed for the observed public profile, no file scan/upload performed.
+
+[Creator Musings Modders Reference](https://thesims4moddersreference.org/) [RDSIM31038–39] supplies current first-party invite provenance: `https://discord.com/invite/yXK5mqXqNv`. Invite returned only shell text. Search also found historical EA-forum invites and a dated temporary-closure statement; do not claim old links or membership availability from those. Other first-party community links actually resolved: Jeni’s `7VHRWnSuj2` (named Die FREDS im Efeuhaufen), Simularity’s `JSTrGHy` (named Simularity), and Lumpinou’s `wQfG5Su` (inaccessible after redirect). SimRealist’s official support link `aAVbNmb` triggered a non-retryable tool safety block; no retry/bypass.
+
+[LittleDica custom-domain Tumblr](https://www.littledica.com/) [RDSIM31060–62] is an existing-service upgrade, not new canonical platform. Actual original [post717876172167495680](https://www.littledica.com/post/717876172167495680/art-deco-lounge-mini-collection-featuring) has two ordered images, exact May21 2023 timestamp, original author and distinct collaborator credits. Actual reblog [730272265308078081](https://www.littledica.com/post/730272265308078081) identifies Ravasheen/ravasheencc while hosted on LittleDica. Parse author chain and curator host separately; notes/users who liked/reblogged are not content authors. Keep reading on other homepage entries prevents complete-body claims.
+
+[JeniJenfred](https://www.jenijenfred.com/en/cc) [RDSIM31056–59] provides a bilingual creator/source/type table and official [Jenijenfinds Tumblr](https://jenijenfinds.tumblr.com/) reblog discovery. Directory labels free/paywalled are curator assertions, not actual entitlement checks. [Sims4Nexus post15746](https://sims4nexus.com/?p=15746) [RDSIM31053–55] identifies publisher samanthagump and outbound SFS/Creator Studio links; the [about page](https://sims4nexus.com/?page_id=181) explicitly distinguishes its curating role. Site-wide original/finds sections must govern authorship inference. Its latest homepage entries were August2023, so avoid claiming active current releases solely from ©2026.
+
+[Simularity official announcement173659752](https://www.patreon.com/simularity/posts/simularity-news-173659752) [RDSIM31050–52] reports a recent redesign and shortened routes. Direct creator site returned403. Those author statements justify a candidate and migration test, not measured speed or universal mod compatibility. Beware automatically linkified illustrative quoted URLs: the returned example links resolve a punycode hostname, so do not adopt those as canonical redirects.
+
+Actual Julie J [Pillowfort profile](https://www.pillowfort.social/Julie-J) initially returned231lines, then became inaccessible. This is a new social-service candidate; detailed item/profile/media/API/follow acceptance remains pending. Do not derive a normalized lower-case handle from the display name.
+
+### Failures, leads and acceptance gates
+
+Saesoli about and six-item catalog are readable, but item links/files were absent from retrieved text. MaySims, Plumbob Tea Society Tumblr, IllogicalSims and Sims4Luxury were inaccessible; MySims4Mods returned502. Keep these as discovery/failure records, not accepted new adapters. Search snippets were used only as leads; no snippet-only fixture was created. Media formats returning unsupported types remain failures, and later inaccessible reopens do not erase initial successes.
+
+Next useful gates: permitted DOM snapshots for these exact pairs; field-level extraction including explicit missing avatar; original author/uploader/curator joins; independent project/mod pagination to terminal state; image ordering and carousel deduplication; GIF/video decode/playback; legitimate entitlement on each external download; binary/archive/hash verification; and read-only signed-in follow/import behavior. No selectors, undocumented APIs, CSS paths, schema fields or pagination query parameters were invented. No platform-wide acceptance or target-project performance result follows from these observations.

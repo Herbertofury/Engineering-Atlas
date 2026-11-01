@@ -193,3 +193,78 @@ The structured failure list retains actual403/404/503 responses without claiming
 The creator-linked older `sunkeumjeong.com` URL currently serves generic gaming editorial content. That does not establish continuity with a mod creator, even though old primary pages still link it. Similar-name `josephrussell.co.uk` likewise cannot be used to identify the Lucien creator. Skywind’s apparent author URL and ModBooru’s profile URL both returnHTTP200 but fail the intended profile scope. HTTP status alone is insufficient acceptance evidence. [SKYB041] [SKYB047] [SKYB066–SKYB067]
 
 LoversLab and F95 were excluded from all requests in this round, respecting the earlier explicit policy block. No alternate-surface workaround was attempted.
+
+## Round-three community and extraction research
+
+Checked **2026-10-31**. The [round-three evidence manifest](../../../experiments/site-adapter-discovery/community-research-round3-2026-10-31.json) preserves original source locators, operation limits, failures and field mappings. Public observations are separate from executable parser and authenticated acceptance. Proposal counts below retain their original scope; the shared catalog applies alias and same-project normalization.
+
+### Most useful additions
+
+**ModlistGrimoire** is the strongest newly identified independent publishing service: https://modlistgrimoire.com/ . Actual Intricate Skyrim page https://modlistgrimoire.com/modlists/intricate-skyrim exposes slug identity, creator display handle sailorofthemind, version/date, cover, category tree counts, external website/community/readme and comparison URL. The author is a displayed handle; no member-profile link/avatar was confirmed. The official author instructions describe two supported user uploads: Kodex-generated HTML and MO2 modlist.txt. The latter lacks version/priority/mod-page links available in Kodex exports. This is documented input behavior, not reverse-engineered API behavior. Retrieved text supplies category summaries rather than all individual expandable mod rows; complete list extraction remains unresolved. Current public games page includes Skyrim, Fallout4 and personal/reference lists, so it is useful beyond this game. RDSKY31017–021.
+
+**ElderScrollsPortal.de** is a substantive German original community/resource host absent from baseline349: https://www.elderscrollsportal.de/ . Resource taxonomy explicitly distinguishes Skyrim Special Edition from original Skyrim. Actual Naiad Race SE resource3275, uploader member9748, history and screenshot attachment50788 retrieved. This expands XenForo methods with original-author versus converter attribution and real attachment evidence. RDSKY31034–040.
+
+**Vicn / More Skooma**, https://vicnvicn.com/ , is an original Japanese creator host, not an editorial repost index. VIGILANT article blog-entry-5.html and the real Vicn author archive retrieved; explicit next page opened successfully. The article separates classic and SE/AE release links and credits the English voice addon independently. A familiar old filename does not establish current CMS technology. RDSKY31027–032.
+
+**Team EC**, https://skyrimec.com/ , is useful for project news, release changes and named contributors. Its June30 2026 primary statement suspends the Main Quest overhaul, while continuing Saints & Seducers maintenance. Do not carry one project's status across every project from the same team. Both the suspension post and Patch1.1 post were opened fully. RDSKY31014–016.
+
+Additional retrieved original scopes worth adding conditionally: **LoreRim / Modding Bungalo** https://www.lorerim.com/ ; **Lexy's LOTD** https://lexyslotd.com/ ; **The Phoenix Flavour** https://thephoenixflavour.com/ ; **The Modding Bordello** https://www.themoddingbordello.com/ ; **Wildlander Wiki** https://wiki.wildlandermod.com/ . These are nine retrieved new host/project scopes in total, not nine novel underlying parser technologies. Four further candidates remain partial or search-only: Confrérie des Traducteurs, Load Order Library, Let's Play with Fire and Licentia NEXT. Do not count these as working adapters. See structured priorities and evidence for every scope.
+
+### Actual item and creator/profile inspections
+
+#### Fuse00 public armor post on existing Patreon platform
+
+Creator: https://www.patreon.com/cw/fuse00?l=en-GB . Actual post: https://www.patreon.com/fuse00/posts/aerion-tragaryen-167380083 . RDSKY31001–004.
+
+Observed the technical body, seven ordered showcase-image links, separate creator-profile-picture link, creator byline, tags and `_Fuse00_ArmorAerion_1.1.rar`. Attachment href is `https://www.patreon.com/file?h=167380083&m=723186782`: post167380083 and attachment723186782 are concrete observed IDs. The creator image decoded. Following the attachment produced a signed CDN RAR redirect that this retrieval tool could not fetch. This establishes attachment discovery and failure, not archive transfer/integrity, and does not establish a login denial.
+
+The creator homepage repeats its latest post teaser. Deduplicate by post identity rather than concatenating repeated responsive teasers into one body. Preserve creator avatar separately from the seven showcase links. No gallery completeness, original dimensions, animation or video acceptance. No Posts pagination traversal. Join/login UI observed but unperformed. The visible date says August22 without a rendered year; do not infer a timestamp from the post ID. Signed CDN query material omitted from public records.
+
+#### Vicn VIGILANT and creator archive
+
+Article: https://vicnvicn.com/blog-entry-5.html . Native author archive: https://vicnvicn.com/blog-entry-author/vicn . Page2: https://vicnvicn.com/blog-entry-author/vicn/page/2 . RDSKY31027–032.
+
+Retrieved title, publication/update dates, version, long body with changelog/requirements/troubleshooting and distinct classic versus SE/AE links. The SE/AE link resolves Nexus11849. English voiced addon links are separate releases credited to Skyrim Voice Alliance; they must not be silently relabeled as Vicn files. Author archive exposes explicit next and page109 links, with page2 actually retrieved. No author avatar confirmed on the archive. Two header-area image links are insufficient to claim complete body gallery enumeration.
+
+Vicn Nexus profile https://www.nexusmods.com/profile/Vicn?gameId=110 independently retrieved name, author role, avatar link and Track UI. Its current extracted About section is empty even though the search index exposes an About biography linking vicnvicn.com. Preserve the retrieval distinction. No Track action. The article's VR answer explicitly states lack of a VR environment and uncertainty; do not publish a verified SkyrimVR compatibility claim.
+
+#### ElderScrollsPortal Naiad SE and converter profile
+
+Resource: https://www.elderscrollsportal.de/ressourcen/naiad-race-se.3275/ . Profile: https://www.elderscrollsportal.de/mitglieder/shi-zon.9748/ . RDSKY31035–040.
+
+The local resource byline labels **Shi Zon** as Autor while custom **Autoren** metadata and the description credit original author **Den987**. Shi Zon describes permission and conversion work. Model uploader/converter and original creator separately. Stable local resource3275 and member9748 are explicit URL identities.
+
+The page exposes version1.1a, dates, full description/requirements,32 explicit attachment links numbered60–91 in tool output, attachment filenames/sizes/views and separate history/discussion navigation. `https://www.elderscrollsportal.de/attachments/hands-and-feets-i-jpg.50788/` decoded as the selected technical screenshot. This is one decoded attachment, not gallery completeness or a decoded member avatar. Member profile exposes activity/resources tabs and profile information; no actual avatar source or native-follow control confirmed by text extraction.
+
+`/ressourcen/naiad-race-se.3275/download` redirects to Nexus166440?tab=description, which displays an adult-content-preferences wall. The local Download label therefore cannot be treated as a local archive URL. No preference changes or alternate access attempted. History shows a version row/link, but this is not binary acceptance.
+
+#### Team EC news and team identity
+
+https://skyrimec.com/news/saints-and-seducers-patch-11-released and https://skyrimec.com/news/main-quest-overhaul-suspending-development retrieved alongside the home/team section. The patch post has title/date, a release hero image and detailed changelog; the suspension statement is signed Catir. Team home provides member biographies and images, with some portraits hosted on GitHub avatars. Project mascot, release hero and member portraits are different image roles. This is a team/project identity surface, not a native member-profile system. No file archive, native follow or news pagination accepted. RDSKY31014–016.
+
+### Discord provenance and boundary
+
+Actual first-party Discord Discovery https://discord.com/servers/872252014002843658 retrieves **MODDING GUILD**, a stable server ID, distinct discovery banner and icon links, description, public member/online counters, establishment date and official `https://discord.gg/moddingguild` link. Counts differ across crawl snapshots and should not be treated as simultaneous live metrics. The invite fetch redirects to an inaccessible tool destination. This is a named community scope on existing Discord, not a new platform or evidence of channel/message extraction. RDSKY31007–008.
+
+Official project pages also link: LoreRim → `https://discord.gg/bungalo` (Google Sites outbound redirect notice opened); Lexy → `https://discord.gg/r6ZJKZ9`; Phoenix → `https://discord.gg/BpwXX5f`; Bordello → `https://discord.com/invite/themoddingbordello`. The latter retrieves a one-line JavaScript shell; the other two fail at redirected invite fetch. No server join. No channel bodies, author message IDs, attachment access, member avatars, pagination or bot API claims follow from these links. RDSKY31006,010,013,026.
+
+### Additional extraction distinctions
+
+LoreRim provides creator Biggie Boss biography and a portrait distinct from screenshots; website-design credits UNCGAMING/WHISPERDEALER are different roles. Its site identifies Google Sites in the footer. No avatar/account ID or release archive acceptance. RDSKY31005–006.
+
+Phoenix homepage advertises several lists, but the actual manual guide explicitly warns it is outdated/unusable and being reworked, with May17 2026 modification text. Old indexed Nexus marketing must not override that primary warning. Existing-guide navigation, dated body and official Discord target retrieved. RDSKY31011–013.
+
+Bordello Team Mods is a public collective release index. Each card has title, summary, cover and matching creator-profile link; actual release bodies/files remain on Nexus. HerrSchtevie linked profile retrieved with avatar and Track controls, while About body is absent. The HOH overview currently retrieves navigation/wallpaper but lacks its indexed overview body; classify partial shell. RDSKY31022–026.
+
+Wildlander wiki exposes extensive structured public navigation and content, but only home was inspected; no universal article-author/avatar recipe, direct archive or exact official invite target accepted in this pass. RDSKY31033.
+
+### Failed, search-only and excluded leads
+
+- Confrérie Inigo actual URL403. Primary indexed result separately credits Smartbluecat, five translators, testers and proofreader, but that is a lead rather than fetched-body extraction. Do not use an indexed development subdomain as a restriction workaround. RDSKY31041.
+- ESKRIM Blogger homepage429; not retried. Named existing-Blogger scope only. RDSKY31042.
+- Load Order Library Fahluaan exact list403. No parsing or profile method accepted. RDSKY31043.
+- Let's Play with Fire inaccessible; fireundubh wiki index yields zero readable lines. RDSKY31044–045.
+- Licentia NEXT home and exported load-order page are original-source search-only leads. No actual page retrieval accepted. RDSKY31046–047.
+- Search surfaced legacyofthedragonborn.com but canonical ownership was not established through the inspected Nexus release. Its indexed version/runtime assertions differ from current primary surfaces; excluded pending provenance review.
+
+No undocumented endpoint, CSS selector, transformation to original media, generic CMS assumption or successful authenticated behavior is inferred from these observations. Broad searching found more named profiles on existing services; the useful publication unit is the distinct source and extraction boundary, not a padded service count.

@@ -45,3 +45,38 @@ Atlas-specific proposed tests, not completed acceptance:
 - Keep metadata-visible, bytes-verified, player-ready and actually-playing states separate. Require manual playback; autoplay stays off.
 
 A generated fixture cannot establish permission parity, authenticated completeness or performance. Browser login alone supplies no app API grant. New persistent access still needs specific approval. No other project recommendation follows.
+
+## October 31: executable message normalization
+
+The earlier no-implementation statement above describes the October30 checkout. This pass adds [discord_message.py](../../experiments/site-extraction-lab/discord_message.py) and [18 synthetic defensive tests](../../tests/test_site_extraction_discord.py). These are offline transformations of caller-supplied official message payloads. No Discord login, app installation, bot grant, channel read, download or native follow was performed. [Round-three research](methods-round3.md).
+
+```python
+from discord_message import normalize_message, discord_receipt
+
+record = normalize_message(payload, access="complete")
+updated = normalize_message(partial_event, access="complete",
+                            partial=True, previous=record)
+safe_evidence = discord_receipt(updated)
+```
+
+The caller must supply truthful access state; `complete` describes the supplied access context, not a claim that the normalizer supports every Discord feature. The default state is unknown. Use the previous runtime record for partial updates, not its sanitized receipt. The module does not implement transport, event ordering, account permissions or persistence.
+
+### Identities, body and media
+
+String snowflakes remain exact. A normal user, webhook display identity, guild-specific avatar and global avatar have separate semantics. The parser preserves an unavailable avatar rather than substituting server artwork. Forwarded snapshots have no original author in their schema; the forwarder remains separate. Absent referenced-message data means unresolved, while an explicit null has different semantics. [RDSOC31001] [RDSOC31003] [RDSOC31004]
+
+The ordered projection walks message text, embed fields/media, component text displays, nested containers, section accessories, media galleries and file components. It retains attachment identifiers, media role, spoiler state and available type/dimension/duration metadata. An unresolved component attachment ID produces an explicit warning. Unknown variants remain warnings, and `projectionComplete` stays false because features outside this selected projection are not silently certified. [RDSOC31002]
+
+Partial updates preserve fields absent from the update. Denied or intent-limited refreshes cannot silently replace a known body with empty protected fields. An old retained body is labelled retained data, not a fresh successful read. Correctly resolving out-of-order events, deletes and lost permissions still requires the application's authorized transport and retention policy.
+
+### Runtime URLs and public receipts
+
+The runtime record retains an authorized signed delivery URL. The public receipt uses a restricted reference allowlist and hashes/counts; arbitrary external paths, Discord API/webhook paths, raw names, descriptions, waveform and filenames are omitted. Even a query-free URL may contain a credential in its path. A regression covers that case. Attachment receipts retain stable channel/attachment identity directories rather than publishing a potentially sensitive filename. These receipt references are not download URLs.
+
+The test suite also covers malformed/rounded IDs, webhook/user separation, component media, missing references, partial updates, denied/intent-limited states and forward snapshots. Synthetic payloads establish defensive behavior only. A permitted real message fixture is still required before an authenticated extraction claim.
+
+## Community discovery and following
+
+Actual public Discord discovery pages were inspected for [Cyberpunk2077 Modding Community](https://discord.com/servers/cyberpunk-2077-modding-community-717692382849663036), [Modding Guild](https://discord.com/servers/872252014002843658), and [Skywind](https://discord.com/servers/skywind-145539675577122816). The pages expose stable guild identifiers, descriptions, separate server icons/splashes and community routes. They expose no member-post history or author avatars for private messages. Skywind states it publishes news there first. [RDSOC31005] [RDSOC31006] [RDSOC31007]
+
+Keep named guilds under the Discord platform adapter. A local channel/thread watch can filter by stable poster identity after the app has a permitted read route. It is not a global author-following feed. Native announcement following, membership, notifications and an installed bot's permissions remain separate operations. Source login alone does not authorize self-bot collection or create an app grant.

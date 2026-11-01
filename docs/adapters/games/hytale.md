@@ -297,3 +297,146 @@ Hytale Garage distinguishes uploader UUID from project slug and exposes six orde
 Hymods rendered public project/owner/dependency pages through web retrieval, but anonymous raw directory/project/profile requests returned HTTP 500. Its public documentation article succeeded. Hytale Depot rendered a small advertised inventory, while raw marketplace/creator requests returned 502. Picanik web retrieval timed out while raw HTML succeeded. HytaleBBS returned 403 and was not probed again. BlockyNetworks returned only a JavaScript application shell. HT-Mods contains four test records; Hytale Prefabs returned an empty catalog. These are preserved as distinct results, not overwritten by retries.
 
 Public avatar/media URLs and filename/size metadata remain separate from fetched/decoded media and downloaded archives. No package endpoint was invoked. Source follow, favorite, star, account membership and local tracking are distinct operations; none of the native mutations or imports was tested. Hytale is a separate game scope, and the baseline official Modrinth exclusion remains in force.
+
+## Round-three community and extraction research
+
+Checked **2026-10-31**. The [round-three evidence manifest](../../../experiments/site-adapter-discovery/community-research-round3-2026-10-31.json) preserves original source locators, operation limits, failures and field mappings. Public observations are separate from executable parser and authenticated acceptance. Proposal counts below retain their original scope; the shared catalog applies alias and same-project normalization.
+
+### Actual item/profile observations
+
+#### hytalekit
+
+{"itemSlug": "wans-wonder-weapons", "creatorSlug": "wanmine", "creatorRole": "Directory credit; independent ownership not established", "creatorUrl": "https://hytalekit.com/creators/wanmine/"}
+
+**Avatar:** W initial fallback; no avatar image accepted.
+
+**Body:** Description/feature/install text is directory-authored summary, not necessarily verbatim creator description. Keep original and derived text distinct.
+
+**Media:** Hero and two body preview/weapon images exposed; Gallery16 control is not full gallery retrieval.
+
+**Files:** Version1.0.0, Wans_Wonder_Weapons1.0.0.zip. Clicking actual Download returned unsupported application/zip; bytes were not available or verified. This is a download request attempt, not successful file acceptance.
+
+**Pagination:** WanMine says4mods, four cards exposed; complete site285 creators/405resources not collected.
+
+**Follow:** No native follow established; share is not follow.
+
+Sources: RDHY31002, RDHY31003, RDHY31005.
+
+#### curseforge
+
+{"itemId": "1427562", "creatorSlug": "wanmine", "creatorRole": "Owner team WanMine; file uploader narwhals", "fileId": "9368169", "creatorUrl": "https://www.curseforge.com/members/wanmine/projects"}
+
+**Avatar:** Owner team block and member page both explicitly label profile avatar on static-cdn.jtvnw.net. Project hero and tier badge separate; no decode.
+
+**Body:** Ordered weapon sections and feature descriptions, named team roles and original license retained; no game-functionality acceptance.
+
+**Media:** Gallery23 includes YouTube thumbnail and distinct full/thumbnail presentation repeats. Body weapon images repeat gallery assets; keep placement and unique asset identity separate.
+
+**Files:** WansWonderWeapon-1.1.2.jar;2.6MB display label; Oct30 2026; game0.7; uploader narwhals. No binary/hash verification.
+
+**Pagination:** Profile57 projects mixes Hytale,Minecraft Java and Bedrock; initial projection only. Team members include artists,authors,pack developers; none automatically owner.
+
+**Follow:** Unfollow rendered in owner card does not establish signed-in state or operation. Favorites/followers distinct; no native mutation/import.
+
+Sources: RDHY31014, RDHY31015, RDHY31016.
+
+#### hytalewiki-pro
+
+{"itemSlug": "wans-many-pizzas", "upstreamProjectId": "1428843", "creatorRole": "Credited WanMine via external original-host profile", "creatorUrl": "https://www.curseforge.com/members/wanmine/projects"}
+
+**Avatar:** Creator label has no confirmed local avatar; category icons and project images are not avatar.
+
+**Body:** Short repeated summary only; do not certify original full body.
+
+**Media:** Five gallery assets in order: basil,pizza_showcase,holding,pizza_prepping_table,kweebec. Filename captions retained; no decode.
+
+**Files:** Wans-Many-Pizzas-1.0.3.zip,Jan28. edge.forgecdn.net Download link observed but not invoked. Original project updatedJan30; discrepancy retained.
+
+**Pagination:** No complete catalog/profile history accepted.
+
+**Follow:** No native follow established.
+
+Sources: RDHY31013, RDHY31014, RDHY31017.
+
+#### wanmine-hytale
+
+{"creatorRole": "First-party team portfolio and original-host team account", "itemSlugs": ["hypipes", "wans-wonder-weapons", "wans-many-pizzas"]}
+
+**Avatar:** Original portfolio branding/art cannot substitute for original-host profile avatar. GitHub org image is a separate organization image.
+
+**Body:** Five featured project descriptions plus three linked projects; do not duplicate three repeated lower carousel links.
+
+**Media:** Two privacy-enhanced YouTube showcase embeds are community videos, not necessarily uploads by team. No playback.
+
+**Files:** GET IT NOW routes link original CurseForge projects, not local archives; resolved Wonder Weapons original record/file separately.
+
+**Pagination:** Eight unique named projects on single portfolio surface; whole team history unverified.
+
+**Follow:** Portfolio socials incomplete in projection; no native follow.
+
+Sources: RDHY31011, RDHY31012, RDHY31014, RDHY31015.
+
+### Independent scope candidates
+
+| Candidate | Type/status | Evidence |
+|---|---|---|
+| [HytaleKit](https://hytalekit.com/) | platform_or_host_scope / candidate_public_observation | Actual Wonder Weapons item and WanMine creator slug inspected; four creator cards, initial W fallback instead of avatar. Site lists1.0.0 ZIP while original host has1.1.2 JAR from Oct30: stale derived directory, not current-file authority. Root shows January dates despite current crawl. (RDHY31001, RDHY31002, RDHY31003, RDHY31004, RDHY31005) |
+| [HyItems](https://hyitems.com/) | platform_or_host_scope / partial_research_candidate | Current root empty; first-party blog describes community plans,collaborator tags and categories. No actual item/profile fixture. Blog uses future tense and old copyright; no active inventory claim. Discord destination differs from visible invite text and is tool-policy blocked. (RDHY31006, RDHY31007, RDHY31008, RDHY31024) |
+| [Mythyl](https://www.mythyl.com/) | platform_or_host_scope / historical_prelaunch_candidate | Landing explicitly says still in development and launching when Hytale releases, although official game already live. No item/profile inventory. Retain as stale prelaunch candidate, not functioning marketplace/API. (RDHY31009, RDHY31010) |
+| [WanMine original Hytale portfolio](https://hytale.wanmine.net/) | platform_or_host_scope / candidate_public_observation | Original team portfolio names eight projects and links original CurseForge releases plus two YouTube showcases. Hytale subdomain scopes this content; team also publishes Minecraft content, so creator equality must not erase game identity. (RDHY31011, RDHY31014, RDHY31015, RDHY31016) |
+| [HytaleWiki.pro mod catalog](https://www.hytalewiki.pro/) | reference_or_tool_only / candidate_public_observation | Actual Many Pizzas listing links original project and external WanMine profile; five captioned gallery images and Jan28 ZIP label. Original host Jan30 update proves copied listing freshness mismatch. This is independent catalog, not confirmed original publisher. (RDHY31013, RDHY31014, RDHY31017) |
+
+### Existing methods and protocol improvements
+
+- **hytale-official:** Official docs now label current Release0.7.4 and separate pre-release hostname. This supersedes observed0.7.3 as documentation version only, not target installed client. Community page links official discord.gg/hytale; invite shell is not channel/message access. (RDHY31018, RDHY31019, RDHY31020).
+- **hytalemodding:** Current home contains grant program,town halls and named speakers with portraits/roles. Wiki mods route remains zero-line surface; Modjam direct502 remains failed despite search-snippet event descriptions. (RDHY31021, RDHY31022, RDHY31023).
+- **hytaledepot:** Current /en/modding public projection has category/navigation and creator documentation but no item cards; search result claiming template card cannot repair live empty list. No item/profile acceptance added. (RDHY31025).
+- **orbis-place:** New authoritative API docs offer route-specific resources,users,teams and media/version/favorite scopes. Overview says every request requires x-api-key while Resources says public GET is unauthenticated/optional: preserve contradiction pending actual allowed response fixture. No key supplied or request made. (RDHY31026, RDHY31027, RDHY31028, RDHY31029, RDHY31030, RDHY31031).
+- **curseforge:** Actual new WanMine sample distinguishes team owner,artist/author/pack-developer collaborators and narwhals release uploader. Member history crosses Hytale and both Minecraft editions; game filtering required before updates/import. (RDHY31014, RDHY31015, RDHY31016, RDHY31017).
+- **discord:** Official-origin Hytale invite shell and Mythyl redirect error retained. HyItems blog visible NwtN3uZ differs from actual linked nfFJqpbDMu; actual destination tool-policy blocked, not retried. Do not merge text and href or infer valid membership. (RDHY31010, RDHY31020, RDHY31024).
+
+### Acceptance queue
+
+- Permitted actual HytaleKit gallery/source ownership and avatar fixtures; verify outdated ZIP provenance before download recommendations.
+- Orbis authenticated versus anonymous documented GET response receipts; users/teams/media/version schemas plus pagination and rate-limit endpoint verification.
+- Original-host team identity across games and uploader-role assertions; avatar decode and ordered full-gallery verification.
+- HyItems/Mythyl actual published resource/profile pair before active-host promotion.
+- No Discord message/channel/history,follow/import,purchase,media playback or package-install acceptance.
+
+The HytaleKit Download request reached a ZIP response unsupported by retrieval. No bytes or hashes were available. HyItems Discord was blocked by tool policy and was not retried. No browser, authenticated action, message, join, purchase, media decode/playback, game execution or shared catalog mutation occurred.
+
+### Sources
+
+| ID | Page | Retrieval |
+|---|---|---|
+| RDHY31001 | [HytaleKit root](https://hytalekit.com/) | read |
+| RDHY31002 | [HytaleKit Wonder Weapons](https://hytalekit.com/mods/wans-wonder-weapons/) | read |
+| RDHY31003 | [HytaleKit WanMine profile](https://hytalekit.com/creators/wanmine/) | read |
+| RDHY31004 | [HytaleKit creator directory](https://hytalekit.com/creators/) | read_partial |
+| RDHY31005 | [HytaleKit download link request](https://hytalekit.com/mods/wans-wonder-weapons/Wans_Wonder_Weapons1.0.0.zip) | unsupported_content_type_application_zip |
+| RDHY31006 | [HyItems root](https://hyitems.com/) | empty_surface |
+| RDHY31007 | [HyItems guessed discovery route](https://hyitems.com/explore) | tool_inaccessible |
+| RDHY31008 | [HyItems first-party description](https://blog.hyitems.com/) | read |
+| RDHY31009 | [Mythyl landing](https://www.mythyl.com/) | read_prelaunch_claim |
+| RDHY31010 | [Mythyl linked Discord](https://discord.gg/Du9ETfAkVS) | redirect_error |
+| RDHY31011 | [WanMine original Hytale portfolio](https://hytale.wanmine.net/) | read |
+| RDHY31012 | [WanMine Hytale organization](https://github.com/WanMine-Hytale) | read_stale_projection_conflict |
+| RDHY31013 | [HytaleWiki.pro Many Pizzas](https://www.hytalewiki.pro/mods/wans-many-pizzas) | read |
+| RDHY31014 | [WanMine original-host profile](https://www.curseforge.com/members/wanmine/projects) | read |
+| RDHY31015 | [Wonder Weapons original project](https://www.curseforge.com/hytale/mods/wans-wonder-weapons) | read |
+| RDHY31016 | [Wonder Weapons actual file metadata](https://www.curseforge.com/hytale/mods/wans-wonder-weapons/files/9368169) | read |
+| RDHY31017 | [Many Pizzas original project](https://www.curseforge.com/hytale/mods/wans-many-pizzas) | read |
+| RDHY31018 | [Official current Hytale docs](https://docs.hytale.com/) | read |
+| RDHY31019 | [Official Hytale community](https://hytale.com/community) | read |
+| RDHY31020 | [Official Hytale Discord](https://discord.gg/hytale) | js_shell |
+| RDHY31021 | [HytaleModding current community](https://hytalemodding.dev/) | read |
+| RDHY31022 | [Actual linked wiki mod directory](https://wiki.hytalemodding.dev/mods) | empty_surface |
+| RDHY31023 | [Actual Modjam root](https://hytalemodjam.com/) | http_502 |
+| RDHY31024 | [HyItems actual linked Discord](https://discord.gg/nfFJqpbDMu) | tool_policy_blocked |
+| RDHY31025 | [Hytale Depot actual directory read](https://hytaledepot.net/en/modding) | read_no_cards |
+| RDHY31026 | [Orbis documentation](https://docs.orbis.place/) | read |
+| RDHY31027 | [Orbis API overview](https://docs.orbis.place/reference/api/) | read |
+| RDHY31028 | [Orbis Resources endpoints](https://docs.orbis.place/reference/api-endpoints/resources/) | read |
+| RDHY31029 | [Orbis Users endpoints](https://docs.orbis.place/reference/api-endpoints/users/) | read |
+| RDHY31030 | [Orbis rate limits](https://docs.orbis.place/reference/rate-limits/) | read |
+| RDHY31031 | [Orbis Teams endpoints](https://docs.orbis.place/reference/api-endpoints/teams/) | read |
