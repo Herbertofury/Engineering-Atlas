@@ -4,9 +4,9 @@
 
 Research and implementation status are separate. A platform listing is not proof that all pages, paid content or media work. Existing adapters and maintained upstream tools are baselines, not disposable scaffolding.
 
-## Expanded research: 349 service and scope entries
+## Expanded research: 426 service and scope entries
 
-Reviewed **October 31, 2026 UTC**, retaining dated October 28 evidence. The [coverage catalog](coverage-catalog.md) spans mod hosts, paid creator platforms, social networks, regional communities, blogs, code forges, file hosts and specialist indexes. The first six-game expansion reached 248 entries; the second added 98 canonical services/scopes, bringing that dated snapshot to **346**. The October 31 screenshot review adds Pawchive, Tipeee and historical HYPAGE as researched candidates, bringing current coverage to **349**; [the per-site matrix](paid-platforms.md#screenshot-coverage-and-operation-evidence--october-31) retains unresolved Library and explicit operation gates. The [new extraction methods](methods-round2.md) retain 71 game/cross-game recipes, five additional browser scopes, actual failures, field boundaries and remaining gates. Every entry has operation-specific evidence status; a catalog entry does not imply complete support.
+Reviewed **October 31, 2026 UTC**, retaining dated October 28 evidence. The [coverage catalog](coverage-catalog.md) spans mod hosts, paid creator platforms, social networks, regional communities, blogs, code forges, file hosts and specialist indexes. The first six-game expansion reached 248 entries; the second added 98 canonical services/scopes, bringing that dated snapshot to **346**. The October 31 screenshot review adds Pawchive, Tipeee and historical HYPAGE as researched candidates, bringing that snapshot to **349**; [the per-site matrix](paid-platforms.md#screenshot-coverage-and-operation-evidence--october-31) retains unresolved Library and explicit operation gates. The [new extraction methods](methods-round2.md) retain 71 game/cross-game recipes, five additional browser scopes, actual failures, field boundaries and remaining gates. The [round-three community and social pass](methods-round3.md) adds 77 deduplicated scopes and 367 dated source/outcome records, bringing current coverage to **426**. Every entry has operation-specific evidence status; a catalog entry does not imply complete support.
 
 The [itch.io adapter guide](itch-io.md) adds a separate scoped DOM experiment with [two actual public replays](../../experiments/site-adapter-discovery/itch-io-dom-replay-2026-10-31.json) and nine defensive tests. It does not establish complete authenticated access, history or file-transfer support.
 
@@ -15,7 +15,7 @@ The [executable extraction lab](../../experiments/site-extraction-lab/README.md)
 | Research area | Start here |
 |---|---|
 | Every entry, route, follow semantics and evidence state | [Coverage catalog](coverage-catalog.md) · [Machine-readable records and source statuses](../../data/site-adapter-catalog.json) |
-| Actual extraction boundaries, evidence and working parser samples | [Second-round methods](methods-round2.md) · [Executable extraction lab](../../experiments/site-extraction-lab/README.md) |
+| Actual extraction boundaries, evidence and working parser samples | [Round-three methods](methods-round3.md) · [Second-round methods](methods-round2.md) · [Executable extraction lab](../../experiments/site-extraction-lab/README.md) |
 | Skyrim SE/AE, Fallout 4, Minecraft, Sims 4, Cyberpunk 2077 and Hytale | [Game community guides, actual item/profile inspections and source records](games/README.md) |
 | Mod distribution, projects, creators, releases and files | [Mod hosts: 15 deep recipes](mod-hosts.md) |
 | Membership posts, paid downloads and creator stores | [Paid platforms: 12 deep recipes](paid-platforms.md) |
