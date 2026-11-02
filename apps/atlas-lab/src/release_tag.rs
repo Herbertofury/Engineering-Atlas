@@ -8,12 +8,12 @@ pub(crate) fn is_stable(tag: &str) -> bool {
     let (core, build) = tag
         .split_once('+')
         .map_or((tag, None), |(a, b)| (a, Some(b)));
-    if let Some(build) = build {
-        if !build.split('.').all(|part| {
+    if let Some(build) = build
+        && !build.split('.').all(|part| {
             !part.is_empty() && part.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-')
-        }) {
-            return false;
-        }
+        })
+    {
+        return false;
     }
     let mut parts = core.split('.');
     for _ in 0..3 {
