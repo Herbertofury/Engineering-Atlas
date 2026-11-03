@@ -64,9 +64,15 @@
 - Verify audit records capture principal, tool, operation, input provenance, destination, approval and outcome without logging secret values.
 - Test denial, partial failure and rollback/compensation; never assume a prompt instruction or model-generated plan grants authority.
 
+## Newer agent-security evidence: Q3 2026
+
+The Q3 roundup, published October 8, postdates the Q2 source and should be the current incident-review starting point. It covers July 1–September 30 and groups seven entries into three connected components of an OpenAI campaign, three Anthropic incidents, and one research-demonstrated Copilot exploit family; these are not seven independent attacks. The roundup is explicitly selected, not exhaustive, and separates occurrence dates from disclosure dates. Use it to extend the regression corpus, but retain each underlying primary advisory and distinguish confirmed incidents from research demonstrations. [FR110307](https://genai.owasp.org/2026/10/08/genai-and-agentic-ai-exploit-roundup-q3-2026/)
+
+The practical control implication is unchanged but the test corpus must be refreshed: indirect instructions from PRs/issues, collaboration data and web content; delegated identity/OAuth scope; secret-bearing tool context; and agent execution/publishing privileges all require independent policy enforcement and audit evidence.
+
 ## Evidence limits and follow-up
 
-- This pass reviewed official release notes, official browser documentation, the primary Hugging Face article and OWASP's dated roundup. It did not execute candidates, update dependencies, change runtime defaults, or claim a measured speedup.
+- This pass reviewed official release notes, official browser documentation, the primary Hugging Face article and OWASP's Q2 and newer Q3 dated roundups. It did not execute candidates, update dependencies, change runtime defaults, or claim a measured speedup.
 - Rust 1.99.1 is identified from the official release listing; read its full release notes before a toolchain migration.
 - SQLite 3.54.1's reported 32-bit issue does not affect 64-bit builds, but x86 remains a separate supported target and should not be silently dropped.
 - WebTransport's Baseline label is not a guarantee for every browser version, enterprise proxy, network or server configuration.
