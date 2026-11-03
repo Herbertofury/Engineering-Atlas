@@ -4,13 +4,13 @@
 
 **Build better software. Prove the improvement. Keep the evidence.**
 
-A practical, evolving research library for desktop apps, web services, Minecraft mods, game tooling and asset pipelines. Foundation reviewed October 26; latest stack and methods expansion: **October 31, 2026**. This is a curated foundation, not a claim that every technology has been exhaustively benchmarked.
+A practical, evolving research library for desktop apps, web services, Minecraft mods, game tooling and asset pipelines. Foundation reviewed October 26; latest stack and methods expansion: **November 3, 2026**. This is a curated foundation, not a claim that every technology has been exhaustively benchmarked.
 
 ## Search and compare the research catalog
 
 [Research Explorer](https://herbertofury.github.io/Engineering-Atlas/explorer/) provides field/type/evidence filters, source-backed 2026 candidates, dated GitHub popularity, scoped external benchmarks, retained Atlas measurements and a reproducible test queue. Compare a shortlist and export a test plan. Community reports have a reviewable GitHub submission path; no votes are fabricated.
 
-**Current snapshot:** 283 candidates, 36 papers, 20 stack layers and 38 planned comparisons. The [October 31 research record](research/2026-10-31-stack-expansion.md) adds 68 candidates, 15 existing-entry refreshes and 164 primary-source observations.
+**Current snapshot:** 283 candidates, 36 papers, 20 stack layers and 38 planned comparisons. The [October 31 research record](research/2026-10-31-stack-expansion.md) adds 68 candidates, 15 existing-entry refreshes and 164 primary-source observations. The [November 3 frontier review](research/2026-11-03-frontier-systems.md) adds fresh release, storage, browser transport/GPU and agent-security decisions.
 
 [Complete catalog](docs/research-catalog.md) · [Ranking methodology](docs/research-explorer.md) · [Planned comparisons](docs/research-test-queue.md) · [Community reports](docs/research-community.md)
 
@@ -62,9 +62,9 @@ A substantial improvement changes the actual end-to-end experience while retaini
 
 ## Reusable tools
 
-- `python3 scripts/check_research.py`: validate the source register, internal links and evidence metadata without network access.
-- `python3 -m unittest discover -s tests -v`: run the checking-tool tests.
-- `python3 scripts/compare_benchmarks.py BASELINE.json CANDIDATE.json`: compare paired complete results; reject mismatched workloads, environments, conditions or output hashes.
+- python3 scripts/check_research.py: validate the source register, internal links and evidence metadata without network access.
+- python3 -m unittest discover -s tests -v: run the checking-tool tests.
+- python3 scripts/compare_benchmarks.py BASELINE.json CANDIDATE.json: compare paired complete results; reject mismatched workloads, environments, conditions or output hashes.
 - [Worker-sweep evaluator](docs/worker-sweep-tool.md): compare all five worker limits with explicit resource/UX budgets; no automatic default changes.
 - [Experiment template](templates/experiment.md) · [Decision record](templates/decision.md) · [Benchmark format](docs/benchmark-format.md).
 
