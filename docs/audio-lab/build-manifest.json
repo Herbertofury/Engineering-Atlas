@@ -2,11 +2,11 @@
   "harness": "atlas-public-audio-v1-verified-bytes",
   "artifacts": {
     "audio-core.98726eb5efb4ec5b.mjs": "98726eb5efb4ec5bdfb2b169fb56b3cce1bbf27f78e95e40fe5eb5dbe784053e",
-    "archive-selection.8187862450e038d9.mjs": "8187862450e038d913c31a505eab116e59c7fc7fc0de4ce44adcba9b50442ee9",
+    "archive-selection.07c05b3224c9ad23.mjs": "07c05b3224c9ad235f32a51376fc3bb4a337bd1793390c28dbeb893facc9a03e",
     "media-events.e336b2c509ca8030.mjs": "e336b2c509ca803072cb2d56c65a0b111fa4a6402b85c69f823e6f5f117a98cf",
     "audio.ff576341de73304a.css": "ff576341de73304ada7ac888a2143eb76349f80f4e172831047900ef766066e0",
-    "audio.da113588a41b50f1.js": "da113588a41b50f1740b1213d47273d4c48764ae02b2f5208f5ccfb7e94319b3",
-    "index.html": "8a43facaf59b6bb07a320942947d25497d2c8d5d601d87c5b9e9deb33c51f371"
+    "audio.1bf70244d4090d29.js": "1bf70244d4090d293baa27d3b6dfe87d79152dc07d5c2fbd790877777f64a4b7",
+    "index.html": "83cb7a1035cb771f7ca3712f9d734dcc8bb20ceb280436210a0a2e44b422ea2e"
   },
   "fixture_sha256": "8d73341ec31c3deda189c01e6d2971b5ae3a8eb3fc5880c56c2b39c63cc831b3",
   "selection_source": "apps/atlas-lab/ui/archive-view.mjs"
