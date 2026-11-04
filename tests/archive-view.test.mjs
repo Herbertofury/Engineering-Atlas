@@ -68,3 +68,35 @@ test('invalid body chunks reject promptly even when reader cancellation hangs',a
  const result=await Promise.race([loadSavedProject(id,{fetchImpl:async()=>fake}).then(()=> 'accepted',e=>e.message),new Promise(resolve=>setTimeout(()=>resolve('hung'),100))]);
  assert.match(result,/Unexpected response byte stream/);assert.equal(released,true);
 });
+test('archive deadline settles even if a body read ignores abort',async()=>{
+ const headers=new Headers({'content-type':'application/json','x-atlas-archive-kind':'project','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':'0'.repeat(64)});
+ const fake={ok:true,headers,body:{getReader(){return {read:()=>new Promise(()=>{}),cancel:()=>Promise.resolve(),releaseLock(){}};}}};
+ const result=await Promise.race([loadSavedProject(id,{fetchImpl:async()=>fake,timeoutMs:5}).then(()=> 'accepted',e=>e.name),new Promise(resolve=>setTimeout(()=>resolve('hung'),100))]);
+ assert.equal(result,'TimeoutError');
+});
+
+test('late fetch is cancelled and does not start a reader after deadline',async()=>{
+ let resolveFetch, cancelled=0, reads=0;
+ const p=loadSavedProject(id,{timeoutMs:5,fetchImpl:()=>new Promise(r=>resolveFetch=r)});
+ await assert.rejects(p,e=>e.name==='TimeoutError');
+ resolveFetch({body:{cancel(){cancelled++;},getReader(){reads++;}}});
+ await new Promise(r=>setTimeout(r,10));assert.equal(cancelled,1);assert.equal(reads,0);
+});
+test('pending reader receives cancellation once on timeout',async()=>{
+ const headers=new Headers({'content-type':'application/json','x-atlas-archive-kind':'project','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':'0'.repeat(64)});let cancelled=0;
+ const fake={ok:true,headers,body:{getReader(){return {read:()=>new Promise(()=>{}),cancel(){cancelled++;},releaseLock(){}};}}};
+ await assert.rejects(loadSavedProject(id,{fetchImpl:async()=>fake,timeoutMs:5}),e=>e.name==='TimeoutError');assert.equal(cancelled,1);
+});
+test('late read after cancellation does not start another read and releases lock',async()=>{
+ const headers=new Headers({'content-type':'application/json','x-atlas-archive-kind':'project','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':'0'.repeat(64)});let doneRead,reads=0,cancelled=0,released=0;
+ const fake={ok:true,headers,body:{getReader(){return {read(){reads++;return new Promise(r=>doneRead=r)},cancel(){cancelled++},releaseLock(){released++}}}}};
+ await assert.rejects(loadSavedProject(id,{fetchImpl:async()=>fake,timeoutMs:5}),e=>e.name==='TimeoutError');
+ doneRead({done:false,value:new Uint8Array([65])});await new Promise(r=>setTimeout(r,5));
+ assert.deepEqual([reads,cancelled,released],[1,1,1]);
+});
+test('standard stream pending read is cancelled and unlocked on timeout',async()=>{
+ let cancelled=0;const stream=new ReadableStream({pull(){return new Promise(()=>{});},cancel(){cancelled++}},{highWaterMark:0});
+ const headers={'content-type':'application/json','x-atlas-archive-kind':'project','x-atlas-canonical-id':id,'x-atlas-generation':'1','x-atlas-payload-sha256':'0'.repeat(64)};
+ await assert.rejects(loadSavedProject(id,{fetchImpl:async()=>new Response(stream,{headers}),timeoutMs:5}),e=>e.name==='TimeoutError');
+ await new Promise(r=>setTimeout(r,5));assert.equal(cancelled,1);assert.equal(stream.locked,false);
+});
