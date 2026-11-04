@@ -4,9 +4,9 @@
     "audio-core.98726eb5efb4ec5b.mjs": "98726eb5efb4ec5bdfb2b169fb56b3cce1bbf27f78e95e40fe5eb5dbe784053e",
     "archive-selection.8187862450e038d9.mjs": "8187862450e038d913c31a505eab116e59c7fc7fc0de4ce44adcba9b50442ee9",
     "media-events.e336b2c509ca8030.mjs": "e336b2c509ca803072cb2d56c65a0b111fa4a6402b85c69f823e6f5f117a98cf",
-    "audio.b9ea9d3ff3bbd79a.css": "b9ea9d3ff3bbd79a85ea896f283cd97eb0149e79420cc9e3d983c36f3117d532",
+    "audio.ff576341de73304a.css": "ff576341de73304ada7ac888a2143eb76349f80f4e172831047900ef766066e0",
     "audio.da113588a41b50f1.js": "da113588a41b50f1740b1213d47273d4c48764ae02b2f5208f5ccfb7e94319b3",
-    "index.html": "26fcc00c5fc962763f33391fa1722fce81e18b8fc001955464bf2987236657c3"
+    "index.html": "8a43facaf59b6bb07a320942947d25497d2c8d5d601d87c5b9e9deb33c51f371"
   },
   "fixture_sha256": "8d73341ec31c3deda189c01e6d2971b5ae3a8eb3fc5880c56c2b39c63cc831b3",
   "selection_source": "apps/atlas-lab/ui/archive-view.mjs"
