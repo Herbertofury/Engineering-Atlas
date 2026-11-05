@@ -1,6 +1,8 @@
 {
-  "harness": "atlas-real-media-v13-player-ready-deadline",
+  "harness": "atlas-real-media-v14-local-compare",
   "artifacts": {
+    "compare.0357092dc7ac2371.mjs": "0357092dc7ac237154fd23b58128630c5d0c8fae7b68e13785dced565cbfc032",
+    "local-compare.2f6c85e476fb6e48.mjs": "2f6c85e476fb6e484379784cd3da3bdbfb440952f28072bf39d3907ab2f35f3d",
     "preview-timeout-check.143bcbd493e6bd6a.js": "143bcbd493e6bd6a3923e2d5e2adf74193f841722598756037753ce59609f5f2",
     "preview-timeout-check.html": "56f073d2c454b16aba24ed202403d68835992a3aba17b8a29e92719f58f74419",
     "media-event-recorder.9f2d0087c78ee632.mjs": "9f2d0087c78ee632512dabe77b0159bf718ce57d00e93a16ca622445c4116f65",
@@ -16,9 +18,9 @@
     "media-core.b0bba33ec8a5b5c5.mjs": "b0bba33ec8a5b5c5c7b1743dcd587d3cd5b497c702f533c378a707a1601a6d79",
     "resource-loader.f95053a1d56a8533.mjs": "f95053a1d56a85330314efe88ca6c26b45ac1c3abb530639b770601e03608c06",
     "public-fixtures.2aa0668aba0eb29c.json": "2aa0668aba0eb29c69faf368fab206369718335be7f47bc0c6592236e79d1aba",
-    "media.53bc37a3202ab35e.js": "53bc37a3202ab35eeccdf1d848eef83a3e808066adb75dc30ed1022143b09a69",
+    "media.f892ba23aa2b595e.js": "f892ba23aa2b595e931180ef1bebb23de690a28d3bd44a4d8c8fe9531eeab3d3",
     "media.6d66277c4a909ad6.css": "6d66277c4a909ad66dd32dfd66659fcb00de143ce2f4bc535a5a182e3916cd02",
-    "index.html": "38e41f469554c15ab4469de282d28c1de3f43dd975b163c6e119599bb539726b"
+    "index.html": "1c2efd03d237bf42e02d8eac2b8801636388feab46ed6370b2a69a083ec7961c"
   },
   "vendor_sha256": "a12e7ee1cd64a69dcdb314157e45dafcba705bfb0b1440b7935cb265d374423e",
   "vendor_sri": "sha384-cciJ0zi8d1uMKC2zJd7jvPY4HQt7W4ByUI/FlMkltvBi31aW61rcpVBhpmW8/NwX"

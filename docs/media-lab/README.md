@@ -37,3 +37,9 @@ The recorder detaches each JSON observation from caller-owned nested data. Displ
 ## Timed-out preview lifecycle
 
 Harness v12 detaches a timed-out preview source while retaining its exact identity for explicit retry. Late completion and stale timer callbacks cannot turn the failed attempt into success or remove a later success. Cleanup failures are separate observations. [Implementation and verification limits](../../experiments/preview-timeout-lab/README.md). The concurrency setting bounds logical workers, not a measured upper bound on physical browser sockets.
+
+
+## Local gallery comparison candidate
+
+Harness v14 adds an explicit local JSON comparison for a retained Modrinth card. The user supplies a saved project response; no provider request or upload is made. It checks only canonical project identity and ordered gallery preview/original URL pairs, returns matching, changed or unknown, hashes the bytes read, and retains the last result when a later read fails or is superseded. It does not verify image bytes, source freshness, full content or playback. Inputs are bounded at 2 MiB. The public Sodium test excerpt is a transformed web-readable excerpt, not an original response-body receipt. Browser and real provider acceptance are still pending. See [comparison evidence](../../experiments/local-gallery-compare-lab/README.md).
+
