@@ -24,6 +24,7 @@ A practical, evolving research library for desktop apps, web services, Minecraft
 
 | Need | Guide |
 |---|---|
+| Learn from an app with evidence | [Article tool inventory and bounded workflows](docs/app-study/README.md) |
 | Choose a stack without hype | [Stack decision map](docs/stack-selection.md) |
 | Reduce repeated algorithm/storage work | [Algorithms, storage and concurrency](docs/algorithms-storage-concurrency.md) |
 | Make an application substantially faster | [Performance engineering](docs/performance.md) |
