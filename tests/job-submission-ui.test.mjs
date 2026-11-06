@@ -4,7 +4,7 @@ import {readFileSync,existsSync} from 'node:fs';
 import vm from 'node:vm';
 import * as input from '../apps/atlas-lab/ui/collection-input.mjs';
 import {createArchiveSelection} from '../apps/atlas-lab/ui/archive-view.mjs';
-const appSource=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const appSource=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
 const helperPath=new URL('../apps/atlas-lab/ui/job-submit.mjs',import.meta.url);
 const helper=existsSync(helperPath)?readFileSync(helperPath,'utf8').replace(/^export /gm,''):'';
 const settle=()=>new Promise(resolve=>setImmediate(resolve));

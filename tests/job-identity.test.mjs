@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {mount as mountSource} from '../experiments/job-identity-lab/render-harness.mjs';
 import * as input from '../apps/atlas-lab/ui/collection-input.mjs';
-const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
 function mount(){return mountSource(source,input);}
 const data=()=>JSON.parse('{"counts":{"succeeded":2},"jobs":[{"id":9007199254740992,"id_text":"9007199254740992","job":"DedupExperiment","state":"succeeded","attempt":1},{"id":9007199254740993,"id_text":"9007199254740993","job":"DedupExperiment","state":"succeeded","attempt":1}]}');
 test('actual renderer keeps two distinct cards even when legacy JSON numbers collide',()=>{

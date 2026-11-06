@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {mount} from '../experiments/job-identity-lab/render-harness.mjs';
 import * as input from '../apps/atlas-lab/ui/collection-input.mjs';
-const source=readFileSync(new URL('../experiments/overview-content-identity-lab/candidate-app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const source=readFileSync(new URL('../experiments/overview-content-identity-lab/candidate-app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
 const response=message=>({counts:{succeeded:1},jobs:[{id:1,id_text:'1',job:'DedupExperiment',state:'succeeded',attempt:1,result:{error:message}}]});
 test('same-origin engine replacement cannot reuse stale results with colliding job identity',()=>{
  const app=mount(source,input);app.render(response('FIRST DATABASE RESULT'));
