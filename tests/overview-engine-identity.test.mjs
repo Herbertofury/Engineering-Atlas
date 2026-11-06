@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {mount} from '../experiments/job-identity-lab/render-harness.mjs';
 import * as input from '../apps/atlas-lab/ui/collection-input.mjs';
-const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
 const A='a'.repeat(32),B='b'.repeat(32);
 const data=message=>({counts:{succeeded:1},jobs:[{id:1,id_text:'1',job:'DedupExperiment',state:'succeeded',attempt:1,result:{error:message}}]});
 test('engine identity scopes keyed reuse without comparing full results',()=>{

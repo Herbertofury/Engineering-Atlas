@@ -18,16 +18,18 @@ def outputs():
  bili=(ROOT/'bilibili-player.mjs').read_bytes();bili_name='bilibili-player.'+hashlib.sha256(bili).hexdigest()[:16]+'.mjs'
  core=(ROOT/'media-core.mjs').read_text().replace("'./bilibili-player.mjs'",repr('./'+bili_name)).encode();core_name='media-core.'+hashlib.sha256(core).hexdigest()[:16]+'.mjs'
  loader=(ROOT/'resource-loader.mjs').read_bytes();loader_name='resource-loader.'+hashlib.sha256(loader).hexdigest()[:16]+'.mjs'
+ compare=(ROOT/'compare.mjs').read_bytes();compare_name='compare.'+hashlib.sha256(compare).hexdigest()[:16]+'.mjs'
+ local=(ROOT/'local-compare.mjs').read_text().replace("'./compare.mjs'",repr('./'+compare_name)).encode();local_name='local-compare.'+hashlib.sha256(local).hexdigest()[:16]+'.mjs'
  fixture=(ROOT/'public-fixtures.json').read_bytes();fixture_name='public-fixtures.'+hashlib.sha256(fixture).hexdigest()[:16]+'.json'
- script=(ROOT/'media.js').read_text().replace("'./media-event-recorder.mjs'",repr('./'+recorder_name)).replace("'./media-events.mjs'",repr('./'+events_name)).replace("'./preview-loader.mjs'",repr('./'+preview_name)).replace("'./bilibili-player.mjs'",repr('./'+bili_name)).replace("'./media-core.mjs'",repr('./'+core_name)).replace("'./resource-loader.mjs'",repr('./'+loader_name)).replace("'./public-fixtures.json'",repr('./'+fixture_name)).encode();script_name='media.'+hashlib.sha256(script).hexdigest()[:16]+'.js'
+ script=(ROOT/'media.js').read_text().replace("'./local-compare.mjs'",repr('./'+local_name)).replace("'./media-event-recorder.mjs'",repr('./'+recorder_name)).replace("'./media-events.mjs'",repr('./'+events_name)).replace("'./preview-loader.mjs'",repr('./'+preview_name)).replace("'./bilibili-player.mjs'",repr('./'+bili_name)).replace("'./media-core.mjs'",repr('./'+core_name)).replace("'./resource-loader.mjs'",repr('./'+loader_name)).replace("'./public-fixtures.json'",repr('./'+fixture_name)).encode();script_name='media.'+hashlib.sha256(script).hexdigest()[:16]+'.js'
  css=(ROOT/'media.css').read_bytes();css_name='media.'+hashlib.sha256(css).hexdigest()[:16]+'.css'
  vendor=(ROOT/'vendor/hls-1.7.3.min.js').read_bytes();provenance=json.loads((ROOT/'vendor/provenance.json').read_text())
  if hashlib.sha256(vendor).hexdigest()!=provenance['bundle_sha256']:raise ValueError('Pinned player bundle changed')
  sri='sha384-'+base64.b64encode(hashlib.sha384(vendor).digest()).decode()
  script=script.replace(b'__HLS_SRI__',sri.encode());script_name='media.'+hashlib.sha256(script).hexdigest()[:16]+'.js'
  html=(ROOT/'index.template.html').read_text().replace('href="media.css"',f'href="{css_name}"').replace('src="media.js"',f'src="{script_name}"').replace('src="vendor/hls-1.7.3.min.js"',f'src="vendor/hls-1.7.3.min.js" integrity="{sri}" crossorigin="anonymous"').encode()
- files={timeout_name:timeout_check,'preview-timeout-check.html':timeout_html,recorder_name:recorder,recovery_name:recovery,baseline_name:baseline,log_name:log,log_fixture_name:log_fixture,log_script_name:log_script,'event-log-benchmark.html':log_html,events_name:events,preview_name:preview,bili_name:bili,core_name:core,loader_name:loader,fixture_name:fixture,script_name:script,css_name:css,'index.html':html}
- manifest={'harness':'atlas-real-media-v13-player-ready-deadline','artifacts':{n:hashlib.sha256(b).hexdigest() for n,b in files.items()},'vendor_sha256':provenance['bundle_sha256'],'vendor_sri':sri}
+ files={compare_name:compare,local_name:local,timeout_name:timeout_check,'preview-timeout-check.html':timeout_html,recorder_name:recorder,recovery_name:recovery,baseline_name:baseline,log_name:log,log_fixture_name:log_fixture,log_script_name:log_script,'event-log-benchmark.html':log_html,events_name:events,preview_name:preview,bili_name:bili,core_name:core,loader_name:loader,fixture_name:fixture,script_name:script,css_name:css,'index.html':html}
+ manifest={'harness':'atlas-real-media-v14-local-compare','artifacts':{n:hashlib.sha256(b).hexdigest() for n,b in files.items()},'vendor_sha256':provenance['bundle_sha256'],'vendor_sri':sri}
  files['build-manifest.json']=(json.dumps(manifest,indent=2)+'\n').encode();return files
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--check',action='store_true');args=p.parse_args()

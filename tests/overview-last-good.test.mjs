@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {mount as mountSource} from '../experiments/job-identity-lab/render-harness.mjs';
 import * as input from '../apps/atlas-lab/ui/collection-input.mjs';
-const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
 const job=(id,state,result)=>({id,id_text:String(id),job:'DedupExperiment',state,attempt:1,result});
 function setup(){const app=mountSource(source,input);app.render({counts:{queued:1},jobs:[job(1,'queued')]});return app;}
 const bad=()=>({counts:{succeeded:999,failed:23},jobs:[job(1,'succeeded',{error:'UNCOMMITTED RESULT'}),job(2,'succeeded',{project:{title:'Malformed fixture',id:'fixture',versions:null}})]});

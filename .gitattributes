@@ -1,0 +1,10 @@
+# Keep byte-verified evidence and content-addressed web assets stable across platforms.
+*.json text eol=lf
+*.md text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+
+# Preserve the catalog's existing CRLF byte format.
+data/site-adapter-catalog.json -text !eol

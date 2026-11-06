@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {createArchiveSelection} from '../apps/atlas-lab/ui/archive-view.mjs';
-const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
+const source=readFileSync(new URL('../apps/atlas-lab/ui/app.js',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 function mount(loader){
  const elements=new Map(),downloads=[],blobs=new Map(),timers=new Map();let timerId=0;

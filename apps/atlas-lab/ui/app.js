@@ -1,6 +1,7 @@
 'use strict';
 import {collectionJob,versionExperimentJob,versionCollectionJob,upstreamReviewJob,projectArchiveJob,jobLabel,jobIdentity} from './collection-input.mjs';
 import {createArchiveSelection,loadSavedArchive} from './archive-view.mjs';
+import {createLocalComparison} from './local-compare.mjs';
 import {submitJob} from './job-submit.mjs';
 const $ = id => document.getElementById(id);
 const renderedJobs = new Map();
@@ -72,3 +73,52 @@ $('saved-archive-dialog').addEventListener('close',cancelPendingArchiveViewer);
 $('download-saved-archive').addEventListener('click',()=>{const record=archiveSelection.last;if(!record)return;const url=URL.createObjectURL(new Blob([record.bytes],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=(record.kind==='upstream'?'github-upstream':'modrinth-'+record.kind)+'-'+record.id+'-generation-'+record.generation+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
 
 $('saved-archive-kind').addEventListener('change',()=>{archiveSelection.cancel();$('saved-archive-form').querySelector('button').disabled=false;$('cancel-archive-load').disabled=true;$('saved-archive-status').textContent='Archive type changed. The previous verified response remains available with its original type.';});
+
+if(typeof createLocalComparison==='function'){
+// Explicitly compare a user-selected local Modrinth response against a dated public Atlas card.
+// The selected bytes stay in this browser; the only network read is the same-origin fixture asset.
+const galleryComparison=createLocalComparison();
+let galleryRequest=0,galleryCard=null,galleryPending=false;
+const galleryStatus=$('gallery-compare-status');
+function setGalleryStatus(state,message){galleryStatus.dataset.state=state;galleryStatus.textContent=message;galleryStatus.classList.toggle('error',state==='error');}
+function showGalleryResult(record,prefix=''){
+ const result=record.result,label=result.status[0].toUpperCase()+result.status.slice(1);
+ const detail=result.reason||('Source '+result.actual_count+' URL pairs; card '+result.snapshot_count+'.');
+ setGalleryStatus(result.status,prefix+label+': '+detail+' Input SHA-256 '+record.sha256+'. URL-pair comparison only; this does not verify image decoding, playback, freshness or complete contents.');
+}
+async function loadGalleryReference(){
+ const target=$('gallery-reference-card'),run=$('gallery-compare-run');
+ try{
+  const response=await fetch('/gallery-fixtures.json',{cache:'no-store',redirect:'error',credentials:'same-origin'});
+  if(!response.ok||new URL(response.url).origin!==location.origin)throw Error('The local public card fixture is unavailable.');
+  const fixture=await response.json();
+  if(fixture?.schema_version!==1||fixture.access!=='public-only'||fixture.private_data_included!==false||!Array.isArray(fixture.cards))throw Error('The local public card fixture failed validation.');
+  galleryCard=fixture.cards.find(card=>card?.id==='modrinth:AANobbMI'&&card.provider==='Modrinth');
+  if(!galleryCard||typeof galleryCard.title!=='string'||!Array.isArray(galleryCard.gallery))throw Error('The existing Modrinth card is unavailable.');
+  target.textContent='Existing public card: '+galleryCard.title+' ('+galleryCard.id+'), '+galleryCard.gallery.length+' saved gallery entries. Dated Atlas snapshot; no provider request.';
+  run.disabled=!$('gallery-compare-file').files?.length;
+  setGalleryStatus('ready','Public Atlas card ready. Choose a saved JSON archive to compare.');
+ }catch(error){target.textContent=error.message;target.classList.add('error');setGalleryStatus('error',error.message);run.disabled=true;}
+}
+function cancelGalleryComparison(message){
+ galleryRequest++;galleryComparison.cancel();galleryPending=false;$('gallery-compare-cancel').disabled=true;
+ $('gallery-compare-run').disabled=!galleryCard||!$('gallery-compare-file').files?.length;
+ setGalleryStatus(galleryComparison.last?'ready':'idle',message+(galleryComparison.last?' The last successful comparison remains available.':''));
+}
+$('gallery-compare-file').addEventListener('change',()=>{
+ if(galleryPending)cancelGalleryComparison('File selection changed; pending comparison cancelled.');
+ else setGalleryStatus('idle',galleryComparison.last?'File selection changed. Run a new comparison; the last successful result remains available.':'File selected. Run the comparison when ready.');
+ $('gallery-compare-run').disabled=!galleryCard||!$('gallery-compare-file').files?.length;
+});
+$('gallery-compare-form').addEventListener('submit',async event=>{
+ event.preventDefault();const file=$('gallery-compare-file').files?.[0];if(!file||!galleryCard)return;
+ const own=++galleryRequest;galleryPending=true;$('gallery-compare-run').disabled=true;$('gallery-compare-cancel').disabled=false;
+ setGalleryStatus('pending','Reading the selected file locally; any previous successful comparison is retained.');
+ try{const result=await galleryComparison.load(file,galleryCard);if(own!==galleryRequest||result.status!=='ready')return;showGalleryResult(result.record);$('gallery-compare-last').disabled=false;}
+ catch(error){if(own===galleryRequest)setGalleryStatus('error',error.message+(galleryComparison.last?' The last successful comparison remains available.':''));}
+ finally{if(own===galleryRequest){galleryPending=false;$('gallery-compare-cancel').disabled=true;$('gallery-compare-run').disabled=!galleryCard||!$('gallery-compare-file').files?.length;}}
+});
+$('gallery-compare-cancel').addEventListener('click',()=>cancelGalleryComparison('Comparison cancelled.'));
+$('gallery-compare-last').addEventListener('click',()=>{if(galleryPending)cancelGalleryComparison('Pending comparison cancelled.');if(galleryComparison.last){$('gallery-compare-last').disabled=false;showGalleryResult(galleryComparison.last,'Last successful result. ');}});
+loadGalleryReference();
+}

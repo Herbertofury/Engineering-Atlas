@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';import {webcrypto} from 'node:crypto';
 import {prepareDataset} from '../experiments/card-receiver-lab/baseline.mjs';
 import * as validators from '../experiments/card-receiver-lab/verified-receiver.mjs';
 const workerSource=await readFile(new URL('../docs/card-receiver-lab/receiver-worker.mjs',import.meta.url),'utf8');
-const codes={modules:workerSource.replace(/^import .*;\n/gm,''),esbuild:await readFile(new URL('../experiments/worker-bundle-lab/artifacts/worker-esbuild.mjs',import.meta.url),'utf8'),rolldown:await readFile(new URL('../experiments/worker-bundle-lab/artifacts/worker-rolldown.mjs',import.meta.url),'utf8')};
+const codes={modules:workerSource.replace(/^import .*;\r?\n/gm,''),esbuild:await readFile(new URL('../experiments/worker-bundle-lab/artifacts/worker-esbuild.mjs',import.meta.url),'utf8'),rolldown:await readFile(new URL('../experiments/worker-bundle-lab/artifacts/worker-rolldown.mjs',import.meta.url),'utf8')};
 async function execute(kind,request){
  const messages=[];const context={self:{postMessage:(message,transfer)=>messages.push(structuredClone(message,{transfer:transfer||[]}))},performance,crypto:webcrypto,TextEncoder,TextDecoder,ArrayBuffer,Uint8Array,...validators};
  vm.runInNewContext('"use strict";\n'+codes[kind],context,{timeout:1000});await context.self.onmessage({data:structuredClone(request)});assert.equal(messages.length,1);const result=messages[0];
