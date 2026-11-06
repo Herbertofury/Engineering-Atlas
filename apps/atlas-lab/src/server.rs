@@ -525,6 +525,33 @@ async fn serve_strategy(
                 )
             }),
         )
+        .route(
+            "/compare.mjs",
+            get(|| async {
+                (
+                    [(header::CONTENT_TYPE, "text/javascript; charset=utf-8")],
+                    include_str!("../../../docs/media-lab/compare.mjs"),
+                )
+            }),
+        )
+        .route(
+            "/local-compare.mjs",
+            get(|| async {
+                (
+                    [(header::CONTENT_TYPE, "text/javascript; charset=utf-8")],
+                    include_str!("../../../docs/media-lab/local-compare.mjs"),
+                )
+            }),
+        )
+        .route(
+            "/gallery-fixtures.json",
+            get(|| async {
+                (
+                    [(header::CONTENT_TYPE, "application/json; charset=utf-8")],
+                    include_str!("../../../docs/media-lab/public-fixtures.json"),
+                )
+            }),
+        )
         .route("/api/project-archive/{id}", get(saved_project_response))
         .route("/api/version-archive/{id}", get(saved_version_response))
         .route("/api/upstream-archive/{id}", get(saved_upstream_response))
