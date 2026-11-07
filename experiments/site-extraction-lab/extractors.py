@@ -105,8 +105,11 @@ def ordered_body(node, origin="", completeness="selected_scope"):
             if current.get("srcset"):
                 # A data URL can contain commas; reject the entire attribute.
                 rawset = current.get("srcset")
+                # This is a URL projection, not the complete srcset algorithm.
+                # Empty separators must not discard the surrounding body.
                 event["srcset"] = [] if re.search(r"(?:data|javascript|blob):", rawset, re.I) else [
-                    u for part in rawset.split(",") if (u := public_url(part.strip().split()[0], origin))]
+                    u for part in rawset.split(",") if (tokens := part.split())
+                    if (u := public_url(tokens[0], origin))]
             events.append(event)
         if current.tag == "br":
             events.append({"type": "break"})
