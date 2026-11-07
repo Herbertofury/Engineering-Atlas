@@ -6,7 +6,7 @@ import {createBilibiliController} from './bilibili-player.mjs';
 import {createRetryableLoader} from './resource-loader.mjs';
 import {validateFixture,mediaCounts,safeMediaUrl,nativePlaybackLabel} from './media-core.mjs';
 const $=id=>document.getElementById(id);
-const receipt={schema_version:1,harness:'atlas-real-media-v14-local-compare',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
+const receipt={schema_version:1,harness:'atlas-real-media-v15-gallery-url-contract',source_module:new URL(import.meta.url).pathname,started_at:new Date().toISOString(),user_agent:navigator.userAgent,source_mode:'dated public snapshots',events:[],acceptance:'not a target-project performance comparison'};
 let dataset=null,decoded=0,previewLoader=null,previewBusy=false;
 const localComparison=createLocalComparison();let localCompareSequence=0;
 const pendingImages=[];
