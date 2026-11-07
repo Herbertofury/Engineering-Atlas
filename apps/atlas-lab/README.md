@@ -183,3 +183,7 @@ Overview prepares every card before committing its keyed cache and summary metri
 ### Scope Overview reuse to an engine instance · October 30, 2026
 
 Overview responses carry a public ephemeral instance label. A newly started engine cannot reuse the previous engine's cached job cards merely because job IDs, states and attempts collide. Missing labels disable reuse; malformed labels retain the last-good view. No database path or credential is exposed. [Restart evidence and limits](../../experiments/overview-engine-identity-lab/README.md).
+
+### Validate Overview metrics before replacing the last-good view · November 7, 2026
+
+Overview now rejects malformed count maps, coerced values, negative/fractional counts and unsafe totals before changing cards, metrics or engine cache identity. Sparse states still mean zero, and aggregate totals remain independent of the newest fifty displayed jobs. [Retained failures, controlled-renderer repair and limits](../../experiments/overview-metrics-lab/README.md) include valid-refresh recovery and 10,000 generated healthy cases. This is a correctness repair with synthetic inputs, not native-browser or real-HTTP acceptance.
