@@ -1,0 +1,59 @@
+{
+  "kind": "synthetic-malformations-of-existing-public-source-derived-excerpt",
+  "source_revision": "working-tree",
+  "comparator_sha256": "297602c9d1c0fd3e7ce9198aebf11cd3b3f9ccf5a9bb2223e6207fe7b5eb254c",
+  "loader_sha256": "a1387b254a39c053342321aeaf54b2d67b71e4aaa91e0fda165afc5267e4c169",
+  "excerpt_sha256": "cc87c21200f5b7104a7d3289abdde9d7277987c433563aa32328bed3c8905b36",
+  "snapshot_fixture_sha256": "2aa0668aba0eb29c69faf368fab206369718335be7f47bc0c6592236e79d1aba",
+  "node": "v24.22.1",
+  "network_used": false,
+  "native_browser": false,
+  "real_provider_response": false,
+  "cases": [
+    {
+      "case": "source preview array",
+      "load_status": "ready",
+      "comparison_status": "unknown",
+      "receipt_status": "unknown",
+      "input_sha256": "2cef64339958538f0fcc97f8bee2c15be2e19c35410a837ffde53b4fd7232189",
+      "input_bytes": 2378,
+      "correct_unknown": true
+    },
+    {
+      "case": "source original nested array",
+      "load_status": "ready",
+      "comparison_status": "unknown",
+      "receipt_status": "unknown",
+      "input_sha256": "3cd25f91094df052762b0f7ebb77204851a0a13850b123b677ebbdd9f1dd1ddb",
+      "input_bytes": 2380,
+      "correct_unknown": true
+    },
+    {
+      "case": "card preview array",
+      "load_status": "ready",
+      "comparison_status": "unknown",
+      "receipt_status": "unknown",
+      "input_sha256": "548900a2c520f01080bae55c8e45617a41a566aaf2b70bdac38f76afb354c1ff",
+      "input_bytes": 2376,
+      "correct_unknown": true
+    },
+    {
+      "case": "card original nested array",
+      "load_status": "ready",
+      "comparison_status": "unknown",
+      "receipt_status": "unknown",
+      "input_sha256": "548900a2c520f01080bae55c8e45617a41a566aaf2b70bdac38f76afb354c1ff",
+      "input_bytes": 2376,
+      "correct_unknown": true
+    },
+    {
+      "case": "all source URLs wrapped",
+      "load_status": "ready",
+      "comparison_status": "unknown",
+      "receipt_status": "unknown",
+      "input_sha256": "52f26aa2fd7872d2ac1249dd48c1159b32ada77e6ee4f84eeb90912ffc043567",
+      "input_bytes": 2412,
+      "correct_unknown": true
+    }
+  ]
+}
