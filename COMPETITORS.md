@@ -24,6 +24,24 @@ Atlas already maintains a [research catalog](docs/research-catalog.md), [planned
 
 See the [research method](docs/research-method.md) for source dates, evidence levels and cross-project adoption boundaries. No native UI benchmark or external-app improvement was performed for this documentation addition.
 
+
+## Potential foundations and cross-project composition
+
+This is an extension of existing comparison lanes, not a new source registry or a target recommendation. Concrete candidates and their primary-source IDs remain in the linked catalog and plan registry.
+
+| Foundation already present in Atlas | Reuse opportunity to evaluate | Improvement sought | Integration boundary / acceptance |
+|---|---|---|---|
+| Benchmark format and paired comparison scripts | Common workload/environment/output identity and regression classification | Make incomparable results impossible to present as wins | Accept sanitized receipts from projects only after schema validation. Require complete output hashes, resource budgets and retained failures. |
+| Failure-preserving journal and bounded experiment runner | Run state, cancellation, restart and evidence retention contracts | Make interruption recoverable without overwriting last-good evidence | Compare against the actual consuming project's baseline before any recommendation leaves Atlas. Physical power-loss durability remains a separate test. |
+| Source register, catalog and research queue | Stable source IDs, checked dates, candidate roles and existing plans | Remove duplicated research and distinguish stale from current claims | Athena can link to public research; private provider fixtures or account details must not migrate with those links. |
+| Adapter/media evidence vocabulary | Explicit missing/access/ready/playing states and provenance | Prevent metadata success from masquerading as complete media support | Any shared schema proposal must preserve each app's data contract and be tested with malformed, incomplete and unavailable items. |
+
+**Potential own-project integrations:** research receipts for MO2R, Hover, Minecraft tooling and Athena are possible interfaces to investigate, not proven upgrades. No implementation, dependency or deployment change is recommended to those projects by this document. First run the actual project baseline and candidate with requirements intact; only then publish a scoped adoption decision.
+
+**License/compatibility checklist:** trace source and transitive licenses, fixture rights, schema versions, target runtime/OS and export privacy. Internal ownership does not imply permission to republish game data or private fixtures. Reuse code only after its exact revision and obligations are checked.
+
+**Empirical status:** no new experiment ran for this section. Prior Atlas measurements retain their original workloads; generated workloads and external benchmarks do not prove a target-app improvement. Reject integration if evidence identity, completeness, durability, security or tail latency regresses.
+
 ## Review and evidence rules
 
 Review date: **2026-11-12**. This is a comparison agenda, not a benchmark result or proof of superiority. Official-source capability descriptions and our proposed experiments are separate. Pin actual versions and licenses before reuse; record publication date separately from the date checked. Retain failed comparisons and rejected candidates.
